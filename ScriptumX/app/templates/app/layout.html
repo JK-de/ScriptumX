@@ -3,6 +3,17 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lorem Ipsum" />
+    <meta name="keywords" content="movie, script" />
+    <meta name="author" content="JK" />
+    <meta name="copyright" content="share alike" />
+
+    
+      <meta name="robots" content="index, follow">
+      <meta name="googlebot" content="index, follow">
+    
+
+
     <title>{{ title }} - ScriptumX</title>
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
@@ -10,8 +21,8 @@
     <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
 </head>
 
-<body>
-    <div class="navbar navbar-fixed-top">
+<body style="max-height:100%; height:100%; overflow:auto;">
+    <nav class="navbar navbar-default navbar-fixed-top">
         <div class="container-fluid">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -19,19 +30,32 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="/" class="navbar-brand">XXX</a>
+              
+                <a style="padding:8px;  margin:0px" class="navbar-brand" href="#"><img height="16" width="16" src="{% static 'app/img/ScriptumX32.png' %}" /></a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
+                <ul class="nav nav-tabs" role="tablist" style="padding-bottom:0px; margin:0; color:#CCC; background-color:#888;">
+                    <li><a style="color:#CCC" href="./#"><img src="{% static 'app/img/Tab/Project-16.png' %}"> Project</a></li>
+                    <li><a style="color:#CCC" href="#"><img src="{% static 'app/img/Tab/Script-16.png' %}"> Script</a></li>
+                    <li><a style="color:#CCC" href="#"><img src="{% static 'app/img/Tab/Scene-16.png' %}"> Scene</a></li>
+                    <li><a style="color:#CCC" href="#"><img src="{% static 'app/img/Tab/Set-16.png' %}"> Sets</a></li>
+                    <li><a style="color:#CCC" href="#"><img src="{% static 'app/img/Tab/Role-16.png' %}"> Roles</a></li>
+                    <li><a style="color:#CCC" href="#"><img src="{% static 'app/img/Tab/Folk-16.png' %}"> Folks</a></li>
+                    <li class="active"><a href="/gadget"><img src="{% static 'app/img/Tab/Gatget-16.png' %}"> Gadget</a></li>
+                    <li><a style="color:#CCC" href="#"><img src="{% static 'app/img/Tab/SFX-16.png' %}"> SFX</a></li>
+                    <li><a style="color:#CCC" href="#"><img src="{% static 'app/img/Tab/Audio-16.png' %}"> Audio</a></li>
+                    <li><a style="color:#CCC" href="#"><img src="{% static 'app/img/Tab/Schedule-16.png' %}"> Schedule</a></li>
+
                     <li><a href="{% url 'about' %}">About</a></li>
-                    <li><a href="{% url 'contact' %}">Contact</a></li>
+                   
+                   
                 </ul>
                 {% include 'app/loginpartial.html' %}
             </div>
         </div>
-    </div>
+    </nav>
 
-    <div style="background:#DDD" class="container-fluid body-content">
+    <div style="background:#DDD; max-height:100%; height:100%;" class="container-fluid body-content">
 {% block content %}{% endblock %}
         <hr/>
         <footer>

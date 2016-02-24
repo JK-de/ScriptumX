@@ -3,30 +3,32 @@
 {% block content %}
 
 <h2>{{ title }}</h2>
-<br />
+<div class="container" style="max-height:100%; height:100%; overflow:hidden;">
 
-<div class="row">
-  <div class="col-xs-6 col-md-3">
-    <ul class="nav nav-pills nav-stacked">
-    {% for gadget in gadgets %}
-        <li style="background:#FFF;padding:0"{% if gadget.id == active_id %} class="active"{% endif %}><a style="padding:2px" href="/gadget/{{gadget.pk}}">{{gadget.name}}<br/><small>{{gadget.description}}</small></a></li>
-    {% endfor %}
-    </ul>
-  </div>
-</div>
+    <div class="row" style="max-height:100%; height:100%; overflow:hidden; border: 1px solid red;">
+      <div class="col-xs-6 col-md-3" style="max-height:100%; height:100%;">
+        <ul class="nav nav-pills nav-stacked" style="max-height:30em; height:100%; overflow-y:scroll">
+        {% for gadget in gadgets %}
+            <li style="background:#FFF;padding:0"{% if gadget.id == active_id %} class="active"{% endif %}><a style="padding:2px" href="/gadget/{{gadget.pk}}">{{gadget.name}}<br/><small>{{gadget.description}}</small></a></li>
+        {% endfor %}
+        </ul>
+      </div>
 
-{% for gadget in gadgets %}
-<div class="row">
-    <div class="col-sm-3">{{gadget.name}}</div>
-    <div class="col-sm-7">{{gadget.description}}</div>
-    <div class="col-sm-1">
-        <div class="progress">
-            <div class="progress-bar" role="progressbar" aria-valuenow="{{gadget.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{gadget.progress}}%;">
-                {{gadget.progress}}
-            </div>
-        </div>
+
+
+      <div class="col-xs-6 col-md-9" style="overflow-y:scroll; background:#EEE">
+
+          {{active_gadget.name}}<br/>{{active_gadget.description}}<br/><br/><br/>
+        Lorem
+Okay so most of us do not know how to generate random strings which include letters and digits. This can be really useful for generating a password or something else just use your evil mind. Okay so how do we generate a random string. Have you ever heard of the string module available in python ? The chances are that you have not heard about it. So what does this module provide us ? Okay here you go lets understand this module by example:
+
+          
+
+
+      </div>
+
     </div>
+
 </div>
-{% endfor %}
 
 {% endblock %}

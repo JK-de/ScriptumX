@@ -1,4 +1,4 @@
-"""
+﻿"""
 Definition of views.
 """
 
@@ -91,6 +91,12 @@ def vote(request, poll_id):
         selected_choice.save()
         return HttpResponseRedirect(reverse('app:results', args=(poll.id,)))
 
+import random
+import string
+def random_text(letters=32):
+    return ''.join([random.choice(string.ascii_letters + string.digits + "     ") for n in range(letters)])
+
+
 @login_required
 def seed(request):
     """Seeds the database with sample polls."""
@@ -115,7 +121,7 @@ def seed(request):
     for i in range(0, 10):
         gadget = Gadget()
         gadget.name = "Gadget-" + str(i)
-        gadget.description = "Blabla"
+        gadget.description = random_text()
         gadget.progress = i
         gadget.save()
 
@@ -124,13 +130,13 @@ def seed(request):
     for s in range(0, 5):
         scene = Scene()
         scene.name = "Scene-" + str(s)
-        gadget.description = "Blabla"
+        gadget.description = random_text()
         gadget.progress = i
         scene.save()
 
         for s in range(0, 5):
             item = SceneItem()
-            item.text = "Blabla Blabla"
+            item.text = random_text(300)
             item.scene = scene
             item.save()
 
@@ -191,6 +197,6 @@ def gadget(request, gadget_id):
 #Moti Radomski
 #656
 	
-#1 	 
+#1
 	
 #also, don't forget to import: from django.core.exceptions import ObjectDoesNotExist – Moti Radomski Jul 22 '14 at 13:07 

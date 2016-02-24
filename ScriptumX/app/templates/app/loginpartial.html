@@ -1,12 +1,12 @@
 <ul class="nav navbar-nav navbar-right">
-    <li><a href="/admin">Administration</a></li>
+    <li><a href="/admin">Admin</a></li>
 </ul>
 
 {% if user.is_authenticated %}
 <form id="logoutForm" action="/logout" method="post" class="navbar-right">
     {% csrf_token %}
     <ul class="nav navbar-nav navbar-right">
-        <li><span class="navbar-brand">Logged in: {{ user.username }}</span></li>
+        <li><span class="navbar-text">User: {{ user.username }}</span></li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
 
