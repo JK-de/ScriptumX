@@ -2,16 +2,17 @@
 Definition of views.
 """
 
-from app.models import Choice, Poll
+from app.models import *
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpRequest, HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, get_list_or_404, render
 from django.template import RequestContext
 from django.utils import timezone
 from django.views.generic import ListView, DetailView
 from os import path
+from django.core.exceptions import ObjectDoesNotExist
 
 import json
 
@@ -110,4 +111,86 @@ def seed(request):
             choice.votes = 0
             choice.save()
 
+    # generate Gadgets
+    for i in range(0, 10):
+        gadget = Gadget()
+        gadget.name = "Gadget-" + str(i)
+        gadget.description = "Blabla"
+        gadget.progress = i
+        gadget.save()
+
+    
+    # generate SceneItem with linked Scenes
+    for s in range(0, 5):
+        scene = Scene()
+        scene.name = "Scene-" + str(s)
+        gadget.description = "Blabla"
+        gadget.progress = i
+        scene.save()
+
+        for s in range(0, 5):
+            item = SceneItem()
+            item.text = "Blabla Blabla"
+            item.scene = scene
+            item.save()
+
+    
+
     return HttpResponseRedirect(reverse('app:home'))
+
+
+
+#def get_or_none(classmodel, **kwargs):
+#    try:
+#        return classmodel.objects.get(**kwargs)
+#    except classmodel.DoesNotExist:
+#        return None
+
+def gadget(request, gadget_id):
+    """Handles ..."""
+    
+    gadgets = get_list_or_404(Gadget)
+    
+    try:
+        active_gadget = Gadget.objects.get(pk = gadget_id)
+        active_id = active_gadget.id
+    except ObjectDoesNotExist:
+        active_gadget = None
+        active_id = None
+
+    return render(request, 'app/gadget.html', {
+        'title': 'Gadgets',
+        'datetime': datetime.now(),
+        'gadgets': gadgets,
+        'active_gadget': active_gadget,
+        'active_id': active_id,
+        #'error_message': "Please make a selection.",
+    })
+
+
+
+#To make things easier, here is a snippet of the code I wrote, based on inputs from the wonderful replies here:
+
+#class MyManager(models.Manager):
+
+#    def get_or_none(self, **kwargs):
+#        try:
+#            return self.get(**kwargs)
+#        except ObjectDoesNotExist:
+#            return None
+
+#And then in your model:
+
+#class MyModel(models.Model):
+#    objects = MyManager()
+
+#That's it. Now you have MyModel.objects.get() as well as MyModel.objetcs.get_or_none()
+#shareimprove this answer
+	
+#answered Jul 22 '14 at 13:05
+#Moti Radomski
+#656
+	
+#1 	 
+	
+#also, don't forget to import: from django.core.exceptions import ObjectDoesNotExist – Moti Radomski Jul 22 '14 at 13:07 

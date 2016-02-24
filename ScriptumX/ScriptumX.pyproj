@@ -55,6 +55,7 @@
     <Folder Include="ScriptumX\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\templates\app\gadget.html" />
     <Content Include="db.sqlite" />
     <Content Include="requirements.txt" />
     <Content Include="app\samples.json" />

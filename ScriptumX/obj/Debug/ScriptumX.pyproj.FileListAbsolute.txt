@@ -9,5 +9,7 @@ E:\PRIVAT\X\ScriptumX\bin\AzureSetup.cfg
 E:\PRIVAT\X\ScriptumX\bin\Microsoft.PythonTools.AzureSetup.exe
 E:\PRIVAT\X\ScriptumX\bin\Microsoft.PythonTools.AzureSetup.exe.config
 E:\PRIVAT\X\ScriptumX\bin\wfastcgi.py
-E:\PRIVAT\X\ScriptumX\obj\Debug\deployment-updated-orig-prefix.txt
 E:\PRIVAT\X\ScriptumX\ptvs_virtualenv_proxy.py
+E:\PRIVAT\X\ScriptumX\obj\Debug\deployment-updated-pyvenv.cfg
+E:\PRIVAT\X\ScriptumX\obj\Debug\web.config
+E:\PRIVAT\X\ScriptumX\obj\Debug\web.debug.config

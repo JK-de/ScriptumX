@@ -1,0 +1,32 @@
+﻿{% extends "app/layout.html" %}
+
+{% block content %}
+
+<h2>{{ title }}</h2>
+<br />
+
+<div class="row">
+  <div class="col-xs-6 col-md-3">
+    <ul class="nav nav-pills nav-stacked">
+    {% for gadget in gadgets %}
+        <li style="background:#FFF;padding:0"{% if gadget.id == active_id %} class="active"{% endif %}><a style="padding:2px" href="/gadget/{{gadget.pk}}">{{gadget.name}}<br/><small>{{gadget.description}}</small></a></li>
+    {% endfor %}
+    </ul>
+  </div>
+</div>
+
+{% for gadget in gadgets %}
+<div class="row">
+    <div class="col-sm-3">{{gadget.name}}</div>
+    <div class="col-sm-7">{{gadget.description}}</div>
+    <div class="col-sm-1">
+        <div class="progress">
+            <div class="progress-bar" role="progressbar" aria-valuenow="{{gadget.progress}}" aria-valuemin="0" aria-valuemax="100" style="width: {{gadget.progress}}%;">
+                {{gadget.progress}}
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

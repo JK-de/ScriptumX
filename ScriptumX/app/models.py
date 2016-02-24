@@ -5,6 +5,18 @@ Definition of models.
 from django.db import models
 from django.db.models import Sum
 #from datetime import datetime
+#from django.contrib import auth #JK TODO user from django
+
+
+class UserX(models.Model):
+    #Props
+    name = models.CharField(max_length=30)
+    #Lists
+
+    def __str__(self):
+        """Returns a string representation of a User."""
+        return self.name
+
 
 
 class BaseModel(models.Model):
@@ -14,8 +26,8 @@ class BaseModel(models.Model):
     tag_map = models.PositiveIntegerField(default=0x7FFFFFFF)
     marker_map = models.PositiveIntegerField(default=0)
 
-    def __unicode__(self):
-        """Returns a string representation of a choice."""
+    def __str__(self):
+        """Returns a string representation of a Base-Item."""
         return self.name
 
 class Note(models.Model):
@@ -24,18 +36,14 @@ class Note(models.Model):
     #Link
     source = models.ForeignKey(BaseModel, on_delete=models.CASCADE, null=True, blank=False)
 
-    def __unicode__(self):
-        """Returns a string representation of a choice."""
+    def __str__(self):
+        """Returns a string representation of a Note."""
         return self.name
 
 class Gadget(BaseModel):
     #Props
     progress = models.PositiveSmallIntegerField(default=0)
     #Lists
-
-    def __unicode__(self):
-        """Returns a string representation of a choice."""
-        return self.name
 
 class Audio(BaseModel):
     #Props
@@ -66,6 +74,21 @@ class Location(BaseModel):
     #Lists
     persons = models.ManyToManyField(Person, blank=True)
 
+class Script(models.Model):
+    #Props
+    workingtitle = models.CharField(max_length=30)
+    abstract = models.CharField(max_length=300)
+    autor = models.CharField(max_length=300)
+    version = models.CharField(max_length=300)
+    description = models.TextField(blank=True)
+    #Lists
+    persons = models.ManyToManyField(Person, blank=True)
+    user = models.ManyToManyField(UserX, blank=True)   #JK TODO user from django
+
+    def __str__(self):
+            """Returns a string representation of a Script."""
+            return self.workingtitle
+
 class Scene(BaseModel):
     #Props
     order = models.PositiveIntegerField(default=0)
@@ -79,6 +102,7 @@ class Scene(BaseModel):
     progress_shot = models.PositiveSmallIntegerField(default=0)
     progress_post = models.PositiveSmallIntegerField(default=0)
     #Link
+    script = models.ForeignKey(Script, on_delete=models.CASCADE, null=True, blank=True)
     set = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
     #Lists
     roles = models.ManyToManyField(Role, blank=True)
@@ -88,20 +112,19 @@ class Scene(BaseModel):
     sfxs = models.ManyToManyField(SFX, blank=True)
     #locations = models.ManyToManyField(Location)
 
-class Script(models.Model):
+class SceneItem(models.Model):
     #Props
-    workingtitle = models.CharField(max_length=30)
-    abstract = models.CharField(max_length=300)
-    autor = models.CharField(max_length=300)
-    version = models.CharField(max_length=300)
-    description = models.CharField(max_length=300, blank=True)
-    #Lists
-    scenes = models.ManyToManyField(Scene, blank=True)
-    persons = models.ManyToManyField(Person, blank=True)
+    order = models.PositiveIntegerField(default=0)
+    parenthetical = models.CharField(max_length=100, blank=True)
+    text = models.TextField(blank=True)
 
-    def __unicode__(self):
-            """Returns a string representation of a choice."""
-            return self.workingtitle
+    #Lists
+    role = models.ForeignKey(Role, on_delete=models.CASCADE, null=True, blank=True)
+    scene = models.ForeignKey(Scene, on_delete=models.CASCADE, null=True, blank=True)
+    
+    def __str__(self):
+            """Returns a string representation of a DialogItem."""
+            return self.text
 
 class Appointment(BaseModel):
     #Props
@@ -119,10 +142,6 @@ class Appointment(BaseModel):
     persons = models.ManyToManyField(Person, blank=True)
     gadgets = models.ManyToManyField(Gadget, blank=True)
 
-    def __unicode__(self):
-        """Returns a string representation of a choice."""
-        return self.name
-
 class Appointment2Scene(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
     scene = models.ForeignKey(Scene, on_delete=models.CASCADE)
@@ -131,16 +150,6 @@ class Appointment2Scene(models.Model):
     duration = models.DurationField(null=True, blank=True)
 
 
-class User(models.Model):
-    #Props
-    name = models.CharField(max_length=30)
-    #Lists
-    scripts = models.ManyToManyField(Script)
-
-    def __unicode__(self):
-        """Returns a string representation of a choice."""
-        return self.name
-
 
 
 
@@ -148,7 +157,7 @@ class Poll(models.Model):
     """A poll object for use in the application views and repository."""
     text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
-    x = models.ForeignKey(Script)
+    #x = models.ForeignKey(Script, null=True, blank=True)
 
     def total_votes(self):
         """Calculates the total number of votes for this poll."""

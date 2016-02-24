@@ -22,4 +22,6 @@ urlpatterns = patterns('',
             template_name='app/results.html'),
         name='results'),
     url(r'^(?P<poll_id>\d+)/vote/$', 'app.views.vote', name='vote'),
+
+    url(r'^gadget/(?P<gadget_id>\d+)?$', 'app.views.gadget', name='gadget'),
 )

@@ -29,7 +29,7 @@ class ScriptAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['workingtitle']}),
         ('_Description', {'fields': ['description']}),
-        ('_M2M', {'fields': ['scenes', 'persons']}),
+        ('_M2M', {'fields': ['persons']}),
     ]
     #inlines = [ChoiceInline]
     list_display = ('workingtitle', 'description')
@@ -45,7 +45,7 @@ class SceneAdmin(admin.ModelAdmin):
         (None, {'fields': ['name']}),
         ('_Base', {'fields': ['description', 'tag_map', 'marker_map']}),
         ('_Prop', {'fields': ['order', 'text', 'variantmap', 'intent', 'color', 'duration', 'progress_script', 'progress_pre', 'progress_shot', 'progress_post']}),
-        ('_12M', {'fields': ['set']}),
+        ('_12M', {'fields': ['script', 'set']}),
         ('_M2M', {'fields': ['roles', 'persons', 'gadgets', 'audios', 'sfxs']}),
     ]
     #inlines = [ChoiceInline]
@@ -169,4 +169,29 @@ class AppointmentAdmin(admin.ModelAdmin):
     #date_hierarchy = 'pub_date'
 
 admin.site.register(Appointment, AppointmentAdmin)
+
+class SceneItemAdmin(admin.ModelAdmin):
+    """Definition of the SceneItem editor."""
+    fieldsets = [
+        ('_Prop', {'fields': ['order', 'parenthetical', 'text']}),
+        ('_12M', {'fields': ['role', 'scene']}),
+    ]
+    list_display = ('order', 'text')
+    list_filter = ['order']
+    search_fields = ['text']
+    #date_hierarchy = 'order'
+
+admin.site.register(SceneItem, SceneItemAdmin)
+
+class NoteAdmin(admin.ModelAdmin):
+    """Definition of the Note editor."""
+    fieldsets = [
+        ('_Prop', {'fields': ['text']}),
+        ('_12M', {'fields': ['source']}),
+    ]
+    list_display = ('source', 'text')
+    list_filter = ['text']
+    search_fields = ['text']
+
+admin.site.register(Note, NoteAdmin)
 
