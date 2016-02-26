@@ -7,13 +7,10 @@
     <meta name="keywords" content="movie, script" />
     <meta name="author" content="JK" />
     <meta name="copyright" content="share alike" />
-
     
-      <meta name="robots" content="index, follow">
-      <meta name="googlebot" content="index, follow">
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
     
-
-
     <title>{{ title }} - ScriptumX</title>
     {% load staticfiles %}
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
@@ -21,9 +18,10 @@
     <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
 </head>
 
-<body style="max-height:100%; height:100%; overflow:auto;">
+<body style="overflow:auto; background:#DDD; padding-top:100px">
+
     <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container-fluid">
+        <div style="padding:0;margin:0" class="container-fixed-top">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                     <span class="icon-bar"></span>
@@ -33,14 +31,16 @@
               
                 <a style="padding:8px;  margin:0px" class="navbar-brand" href="/"><img height="16" width="16" src="{% static 'app/img/ScriptumX32.png' %}" /></a>
             </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav nav-tabs" role="tablist" style="padding-bottom:0px; margin:0; color:#CCC; background-color:#888;">
+            <div style="padding:0px" class="navbar-collapse collapse">
 
-                    <li><a href="/gadget">Gadget</a></li>
-                    <li><a href="/seed">Seed</a></li>
-                    <li><a href="{% url 'about' %}">About</a></li>
+                <ul class="nav nav-tabs" role="tablist" style="padding:0px; padding-bottom:0px; margin:0; color:#CCC; background-color:#888;">
+                    <li><a style="color:#CCC" href="/gadget">Gadget</a></li>
+                    <li><a style="color:#CCC" href="/seed">Seed</a></li>
+                    <li><a style="color:#CCC" href="{% url 'about' %}">About</a></li>
+                    <li><a class="pull-right" style="color:#CCC" href="{% url 'about' %}">Impressum</a></li>
                    
                 </ul>
+
                 {% include 'app/loginpartial.html' %}
             </div>
         </div>

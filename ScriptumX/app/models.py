@@ -6,7 +6,7 @@ from django.db import models
 from django.db.models import Sum
 #from datetime import datetime
 #from django.contrib import auth #JK TODO user from django
-
+from django.contrib.auth.models import User
 
 class UserX(models.Model):
     #Props

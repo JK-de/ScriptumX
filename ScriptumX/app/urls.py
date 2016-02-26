@@ -7,6 +7,9 @@ from app.models import Poll
 from app.views import PollListView, PollDetailView, PollResultsView
 
 urlpatterns = patterns('',
+
+    url(r'^$', 'app.views.home', name='home'),
+
     url(r'^$',
         PollListView.as_view(
             queryset=Poll.objects.order_by('-pub_date')[:5],

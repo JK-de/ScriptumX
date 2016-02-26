@@ -16,6 +16,15 @@ from django.core.exceptions import ObjectDoesNotExist
 
 import json
 
+def home(request):
+    """Handles home page"""
+    
+    return render(request, 'app/home.html', {
+        'title': 'Home',
+        'datetime': datetime.now(),
+    })
+
+
 class PollListView(ListView):
     """Renders the home page, with a list of all polls."""
     model = Poll

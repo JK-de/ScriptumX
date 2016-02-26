@@ -1,12 +1,13 @@
-<ul class="nav">
+<ul class="nav navbar-nav navbar-right">
     <li><a href="/admin">Admin</a></li>
 </ul>
 
 {% if user.is_authenticated %}
-<form id="logoutForm" action="/logout" method="post" class="nav" >
+
+<form id="logoutForm" action="/logout" method="post" >
     {% csrf_token %}
-    <ul class="nav">
-        <li><span class="navbar-text">User: {{ user.username }}</span></li>
+    <ul class="nav navbar-nav navbar-right">
+        <li><span class="nav navbar-text">User: {{ user.username }}</span></li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
     </ul>
 
@@ -14,7 +15,7 @@
 
 {% else %}
 
-<ul class="nav navbar-nav navbar-fixed-top navbar-right">
+<ul class="nav navbar-nav navbar-right">
     <li><a href="{% url 'login' %}">Log in</a></li>
 </ul>
 
