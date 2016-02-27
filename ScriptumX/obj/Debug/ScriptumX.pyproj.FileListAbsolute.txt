@@ -11,3 +11,5 @@ D:\X\ScriptumX\bin\Microsoft.PythonTools.AzureSetup.exe.config
 D:\X\ScriptumX\bin\wfastcgi.py
 D:\X\ScriptumX\obj\Debug\web.config
 D:\X\ScriptumX\obj\Debug\web.debug.config
+D:\X\ScriptumX\obj\Debug\deployment-updated-pyvenv.cfg
+D:\X\ScriptumX\ptvs_virtualenv_proxy.py

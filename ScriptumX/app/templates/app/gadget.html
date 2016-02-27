@@ -20,19 +20,31 @@
 
           <div id="abc2" class="row" style="height:100%; border: 1px solid red;">
 
-              <div class="col-xs-1">
-                  <a href="#" style="padding:4px" role="button" class="btn btn-primary btn-xs"><img height="32" width="32" src="{% static 'app/img/Scene.png' %}" /><br /><font size="1">Save</font></a>
-                  <br/>
-                  <a href="#" style="padding:4px" role="button" class="btn btn-danger btn-xs"><img height="32" width="32" src="{% static 'app/img/Scene.png' %}" /><br /><font size="1">Delete</font></a>
+             
+           
+ 
+          <form class="form-horizontal" style="height:100%; border: 1px solid green;">
+
+             <div class="form-group">
+
+               <div class="col-sm-2 control-label">
+              <button style="padding:4px" type="submit" class="btn btn-primary btn-xs">
+                  <img height="32" width="32" src="{% static 'app/img/Scene.png' %}" /><br /><font size="1">Save</font>
+              </button>
+                   </div>
+
+             
+                <div style="margin-top:-60px;" class="col-sm-offset-2 col-sm-10">
+                    <div style="margin-left:16px;" id="checkboxlist">
+                    {% for tag in tag_list %}
+                      <label  class="checkbox-inline">
+                          <img style="margin-left:-35px; padding-left:4px; padding-right:4px;" src="{% static tag.img %}" /><br />
+                        <input type="checkbox" id="tag{{tag.bit}}" value="tag{{tag.bit}}">
+                      </label>
+                    {% endfor %}
+                    </div>
+                </div>
               </div>
-          
-          <br/>
-
-              <div class="col-xs-11">
-                  <a href="#" style="padding:4px" role="button" class="btn btn-primary btn-xs"><img height="32" width="32" src="{% static 'app/img/Scene.png' %}" /><br /><font size="1">Save</font></a>
-                  <a href="#" style="padding:4px" role="button" class="btn btn-danger btn-xs pull-right"><img height="32" width="32" src="{% static 'app/img/Scene.png' %}" /><br /><font size="1">Delete</font></a>
-
-          <form class="form-horizontal">
 
               <div class="form-group">
                 <label for="inputName" class="col-sm-2 control-label">Name</label>
@@ -44,7 +56,7 @@
               <div class="form-group">
                 <label for="inputDescription" class="col-sm-2 control-label">Description</label>
                 <div class="col-sm-10">
-                  <textarea style="max-width:100%" rows="3" class="form-control" id="inputDescription" placeholder="BlaBla" >{{active_gadget.description}}</textarea>
+                  <textarea style="max-width:98%; min-width:98%;" rows="4" class="form-control" id="inputDescription" placeholder="BlaBla" >{{active_gadget.description}}</textarea>
                 </div>
               </div>
 
@@ -59,32 +71,8 @@
               </div>
 
               <div class="form-group">
-                  <label for="tag1" class="col-sm-2 control-label">Tags</label>
-                <div class="col-sm-offset-2 col-sm-10">
-
-                    {% for tag in tag_list %}
-                      <label class="checkbox-inline">
-                        <input type="checkbox" id="tag{{tag.bit}}" value="tag{{tag.bit}}"><img src="{% static tag.img %}" />
-                      </label>
-                    {% endfor %}
-
-                    <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox2" value="option2"> 2
-                    </label>
-                    <label class="checkbox-inline">
-                    <input type="checkbox" id="inlineCheckbox3" value="option3"> 3
-                    </label>
-
-                    <label class="radio-inline">
-                    <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1"> 1
-                    </label>
-                    <label class="radio-inline">
-                    <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2"> 2
-                    </label>
-                    <label class="radio-inline">
-                    <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3"> 3
-                  </label>
-                </div>
+                  
+              
               </div>
 
               <div class="form-group">
