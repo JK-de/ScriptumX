@@ -13,6 +13,7 @@ from django.utils import timezone
 from django.views.generic import ListView, DetailView
 from os import path
 from django.core.exceptions import ObjectDoesNotExist
+from app.forms import GadgetForm
 
 import json
 
@@ -204,8 +205,20 @@ def gadget(request, gadget_id):
         active_gadget = None
         active_id = None
 
+    #if request.method == 'POST':
+    #    print request.POST
+
+    if request.method == 'POST':
+        form = GadgetForm(request.POST or None)
+
+        if form.is_valid():
+            instance = form.save()
+    else:
+        form = GadgetForm(instance=active_gadget)
+
     return render(request, 'app/gadget.html', {
         'title': 'Gadget',
+        'form': form,
         'tab_active': 'G',
         'tab_list': tab_list1,
         'tab_list2': tab_list2,

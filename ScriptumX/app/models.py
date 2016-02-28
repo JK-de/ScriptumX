@@ -5,26 +5,26 @@ Definition of models.
 from django.db import models
 from django.db.models import Sum
 #from datetime import datetime
-#from django.contrib import auth #JK TODO user from django
 from django.contrib.auth.models import User
-
-class UserX(models.Model):
-    #Props
-    name = models.CharField(max_length=30)
-    #Lists
-
-    def __str__(self):
-        """Returns a string representation of a User."""
-        return self.name
-
 
 
 class BaseModel(models.Model):
     #Props
     name = models.CharField(max_length=30)
     description = models.TextField(blank=True)
-    tag_map = models.PositiveIntegerField(default=0x7FFFFFFF)
+    #tag_map = models.PositiveIntegerField(default=0x7FFFFFFF)
     marker_map = models.PositiveIntegerField(default=0)
+
+    tag0 = models.BooleanField(default=0)
+    tag1 = models.BooleanField(default=0)
+    tag2 = models.BooleanField(default=0)
+    tag3 = models.BooleanField(default=0)
+    tag4 = models.BooleanField(default=0)
+    tag5 = models.BooleanField(default=0)
+    tag6 = models.BooleanField(default=0)
+    tag7 = models.BooleanField(default=0)
+    tag8 = models.BooleanField(default=0)
+    tag9 = models.BooleanField(default=0)
 
     def __str__(self):
         """Returns a string representation of a Base-Item."""
@@ -78,16 +78,16 @@ class Script(models.Model):
     #Props
     workingtitle = models.CharField(max_length=30)
     abstract = models.CharField(max_length=300)
-    autor = models.CharField(max_length=300)
-    version = models.CharField(max_length=300)
     description = models.TextField(blank=True)
+    autor = models.CharField(max_length=300, blank=True)
+    version = models.CharField(max_length=300, blank=True)
+    copyright = models.CharField(max_length=300, blank=True)
     #Lists
     persons = models.ManyToManyField(Person, blank=True)
-    user = models.ManyToManyField(UserX, blank=True)   #JK TODO user from django
 
     def __str__(self):
-            """Returns a string representation of a Script."""
-            return self.workingtitle
+        """Returns a string representation of a Script."""
+        return self.workingtitle
 
 class Scene(BaseModel):
     #Props
@@ -123,8 +123,8 @@ class SceneItem(models.Model):
     scene = models.ForeignKey(Scene, on_delete=models.CASCADE, null=True, blank=True)
     
     def __str__(self):
-            """Returns a string representation of a DialogItem."""
-            return self.text
+        """Returns a string representation of a DialogItem."""
+        return self.text
 
 class Appointment(BaseModel):
     #Props
@@ -144,10 +144,23 @@ class Appointment(BaseModel):
 
 class Appointment2Scene(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
-    scene = models.ForeignKey(Scene, on_delete=models.CASCADE)
+    scene = models.ForeignKey(Scene, null=True, blank=True, on_delete=models.CASCADE)
     #Props
     time = models.TimeField(null=True, blank=True)
     duration = models.DurationField(null=True, blank=True)
+
+class Project(models.Model):
+    #Props
+    name = models.CharField(max_length=30)
+    abstract = models.CharField(max_length=300)
+    description = models.TextField(blank=True)
+    #Lists
+    script = models.ManyToManyField(Script, blank=True)
+    user = models.ManyToManyField(User, blank=True)
+
+    def __str__(self):
+        """Returns a string representation of a Script."""
+        return self.name
 
 
 

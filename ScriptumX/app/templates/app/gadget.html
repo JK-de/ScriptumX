@@ -5,104 +5,116 @@
 
 <div class="container-fluid" style="height:100%; width:100%; border: 1px solid green;">
 
-    <div id="abc" class="row" style="height:100%; border: 1px solid red;">
-      <div class="col-xs-6 col-md-3" style="height:100%;" >
-        <ul class="nav nav-pills nav-stacked" style="height:100%; overflow-y:scroll">
-        {% for gadget in gadgets %}
-            <li style="background:#FFF;padding:0"{% if gadget.id == active_id %} class="active"{% endif %}><a style="padding:2px" href="/gadget/{{gadget.pk}}">{{gadget.name}}<br/><small>{{gadget.description}}</small></a></li>
-        {% endfor %}
-        </ul>
-      </div>
+	<div id="abc" class="row" style="height:100%; border: 1px solid red;">
+	  <div class="col-xs-6 col-md-3" style="height:100%;" >
+		<ul class="nav nav-pills nav-stacked" style="height:100%; overflow-y:scroll">
+		{% for gadget in gadgets %}
+			<li style="background:#FFF;padding:0"{% if gadget.id == active_id %} class="active"{% endif %}><a style="padding:2px" href="/gadget/{{gadget.pk}}">{{gadget.name}}<br/><small>{{gadget.description}}</small></a></li>
+		{% endfor %}
+		</ul>
+	  </div>
 
-      <div class="col-xs-6 col-md-9" style="overflow-y:scroll; background:#EEE;">
+	  <div class="col-xs-6 col-md-9" style="overflow-y:scroll; background:#EEE;">
 
-          {%if active_gadget %}
+		  {%if active_gadget %}
 
-          <div id="abc2" class="row" style="height:100%; border: 1px solid red;">
 
-             
-           
+          <form method="POST" action="">{% csrf_token %}
+
+              {{ form.as_p }}
+
+              <input type="submit" value="Save"/>
+
+          </form>
+
+          =========================================================================
+
+
+		  <div id="abc2" class="row" style="height:100%; border: 1px solid red;">
+
+			 
+		   
  
-          <form class="form-horizontal" style="height:100%; border: 1px solid green;">
+		  <form class="form-horizontal" style="height:100%; border: 1px solid green;">{% csrf_token %}
 
-             <div class="form-group">
+			 <div class="form-group">
 
-               <div class="col-sm-2 control-label">
-              <button style="padding:4px" type="submit" class="btn btn-primary btn-xs">
-                  <img height="32" width="32" src="{% static 'app/img/Scene.png' %}" /><br /><font size="1">Save</font>
-              </button>
-                   </div>
+			   <div class="col-sm-2 control-label">
+			  <button style="padding:4px" type="submit" class="btn btn-primary btn-xs">
+				  <img height="32" width="32" src="{% static 'app/img/Scene.png' %}" /><br /><font size="1">Save</font>
+			  </button  >
+				   </div>
 
-             
-                <div style="margin-top:-60px;" class="col-sm-offset-2 col-sm-10">
-                    <div style="margin-left:16px;" id="checkboxlist">
-                    {% for tag in tag_list %}
-                      <label  class="checkbox-inline">
-                          <img style="margin-left:-35px; padding-left:4px; padding-right:4px;" src="{% static tag.img %}" /><br />
-                        <input type="checkbox" id="tag{{tag.bit}}" value="tag{{tag.bit}}">
-                      </label>
-                    {% endfor %}
-                    </div>
-                </div>
-              </div>
+			 
+				<div style="margin-top:-60px;" class="col-sm-offset-2 col-sm-10">
+					<div style="margin-left:16px;" id="checkboxlist">
+					{% for tag in tag_list %}
+					  <label  class="checkbox-inline">
+						  <img style="margin-left:-35px; padding-left:4px; padding-right:4px;" src="{% static tag.img %}" /><br />
+						<input type="checkbox" id="tag{{tag.bit}}" value="tag{{tag.bit}}">
+					  </label>
+					{% endfor %}
+					</div>
+				</div>
+			  </div>
 
-              <div class="form-group">
-                <label for="inputName" class="col-sm-2 control-label">Name</label>
-                <div class="col-sm-10">
-                  <input type="text" class="form-control" id="inputName" placeholder="Lorem" value="{{active_gadget.name}}"> 
-                </div>
-              </div>
+			  <div class="form-group">
+				<label for="inputName" class="col-sm-2 control-label">Name</label>
+				<div class="col-sm-10">
+				  <input type="text" class="form-control" id="inputName" placeholder="Lorem" value="{{active_gadget.name}}"> 
+				</div>
+			  </div>
 
-              <div class="form-group">
-                <label for="inputDescription" class="col-sm-2 control-label">Description</label>
-                <div class="col-sm-10">
-                  <textarea style="max-width:98%; min-width:98%;" rows="4" class="form-control" id="inputDescription" placeholder="BlaBla" >{{active_gadget.description}}</textarea>
-                </div>
-              </div>
+			  <div class="form-group">
+				<label for="inputDescription" class="col-sm-2 control-label">Description</label>
+				<div class="col-sm-10">
+				  <textarea style="max-width:98%; min-width:98%;" rows="4" class="form-control" id="inputDescription" placeholder="BlaBla" >{{active_gadget.description}}</textarea>
+				</div>
+			  </div>
 
-              <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <div class="checkbox">
-                    <label>
-                      <input type="checkbox"> Remember me
-                    </label>
-                  </div>
-                </div>
-              </div>
+			  <div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+				  <div class="checkbox">
+					<label>
+					  <input type="checkbox"> Remember me
+					</label>
+				  </div>
+				</div>
+			  </div>
 
-              <div class="form-group">
-                  
-              
-              </div>
+			  <div class="form-group">
+				  
+			  
+			  </div>
 
-              <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-              <select multiple class="form-control">
-                    {% for tag in tag_list %}
-                    <option>{{ tag.name }}</option>
-                    {% endfor %}
-                </select>
-                </div>
-              </div>
+			  <div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+			  <select multiple class="form-control">
+					{% for tag in tag_list %}
+					<option>{{ tag.name }}</option>
+					{% endfor %}
+				</select>
+				</div>
+			  </div>
 
-              <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <button type="submit" class="btn btn-default">Save</button>
-                </div>
-              </div>
+			  <div class="form-group">
+				<div class="col-sm-offset-2 col-sm-10">
+				  <button type="submit" class="btn btn-default">Save</button>
+				</div>
+			  </div>
 
-            </form>
+			</form>
 
-          {% endif %}
+		  {% endif %}
 
-          {{active_gadget.name}}<br/>{{active_gadget.description}}<br/><br/><br/>
-        Lorem
+		  {{active_gadget.name}}<br/>{{active_gadget.description}}<br/><br/><br/>
+		Lorem
 Okay so most of us do not know how to generate random strings which include letters and digits. This can be really useful for generating a password or something else just use your evil mind. Okay so how do we generate a random string. Have you ever heard of the string module available in python ? The chances are that you have not heard about it. So what does this module provide us ? Okay here you go lets understand this module by example:
 
-      </div>
-      </div>
+	  </div>
+	  </div>
 
-    </div>
+	</div>
 
 </div>
 
@@ -113,79 +125,79 @@ Okay so most of us do not know how to generate random strings which include lett
 {% block toolbar %}
 {% load staticfiles %}
 
-        <div class="nav container-fixed-top" style="color:#840; background-color:#FFF">
+		<div class="nav container-fixed-top" style="color:#840; background-color:#FFF">
 
-            <div class="nav navbar-header">
-                <a style="margin:4px; padding:0;" class="navbar-text" href="/gadget">
-                    <img src="{% static 'app/img/Tab/Gadget-64.png' %}" />
-                </a>
-            </div>
+			<div class="nav navbar-header">
+				<a style="margin:4px; padding:0;" class="navbar-text" href="/gadget">
+					<img src="{% static 'app/img/Tab/Gadget-64.png' %}" />
+				</a>
+			</div>
 
-            <div class="btn-group-vertical" role="group" style="margin-left:12px">
-                <a href="/gadget/tag/all" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'app/img/Tab/Common/SelectAll.png' %}" /></a>
-                <a href="/gadget/tag/none" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'app/img/Tab/Common/SelectNone.png' %}" /></a>
-            </div>
+			<div class="btn-group-vertical" role="group" style="margin-left:12px">
+				<a href="/gadget/tag/all" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'app/img/Tab/Common/SelectAll.png' %}" /></a>
+				<a href="/gadget/tag/none" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'app/img/Tab/Common/SelectNone.png' %}" /></a>
+			</div>
 
-            <div class="btn-group btn-group-xs" role="group" style="margin-left:4px">
+			<div class="btn-group btn-group-xs" role="group" style="margin-left:4px">
 
-                {% for tag in tag_list %}
-                <a href="/gadget/tag/{{tag.bit}}" style="padding:4px" role="button" class="btn btn-default navbar-btn"><img src="{% static tag.img %}" /><br /><font size="1">{{tag.name}}</font></a>
-                    <!--{%if tag.active == tab_active %} class="btn btn-warning navbar-btn" {% else %} class="btn btn-default navbar-btn" {% endif %}-->
-                {% endfor %}
+				{% for tag in tag_list %}
+				<a href="/gadget/tag/{{tag.bit}}" style="padding:4px" role="button" class="btn btn-default navbar-btn"><img src="{% static tag.img %}" /><br /><font size="1">{{tag.name}}</font></a>
+					<!--{%if tag.active == tab_active %} class="btn btn-warning navbar-btn" {% else %} class="btn btn-default navbar-btn" {% endif %}-->
+				{% endfor %}
 
-            </div>
+			</div>
 
 
-            <!--<div class="btn-group btn-group-xs" role="group"/>-->
+			<!--<div class="btn-group btn-group-xs" role="group"/>-->
 
-            <div class="nav navbar-nav navbar-right">
+			<div class="nav navbar-nav navbar-right">
 
-                <a href="#" style="padding:4px;margin-left:15px" role="button" class="btn btn-primary btn-xs"><img height="32" width="32" src="{% static 'app/img/Scene.png' %}" /><br /><font size="1">List</font></a>
+				<a href="#" style="padding:4px;margin-left:15px" role="button" class="btn btn-primary btn-xs"><img height="32" width="32" src="{% static 'app/img/Scene.png' %}" /><br /><font size="1">List</font></a>
 
-                <div class="btn-group" role="group">
-                    <button style="padding:4px;margin-left:15px" type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
-                        <img height="32" width="32" src="{% static 'app/img/List.png' %}" /><br />
-                        <font size="1">List</font>
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">List 1</a></li>
-                        <li><a href="#">List 2</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                    </ul>
-                </div>
+				<div class="btn-group" role="group">
+					<button style="padding:4px;margin-left:15px" type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+						<img height="32" width="32" src="{% static 'app/img/List.png' %}" /><br />
+						<font size="1">List</font>
+						<span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="#">List 1</a></li>
+						<li><a href="#">List 2</a></li>
+						<li role="separator" class="divider"></li>
+						<li><a href="#">Separated link</a></li>
+					</ul>
+				</div>
 
-                <a href="#" style="padding:4px;margin-left:15px" role="button" class="btn btn-secondary btn-xs"><img height="32" width="32" src="{% static 'app/img/diagnostic.png' %}" /><br /><font size="1">List</font></a>
+				<a href="#" style="padding:4px;margin-left:15px" role="button" class="btn btn-secondary btn-xs"><img height="32" width="32" src="{% static 'app/img/diagnostic.png' %}" /><br /><font size="1">List</font></a>
 
-                <div style="margin-left:15px" class="btn-group-vertical">
-                    <a href="#" style="padding:4px" role="button" class="btn btn-default btn-xs"><img height="32" width="32" src="{% static 'app/img/Paste.png' %}" /></a>
-                    <button style="padding:0px" type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <span class="caret"></span>
-                        <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#">Separated link</a></li>
-                    </ul>
-                </div>
-               
-                Lorem
+				<div style="margin-left:15px" class="btn-group-vertical">
+					<a href="#" style="padding:4px" role="button" class="btn btn-default btn-xs"><img height="32" width="32" src="{% static 'app/img/Paste.png' %}" /></a>
+					<button style="padding:0px" type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span class="caret"></span>
+						<span class="sr-only">Toggle Dropdown</span>
+					</button>
+					<ul class="dropdown-menu">
+						<li><a href="#">Action</a></li>
+						<li><a href="#">Another action</a></li>
+						<li><a href="#">Something else here</a></li>
+						<li role="separator" class="divider"></li>
+						<li><a href="#">Separated link</a></li>
+					</ul>
+				</div>
+			   
+				Lorem
 
-                <!--<button type="button" class="btn navbar-btn btn-default"><span class="glyphicon glyphicon-star" aria-hidden="true"></span><br />Test</button>-->
+				<!--<button type="button" class="btn navbar-btn btn-default"><span class="glyphicon glyphicon-star" aria-hidden="true"></span><br />Test</button>-->
 
-                <!--Search-->
-                <!--<form class="navbar-form navbar-left" role="search">
-            <div class="form-group">
-                <input type="text" class="form-control" placeholder="Search">
-            </div>
-            <button type="submit" class="btn btn-default">Submit</button>
-        </form>-->
+				<!--Search-->
+				<!--<form class="navbar-form navbar-left" role="search">
+			<div class="form-group">
+				<input type="text" class="form-control" placeholder="Search">
+			</div>
+			<button type="submit" class="btn btn-default">Submit</button>
+		</form>-->
 
-            </div>
+			</div>
 
-        </div>
+		</div>
 {% endblock %}

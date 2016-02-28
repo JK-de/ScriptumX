@@ -60,7 +60,7 @@ class GadgetAdmin(admin.ModelAdmin):
     """Definition of the Gadget editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag_map', 'marker_map']}),
+        ('_Base', {'fields': ['description', 'tag0', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9', 'marker_map']}),
         ('_Prop', {'fields': ['progress']}),
     ]
     #inlines = [ChoiceInline]
