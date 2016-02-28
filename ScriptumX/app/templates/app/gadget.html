@@ -1,7 +1,9 @@
 ﻿{% extends "app/layout_app.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
 
 {% block content %}
-{% load staticfiles %}
+
 
 <div class="container-fluid" style="height:100%; width:100%; border: 1px solid green;">
 
@@ -18,14 +20,20 @@
 
 		  {%if active_gadget %}
 
+          <div class="row" style="height:100%; border: 1px solid red;">
+          {% crispy form form.helper %}
+          </div>
 
-          <form method="POST" action="">{% csrf_token %}
 
-              {{ form.as_p }}
+          ========================================================
 
-              <input type="submit" value="Save"/>
+          <!--<form class="form-horizontal" method="POST" action="" border: 1px solid #159;>{% csrf_token %}
 
-          </form>
+              {{ form|crispy }}
+
+              <input class="btn btn-warning" type="submit" value="Save"/>
+
+          </form>-->
 
           =========================================================================
 
