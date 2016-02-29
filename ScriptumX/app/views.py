@@ -214,6 +214,7 @@ def gadget(request, gadget_id):
 
         if form.is_valid():
             instance = form.save()
+            gadgets = get_list_or_404(Gadget)
     else:
         form = GadgetForm(instance=active_gadget)
 

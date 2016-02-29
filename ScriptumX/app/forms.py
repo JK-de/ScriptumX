@@ -37,6 +37,7 @@ class GadgetForm(forms.ModelForm):
             'tag7',
             'tag8',
             'tag9',
+            'tag10',
             'name',
             'description',
             'marker_map',
@@ -46,7 +47,7 @@ class GadgetForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(GadgetForm, self).__init__(*args, **kwargs)
 
-        img_begin = '<img src="{% static "'
+        img_begin = '{% load staticfiles %}<img src="{% static "'
         img_end = '" %}" />'
 
         self.helper = FormHelper()
@@ -57,23 +58,22 @@ class GadgetForm(forms.ModelForm):
         self.helper.field_class = 'col-sm-10'
         self.helper.layout = Layout(
 
-            HTML("{% load staticfiles %}"),
             ButtonHolder(
                 Submit('submit', 'Save', css_class='btn btn-default')
             ),
             Div(
-                #Div(HTML(img_begin + 'app/img/G/tag/Requisite.png' + img_end), Field('tag3', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(HTML('<img src="/static/app/img/G/tag/Requisite.png" />'), Field('tag0', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(HTML('<img src="/static/app/img/G/tag/Costume.png" />'),   Field('tag1', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(HTML('<img src="/static/app/img/G/tag/MakeUp.png" />'),    Field('tag2', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(HTML('<img src="/static/app/img/G/tag/Camera.png" />'),    Field('tag3', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(HTML('<img src="/static/app/img/G/tag/Gaffer.png" />'),    Field('tag4', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(HTML('<img src="/static/app/img/G/tag/Grip.png" />'),      Field('tag5', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(HTML('<img src="/static/app/img/G/tag/Audio.png" />'),     Field('tag6', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(HTML('<img src="/static/app/img/G/tag/Special.png" />'),   Field('tag7', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(HTML('<img src="/static/app/img/G/tag/Tool.png" />'),      Field('tag8', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(HTML('<img src="/static/app/img/G/tag/Phyro.png" />'),     Field('tag9', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                css_class='col-sm-offset-2',             
+                Div(HTML(img_begin + 'app/img/G/tag/Requisite.png' + img_end), Field('tag0', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(HTML(img_begin + 'app/img/G/tag/Costume.png' + img_end),   Field('tag1', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(HTML(img_begin + 'app/img/G/tag/MakeUp.png' + img_end),    Field('tag2', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(HTML(img_begin + 'app/img/G/tag/Camera.png' + img_end),    Field('tag3', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(HTML(img_begin + 'app/img/G/tag/Gaffer.png' + img_end),    Field('tag4', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(HTML(img_begin + 'app/img/G/tag/Grip.png' + img_end),      Field('tag5', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(HTML(img_begin + 'app/img/G/tag/Audio.png' + img_end),     Field('tag6', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(HTML(img_begin + 'app/img/G/tag/Special.png' + img_end),   Field('tag7', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(HTML(img_begin + 'app/img/G/tag/Tool.png' + img_end),      Field('tag8', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(HTML(img_begin + 'app/img/G/tag/Phyro.png' + img_end),     Field('tag9', css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(HTML(img_begin + 'app/img/G/tag/Catering.png' + img_end),  Field('tag10',css_class='', ), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                css_class='col-sm-offset-2', style="margin-top:-30px;", 
             ),
             #Fieldset(
                 #'first arg is the legend of the fieldset',
