@@ -15,16 +15,16 @@ class BaseModel(models.Model):
     #tag_map = models.PositiveIntegerField(default=0x7FFFFFFF)
     marker_map = models.PositiveIntegerField(default=0)
 
-    tag0 = models.BooleanField(default=0)
-    tag1 = models.BooleanField(default=0)
-    tag2 = models.BooleanField(default=0)
-    tag3 = models.BooleanField(default=0)
-    tag4 = models.BooleanField(default=0)
-    tag5 = models.BooleanField(default=0)
-    tag6 = models.BooleanField(default=0)
-    tag7 = models.BooleanField(default=0)
-    tag8 = models.BooleanField(default=0)
-    tag9 = models.BooleanField(default=0)
+    tag0 = models.BooleanField(default=0, verbose_name='')
+    tag1 = models.BooleanField(default=0, verbose_name='')
+    tag2 = models.BooleanField(default=0, verbose_name='')
+    tag3 = models.BooleanField(default=0, verbose_name='')
+    tag4 = models.BooleanField(default=0, verbose_name='')
+    tag5 = models.BooleanField(default=0, verbose_name='')
+    tag6 = models.BooleanField(default=0, verbose_name='')
+    tag7 = models.BooleanField(default=0, verbose_name='')
+    tag8 = models.BooleanField(default=0, verbose_name='')
+    tag9 = models.BooleanField(default=0, verbose_name='')
 
     def __str__(self):
         """Returns a string representation of a Base-Item."""
