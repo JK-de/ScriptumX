@@ -21,6 +21,26 @@ from django.db.models import Q
 import json
 from app.views import Q
 
+g_tag_queries = [ 
+    Q(tag0=True), 
+    Q(tag1=True), 
+    Q(tag2=True), 
+    Q(tag3=True), 
+    Q(tag4=True), 
+    Q(tag5=True), 
+    Q(tag6=True), 
+    Q(tag7=True), 
+    Q(tag8=True), 
+    Q(tag9=True), 
+    Q(tag10=True), 
+    Q(tag11=True), 
+    ]
+
+g_tag_query_none = Q(tag0=False) & Q(tag1=False) & Q(tag2=False) & Q(tag3=False) & Q(tag4=False) & Q(tag5=False) & Q(tag6=False) & Q(tag7=False) & Q(tag8=False) & Q(tag9=False) & Q(tag10=False) & Q(tag11=False)
+
+
+
+
 def home(request):
     """Handles home page"""
     
@@ -167,21 +187,21 @@ def seed(request):
 #        return None
 
 tab_list = (
-    { 'active':'P', 'name':'Project',  'href':'/project',  'img':'app/img/Tab/Project-16.png' },
-    { 'active':'C', 'name':'Script',   'href':'/script',   'img':'app/img/Tab/Script-16.png' },
-    { 'active':'S', 'name':'Scene',    'href':'/scene',    'img':'app/img/Tab/Scene-16.png' },
-    { 'active':'L', 'name':'Set',      'href':'/set',      'img':'app/img/Tab/Set-16.png' },
-    { 'active':'R', 'name':'Role',     'href':'/role',     'img':'app/img/Tab/Role-16.png' },
-    { 'active':'F', 'name':'Folk',     'href':'/folk',     'img':'app/img/Tab/Folk-16.png' },
-    { 'active':'G', 'name':'Gadget',   'href':'/gadget',   'img':'app/img/Tab/Gadget-16.png' },
-    { 'active':'X', 'name':'SFX',      'href':'/sfx',      'img':'app/img/Tab/SFX-16.png' },
-    { 'active':'A', 'name':'Audio',    'href':'/audio',    'img':'app/img/Tab/Audio-16.png' },
-    { 'active':'T', 'name':'Schedule', 'href':'/schedule', 'img':'app/img/Tab/Schedule-16.png' },
+    { 'id':'P', 'name':'Project',  'href':'/project',  'img':'app/img/Tab/Project-16.png' },
+    { 'id':'C', 'name':'Script',   'href':'/script',   'img':'app/img/Tab/Script-16.png' },
+    { 'id':'S', 'name':'Scene',    'href':'/scene',    'img':'app/img/Tab/Scene-16.png' },
+    { 'id':'L', 'name':'Set',      'href':'/set',      'img':'app/img/Tab/Set-16.png' },
+    { 'id':'R', 'name':'Role',     'href':'/role',     'img':'app/img/Tab/Role-16.png' },
+    { 'id':'F', 'name':'Folk',     'href':'/folk',     'img':'app/img/Tab/Folk-16.png' },
+    { 'id':'G', 'name':'Gadget',   'href':'/gadget',   'img':'app/img/Tab/Gadget-16.png' },
+    { 'id':'X', 'name':'SFX',      'href':'/sfx',      'img':'app/img/Tab/SFX-16.png' },
+    { 'id':'A', 'name':'Audio',    'href':'/audio',    'img':'app/img/Tab/Audio-16.png' },
+    { 'id':'T', 'name':'Schedule', 'href':'/schedule', 'img':'app/img/Tab/Schedule-16.png' },
     )
 
 
 def gadget(request, gadget_id):
-    """Handles ..."""
+    """Handles page requests for Gadgets"""
     
     tag_list = getTagRequestList(request, 'gadget')
 
@@ -194,63 +214,41 @@ def gadget(request, gadget_id):
         active_gadget = None
         active_id = None
 
-    #if request.method == 'POST':
-    #    print request.POST
 
     if request.method == 'POST':
         form = GadgetForm(request.POST or None, instance=active_gadget)
 
         if form.is_valid():
-            instance = form.save()
+            form.save()
             #gadgets = get_list_or_404(Gadget)
     else:
         form = GadgetForm(instance=active_gadget)
     
     query = Q()
-    #items = [ tag0, tag1, tag2, tag3, tag4, tag5, tag6, tag7, tag8, tag9, tag10, tag11, ]
-    #for tag in tag_list:
-    #    if tag['active']:
-    #        query |= Q(items[tag['bit']]=True)
-    ##QQ = Q(tag0=True) | Q(tag1=True) | Q(tag2=True)
+    for tag in tag_list:
+        if tag['active']:
+            if len(query)==0:
+                query = g_tag_queries[tag['bit']]
+            else:
+                query |= g_tag_queries[tag['bit']]
 
-    if tag_list[0]['active']:
-        query |= Q(tag0=True)
-    if tag_list[1]['active']:
-        query |= Q(tag1=True)
-    if tag_list[2]['active']:
-        query |= Q(tag2=True)
-    if tag_list[3]['active']:
-        query |= Q(tag3=True)
-    if tag_list[4]['active']:
-        query |= Q(tag4=True)
-    if tag_list[5]['active']:
-        query |= Q(tag5=True)
-    if tag_list[6]['active']:
-        query |= Q(tag6=True)
-    if tag_list[7]['active']:
-        query |= Q(tag7=True)
-    if tag_list[8]['active']:
-        query |= Q(tag8=True)
-    if tag_list[9]['active']:
-        query |= Q(tag9=True)
-    if tag_list[10]['active']:
-        query |= Q(tag10=True)
-    #if tag_list.get(11,False)['active']:
-    #    query |= Q(tag11=True)
-    if len(query)==0:
-        query = Q(tag0=False) & Q(tag1=False) & Q(tag2=False) & Q(tag3=False) & Q(tag4=False) & Q(tag5=False) & Q(tag6=False) & Q(tag7=False) & Q(tag8=False) & Q(tag9=False) & Q(tag10=False) & Q(tag11=False)
+    if len(query)==len(tag_list):
+        query = Q()
+    elif len(query)==0:
+        query = g_tag_query_none
+    
     gadgets = Gadget.objects.filter( query )
 
     return render(request, 'app/gadget.html', {
         'title': 'Gadget',
-        'form': form,
-        'tab_active': 'G',
         'tab_list': tab_list,
+        'tab_active_id': 'G',
         'tag_list': tag_list,
-        'datetime': datetime.now(),
         'gadgets': gadgets,
         'active_gadget': active_gadget,
         'active_id': active_id,
+        'form': form,
+        'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
     })
 
@@ -261,14 +259,17 @@ def gadgetTag(request, tag_id):
 
     return gadget(request, None)
 
+
+
+
+
 def dummy(request, id):
     """Handles ..."""
     
     return render(request, 'app/gadget.html', {
         'title': 'DUMMY',
-        'tab_active': 'P',
-        'tab_list': tab_list1,
-        'tab_list2': tab_list2,
+        'tab_list': tab_list,
+        'tab_active_id': 'P',
         'datetime': datetime.now(),
     })
 
