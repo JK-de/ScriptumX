@@ -138,7 +138,7 @@ class Appointment(BaseModel):
     scenes = models.ManyToManyField(Scene,
         through='Appointment2Scene',
         #through_fields=('appointment', 'scene'),
-        null=True, blank=True,
+        blank=True,
         )
     #scenes = models.ManyToManyField(Scene)
     persons = models.ManyToManyField(Person, blank=True)
