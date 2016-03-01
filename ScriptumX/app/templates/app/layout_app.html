@@ -52,11 +52,7 @@
             <div style="padding:0px" class="navbar-collapse collapse">
                 <ul class="nav nav-tabs" role="tablist" style="padding-bottom:0px; margin:0; color:#CCC; background-color:#888;">
 
-                    {% for active, name, href, image in tab_list %}
-                    <li {%if active == tab_active %} class="active"{% endif %}><a style="color:#CCC" href="{{href}}"><img src="{% static image %}">x {{name}}</a></li>
-                    {% endfor %}
-
-                    {% for tab in tab_list2 %}
+                    {% for tab in tab_list %}
                     <li {%if tab.active == tab_active %} class="active"{% endif %}><a style="color:#CCC" href="{{tab.href}}"><img src="{% static tab.img %}"> {{tab.name}}</a></li>
                     {% endfor %}
 

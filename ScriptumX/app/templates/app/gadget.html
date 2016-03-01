@@ -147,8 +147,18 @@ Okay so most of us do not know how to generate random strings which include lett
 			<div class="btn-group btn-group-xs" role="group" style="margin-left:4px">
 
 				{% for tag in tag_list %}
-				<a href="/gadget/tag/{{tag.bit}}" style="padding:4px" role="button" class="btn btn-default navbar-btn"><img src="{% static tag.img %}" /><br /><font size="1">{{tag.name}}</font></a>
-					<!--{%if tag.active == tab_active %} class="btn btn-warning navbar-btn" {% else %} class="btn btn-default navbar-btn" {% endif %}-->
+				<a href="/gadget/tag/{{tag.bit}}" 
+                   style="padding:4px" role="button" 
+                   
+                   {% if tag.active %}
+                        class="btn btn-warning navbar-btn"
+                   {% else %}
+                        class="btn btn-default navbar-btn"
+                   {% endif %}
+                   >
+                <img src="{% static tag.img %}" />
+                <br />
+                <font size="1">{{tag.name}}</font></a>
 				{% endfor %}
 
 			</div>

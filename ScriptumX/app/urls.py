@@ -28,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^(?P<poll_id>\d+)/vote/$', app.views.vote, name='vote'),
 
     url(r'^gadget/(?P<gadget_id>\d+)?$', app.views.gadget, name='gadget'),
+    url(r'^gadget/tag/(?P<tag_id>\w+)?$', app.views.gadgetTag, name='gadgetTag'),
 
     url(r'^project/(?P<id>\d+)?$', app.views.dummy, name='dummy'),
     url(r'^script/(?P<id>\d+)?$', app.views.dummy, name='dummy'),
