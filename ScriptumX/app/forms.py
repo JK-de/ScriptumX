@@ -57,7 +57,7 @@ class GadgetForm(forms.ModelForm):
         self.helper.layout = Layout(
 
             ButtonHolder(
-                Submit('submit', 'Save', css_class='btn btn-default')
+                Submit('submit', '<i class="fa fa-floppy-o fa-2x"/> Save', css_class='btn btn-default')
             ),
             Div(
                 Div(FormSymbol(gadget_tag_list[0]['img']),  Field('tag0'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
