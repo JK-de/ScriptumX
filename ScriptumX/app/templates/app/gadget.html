@@ -8,24 +8,46 @@
 <div class="container-fluid" style="height:100%; width:100%; border: 1px solid green;">
 
 	<div id="abc" class="row" style="height:100%; border: 1px solid red;">
-	  <div class="col-xs-6 col-md-3" style="height:100%;" >
-		<ul class="nav nav-pills nav-stacked" style="height:100%; overflow-y:scroll">
+	  <div class="col-xs-6 col-md-4" style="height:100%;" >
+		<div class="list-group" style="height:100%; overflow-y:scroll">
 
-		{% for gadget in gadgets %}
-			<li style="background:#FFF;padding:0"
-                {% if gadget.id == active_id %} class="active"{% endif %}>
-                <a style="padding:2px" href="/gadget/{{gadget.pk}}">
-                    <strong>{{gadget.name}}</strong>
+    		{% for gadget in gadgets %}
+			
+                <a style="padding:8px" href="/gadget/{{gadget.pk}}"
+                   {% if gadget.id == active_id %} class="list-group-item active"{% else %} class="list-group-item"{% endif %}
+                   >
+                    <div class="pull-right" style="margin-right:14px;">
+                    {#<img height="32" width="32" src="{% static 'app/img/Scene.png' %}" />#}
+                    {% for tag in tag_list %}
+					  {% if tag.bit == 0 and gadget.tag0 %}
+						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
+					  {% endif %}
+					  {% if tag.bit == 1 and gadget.tag1 %}
+						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
+					  {% endif %}
+					  {% if tag.bit == 2 and gadget.tag2 %}
+						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
+					  {% endif %}
+					  {% if tag.bit == 3 and gadget.tag3 %}
+						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
+					  {% endif %}
+					  {% if tag.bit == 4 and gadget.tag4 %}
+						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
+					  {% endif %}
+					{% endfor %}
+                       </div>
+
+                    <strong style="margin-right:14px;">{{gadget.name}}</strong>
                     <br/>
                     <small>{{gadget.description}}</small>
                 </a>
-            </li>
-		{% endfor %}
 
-		</ul>
+	    	{% endfor %}
+
+		</div>
 	  </div>
 
-	  <div class="col-xs-6 col-md-9" style="overflow-y:scroll; background:#EEE;">
+	  <div class="col-xs-6 col-md-8" style="overflow-y:scroll; background:#EEE;">
 
 		  {%if active_gadget %}
 
@@ -180,7 +202,7 @@ Okay so most of us do not know how to generate random strings which include lett
 				<a href="#" style="padding:4px;margin-left:15px" role="button" class="btn btn-primary navbar-btn"><img height="32" width="32" src="{% static 'app/img/Scene.png' %}" /><br /><font size="1">List</font></a>
 
 				<div class="btn-group" role="group">
-					<button style="padding:4px;margin-left:15px" type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
+					<button style="padding:4px;margin-left:15px" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
 						<img height="32" width="32" src="{% static 'app/img/List.png' %}" /><br />
 						<font size="1">List</font>
 						<span class="caret"></span>
@@ -193,12 +215,12 @@ Okay so most of us do not know how to generate random strings which include lett
 					</ul>
 				</div>
 
-				<a href="#" style="padding:4px;margin-left:15px" role="button" class="btn btn-secondary btn-xs"><img height="32" width="32" src="{% static 'app/img/diagnostic.png' %}" /><br /><font size="1">List</font></a>
+				<a href="#" style="padding:4px;margin-left:15px" role="button" class="btn btn-warning navbar-btn"><img height="32" width="32" src="{% static 'app/img/diagnostic.png' %}" /><br /><font size="1">List</font></a>
 
 				<div style="margin-left:15px" class="btn-group-vertical">
 					<a href="#" style="padding:4px" role="button" class="btn btn-default btn-xs"><img height="32" width="32" src="{% static 'app/img/Paste.png' %}" /></a>
-					<button style="padding:0px" type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<span class="caret"></span>
+					<button style="padding:0px;" type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span style="color:white; " class="caret"></span>
 						<span class="sr-only">Toggle Dropdown</span>
 					</button>
 					<ul class="dropdown-menu">

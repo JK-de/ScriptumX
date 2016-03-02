@@ -32,6 +32,33 @@ class BaseModel(models.Model):
         """Returns a string representation of a Base-Item."""
         return self.name
 
+    def getTag(idx):
+        if idx == 0:
+            return tag0
+        if idx == 1:
+            return tag1
+        if idx == 2:
+            return tag2
+        if idx == 3:
+            return tag3
+        if idx == 4:
+            return tag4
+        if idx == 5:
+            return tag5
+        if idx == 6:
+            return tag6
+        if idx == 7:
+            return tag7
+        if idx == 8:
+            return tag8
+        if idx == 9:
+            return tag9
+        if idx == 10:
+            return tag10
+        if idx == 11:
+            return tag11
+        return None
+
 class Note(models.Model):
     #Props
     text = models.CharField(max_length=1000)
