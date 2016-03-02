@@ -17,9 +17,63 @@ from app.forms import GadgetForm
 from crispy_forms.utils import render_crispy_form
 from .tags import gadget_tag_list, handleTagRequest, getTagRequestList
 from django.db.models import Q
+#from app.generator import get_sentences, get_paragraph
+import random
 
 import json
 from app.views import Q
+
+#http://agiliq.com/blog/2009/06/generating-pseudo-random-text-with-markov-chains-u/
+
+class Markov(object):
+	
+	def __init__(self, open_file):
+		self.cache = {}
+		self.open_file = open_file
+		self.words = self.file_to_words()
+		self.word_size = len(self.words)
+		self.database()
+		
+	
+	def file_to_words(self):
+		self.open_file.seek(0)
+		data = self.open_file.read()
+		words = data.split()
+		return words
+		
+	
+	def triples(self):
+		""" Generates triples from the given data string. So if our string were
+				"What a lovely day", we'd generate (What, a, lovely) and then
+				(a, lovely, day).
+		"""
+		
+		if len(self.words) < 3:
+			return
+		
+		for i in range(len(self.words) - 2):
+			yield (self.words[i], self.words[i+1], self.words[i+2])
+			
+	def database(self):
+		for w1, w2, w3 in self.triples():
+			key = (w1, w2)
+			if key in self.cache:
+				self.cache[key].append(w3)
+			else:
+				self.cache[key] = [w3]
+				
+	def generate_markov_text(self, size=25):
+		seed = random.randint(0, self.word_size-3)
+		seed_word, next_word = self.words[seed], self.words[seed+1]
+		w1, w2 = seed_word, next_word
+		gen_words = []
+		for i in range(size):
+			gen_words.append(w1)
+			w1, w2 = w2, random.choice(self.cache[(w1, w2)])
+		gen_words.append(w2)
+		return ' '.join(gen_words)
+			
+			
 
 g_tag_queries = [ 
     Q(tag0=True), 
@@ -151,11 +205,19 @@ def seed(request):
             choice.votes = 0
             choice.save()
 
+    #file_ = open('app\loremipsum\default\sample.txt')
+    file_ = open('jeeves.txt')
+
+    markov = Markov(file_)
+
+    text = markov.generate_markov_text(random.randint(2, 5))
+
+
     # generate Gadgets
     for i in range(0, 10):
         gadget = Gadget()
-        gadget.name = "Gadget-" + str(i)
-        gadget.description = random_text()
+        gadget.name = markov.generate_markov_text(random.randint(2, 5))
+        gadget.description = markov.generate_markov_text(random.randint(5, 30))
         gadget.progress = i
         gadget.save()
 
@@ -163,16 +225,17 @@ def seed(request):
     # generate SceneItem with linked Scenes
     for s in range(0, 5):
         scene = Scene()
-        scene.name = "Scene-" + str(s)
-        gadget.description = random_text()
-        gadget.progress = i
+        scene.name = markov.generate_markov_text(random.randint(5, 7))
+        scene.description = markov.generate_markov_text(random.randint(10, 20))
+        scene.progress = i
         scene.save()
 
         for s in range(0, 5):
             item = SceneItem()
-            item.text = random_text(300)
+            item.text = markov.generate_markov_text(random.randint(5, 20))
             item.scene = scene
             item.save()
+
 
     
 

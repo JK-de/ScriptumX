@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+migrations/
 env/
 build/
 develop-eggs/
@@ -67,5 +68,10 @@ target/
 #Ipython Notebook
 .ipynb_checkpoints
 
-#Ipython Notebook
+#DB
 db.sqlite3
+
+ScriptumX/.vs/
+ScriptumX/app/migrations/
+Test/
+ScriptumX/db.sqlite3
