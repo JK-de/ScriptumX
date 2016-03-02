@@ -10,9 +10,18 @@
 	<div id="abc" class="row" style="height:100%; border: 1px solid red;">
 	  <div class="col-xs-6 col-md-3" style="height:100%;" >
 		<ul class="nav nav-pills nav-stacked" style="height:100%; overflow-y:scroll">
+
 		{% for gadget in gadgets %}
-			<li style="background:#FFF;padding:0"{% if gadget.id == active_id %} class="active"{% endif %}><a style="padding:2px" href="/gadget/{{gadget.pk}}">{{gadget.name}}<br/><small>{{gadget.description}}</small></a></li>
+			<li style="background:#FFF;padding:0"
+                {% if gadget.id == active_id %} class="active"{% endif %}>
+                <a style="padding:2px" href="/gadget/{{gadget.pk}}">
+                    <strong>{{gadget.name}}</strong>
+                    <br/>
+                    <small>{{gadget.description}}</small>
+                </a>
+            </li>
 		{% endfor %}
+
 		</ul>
 	  </div>
 
@@ -168,7 +177,7 @@ Okay so most of us do not know how to generate random strings which include lett
 
 			<div class="nav navbar-nav navbar-right">
 
-				<a href="#" style="padding:4px;margin-left:15px" role="button" class="btn btn-primary btn-xs"><img height="32" width="32" src="{% static 'app/img/Scene.png' %}" /><br /><font size="1">List</font></a>
+				<a href="#" style="padding:4px;margin-left:15px" role="button" class="btn btn-primary navbar-btn"><img height="32" width="32" src="{% static 'app/img/Scene.png' %}" /><br /><font size="1">List</font></a>
 
 				<div class="btn-group" role="group">
 					<button style="padding:4px;margin-left:15px" type="button" class="btn btn-primary btn-xs dropdown-toggle" data-toggle="dropdown">
