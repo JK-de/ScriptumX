@@ -25,6 +25,8 @@ from app.views import Q
 
 #http://agiliq.com/blog/2009/06/generating-pseudo-random-text-with-markov-chains-u/
 
+###############################################################################
+
 class Markov(object):
 	
 	def __init__(self, open_file):
@@ -73,7 +75,7 @@ class Markov(object):
 		gen_words.append(w2)
 		return ' '.join(gen_words)
 			
-			
+###############################################################################
 
 g_tag_queries = [ 
     Q(tag0=True), 
@@ -92,6 +94,9 @@ g_tag_queries = [
 
 g_tag_query_none = Q(tag0=False) & Q(tag1=False) & Q(tag2=False) & Q(tag3=False) & Q(tag4=False) & Q(tag5=False) & Q(tag6=False) & Q(tag7=False) & Q(tag8=False) & Q(tag9=False) & Q(tag10=False) & Q(tag11=False)
 
+###############################################################################
+###############################################################################
+###############################################################################
 
 
 
@@ -103,36 +108,7 @@ def home(request):
         'datetime': datetime.now(),
     })
 
-
-class PollListView(ListView):
-    """Renders the home page, with a list of all polls."""
-    model = Poll
-
-    def get_context_data(self, **kwargs):
-        context = super(PollListView, self).get_context_data(**kwargs)
-        context['title'] = 'Polls'
-        context['year'] = datetime.now().year
-        return context
-
-class PollDetailView(DetailView):
-    """Renders the poll details page."""
-    model = Poll
-
-    def get_context_data(self, **kwargs):
-        context = super(PollDetailView, self).get_context_data(**kwargs)
-        context['title'] = 'Poll'
-        context['year'] = datetime.now().year
-        return context
-
-class PollResultsView(DetailView):
-    """Renders the results page."""
-    model = Poll
-
-    def get_context_data(self, **kwargs):
-        context = super(PollResultsView, self).get_context_data(**kwargs)
-        context['title'] = 'Results'
-        context['year'] = datetime.now().year
-        return context
+###############################################################################
 
 def contact(request):
     """Renders the contact page."""
@@ -162,48 +138,27 @@ def about(request):
         })
     )
 
-def vote(request, poll_id):
-    """Handles voting. Validates input and updates the repository."""
-    poll = get_object_or_404(Poll, pk=poll_id)
-    try:
-        selected_choice = poll.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
-        return render(request, 'app/details.html', {
-            'title': 'Poll',
-            'year': datetime.now().year,
-            'poll': poll,
-            'error_message': "Please make a selection.",
-    })
-    else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        return HttpResponseRedirect(reverse('app:results', args=(poll.id,)))
-
-import random
-import string
-def random_text(letters=32):
-    return ''.join([random.choice(string.ascii_letters + string.digits + "     ") for n in range(letters)])
-
+###############################################################################
 
 @login_required
 def seed(request):
-    """Seeds the database with sample polls."""
-    samples_path = path.join(path.dirname(__file__), 'samples.json')
-    with open(samples_path, 'r') as samples_file:
-        samples_polls = json.load(samples_file)
+    """Seeds the database with samples."""
+    #samples_path = path.join(path.dirname(__file__), 'samples.json')
+    #with open(samples_path, 'r') as samples_file:
+    #    samples_polls = json.load(samples_file)
 
-    for sample_poll in samples_polls:
-        poll = Poll()
-        poll.text = sample_poll['text']
-        poll.pub_date = timezone.now()
-        poll.save()
+    #for sample_poll in samples_polls:
+    #    poll = Poll()
+    #    poll.text = sample_poll['text']
+    #    poll.pub_date = timezone.now()
+    #    poll.save()
 
-        for sample_choice in sample_poll['choices']:
-            choice = Choice()
-            choice.poll = poll
-            choice.text = sample_choice
-            choice.votes = 0
-            choice.save()
+    #    for sample_choice in sample_poll['choices']:
+    #        choice = Choice()
+    #        choice.poll = poll
+    #        choice.text = sample_choice
+    #        choice.votes = 0
+    #        choice.save()
 
     #file_ = open('app\loremipsum\default\sample.txt')
     file_ = open('jeeves.txt')
@@ -241,7 +196,7 @@ def seed(request):
 
     return HttpResponseRedirect(reverse('app:home'))
 
-
+###############################################################################
 
 #def get_or_none(classmodel, **kwargs):
 #    try:
@@ -249,7 +204,7 @@ def seed(request):
 #    except classmodel.DoesNotExist:
 #        return None
 
-tab_list = (
+g_tab_list = (
     { 'id':'P', 'name':'Project',  'href':'/project',  'img':'app/img/Tab/Project-16.png' },
     { 'id':'C', 'name':'Script',   'href':'/script',   'img':'app/img/Tab/Script-16.png' },
     { 'id':'S', 'name':'Scene',    'href':'/scene',    'img':'app/img/Tab/Scene-16.png' },
@@ -262,6 +217,7 @@ tab_list = (
     { 'id':'T', 'name':'Schedule', 'href':'/schedule', 'img':'app/img/Tab/Schedule-16.png' },
     )
 
+###############################################################################
 
 def gadget(request, gadget_id):
     """Handles page requests for Gadgets"""
@@ -304,7 +260,7 @@ def gadget(request, gadget_id):
 
     return render(request, 'app/gadget.html', {
         'title': 'Gadget',
-        'tab_list': tab_list,
+        'tab_list': g_tab_list,
         'tab_active_id': 'G',
         'tag_list': tag_list,
         'gadgets': gadgets,
@@ -331,7 +287,7 @@ def dummy(request, id):
     
     return render(request, 'app/gadget.html', {
         'title': 'DUMMY',
-        'tab_list': tab_list,
+        'tab_list': g_tab_list,
         'tab_active_id': 'P',
         'datetime': datetime.now(),
     })

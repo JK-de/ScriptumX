@@ -1,4 +1,6 @@
-﻿<!DOCTYPE html>
+﻿{% load staticfiles %}
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -8,7 +10,6 @@
     <meta name="copyright" content="share alike" />
 
     <title>{{ title }} - ScriptumX</title>
-    {% load staticfiles %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/bootstrap.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
@@ -66,12 +67,18 @@
     </div>
 
     <div id="app_container" style="margin:0; background:#DDD; border: 1px solid blue;" class="container-fluid body-content">
-{% block content %}{% endblock %}
+
+        {% if error_message %}
+        <p class="text-danger">{{error_message}}</p>
+        {% endif %}
+
+        {% block content %}{% endblock %}
+    
     </div>
 
-        <footer style="height:10px;">
-            &copy; {{ datetime }} - LoremIpsum
-        </footer>
+    <footer style="height:10px;">
+        &copy; {{ datetime }} - LoremIpsum
+    </footer>
     
     <script src="{% static 'app/scripts/bootstrap.js' %}"></script>
     <script src="{% static 'app/scripts/respond.js' %}"></script>

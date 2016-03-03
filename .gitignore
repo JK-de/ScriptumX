@@ -75,3 +75,6 @@ ScriptumX/.vs/
 ScriptumX/app/migrations/
 Test/
 ScriptumX/db.sqlite3
+ScriptumX/web.debug.config
+ScriptumX/db.sqlite3
+ScriptumX/.vs/ScriptumX/v14/.suo

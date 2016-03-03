@@ -20,8 +20,10 @@ class BootstrapAuthenticationForm(AuthenticationForm):
                                    'placeholder': 'User name'}))
     password = forms.CharField(label=_("Password"),
                                widget=forms.PasswordInput({
-                                   'class': 'form- control',
+                                   'class': 'form-control',
                                    'placeholder':'Password'}))
+
+###############################################################################
 
 class GadgetForm(forms.ModelForm):
     """Edit form for Gadget model"""
@@ -57,7 +59,8 @@ class GadgetForm(forms.ModelForm):
         self.helper.layout = Layout(
 
             ButtonHolder(
-                Submit('submit', '<i class="fa fa-floppy-o fa-2x"/> Save', css_class='btn btn-default')
+                #Submit('submit', '<i class="fa fa-floppy-o fa-2x"/> Save', css_class='btn btn-default')
+                Submit('submit', 'Save', css_class='btn btn-primary')
             ),
             Div(
                 Div(FormSymbol(gadget_tag_list[0]['img']),  Field('tag0'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
@@ -110,3 +113,4 @@ class GadgetForm(forms.ModelForm):
       name = self.cleaned_data.get('name')
       return name
 
+###############################################################################
