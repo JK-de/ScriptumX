@@ -120,7 +120,7 @@ class RoleAdmin(admin.ModelAdmin):
     """Definition of the Role editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'marker_map']}),
+        ('_Base', {'fields': ['description', ]}),
         ('_Prop', {'fields': ['color']}),
         ('_12M', {'fields': ['actor']}),
         ('_M2M', {'fields': ['gadgets']}),

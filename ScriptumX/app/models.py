@@ -6,6 +6,7 @@ from django.db import models
 from django.db.models import Sum
 #from datetime import datetime
 from django.contrib.auth.models import User
+from colorful.fields import RGBColorField
 
 ###############################################################################
 
@@ -28,7 +29,7 @@ class BaseModel(models.Model):
     class Meta:
         # model metadata options go here
         ###abstract = True
-        ordering = ['-name']
+        ordering = ['name']
 
     #Props
     name = models.CharField(max_length=30)
@@ -121,7 +122,7 @@ class SFX(BaseModel):
 
 class Person(BaseModel):
     #Props
-    contact = models.CharField(max_length=1000, blank=True)
+    contact = models.TextField(blank=True)
     email = models.EmailField(blank=True)
     # Many to Many
 
@@ -129,7 +130,7 @@ class Person(BaseModel):
 
 class Role(BaseModel):
     #Props
-    color = models.PositiveIntegerField(default=0xFFFFFF)
+    color = RGBColorField()
     # One to Many
     actor = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, blank=True)
     # Many to Many
@@ -164,11 +165,15 @@ class Script(models.Model):
 ###############################################################################
 
 class Scene(BaseModel):
+    class Meta:
+        # model metadata options go here
+        ordering = ['order']
+
     #Props
     order = models.PositiveIntegerField(default=0)
     variant = models.PositiveIntegerField(default=0)
     indentation = models.PositiveIntegerField(default=0)
-    color = models.PositiveIntegerField(default=0)
+    color = RGBColorField()
     duration = models.DurationField(null=True, blank=True)
     progress_script = models.PositiveSmallIntegerField(default=0)
     progress_pre = models.PositiveSmallIntegerField(default=0)
@@ -189,6 +194,10 @@ class Scene(BaseModel):
 ###############################################################################
 
 class SceneItem(models.Model):
+    class Meta:
+        # model metadata options go here
+        ordering = ['order']
+
     #Props
     order = models.PositiveIntegerField(default=0)
     parenthetical = models.CharField(max_length=100, blank=True)
@@ -205,6 +214,10 @@ class SceneItem(models.Model):
 ###############################################################################
 
 class Appointment(BaseModel):
+    class Meta:
+        # model metadata options go here
+        ordering = ['time_all']
+
     #Props
     time_all = models.DateTimeField(null=True, blank=True)
     duration_all = models.DurationField(blank=True, null=True)
