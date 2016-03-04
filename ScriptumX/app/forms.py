@@ -76,7 +76,7 @@ class GadgetForm(forms.ModelForm):
                 Div(FormSymbol(gadget_tag_list[8]['img']),  Field('tag8'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(gadget_tag_list[9]['img']),  Field('tag9'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(gadget_tag_list[10]['img']), Field('tag10'), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                css_class='col-sm-offset-2', style="margin-top:-30px;", 
+                css_class='col-sm-offset-2', style="margin-top:10px;", 
             ),
             #Fieldset(
                 #'first arg is the legend of the fieldset',
@@ -91,26 +91,26 @@ class GadgetForm(forms.ModelForm):
 
                 ###Field('progress',  css_class='jk' ),
 
-                HTML(
-'<div class="form-group">'
-'	<label for="inputName" class="col-sm-2 control-label">My-Progress</label>                                                          '
-'	<div class="col-sm-10">                                                                                                              '
-'		<input type="number" class="form-control" id="inputName" name="progress" placeholder="Lorem" value="{{form.progress.value}}"     '
-'            data-provide="slider"                                                                                                       '
-'            data-slider-min="1"                                                                                                         '
-'            data-slider-max="100"                                                                                                       '
-'            data-slider-step="1"                                                                                                        '
-'            data-slider-value="{{form.progress.value}}"                                                                                 '
-'            data-slider-tooltip="hide"                                                                                                  '
-'            >                                                                                                                           '
-'	</div>                                                                                                                               '
-'</div>                                                                                                                                  '
-                ),
+#                HTML(
+#'<div class="form-group">'
+#'	<label for="inputName" class="col-sm-2 control-label">My-Progress</label>                                                          '
+#'	<div class="col-sm-10">                                                                                                              '
+#'		<input type="number" class="form-control" id="inputName" name="progress" placeholder="Lorem" value="{{form.progress.value}}"     '
+#'            data-provide="slider"                                                                                                       '
+#'            data-slider-min="1"                                                                                                         '
+#'            data-slider-max="100"                                                                                                       '
+#'            data-slider-step="1"                                                                                                        '
+#'            data-slider-value="{{form.progress.value}}"                                                                                 '
+#'            data-slider-tooltip="hide"                                                                                                  '
+#'            >                                                                                                                           '
+#'	</div>                                                                                                                               '
+#'</div>                                                                                                                                  '
+#                ),
 
                 #Field('progress'),
 
                 #Field('progress', template="./templates/app/tmpl_slider_progress.html"),
-                Field('progress', template="E:/PRIVAT/X/ScriptumX/app/templates/app/tmpl_slider_progress.html"),
+                Field('progress', template="D:/X/ScriptumX/app/templates/app/tmpl_slider_progress.html"),
 
                 #Div(
                 #    'progress',
