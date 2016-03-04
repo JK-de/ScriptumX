@@ -2,14 +2,29 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 
+{############################################################################}}
+
+{% block head %}
+
+{#<link rel="stylesheet" type="text/css" href="./slider/bootstrap-slider.css" media="all" />
+<script src="./slider/bootstrap-slider.js"></script>#}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/bootstrap-slider.css' %}" media="all" />
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/x.css' %}" media="all" />
+<script src="{% static 'app/scripts/bootstrap-slider.js' %}"></script>
+
+{% endblock %}
+
+{############################################################################}}
+
 {% block content %}
 
+<div class="container-fluid" style="height:100%; width:100%;">
 
-<div class="container-fluid" style="height:100%; width:100%; border: 1px solid green;">
+	<div id="abc" class="row" style="height:100%;">
 
-	<div id="abc" class="row" style="height:100%; border: 1px solid red;">
 	  <div class="col-xs-6 col-md-4" style="height:100%;" >
-		<div class="list-group" style="height:100%; overflow-y:scroll">
+		<div class="list-group" style="height:100%; overflow-y:auto">
 
     		{% for gadget in gadgets %}
 			
@@ -34,6 +49,27 @@
 					  {% if tag.bit == 4 and gadget.tag4 %}
 						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
 					  {% endif %}
+					  {% if tag.bit == 5 and gadget.tag5 %}
+						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
+					  {% endif %}
+					  {% if tag.bit == 6 and gadget.tag6 %}
+						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
+					  {% endif %}
+					  {% if tag.bit == 7 and gadget.tag7 %}
+						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
+					  {% endif %}
+					  {% if tag.bit == 8 and gadget.tag8 %}
+						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
+					  {% endif %}
+					  {% if tag.bit == 9 and gadget.tag9 %}
+						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
+					  {% endif %}
+					  {% if tag.bit == 10 and gadget.tag10 %}
+						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
+					  {% endif %}
+					  {% if tag.bit == 11 and gadget.tag11 %}
+						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
+					  {% endif %}
 					{% endfor %}
                        </div>
 
@@ -47,16 +83,47 @@
 		</div>
 	  </div>
 
-	  <div class="col-xs-6 col-md-8" style="overflow-y:scroll; background:#EEE;">
+	  <div class="col-xs-6 col-md-8" style="height:100%; overflow-y:auto; background:#EEE;">
 
 		  {%if active_gadget %}
 
+
+          <form class="form-horizontal" method="post">
+			   <div class="col-sm-2 control-label">
+                <button style="padding:4px" type="submit" class="btn btn-primary btn-xs" formmethod="post">
+                <img height="32" width="32" src="{% static 'app/img/Scene.png' %}" /><br /><font size="1">Save</font>
+                </button  >
+			   </div>
+
           {% crispy form form.helper %}
 
+			  <div class="form-group">
+				<label for="sliderProgress" class="col-sm-2 control-label">Test-Progress</label>
+				<div class="col-sm-10">
+				  <input type="number" class="form-control" id="sliderProgress" name="progress" placeholder="Lorem" value="{{form.progress.value}}" 
+                        data-provide="slider"
+                        data-slider-min="0"
+                        data-slider-max="100"
+                        data-slider-step="1"
+                        data-slider-value="{{form.progress.value}}"
+                        data-slider-tooltip="hide"
+                        >
+				</div>
+			  </div>
 
+               
+
+          </form>
+
+          <hr/>
+          SAME AS:
+          <hr/>
+
+          {% crispy form form.helper %}
+
+          <!--
           ========================================================
-
-          <!--<form class="form-horizontal" method="POST" action="" border: 1px solid #159;>{% csrf_token %}
+          <form class="form-horizontal" method="POST" action="" border: 1px solid #159;>{% csrf_token %}
 
               {{ form|crispy }}
 
@@ -64,20 +131,21 @@
 
           </form>-->
 
+
+          <!--
           =========================================================================
-
-
 		  <div id="abc2" class="row" style="height:100%; border: 1px solid red;">
 
 			 
 		   
  
 		  <form class="form-horizontal" style="height:100%; border: 1px solid green;">{% csrf_token %}
+              {% csrf_token %}
 
 			 <div class="form-group">
 
 			   <div class="col-sm-2 control-label">
-			  <button style="padding:4px" type="submit" class="btn btn-primary btn-xs">
+			  <button style="padding:4px" type="submit" class="btn btn-primary btn-xs" formmethod="post">
 				  <img height="32" width="32" src="{% static 'app/img/Scene.png' %}" /><br /><font size="1">Save</font>
 			  </button  >
 				   </div>
@@ -88,7 +156,7 @@
 					{% for tag in tag_list %}
 					  <label  class="checkbox-inline">
 						  <img style="margin-left:-35px; padding-left:4px; padding-right:4px;" src="{% static tag.img %}" /><br />
-						<input type="checkbox" id="tag{{tag.bit}}" value="tag{{tag.bit}}">
+						<input type="checkbox" id="tag{{tag.bit}}" name="tag{{tag.bit}}" value="tag{{tag.bit}}">
 					  </label>
 					{% endfor %}
 					</div>
@@ -98,14 +166,14 @@
 			  <div class="form-group">
 				<label for="inputName" class="col-sm-2 control-label">Name</label>
 				<div class="col-sm-10">
-				  <input type="text" class="form-control" id="inputName" placeholder="Lorem" value="{{active_gadget.name}}"> 
+				  <input type="text" class="form-control" id="inputName" name="name" placeholder="Lorem" value="{{active_gadget.name}}"> 
 				</div>
 			  </div>
 
 			  <div class="form-group">
 				<label for="inputDescription" class="col-sm-2 control-label">Description</label>
 				<div class="col-sm-10">
-				  <textarea style="max-width:98%; min-width:98%;" rows="4" class="form-control" id="inputDescription" placeholder="BlaBla" >{{active_gadget.description}}</textarea>
+				  <textarea style="max-width:98%; min-width:98%;" rows="4" class="form-control" id="inputDescription" name="description" placeholder="BlaBla" >{{active_gadget.description}}</textarea>
 				</div>
 			  </div>
 
@@ -135,6 +203,20 @@
 			  </div>
 
 			  <div class="form-group">
+				<label for="inputName" class="col-sm-2 control-label">Name</label>
+				<div class="col-sm-10">
+				  <input type="text" class="form-control" id="inputName" name="marker_map" placeholder="Lorem" value="{{active_gadget.marker_map}}"> 
+				</div>
+			  </div>
+
+			  <div class="form-group">
+				<label for="inputName" class="col-sm-2 control-label">Name</label>
+				<div class="col-sm-10">
+				  <input type="text" class="form-control" id="inputName" name="progress" placeholder="Lorem" value="{{active_gadget.progress}}"> 
+				</div>
+			  </div>
+
+			  <div class="form-group">
 				<div class="col-sm-offset-2 col-sm-10">
 				  <button type="submit" class="btn btn-default">Save</button>
 				</div>
@@ -142,22 +224,37 @@
 
 			</form>
 
-		  {% endif %}
+              DEBUG:<br/>
+              		  {{active_gadget.name}}<br/>{{active_gadget.description}}<br/><br/><br/>
 
-		  {{active_gadget.name}}<br/>{{active_gadget.description}}<br/><br/><br/>
-		Lorem
-Okay so most of us do not know how to generate random strings which include letters and digits. This can be really useful for generating a password or something else just use your evil mind. Okay so how do we generate a random string. Have you ever heard of the string module available in python ? The chances are that you have not heard about it. So what does this module provide us ? Okay here you go lets understand this module by example:
 
 	  </div>
+          -->
+          {% else %}
+
+          Gadgets: {{ gadgets.count }}
+		  
+          <input
+    type="text"
+    name="somename"
+    data-provide="slider"
+    data-slider-min="1"
+    data-slider-max="100"
+    data-slider-step="1"
+    data-slider-value="3"
+    data-slider-tooltip="hide"
+        >
+
+          {% endif %}
 	  </div>
 
-	</div>
+	</div> <!--row-->
 
 </div>
 
 {% endblock %}
 
-
+{############################################################################}}
 
 {% block toolbar %}
 {% load staticfiles %}
@@ -248,3 +345,5 @@ Okay so most of us do not know how to generate random strings which include lett
 
 		</div>
 {% endblock %}
+
+{############################################################################}}

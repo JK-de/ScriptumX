@@ -62,6 +62,7 @@
     <Content Include="app\templates\app\gadget.html" />
     <Content Include="app\templates\app\home.html" />
     <Content Include="app\templates\app\layout_app.html" />
+    <Content Include="app\templates\app\tmpl_slider_progress.html" />
     <Content Include="db.sqlite" />
     <Content Include="requirements.txt" />
     <Content Include="app\samples.json" />

@@ -16,6 +16,8 @@
     <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
     <script src="{% static 'app/scripts/jquery-1.10.2.js' %}"></script>
 
+    {% block head %}{% endblock %}
+
 <script type="text/javascript" >
     $(document).ready(function () {
         $(window).on('resize', do_resize );
@@ -66,10 +68,10 @@
 
     </div>
 
-    <div id="app_container" style="margin:0; background:#DDD; border: 1px solid blue;" class="container-fluid body-content">
+    <div id="app_container" style="margin:0; background:#DDD;" class="container-fluid body-content">
 
         {% if error_message %}
-        <p class="text-danger">{{error_message}}</p>
+            <p class="text-danger">{{error_message}}</p>
         {% endif %}
 
         {% block content %}{% endblock %}
