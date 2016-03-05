@@ -28,7 +28,7 @@ class ScriptAdmin(admin.ModelAdmin):
     """Definition of the Script editor."""
     fieldsets = [
         (None, {'fields': ['workingtitle']}),
-        ('_Description', {'fields': ['description']}),
+        ('_Base', {'fields': ['description']}),
         ('_M2M', {'fields': ['persons']}),
     ]
     #inlines = [ChoiceInline]
@@ -60,7 +60,7 @@ class GadgetAdmin(admin.ModelAdmin):
     """Definition of the Gadget editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag0', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9', 'marker_map']}),
+        ('_Base', {'fields': ['description', 'tag0', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'marker_map']}),
         ('_Prop', {'fields': ['progress']}),
     ]
     #inlines = [ChoiceInline]
@@ -75,7 +75,7 @@ class AudioAdmin(admin.ModelAdmin):
     """Definition of the Audio editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag_map', 'marker_map']}),
+        ('_Base', {'fields': ['description', 'marker_map']}),
         ('_Prop', {'fields': ['progress']}),
     ]
     #inlines = [ChoiceInline]
@@ -90,7 +90,7 @@ class SfxAdmin(admin.ModelAdmin):
     """Definition of the SFX editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag_map', 'marker_map']}),
+        ('_Base', {'fields': ['description', 'marker_map']}),
         ('_Prop', {'fields': ['progress']}),
     ]
     #inlines = [ChoiceInline]
@@ -105,7 +105,7 @@ class PersonAdmin(admin.ModelAdmin):
     """Definition of the Person editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag_map', 'marker_map']}),
+        ('_Base', {'fields': ['description', 'marker_map']}),
         ('_Prop', {'fields': ['contact', 'email']}),
     ]
     #inlines = [ChoiceInline]
@@ -120,7 +120,7 @@ class RoleAdmin(admin.ModelAdmin):
     """Definition of the Role editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag_map', 'marker_map']}),
+        ('_Base', {'fields': ['description', ]}),
         ('_Prop', {'fields': ['color']}),
         ('_12M', {'fields': ['actor']}),
         ('_M2M', {'fields': ['gadgets']}),
@@ -137,7 +137,7 @@ class LocationAdmin(admin.ModelAdmin):
     """Definition of the Location editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag_map', 'marker_map']}),
+        ('_Base', {'fields': ['description', 'marker_map']}),
         ('_M2M', {'fields': ['persons']}),
     ]
     #inlines = [ChoiceInline]
@@ -156,7 +156,7 @@ class AppointmentAdmin(admin.ModelAdmin):
     """Definition of the Appointment editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag_map', 'marker_map']}),
+        ('_Base', {'fields': ['description', 'marker_map']}),
         ('_Prop', {'fields': ['time_all', 'duration_all']}),
         ('_12M', {'fields': ['meeting_point']}),
         ('_M2M', {'fields': ['persons', 'gadgets']}),

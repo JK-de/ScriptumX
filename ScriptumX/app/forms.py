@@ -20,8 +20,10 @@ class BootstrapAuthenticationForm(AuthenticationForm):
                                    'placeholder': 'User name'}))
     password = forms.CharField(label=_("Password"),
                                widget=forms.PasswordInput({
-                                   'class': 'form- control',
+                                   'class': 'form-control',
                                    'placeholder':'Password'}))
+
+###############################################################################
 
 class GadgetForm(forms.ModelForm):
     """Edit form for Gadget model"""
@@ -54,10 +56,13 @@ class GadgetForm(forms.ModelForm):
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-sm-2'
         self.helper.field_class = 'col-sm-10'
+        self.helper.form_tag = False
         self.helper.layout = Layout(
 
             ButtonHolder(
-                Submit('submit', '<i class="fa fa-floppy-o fa-2x"/> Save', css_class='btn btn-default')
+                #Submit('submit', '<i class="fa fa-floppy-o fa-2x"/> Save', css_class='btn btn-default')
+                #Submit('submit', 'Save', css_class='btn btn-primary'),
+                #Submit('delete', 'Del', css_class='btn btn-danger'),
             ),
             Div(
                 Div(FormSymbol(gadget_tag_list[0]['img']),  Field('tag0'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
@@ -71,32 +76,47 @@ class GadgetForm(forms.ModelForm):
                 Div(FormSymbol(gadget_tag_list[8]['img']),  Field('tag8'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(gadget_tag_list[9]['img']),  Field('tag9'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(gadget_tag_list[10]['img']), Field('tag10'), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                css_class='col-sm-offset-2', style="margin-top:-30px;", 
+                css_class='col-sm-offset-2', style="margin-top:10px;", 
             ),
             #Fieldset(
                 #'first arg is the legend of the fieldset',
-                'name',
-                Field('description', style="max-width:98%; min-width:98%;", rows=4),
+                Field('name'),
+                Field('description', style="max-width:100%; min-width:100%;", rows=10),
 
-                #InlineCheckboxes('tag0', 'tag1'),
-                #Div( 
-                #    Field('tag0', css_class="btn"),
-                #    Field('tag1', css_class="btn"),
-                #    css_class='checkbox-inline',
-                #),
-                #Div(
-                #    Div(Field('tag0', css_class='span12 input-large',), css_class='span2'),
-                #    Div(Field('tag1', css_class='span12 input-large',), css_class='span2'),
-                #    css_class='checkbox-inline',
-                #),
-                #Div(
-                #    InlineCheckboxes('tag0'),
-                #    InlineCheckboxes('tag1'),
-                #    css_class='checkbox-inline',
-                #),
-                #Field('tag1'),
                 Field('marker_map'),
-                Field('progress'),
+#Div(  data-provide="slider", data-slider-min="0", data-slider-max="100", data-slider-step="1"
+#                Field('progress',  data-provide="slider", data-slider-min="0", data-slider-max="100", data-slider-step="1" ),
+#),
+                ###Field('progress'),
+
+                ###Field('progress',  css_class='jk' ),
+
+#                HTML(
+#'<div class="form-group">'
+#'	<label for="inputName" class="col-sm-2 control-label">My-Progress</label>                                                          '
+#'	<div class="col-sm-10">                                                                                                              '
+#'		<input type="number" class="form-control" id="inputName" name="progress" placeholder="Lorem" value="{{form.progress.value}}"     '
+#'            data-provide="slider"                                                                                                       '
+#'            data-slider-min="1"                                                                                                         '
+#'            data-slider-max="100"                                                                                                       '
+#'            data-slider-step="1"                                                                                                        '
+#'            data-slider-value="{{form.progress.value}}"                                                                                 '
+#'            data-slider-tooltip="hide"                                                                                                  '
+#'            >                                                                                                                           '
+#'	</div>                                                                                                                               '
+#'</div>                                                                                                                                  '
+#                ),
+
+                #Field('progress'),
+
+                #Field('progress', template="./templates/app/tmpl_slider_progress.html"),
+                Field('progress', template="D:/X/ScriptumX/app/templates/app/tmpl_slider_progress.html"),
+
+                #Div(
+                #    'progress',
+                #    template="./templates/app/tmpl_slider_progress.html"
+                #),
+
                 #TODO : http://django-floppyforms.readthedocs.org/en/latest/examples.html#a-slider
                 #TODO : https://github.com/seiyria/bootstrap-slider
             #),
@@ -110,3 +130,4 @@ class GadgetForm(forms.ModelForm):
       name = self.cleaned_data.get('name')
       return name
 
+###############################################################################

@@ -139,6 +139,7 @@ INSTALLED_APPS = (
     'app',
     #third party apps
     'crispy_forms',
+    'colorful',
 )
 
 # A sample logging configuration. The only tangible logging
