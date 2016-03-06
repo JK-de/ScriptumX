@@ -112,8 +112,8 @@ class GadgetForm(forms.ModelForm):
                 #Field('progress'),
 
                 #Field('progress', template="./templates/app/tmpl_slider_progress.html"),
-                Field('progress', template="D:/X/ScriptumX/app/templates/app/tmpl_slider_progress.html"),
-                #Field('progress', template="app/tmpl_slider_progress.html"),
+                #Field('progress', template="D:/X/ScriptumX/app/templates/app/tmpl_slider_progress.html"),
+                Field('progress', template="app/tmpl_slider_progress.html"),
 
                 #Div(
                 #    'progress',
