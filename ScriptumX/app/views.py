@@ -78,7 +78,7 @@ class Markov(object):
 ###############################################################################
 
 g_tag_queries = [ 
-    Q(tag0=True), 
+    Q(note__isnull=False), 
     Q(tag1=True), 
     Q(tag2=True), 
     Q(tag3=True), 
@@ -90,9 +90,10 @@ g_tag_queries = [
     Q(tag9=True), 
     Q(tag10=True), 
     Q(tag11=True), 
+    Q(tag12=True), 
     ]
 
-g_tag_query_none = Q(tag0=False) & Q(tag1=False) & Q(tag2=False) & Q(tag3=False) & Q(tag4=False) & Q(tag5=False) & Q(tag6=False) & Q(tag7=False) & Q(tag8=False) & Q(tag9=False) & Q(tag10=False) & Q(tag11=False)
+g_tag_query_none = Q(tag1=False) & Q(tag2=False) & Q(tag3=False) & Q(tag4=False) & Q(tag5=False) & Q(tag6=False) & Q(tag7=False) & Q(tag8=False) & Q(tag9=False) & Q(tag10=False) & Q(tag11=False) & Q(tag12=False)
 
 ###############################################################################
 ###############################################################################
@@ -169,11 +170,20 @@ def seed(request):
 
 
     # generate Gadgets
-    for i in range(0, 10):
+    for i in range(0, 30):
         gadget = Gadget()
         gadget.name = markov.generate_markov_text(random.randint(2, 5))
-        gadget.description = markov.generate_markov_text(random.randint(5, 30))
+        gadget.description = markov.generate_markov_text(random.randint(5, 50))
         gadget.progress = i
+        #gadget.note__text = "Hallo"
+        tagRef = gadget.getTag(random.randint(0, 10))
+        tagRef = True
+        gadget.setTag(random.randint(1, 11), True)
+        if random.randint(0, 5) == 0:
+            n = Note()
+            n.text = markov.generate_markov_text(random.randint(5, 50))
+            n.save()
+            gadget.note = n
         gadget.save()
 
     
@@ -181,13 +191,13 @@ def seed(request):
     for s in range(0, 5):
         scene = Scene()
         scene.name = markov.generate_markov_text(random.randint(5, 7))
-        scene.description = markov.generate_markov_text(random.randint(10, 20))
+        scene.description = markov.generate_markov_text(random.randint(10, 30))
         scene.progress = i
         scene.save()
 
-        for s in range(0, 5):
+        for s in range(0, 15):
             item = SceneItem()
-            item.text = markov.generate_markov_text(random.randint(5, 20))
+            item.text = markov.generate_markov_text(random.randint(5, 30))
             item.scene = scene
             item.save()
 
@@ -247,9 +257,9 @@ def gadget(request, gadget_id):
     for tag in tag_list:
         if tag['active']:
             if len(query)==0:
-                query = g_tag_queries[tag['bit']]
+                query = g_tag_queries[tag['idx']]
             else:
-                query |= g_tag_queries[tag['bit']]
+                query |= g_tag_queries[tag['idx']]
 
     if len(query)==len(tag_list):
         query = Q()

@@ -45,7 +45,7 @@
     <Compile Include="ScriptumX\__init__.py" />
     <Compile Include="ScriptumX\settings.py" />
     <Compile Include="ScriptumX\urls.py" />
-    <Compile Include="ScriptumX\wsgi.py" />
+    <Compile Include="wsgi.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />

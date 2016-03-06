@@ -7,8 +7,13 @@ from django.db.models import Sum
 #from datetime import datetime
 from django.contrib.auth.models import User
 from colorful.fields import RGBColorField
+from django.conf import settings
+from django.contrib.auth import get_user_model
 
 ###############################################################################
+
+def get_sentinel_user():
+    return get_user_model().objects.get_or_create(username='deleted')[0]
 
 class Project(models.Model):
     #Props
@@ -17,7 +22,9 @@ class Project(models.Model):
     ###creater = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
     #        models.ForeignKey(settings.AUTH_USER_MODEL)
     # Many to Many
-    users = models.ManyToManyField(User, blank=True)
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL,
+        #on_delete=models.SET(get_sentinel_user), 
+        blank=True)
 
     def __str__(self):
         """Returns a string representation of a Script."""
@@ -25,19 +32,36 @@ class Project(models.Model):
 
 ###############################################################################
 
+class Note(models.Model):
+    #Props
+    text = models.TextField(blank=True)
+    # One to Many
+    #source = models.ForeignKey(BaseModel, 
+    #    on_delete=models.CASCADE,
+    #    related_name="notes",
+    #    related_query_name="note",
+    #    null=True, 
+    #    blank=False)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=False)
+
+    def __str__(self):
+        """Returns a string representation of a Note."""
+        return self.text
+
+###############################################################################
+
 class BaseModel(models.Model):
     class Meta:
         # model metadata options go here
-        ###abstract = True
+        #abstract = True
         ordering = ['name']
 
     #Props
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     #tag_map = models.PositiveIntegerField(default=0x7FFFFFFF)
     marker_map = models.PositiveIntegerField(default=0)
 
-    tag0 = models.BooleanField(default=False, verbose_name='')
     tag1 = models.BooleanField(default=False, verbose_name='')
     tag2 = models.BooleanField(default=False, verbose_name='')
     tag3 = models.BooleanField(default=False, verbose_name='')
@@ -49,53 +73,84 @@ class BaseModel(models.Model):
     tag9 = models.BooleanField(default=False, verbose_name='')
     tag10 = models.BooleanField(default=False, verbose_name='')
     tag11 = models.BooleanField(default=False, verbose_name='')
+    tag12 = models.BooleanField(default=False, verbose_name='')
 
     # One to Many
     project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=False)
+    note = models.ForeignKey(Note, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         """Returns a string representation of a Base-Item."""
         return self.name
 
     def getTag(self, idx):
-        if idx == 0:
-            return tag0
         if idx == 1:
-            return tag1
+            return self.tag1
         if idx == 2:
-            return tag2
+            return self.tag2
         if idx == 3:
-            return tag3
+            return self.tag3
         if idx == 4:
-            return tag4
+            return self.tag4
         if idx == 5:
-            return tag5
+            return self.tag5
         if idx == 6:
-            return tag6
+            return self.tag6
         if idx == 7:
-            return tag7
+            return self.tag7
         if idx == 8:
-            return tag8
+            return self.tag8
         if idx == 9:
-            return tag9
+            return self.tag9
         if idx == 10:
-            return tag10
+            return self.tag10
         if idx == 11:
-            return tag11
+            return self.tag11
+        if idx == 12:
+            return self.tag12
         return None
 
-###############################################################################
+    def setTag(self, idx, value):
+        if idx == 1:
+            self.tag1 = value
+        if idx == 2:
+            self.tag2 = value
+        if idx == 3:
+            self.tag3 = value
+        if idx == 4:
+            self.tag4 = value
+        if idx == 5:
+            self.tag5 = value
+        if idx == 6:
+            self.tag6 = value
+        if idx == 7:
+            self.tag7 = value
+        if idx == 8:
+            self.tag8 = value
+        if idx == 9:
+            self.tag9 = value
+        if idx == 10:
+            self.tag10 = value
+        if idx == 11:
+            self.tag11 = value
+        if idx == 12:
+            self.tag12 = value
 
-class Note(models.Model):
-    #Props
-    text = models.CharField(max_length=1000)
-    # One to Many
-    source = models.ForeignKey(BaseModel, on_delete=models.CASCADE, null=True, blank=False)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=False)
-
-    def __str__(self):
-        """Returns a string representation of a Note."""
-        return self.name
+    def getTagList(self):
+        return (
+            self.tag1 ,
+            self.tag2 ,
+            self.tag3 ,
+            self.tag4 ,
+            self.tag5 ,
+            self.tag6 ,
+            self.tag7 ,
+            self.tag8 ,
+            self.tag9 ,
+            self.tag10,
+            self.tag11,
+            self.tag12,
+            )
 
 ###############################################################################
 

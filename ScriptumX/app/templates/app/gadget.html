@@ -31,44 +31,51 @@
                     <div class="pull-right" style="margin-right:14px;">
                     {#<img height="32" width="32" src="{% static 'app/img/Scene.png' %}" />#}
                     {% for tag in tag_list %}
-					  {% if tag.bit == 0 and gadget.tag0 %}
+					  {% if tag.idx == 1 and gadget.tag1 %}
 						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
 					  {% endif %}
-					  {% if tag.bit == 1 and gadget.tag1 %}
+					  {% if tag.idx == 2 and gadget.tag2 %}
 						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
 					  {% endif %}
-					  {% if tag.bit == 2 and gadget.tag2 %}
+					  {% if tag.idx == 3 and gadget.tag3 %}
 						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
 					  {% endif %}
-					  {% if tag.bit == 3 and gadget.tag3 %}
+					  {% if tag.idx == 4 and gadget.tag4 %}
 						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
 					  {% endif %}
-					  {% if tag.bit == 4 and gadget.tag4 %}
+					  {% if tag.idx == 5 and gadget.tag5 %}
 						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
 					  {% endif %}
-					  {% if tag.bit == 5 and gadget.tag5 %}
+					  {% if tag.idx == 6 and gadget.tag6 %}
 						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
 					  {% endif %}
-					  {% if tag.bit == 6 and gadget.tag6 %}
+					  {% if tag.idx == 7 and gadget.tag7 %}
 						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
 					  {% endif %}
-					  {% if tag.bit == 7 and gadget.tag7 %}
+					  {% if tag.idx == 8 and gadget.tag8 %}
 						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
 					  {% endif %}
-					  {% if tag.bit == 8 and gadget.tag8 %}
+					  {% if tag.idx == 9 and gadget.tag9 %}
 						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
 					  {% endif %}
-					  {% if tag.bit == 9 and gadget.tag9 %}
+					  {% if tag.idx == 10 and gadget.tag10 %}
 						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
 					  {% endif %}
-					  {% if tag.bit == 10 and gadget.tag10 %}
+					  {% if tag.idx == 11 and gadget.tag11 %}
 						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
 					  {% endif %}
-					  {% if tag.bit == 11 and gadget.tag11 %}
+					  {% if tag.idx == 12 and gadget.tag12 %}
 						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
 					  {% endif %}
 					{% endfor %}
                        </div>
+
+                    {% if gadget.note %}
+                        
+
+                        <img style="margin-left:-4px; margin-top:-4px; " height="16" width="16" src="{% static 'app/img/notes.png' %}" />
+                        
+                    {% endif %}
 
                     <strong style="margin-right:14px;">{{gadget.name}}</strong>
                     <br/>
@@ -118,6 +125,7 @@
 			   </div>
 
           {% crispy form form.helper %}
+         
 
               <!--
 			  <div class="form-group">
@@ -179,7 +187,7 @@
 					{% for tag in tag_list %}
 					  <label  class="checkbox-inline">
 						  <img style="margin-left:-35px; padding-left:4px; padding-right:4px;" src="{% static tag.img %}" /><br />
-						<input type="checkbox" id="tag{{tag.bit}}" name="tag{{tag.bit}}" value="tag{{tag.bit}}">
+						<input type="checkbox" id="tag{{tag.idx}}" name="tag{{tag.idx}}" value="tag{{tag.idx}}">
 					  </label>
 					{% endfor %}
 					</div>
@@ -298,8 +306,9 @@
 
 			<div class="btn-group btn-group-xs" role="group" style="margin-left:4px">
 
-				{% for tag in tag_list %}
-				<a href="/gadget/tag/{{tag.bit}}" 
+				
+                {% for tag in tag_list %}
+				<a href="/gadget/tag/{{tag.idx}}" 
                    role="button" 
                    
                    {% if tag.active %}
@@ -313,8 +322,19 @@
                 <font size="1">{{tag.name}}</font></a>
 				{% endfor %}
 
+                
+				
 			</div>
-
+            <div class="btn-group btn-group-xs" role="group" style="margin-left:4px">
+                <a href="/gadget/tag/note" 
+                   role="button" 
+                   class="btn btn-default navbar-btn" style="padding:4px" 
+                   
+                   >
+                <img height="32" width="32" src="{% static 'app/img/notes.png' %}" />
+                <br />
+                <font size="1">Note</font></a>
+            </div>
 
 			<!--<div class="btn-group btn-group-xs" role="group"/>-->
 

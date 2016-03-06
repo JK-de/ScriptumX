@@ -1,17 +1,18 @@
 from crispy_forms.layout import HTML
 
 gadget_tag_list = (
-    { 'bit': 0, 'name':'Requisite', 'img':'app/img/G/tag/Requisite.png' },
-    { 'bit': 1, 'name':'Costume',   'img':'app/img/G/tag/Costume.png' },
-    { 'bit': 2, 'name':'MakeUp',    'img':'app/img/G/tag/MakeUp.png' },
-    { 'bit': 3, 'name':'Camera',    'img':'app/img/G/tag/Camera.png' },
-    { 'bit': 4, 'name':'Gaffer',    'img':'app/img/G/tag/Gaffer.png' },
-    { 'bit': 5, 'name':'Grip',      'img':'app/img/G/tag/Grip.png' },
-    { 'bit': 6, 'name':'Audio',     'img':'app/img/G/tag/Audio.png' },
-    { 'bit': 7, 'name':'Special',   'img':'app/img/G/tag/Special.png' },
-    { 'bit': 8, 'name':'Tool',      'img':'app/img/G/tag/Tool.png' },
-    { 'bit': 9, 'name':'Phyro',     'img':'app/img/G/tag/Phyro.png' },
-    { 'bit':10, 'name':'Catering',  'img':'app/img/G/tag/Catering.png' },
+    { 'idx': 0, 'name':'Note',      'img':'app/img/note.png' },
+    { 'idx': 1, 'name':'Requisite', 'img':'app/img/G/tag/Requisite.png' },
+    { 'idx': 2, 'name':'Costume',   'img':'app/img/G/tag/Costume.png' },
+    { 'idx': 3, 'name':'MakeUp',    'img':'app/img/G/tag/MakeUp.png' },
+    { 'idx': 4, 'name':'Camera',    'img':'app/img/G/tag/Camera.png' },
+    { 'idx': 5, 'name':'Gaffer',    'img':'app/img/G/tag/Gaffer.png' },
+    { 'idx': 6, 'name':'Grip',      'img':'app/img/G/tag/Grip.png' },
+    { 'idx': 7, 'name':'Audio',     'img':'app/img/G/tag/Audio.png' },
+    { 'idx': 8, 'name':'Special',   'img':'app/img/G/tag/Special.png' },
+    { 'idx': 9, 'name':'Tool',      'img':'app/img/G/tag/Tool.png' },
+    { 'idx':10, 'name':'Phyro',     'img':'app/img/G/tag/Phyro.png' },
+    { 'idx':11, 'name':'Catering',  'img':'app/img/G/tag/Catering.png' },
     )
 
 all_tag_list = {}
@@ -30,13 +31,13 @@ def handleTagRequest(request, tag_id, item):
         return
 
     if tag_id == 'all':
-        for i in range(12):
+        for i in range(13):
             tagStr = '_' + item + '_tag_' + str(i)
             request.session[tagStr] = True
         return
 
     if tag_id == 'none':
-        for i in range(12):
+        for i in range(13):
             tagStr = '_' + item + '_tag_' + str(i)
             request.session[tagStr] = False
         return
@@ -46,7 +47,7 @@ def handleTagRequest(request, tag_id, item):
     except:
         i = -1
 
-    if (i>=0 and i<=11):
+    if (i>=0 and i<=12):
         tagStr = '_' + item + '_tag_' + str(i)
         value = request.session.get(tagStr, True)
         value = not value
@@ -56,7 +57,7 @@ def handleTagRequest(request, tag_id, item):
 def getTagRequestListX(request, item):
     list = []
 
-    for i in range(12):
+    for i in range(13):
         tagStr = '_' + item + '_tag_' + str(i)
         value = request.session.get(tagStr, True)
         list.append(value)
@@ -69,11 +70,11 @@ def getTagRequestList(request, group):
     for tag in all_tag_list[group]:
         tagItem = {}
 
-        tagItem['bit'] = tag['bit']
+        tagItem['idx'] = tag['idx']
         tagItem['name'] = tag['name']
         tagItem['img'] = tag['img']
         
-        tagStr = '_' + group + '_tag_' + str(tag['bit'])
+        tagStr = '_' + group + '_tag_' + str(tag['idx'])
         active = request.session.get(tagStr, True)
         tagItem['active'] = active
         

@@ -30,7 +30,6 @@ class GadgetForm(forms.ModelForm):
     class Meta:
         model = Gadget
         fields = [
-            'tag0',
             'tag1',
             'tag2',
             'tag3',
@@ -41,10 +40,13 @@ class GadgetForm(forms.ModelForm):
             'tag8',
             'tag9',
             'tag10',
+            'tag11',
             'name',
             'description',
             'marker_map',
             'progress',
+            #'note.text',
+            'note',
             ]
 
     def __init__(self, *args, **kwargs):
@@ -65,7 +67,6 @@ class GadgetForm(forms.ModelForm):
                 #Submit('delete', 'Del', css_class='btn btn-danger'),
             ),
             Div(
-                Div(FormSymbol(gadget_tag_list[0]['img']),  Field('tag0'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(gadget_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(gadget_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(gadget_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
@@ -76,6 +77,7 @@ class GadgetForm(forms.ModelForm):
                 Div(FormSymbol(gadget_tag_list[8]['img']),  Field('tag8'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(gadget_tag_list[9]['img']),  Field('tag9'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(gadget_tag_list[10]['img']), Field('tag10'), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(gadget_tag_list[11]['img']), Field('tag11'), style="padding:0; margin:0;", css_class='checkbox-inline'),
                 css_class='col-sm-offset-2', style="margin-top:10px;", 
             ),
             #Fieldset(
@@ -111,6 +113,7 @@ class GadgetForm(forms.ModelForm):
 
                 #Field('progress', template="./templates/app/tmpl_slider_progress.html"),
                 Field('progress', template="D:/X/ScriptumX/app/templates/app/tmpl_slider_progress.html"),
+                #Field('progress', template="app/tmpl_slider_progress.html"),
 
                 #Div(
                 #    'progress',

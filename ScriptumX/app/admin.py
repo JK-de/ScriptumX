@@ -60,7 +60,7 @@ class GadgetAdmin(admin.ModelAdmin):
     """Definition of the Gadget editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag0', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'marker_map']}),
+        ('_Base', {'fields': ['description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'marker_map']}),
         ('_Prop', {'fields': ['progress']}),
     ]
     #inlines = [ChoiceInline]
@@ -187,9 +187,9 @@ class NoteAdmin(admin.ModelAdmin):
     """Definition of the Note editor."""
     fieldsets = [
         ('_Prop', {'fields': ['text']}),
-        ('_12M', {'fields': ['source']}),
+        ('_12M', {'fields': ['project']}),
     ]
-    list_display = ('source', 'text')
+    list_display = ('text', 'project')
     list_filter = ['text']
     search_fields = ['text']
 

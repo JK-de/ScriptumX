@@ -3,6 +3,7 @@ Django settings for ScriptumX project.
 """
 
 from os import path
+import os
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 
 DEBUG = True
@@ -28,6 +29,23 @@ DATABASES = {
         'PORT': '',
     }
 }
+
+#TEMPLATES = [
+#    {
+#        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+#        'APP_DIRS': True,
+#    },
+#]
+
+#TEMPLATE_DIRS = (
+#    "D:/X/ScriptumX/app/templates",
+#    #os.path.join(PROJECT_ROOT, 'app/templates/'),
+#    )
+
+#TEMPLATE_CONTEXT_PROCESSORS = (
+#    # whatever comes before
+#    "app.context_processors.admin_media",
+#)
 
 LOGIN_URL = '/login'
 
