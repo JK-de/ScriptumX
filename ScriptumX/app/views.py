@@ -168,6 +168,29 @@ def seed(request):
 
     text = markov.generate_markov_text(random.randint(2, 5))
 
+    # generate Project
+    try:
+        project = Project.get(pk=1)
+    except:
+        project = Project()
+        project.name = 'Movie'
+        #project.users.add = user
+        project.save()
+
+    # generate Script
+    try:
+        script = Script.get(pk=1)
+    except:
+        script = Script()
+        script.workingtitle = 'Long Story - Short'
+        script.abstract = markov.generate_markov_text(random.randint(2, 5))
+        script.description = markov.generate_markov_text(random.randint(20, 30))
+        script.author = markov.generate_markov_text(random.randint(2, 3))
+        script.copyright = markov.generate_markov_text(random.randint(2, 3))
+        script.version = '0.1-beta'
+        script.project = project
+        project.users.add(request.user)
+        script.save()
 
     # generate Gadgets
     for i in range(0, 30):
@@ -184,6 +207,7 @@ def seed(request):
             n.text = markov.generate_markov_text(random.randint(5, 50))
             n.save()
             gadget.note = n
+        gadget.project = project
         gadget.save()
 
     
@@ -193,6 +217,7 @@ def seed(request):
         scene.name = markov.generate_markov_text(random.randint(5, 7))
         scene.description = markov.generate_markov_text(random.randint(10, 30))
         scene.progress = i
+        scene.script = script
         scene.save()
 
         for s in range(0, 15):

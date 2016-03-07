@@ -6,7 +6,8 @@ from django.db import models
 from django.db.models import Sum
 #from datetime import datetime
 from django.contrib.auth.models import User
-from colorful.fields import RGBColorField
+from colorful.fields import RGBColorField   # replaced by colorfield
+from colorfield.fields import ColorField
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
@@ -185,7 +186,7 @@ class Person(BaseModel):
 
 class Role(BaseModel):
     #Props
-    color = RGBColorField()
+    color = ColorField(default='#FFFFFF')
     # One to Many
     actor = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, blank=True)
     # Many to Many
@@ -228,7 +229,7 @@ class Scene(BaseModel):
     order = models.PositiveIntegerField(default=0)
     variant = models.PositiveIntegerField(default=0)
     indentation = models.PositiveIntegerField(default=0)
-    color = RGBColorField()
+    color = ColorField(default='#FFFFFF')
     duration = models.DurationField(null=True, blank=True)
     progress_script = models.PositiveSmallIntegerField(default=0)
     progress_pre = models.PositiveSmallIntegerField(default=0)

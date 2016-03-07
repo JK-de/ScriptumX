@@ -7,7 +7,7 @@ import os
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 
 DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+#TEMPLATE_DEBUG = DEBUG
 
 ALLOWED_HOSTS = (
     'localhost',
@@ -35,7 +35,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
         'DIRS': [
-            "D:/X/ScriptumX/app/templates",
+            #"D:/X/ScriptumX/app/templates",
+            "E:/PRIVAT/X/ScriptumX/app/templates",
             ],
         'OPTIONS': {
             'context_processors': [
@@ -53,16 +54,6 @@ TEMPLATES = [
     },
 ]
 
-#TEMPLATE_DIRS = (
-#    "D:/X/ScriptumX/app/templates",
-#    #os.path.join(PROJECT_ROOT, 'app/templates/'),
-#    )
-
-#TEMPLATE_CONTEXT_PROCESSORS = (
-#    # whatever comes before
-#    "app.context_processors.admin_media",
-#)
-
 LOGIN_URL = '/login'
 
 # Local time zone for this installation. Choices can be found here:
@@ -72,7 +63,7 @@ LOGIN_URL = '/login'
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'Europe/Berlin'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
@@ -174,6 +165,7 @@ INSTALLED_APPS = (
     #third party apps
     'crispy_forms',
     'colorful',
+    'colorfield',
 )
 
 # A sample logging configuration. The only tangible logging
