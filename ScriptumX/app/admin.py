@@ -42,9 +42,9 @@ class NoteAdmin(admin.ModelAdmin):
     """Definition of the Note editor."""
     fieldsets = [
         (None, {'fields': ['text']}),
-        ('_12M', {'fields': ['project']}),
+        ('_12M', {'fields': ['project', 'author']}),
     ]
-    list_display = ('text', 'project')
+    list_display = ('created', 'text', 'project')
     list_filter = ['text']
     search_fields = ['text']
 

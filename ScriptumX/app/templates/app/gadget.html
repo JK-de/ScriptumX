@@ -95,21 +95,32 @@
 
           <form class="form-horizontal" method="post">
 
-             <button style="padding:4px; " class="btn btn-default btn-xs" type="button" data-toggle="collapse" data-target="#collapseNote" aria-expanded="false" aria-controls="collapseExample">
+            {% if active_gadget.note %}
+                <div class="pull-left" style="max-width:12%;">
+                    <img src="{% static 'app/img/note.png' %}" /><br/>
+                    <small>{{ active_gadget.note.author }}<br/>
+                    {{ active_gadget.note.created }}</small>
+                </div>
+                {% crispy formNote formNote.helper %}
+                <hr/>
+            {% endif %}
+
+<!--             <button style="padding:4px; " class="btn btn-default btn-xs" type="button" data-toggle="collapse" data-target="#collapseNote" aria-expanded="false" aria-controls="collapseExample">
   <img height="32" width="32" src="{% static 'app/img/notes.png' %}" /><br/>Note
 </button>
-              
-              <div class="collapse" id="collapseNote">
+-->              
+   <!-- 
+                         <div class="collapse" id="collapseNote">
               <div class="form-group">
 				<label for="inputNote" class="col-sm-2 control-label">Note</label>
 				<div class="col-sm-10 col-sm-offset-2">
-				  <textarea style="max-width:70%; min-width:70%; background-color:palegoldenrod" rows="4" class="form-control" id="inputNote" name="note" placeholder="BlaBla" >{{active_gadget.note}}</textarea>
+				  <textarea style="max-width:70%; min-width:70%; background-color:palegoldenrod" rows="4" class="form-control" id="inputNote" name="notex" placeholder="BlaBla" >{{active_gadget.note}}</textarea>
 				</div>
 			  </div>
 			  </div>
-
+       -->
 			   <div class="pull-left">
-                <button style="padding:4px; margin-top:0px;" type="submit" class="btn btn-success btn-xs" formmethod="post">
+                <button style="padding:4px; margin-top:0px;" type="submit" name="AAAAAAAAAAAAAAAAAAAAAAAAA" id="BBBBBBBBBBBBBBBBBBBBBBBB" class="btn btn-success btn-xs" formmethod="post">
                 <img height="32" width="32" src="{% static 'app/img/save.png' %}" /><br />Save
                 </button  >
 			   </div>
@@ -119,12 +130,13 @@
                 <img height="32" width="32" src="{% static 'app/img/reset.png' %}" /><br />Reset
                 </button  >
 
-                <button style="padding:4px; margin-top:0px;" type="button" class="btn btn-danger btn-xs" formmethod="post">
+                <button style="padding:4px; margin-top:0px;" type="button" name="delete" class="btn btn-danger btn-xs" formmethod="post">
                 <img height="32" width="32" src="{% static 'app/img/delete.png' %}" /><br />Del
                 </button  >
 			   </div>
 
-          {% crispy form form.helper %}
+
+            {% crispy form form.helper %}
          
 
               <!--

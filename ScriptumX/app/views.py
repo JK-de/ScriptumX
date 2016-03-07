@@ -13,7 +13,7 @@ from django.utils import timezone
 from django.views.generic import ListView, DetailView
 from os import path
 from django.core.exceptions import ObjectDoesNotExist
-from app.forms import GadgetForm
+from app.forms import GadgetForm, NoteForm
 from crispy_forms.utils import render_crispy_form
 from .tags import gadget_tag_list, handleTagRequest, getTagRequestList
 from django.db.models import Q
@@ -264,19 +264,25 @@ def gadget(request, gadget_id):
     try:
         active_gadget = Gadget.objects.get(pk = gadget_id)
         active_id = active_gadget.id
+        active_note = active_gadget.note
     except ObjectDoesNotExist:
         active_gadget = None
         active_id = None
+        active_note = None
 
 
     if request.method == 'POST':
         form = GadgetForm(request.POST or None, instance=active_gadget)
-
         if form.is_valid():
             form.save()
             #gadgets = get_list_or_404(Gadget)
+
+        formNote = NoteForm(request.POST or None, instance=active_note)
+        if formNote.is_valid():
+            formNote.save()
     else:
         form = GadgetForm(instance=active_gadget)
+        formNote = NoteForm(instance=active_note)
     
     query = Q()
     for tag in tag_list:
@@ -302,6 +308,7 @@ def gadget(request, gadget_id):
         'active_gadget': active_gadget,
         'active_id': active_id,
         'form': form,
+        'formNote': formNote,
         'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
     })

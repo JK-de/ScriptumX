@@ -36,7 +36,9 @@ class Project(models.Model):
 class Note(models.Model):
     #Props
     text = models.TextField(blank=True)
+    created = models.DateTimeField(auto_now_add=True)
     # One to Many
+    author = models.ForeignKey(User, null=True)
     #source = models.ForeignKey(BaseModel, 
     #    on_delete=models.CASCADE,
     #    related_name="notes",
