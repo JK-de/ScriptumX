@@ -54,7 +54,7 @@ class Note(models.Model):
 class BaseModel(models.Model):
     class Meta:
         # model metadata options go here
-        #abstract = True
+        abstract = True
         ordering = ['name']
 
     #Props
@@ -291,7 +291,7 @@ class Appointment(BaseModel):
 
 class Appointment2Scene(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
-    scene = models.ForeignKey(Scene, null=True, blank=True, on_delete=models.CASCADE)
+    scene = models.ForeignKey(Scene, on_delete=models.CASCADE)
     #Props
     time = models.TimeField(null=True, blank=True)
     duration = models.DurationField(null=True, blank=True)

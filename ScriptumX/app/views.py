@@ -170,7 +170,7 @@ def seed(request):
 
     # generate Project
     try:
-        project = Project.get(pk=1)
+        project = Project.objects.get(pk=1)
     except:
         project = Project()
         project.name = 'Movie'
@@ -179,7 +179,7 @@ def seed(request):
 
     # generate Script
     try:
-        script = Script.get(pk=1)
+        script = Script.objects.get(pk=1)
     except:
         script = Script()
         script.workingtitle = 'Long Story - Short'
