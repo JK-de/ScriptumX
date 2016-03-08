@@ -286,19 +286,25 @@ def gadget(request, gadget_id):
             active_gadget.note = active_note
 
         formNote = NoteForm(request.POST or None, instance=active_note)
-        form = GadgetForm(request.POST or None, instance=active_gadget)
+        formItem = GadgetForm(request.POST or None, instance=active_gadget)
 
         if request.POST.get('btn_save'):
+               #???
             if formNote.is_valid():
-                formNote.save()
+                instance = formNote.save()
+                active_note = instance
+                if active_note and active_note.text=='':
+                    active_note.delete()
+                    active_note = None
+                active_gadget.note = active_note
 
-            if form.is_valid():
-                form.save()
+            if formItem.is_valid():
+                formItem.save()
     else:
-        form = GadgetForm(instance=active_gadget)
+        formItem = GadgetForm(instance=active_gadget)
         formNote = NoteForm(instance=active_note)
     
-    ### conglomerate querys
+    ### conglomerate queries
     query = Q()
     for tag in tag_list:
         if tag['active']:
@@ -322,7 +328,7 @@ def gadget(request, gadget_id):
         'gadgets': gadgets,
         'active_gadget': active_gadget,
         'active_id': active_id,
-        'form': form,
+        'form': formItem,
         'formNote': formNote,
         'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
