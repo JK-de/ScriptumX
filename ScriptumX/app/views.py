@@ -229,7 +229,8 @@ def seed(request):
 
     
 
-    return HttpResponseRedirect(reverse('app:home'))
+    #return HttpResponseRedirect(reverse('app:home'))
+    return HttpResponseRedirect('/')
 
 ###############################################################################
 
@@ -270,20 +271,34 @@ def gadget(request, gadget_id):
         active_id = None
         active_note = None
 
+    ### create new gadget object on request '/gadget/0'
+    if gadget_id == '0':
+        active_gadget = Gadget();
 
+    ### handle buttons
     if request.method == 'POST':
-        form = GadgetForm(request.POST or None, instance=active_gadget)
-        if form.is_valid():
-            form.save()
-            #gadgets = get_list_or_404(Gadget)
+        if request.POST.get('btn_delete'):
+            active_gadget.delete()
+            return HttpResponseRedirect('/gadget/')
+
+        if request.POST.get('btn_note'):
+            active_note = Note(author=request.user, created=datetime.now())
+            active_gadget.note = active_note
 
         formNote = NoteForm(request.POST or None, instance=active_note)
-        if formNote.is_valid():
-            formNote.save()
+        form = GadgetForm(request.POST or None, instance=active_gadget)
+
+        if request.POST.get('btn_save'):
+            if formNote.is_valid():
+                formNote.save()
+
+            if form.is_valid():
+                form.save()
     else:
         form = GadgetForm(instance=active_gadget)
         formNote = NoteForm(instance=active_note)
     
+    ### conglomerate querys
     query = Q()
     for tag in tag_list:
         if tag['active']:

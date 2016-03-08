@@ -45,8 +45,6 @@ class GadgetForm(forms.ModelForm):
             'description',
             'marker_map',
             'progress',
-            #'note.text',
-            'note',
             ]
 
     def __init__(self, *args, **kwargs):
