@@ -241,16 +241,16 @@ def seed(request):
 #        return None
 
 g_tab_list = (
-    { 'id':'P', 'name':'Project',  'href':'/project',  'img':'app/img/Tab/Project-24.png' },
-    { 'id':'C', 'name':'Script',   'href':'/script',   'img':'app/img/Tab/Script-24.png' },
-    { 'id':'S', 'name':'Scene',    'href':'/scene',    'img':'app/img/Tab/Scene-24.png' },
-    { 'id':'L', 'name':'Set',      'href':'/set',      'img':'app/img/Tab/Set-24.png' },
-    { 'id':'R', 'name':'Role',     'href':'/role',     'img':'app/img/Tab/Role-24.png' },
-    { 'id':'F', 'name':'Folk',     'href':'/folk',     'img':'app/img/Tab/Folk-24.png' },
-    { 'id':'G', 'name':'Gadget',   'href':'/gadget',   'img':'app/img/Tab/Gadget-24.png' },
-    { 'id':'X', 'name':'SFX',      'href':'/sfx',      'img':'app/img/Tab/SFX-24.png' },
-    { 'id':'A', 'name':'Audio',    'href':'/audio',    'img':'app/img/Tab/Audio-24.png' },
-    { 'id':'T', 'name':'Schedule', 'href':'/schedule', 'img':'app/img/Tab/Schedule-24.png' },
+    { 'id':'P', 'name':'Project',   'href':'/project',  'img':'app/img/Tab/Project-24.png' },
+    { 'id':'C', 'name':'Script',    'href':'/script',   'img':'app/img/Tab/Script-24.png' },
+    { 'id':'S', 'name':'Scene',     'href':'/scene',    'img':'app/img/Tab/Scene-24.png' },
+    { 'id':'L', 'name':'Locations', 'href':'/set',      'img':'app/img/Tab/Set-24.png' },
+    { 'id':'R', 'name':'Roles',     'href':'/role',     'img':'app/img/Tab/Role-24.png' },
+    { 'id':'F', 'name':'Folks',     'href':'/folk',     'img':'app/img/Tab/Folk-24.png' },
+    { 'id':'G', 'name':'Gadgets',   'href':'/gadget',   'img':'app/img/Tab/Gadget-24.png' },
+    { 'id':'X', 'name':'SFXs',      'href':'/sfx',      'img':'app/img/Tab/SFX-24.png' },
+    { 'id':'A', 'name':'Audios',    'href':'/audio',    'img':'app/img/Tab/Audio-24.png' },
+    { 'id':'T', 'name':'Schedule',  'href':'/schedule', 'img':'app/img/Tab/Schedule-24.png' },
     )
 
 ###############################################################################
@@ -258,6 +258,13 @@ g_tab_list = (
 def gadget(request, gadget_id):
     """Handles page requests for Gadgets"""
     
+    project_id = request.session.get('ProjectID', 1)
+    try:
+        active_user = request.user
+        project = Project.objects.get(pk=project_id, users=active_user)
+    except:
+        project = None
+
     tag_list = getTagRequestList(request, 'gadget')
 
     #gadgets = get_list_or_404(Gadget)
@@ -273,33 +280,53 @@ def gadget(request, gadget_id):
 
     ### create new gadget object on request '/gadget/0'
     if gadget_id == '0':
-        active_gadget = Gadget();
+        active_gadget = Gadget(project=project);
 
     ### handle buttons
     if request.method == 'POST':
+        if not active_gadget:   # you shall not pass ... without valid scope
+            raise AssertionError 
+
+        # generate forms and/or get data out of the edited forms
+        formNote = NoteForm(request.POST or None, instance=active_note)
+        if formNote.is_valid():
+            active_note = formNote.instance
+        formItem = GadgetForm(request.POST or None, instance=active_gadget)
+        if formItem.is_valid():
+            active_gadget = formItem.instance
+
+        # 'Delete'-Button
         if request.POST.get('btn_delete'):
+            if active_note:
+                if active_note.id:
+                    active_note.delete()
+            active_gadget.note = None
             active_gadget.delete()
             return HttpResponseRedirect('/gadget/')
 
+        # 'Add Note'-Button
         if request.POST.get('btn_note'):
-            active_note = Note(author=request.user, created=datetime.now())
+            active_note = Note(author=request.user, created=datetime.now(), project=project)
+            active_gadget.note = active_note
+            #formNote = NoteForm(request.POST or None, instance=active_note) #JK may be re-connect to form???
+
+        # 'Save'-Button
+        if request.POST.get('btn_save'):
+            if active_note:
+                if active_note.text=='':
+                    if active_note.id:
+                        active_note.delete()
+                    active_note = None
+                else:
+                    active_note.save()
+
             active_gadget.note = active_note
 
-        formNote = NoteForm(request.POST or None, instance=active_note)
-        formItem = GadgetForm(request.POST or None, instance=active_gadget)
+            if active_gadget:
+                active_gadget.save()
 
-        if request.POST.get('btn_save'):
-               #???
-            if formNote.is_valid():
-                instance = formNote.save()
-                active_note = instance
-                if active_note and active_note.text=='':
-                    active_note.delete()
-                    active_note = None
-                active_gadget.note = active_note
-
-            if formItem.is_valid():
-                formItem.save()
+            if gadget_id == '0':   # previously new item
+                return HttpResponseRedirect('/gadget/' + str(active_gadget.id))
     else:
         formItem = GadgetForm(instance=active_gadget)
         formNote = NoteForm(instance=active_note)
@@ -318,7 +345,7 @@ def gadget(request, gadget_id):
     elif len(query)==0:
         query = g_tag_query_none
     
-    gadgets = Gadget.objects.filter( query )
+    gadgets = Gadget.objects.filter( project=project_id ).filter( query )
 
     return render(request, 'app/gadget.html', {
         'title': 'Gadget',

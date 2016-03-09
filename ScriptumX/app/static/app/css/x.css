@@ -25,3 +25,11 @@ input[type="checkbox"] {
     padding: 4px;
     
 }
+
+.list-group-item.active {
+    color: #3e444c;
+}
+
+.list-group-item-success.active {
+    color: #3e444c;
+}
