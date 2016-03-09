@@ -13,7 +13,7 @@ from django.utils import timezone
 from django.views.generic import ListView, DetailView
 from os import path
 from django.core.exceptions import ObjectDoesNotExist
-from app.forms import GadgetForm, NoteForm
+from app.forms import NoteForm
 from crispy_forms.utils import render_crispy_form
 from .tags import gadget_tag_list, handleTagRequest, getTagRequestList
 from django.db.models import Q
@@ -75,26 +75,6 @@ class Markov(object):
 		gen_words.append(w2)
 		return ' '.join(gen_words)
 			
-###############################################################################
-
-g_tag_queries = [ 
-    Q(note__isnull=False), 
-    Q(tag1=True), 
-    Q(tag2=True), 
-    Q(tag3=True), 
-    Q(tag4=True), 
-    Q(tag5=True), 
-    Q(tag6=True), 
-    Q(tag7=True), 
-    Q(tag8=True), 
-    Q(tag9=True), 
-    Q(tag10=True), 
-    Q(tag11=True), 
-    Q(tag12=True), 
-    ]
-
-g_tag_query_none = Q(tag1=False) & Q(tag2=False) & Q(tag3=False) & Q(tag4=False) & Q(tag5=False) & Q(tag6=False) & Q(tag7=False) & Q(tag8=False) & Q(tag9=False) & Q(tag10=False) & Q(tag11=False) & Q(tag12=False)
-
 ###############################################################################
 ###############################################################################
 ###############################################################################
@@ -252,123 +232,6 @@ g_tab_list = (
     { 'id':'A', 'name':'Audios',    'href':'/audio',    'img':'app/img/Tab/Audio-24.png' },
     { 'id':'T', 'name':'Schedule',  'href':'/schedule', 'img':'app/img/Tab/Schedule-24.png' },
     )
-
-###############################################################################
-
-def gadget(request, gadget_id):
-    """Handles page requests for Gadgets"""
-    
-    project_id = request.session.get('ProjectID', 1)
-    try:
-        active_user = request.user
-        project = Project.objects.get(pk=project_id, users=active_user)
-    except:
-        project = None
-
-    tag_list = getTagRequestList(request, 'gadget')
-
-    #gadgets = get_list_or_404(Gadget)
-    
-    try:
-        active_gadget = Gadget.objects.get(pk = gadget_id)
-        active_id = active_gadget.id
-        active_note = active_gadget.note
-    except ObjectDoesNotExist:
-        active_gadget = None
-        active_id = None
-        active_note = None
-
-    ### create new gadget object on request '/gadget/0'
-    if gadget_id == '0':
-        active_gadget = Gadget(project=project);
-
-    ### handle buttons
-    if request.method == 'POST':
-        if not active_gadget:   # you shall not pass ... without valid scope
-            raise AssertionError 
-
-        # generate forms and/or get data out of the edited forms
-        formNote = NoteForm(request.POST or None, instance=active_note)
-        if formNote.is_valid():
-            active_note = formNote.instance
-        formItem = GadgetForm(request.POST or None, instance=active_gadget)
-        if formItem.is_valid():
-            active_gadget = formItem.instance
-
-        # 'Delete'-Button
-        if request.POST.get('btn_delete'):
-            if active_note:
-                if active_note.id:
-                    active_note.delete()
-            active_gadget.note = None
-            active_gadget.delete()
-            return HttpResponseRedirect('/gadget/')
-
-        # 'Add Note'-Button
-        if request.POST.get('btn_note'):
-            active_note = Note(author=request.user, created=datetime.now(), project=project)
-            active_gadget.note = active_note
-            #formNote = NoteForm(request.POST or None, instance=active_note) #JK may be re-connect to form???
-
-        # 'Save'-Button
-        if request.POST.get('btn_save'):
-            if active_note:
-                if active_note.text=='':
-                    if active_note.id:
-                        active_note.delete()
-                    active_note = None
-                else:
-                    active_note.save()
-
-            active_gadget.note = active_note
-
-            if active_gadget:
-                active_gadget.save()
-
-            if gadget_id == '0':   # previously new item
-                return HttpResponseRedirect('/gadget/' + str(active_gadget.id))
-    else:
-        formItem = GadgetForm(instance=active_gadget)
-        formNote = NoteForm(instance=active_note)
-    
-    ### conglomerate queries
-    query = Q()
-    for tag in tag_list:
-        if tag['active']:
-            if len(query)==0:
-                query = g_tag_queries[tag['idx']]
-            else:
-                query |= g_tag_queries[tag['idx']]
-
-    if len(query)==len(tag_list):
-        query = Q()
-    elif len(query)==0:
-        query = g_tag_query_none
-    
-    gadgets = Gadget.objects.filter( project=project_id ).filter( query )
-
-    return render(request, 'app/gadget.html', {
-        'title': 'Gadget',
-        'tab_list': g_tab_list,
-        'tab_active_id': 'G',
-        'tag_list': tag_list,
-        'gadgets': gadgets,
-        'active_gadget': active_gadget,
-        'active_id': active_id,
-        'form': formItem,
-        'formNote': formNote,
-        'datetime': datetime.now(),
-        #'error_message': "Please make a selection.",
-    })
-
-
-def gadgetTag(request, tag_id):
-
-    handleTagRequest(request, tag_id, 'gadget')
-
-    return gadget(request, None)
-
-
 
 
 

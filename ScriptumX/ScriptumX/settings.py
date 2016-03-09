@@ -35,8 +35,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
         'DIRS': [
-            #"D:/X/ScriptumX/app/templates",
-            "E:/PRIVAT/X/ScriptumX/app/templates",
+            "D:/X/ScriptumX/app/templates",
+            #"E:/PRIVAT/X/ScriptumX/app/templates",
             ],
         'OPTIONS': {
             'context_processors': [

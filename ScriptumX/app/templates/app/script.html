@@ -1,0 +1,197 @@
+﻿{% extends "app/layout_app.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{############################################################################}}
+
+{% block head %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/bootstrap-slider.css' %}" media="all" />
+<link rel="stylesheet" type="text/css" href="{% static 'app/css/x.css' %}" media="all" />
+<script src="{% static 'app/scripts/bootstrap-slider.js' %}"></script>
+
+{% endblock %}
+
+{############################################################################}}
+
+{% block content %}
+
+<div class="container-fluid" style="height:100%; width:100%;">
+
+	<div id="abc" class="row" style="height:100%;">
+
+	  <div class="col-xs-6 col-md-4" style="height:100%;" >
+		<div class="list-group" style="height:100%; overflow-y:auto">
+
+    		{% for scene in scenes %}
+			
+                <a style="padding:8px" href="/script/{{scene.pk}}"
+                   {% if scene.id == active_id %} 
+                    class="scene list-group-item list-group-item-warning active" id="active_scope"
+                   {% else %} 
+                    class="scene list-group-item"
+                   {% endif %}
+                   >
+
+                    {% if scene.note %}
+                        
+
+                        <img style="margin-left:-4px; margin-top:-4px; " height="16" width="16" src="{% static 'app/img/notes.png' %}" />
+                        
+                    {% endif %}
+
+                    <strong style="margin-right:14px;">{{scene.name}}</strong>
+                    <br/>
+                    <small>{{scene.description}}</small>
+                </a>
+
+	    	{% endfor %}
+
+		</div>
+	  </div>
+
+	  <div class="col-xs-6 col-md-8" style="height:100%; overflow-y:auto; padding:0">
+	  <div class="" style="background-color:#525860; padding:16px; border-radius:4px;">
+
+		  {% if active_scene %}
+
+
+          <form class="form-horizontal" method="post">
+
+            {% if active_scene.note %}
+                <div class="pull-left" style="max-width:12%;">
+                    <img src="{% static 'app/img/note.png' %}" /><br/>
+                    <small>{{ active_scene.note.author }}<br/>
+                    {{ active_scene.note.created|date:"Y-m-d H:i" }}</small>
+                </div>
+                {% crispy formNote formNote.helper %}
+                <hr/>
+            {% endif %}
+
+			   <div class="pull-left">
+                <button style="padding:4px;" type="submit" name="btn_save" value="x" class="btn btn-success btn-xs" formmethod="post">
+                <img height="32" width="32" src="{% static 'app/img/save.png' %}" /><br />Save
+                </button  >
+
+                {% if not active_scene.note %}
+                <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
+                <img height="32" width="32" src="{% static 'app/img/note.png' %}" /><br /><small>Note</small>
+                </button  >
+                {% endif %}
+			   </div>
+                
+              <div class="pull-right">
+                <button style="padding:4px;" type="reset" class="btn btn-default btn-xs" formmethod="post">
+                <img height="32" width="32" src="{% static 'app/img/reset.png' %}" /><br /><small>Reset</small>
+                </button  >
+
+                  <!--
+                <button style="padding:4px;" type="submit" name="delete" value="del" class="btn btn-danger btn-xs" formmethod="post">
+                <img height="32" width="32" src="{% static 'app/img/delete.png' %}" /><br /><small>Delete</small>
+                </button  >
+                -->
+
+
+				<div class="btn-group" role="group">
+					<button style="padding:4px;" type="button" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown">
+                <img height="32" width="32" src="{% static 'app/img/delete.png' %}" /><br />
+						<small>Delete</small>
+						<!--<span class="caret"></span>-->
+					</button>
+					<ul class="dropdown-menu pull-right" style="margin-left:-100px;">
+						<li><center>Sure</center></li>
+						<li><center>to</center></li>
+						<li><center>delete?</center></li>
+						<li role="separator" class="divider"></li>
+						<li><center>
+                            <button style="padding:4px; margin-top:0px;" type="submit" name="btn_delete" value="x" class="btn btn-danger btn-xs" formmethod="post">
+                            <img height="16" width="16" src="{% static 'app/img/delete.png' %}" /> Delete!
+                            </button  >
+                        </center></li>
+					</ul>
+				</div>
+
+			   </div>
+
+
+            {% crispy form form.helper %}
+         
+          </form>
+
+          
+
+ 
+          {% else %}
+
+          Scenes: {{ sceness.count }}
+		  <br />
+
+          {% endif %}
+          </div>
+	  </div>
+
+	</div> <!--row-->
+
+</div>
+
+{% endblock %}
+
+{############################################################################}}
+
+{% block toolbar %}
+{% load staticfiles %}
+
+		<div class="nav container-fixed-top" style="background-color:#3e444c; margin-top:0">
+
+			<div class="nav navbar-header">
+				<a style="margin:4px; padding:0;" class="navbar-text" href="/script">
+					<img src="{% static 'app/img/Tab/Script-64.png' %}" />
+				</a>
+			</div>
+
+			<div class="btn-group-vertical" role="group" style="margin-left:16px">
+				<a href="/script/tag/all" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'app/img/Tab/Common/SelectAll.png' %}" /></a>
+				<a href="/script/tag/none" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'app/img/Tab/Common/SelectNone.png' %}" /></a>
+			</div>
+
+			<div class="btn-group btn-group-xs" role="group" style="margin-left:4px">
+
+				
+                {% for tag in tag_list %}
+				<a href="/script/tag/{{tag.idx}}" 
+                   role="button" 
+                   
+                   {% if tag.active %}
+                        class="btn btn-primary navbar-btn" style="padding:4px" 
+                   {% else %}
+                        class="btn btn-default navbar-btn" style="padding:4px;"   <!-- color:GrayText-->
+                   {% endif %}
+                   >
+                <img src="{% static tag.img %}" />
+                <br />
+                <font size="1">{{tag.name}}</font></a>
+				{% endfor %}
+
+                
+				
+			</div>
+            <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
+
+                <a href="/script/0" 
+                   role="button" 
+                   class="btn btn-default navbar-btn" style="padding:4px" 
+                   >
+                <img height="32" width="32" src="{% static 'app/img/files.png' %}" />
+                <br />
+                <small>New</small></a>
+
+            </div>
+
+            <vr/>
+			<!--<div class="btn-group btn-group-xs" role="group"/>-->
+
+
+		</div>
+{% endblock %}
+
+{############################################################################}}

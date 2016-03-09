@@ -26,7 +26,11 @@
     		{% for gadget in gadgets %}
 			
                 <a style="padding:8px" href="/gadget/{{gadget.pk}}"
-                   {% if gadget.id == active_id %} class="list-group-item list-group-item-success active" id="active_scope"{% else %} class="list-group-item"{% endif %}
+                   {% if gadget.id == active_id %} 
+                    class="gadget list-group-item list-group-item-warning active" id="active_scope"
+                   {% else %} 
+                    class="gadget list-group-item"
+                   {% endif %}
                    >
                     <div class="pull-right" style="margin-right:14px;">
                     {#<img height="32" width="32" src="{% static 'app/img/Scene.png' %}" />#}

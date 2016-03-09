@@ -31,6 +31,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="app\admin.py" />
+    <Compile Include="app\common.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\forms.py" />
     <Compile Include="app\generator.py" />
     <Compile Include="app\importer.py">
@@ -43,6 +46,12 @@
     <Compile Include="app\tests.py" />
     <Compile Include="app\urls.py" />
     <Compile Include="app\views.py" />
+    <Compile Include="app\view_gadget.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="app\view_script.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="app\__init__.py" />
     <Compile Include="manage.py" />
     <Compile Include="ScriptumX\__init__.py" />
@@ -65,6 +74,7 @@
     <Content Include="app\templates\app\gadget.html" />
     <Content Include="app\templates\app\home.html" />
     <Content Include="app\templates\app\layout_app.html" />
+    <Content Include="app\templates\app\script.html" />
     <Content Include="app\templates\app\tmpl_slider_progress.html" />
     <Content Include="db.sqlite" />
     <Content Include="requirements.txt" />
