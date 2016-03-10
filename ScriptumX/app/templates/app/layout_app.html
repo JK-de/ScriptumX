@@ -29,7 +29,7 @@
                 previousHeight = $window.data('previousHeight');
 
             if (height !== previousHeight) {
-                $("#app_container").css('height', height - 160);
+                $("#app_container").css('height', height - 150);
                 $window.data('previousHeight', height);
             }
         };
@@ -41,7 +41,7 @@
 
 </head>
 
-<body style="overflow:auto; padding-top:130px">
+<body style="overflow:auto; padding-top:120px">
 
     <div class="navbar navbar-default navbar-fixed-top" style="margin:0">
 
@@ -59,7 +59,15 @@
                 <ul class="nav nav-tabs" role="tablist" style="padding-bottom:0; margin:0;">
 
                     {% for tab in tab_list %}
-                    <li {%if tab.id == tab_active_id %} class="active"{% endif %}><a style="" href="{{tab.href}}"><img src="{% static tab.img %}"> {{tab.name}}</a></li>
+                    {%if tab.id == tab_active_id %} 
+                            <li class="active">
+                            <a class="{{tab.class}}" href="{{tab.href}}"><img src="{% static tab.img %}"> {{tab.name}}</a>
+                            </li>
+                        {% else %}
+                            <li>
+                            <a href="{{tab.href}}"><img src="{% static tab.img %}"> {{tab.name}}</a>
+                            </li>
+                        {% endif %}
                     {% endfor %}
 
                 </ul>
@@ -70,7 +78,7 @@
 
     </div>
 
-    <div id="app_container" style="margin:0;" class="container-fluid body-content">
+    <div id="app_container" style="margin:0; padding:0;" class="container-fluid body-content">
 
         {% if error_message %}
             <p class="text-danger">aaa{{error_message}}</p>

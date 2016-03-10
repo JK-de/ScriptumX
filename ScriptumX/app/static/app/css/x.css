@@ -30,6 +30,48 @@ input[type="checkbox"] {
     color: #3e444c;
 }
 
-.list-group-item-success.active {
-    color: #3e444c;
+.x-back,
+.a.x-back {
+    background-color: hsl(30, 15%, 15%);
+    margin: 0;
+    padding: 16px;
+}
+
+.x-item-form {
+    background-color: #525860;
+    /*color: hsl(30, 15%, 10%);*/
+    margin-right: 16px; 
+    padding: 16px; 
+    border-radius: 4px;
+}
+
+.x-gadget.nav-tabs > li.active > a {
+    background-color: hsl(30, 30%, 90%) !important;
+    color: hsl(30, 15%, 10%);
+}
+
+a.x-gadget.list-group-item {
+    background-color: hsl(30, 30%, 90%);
+    color: hsl(30, 15%, 10%);
+    padding: 8px;
+    border: 1px solid #CCC;
+}
+
+a.x-gadget.list-group-item:hover {
+    background-color: hsl(30, 30%, 95%);
+}
+
+a.x-gadget.list-group-item.active, 
+.x-gadget.x-item-form {
+    background-color: hsl(30, 15%, 25%);
+    color: hsl(30, 30%, 90%);
+    border: 1px solid hsl(30, 15%, 5%);
+}
+
+a.x-gadget.list-group-item.active:hover {
+    background-color: hsl(30, 15%, 30%);
+}
+/*3e444c*/
+.x-gadget.x-toolbar {
+    background-image: linear-gradient(#3e444c, hsl(30, 15%, 25%));
 }

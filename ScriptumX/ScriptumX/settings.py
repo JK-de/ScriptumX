@@ -5,6 +5,7 @@ Django settings for ScriptumX project.
 from os import path
 import os
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
+print('PROJECT_ROOT: '+PROJECT_ROOT)
 
 DEBUG = True
 #TEMPLATE_DEBUG = DEBUG
@@ -35,8 +36,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
         'DIRS': [
-            "D:/X/ScriptumX/app/templates",
-            #"E:/PRIVAT/X/ScriptumX/app/templates",
+            #"D:/X/ScriptumX/app/templates",
+            path.join(PROJECT_ROOT, 'app/templates'),
             ],
         'OPTIONS': {
             'context_processors': [

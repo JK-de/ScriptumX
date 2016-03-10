@@ -16,7 +16,7 @@
 
 {% block content %}
 
-<div class="container-fluid" style="height:100%; width:100%;">
+<div class="container-fluid x-back" style="height:100%; width:100%;">
 
 	<div id="abc" class="row" style="height:100%;">
 
@@ -27,9 +27,9 @@
 			
                 <a style="padding:8px" href="/gadget/{{gadget.pk}}"
                    {% if gadget.id == active_id %} 
-                    class="gadget list-group-item list-group-item-warning active" id="active_scope"
+                    class="x-gadget list-group-item active" id="active_scope"
                    {% else %} 
-                    class="gadget list-group-item"
+                    class="x-gadget list-group-item"
                    {% endif %}
                    >
                     <div class="pull-right" style="margin-right:14px;">
@@ -76,7 +76,6 @@
 
                     {% if gadget.note %}
                         
-
                         <img style="margin-left:-4px; margin-top:-4px; " height="16" width="16" src="{% static 'app/img/notes.png' %}" />
                         
                     {% endif %}
@@ -92,7 +91,7 @@
 	  </div>
 
 	  <div class="col-xs-6 col-md-8" style="height:100%; overflow-y:auto; padding:0">
-	  <div class="" style="background-color:#525860; padding:16px; border-radius:4px;">
+	  <div class="x-gadget x-item-form">
 
 		  {% if active_gadget %}
 
@@ -304,7 +303,7 @@
 {% block toolbar %}
 {% load staticfiles %}
 
-		<div class="nav container-fixed-top" style="background-color:#3e444c; margin-top:0">
+		<div class="nav container-fixed-top x-gadget x-toolbar" style="margin-top:0">
 
 			<div class="nav navbar-header">
 				<a style="margin:4px; padding:0;" class="navbar-text" href="/gadget">

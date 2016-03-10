@@ -221,16 +221,16 @@ def seed(request):
 #        return None
 
 g_tab_list = (
-    { 'id':'P', 'name':'Project',   'href':'/project',  'img':'app/img/Tab/Project-24.png' },
-    { 'id':'C', 'name':'Script',    'href':'/script',   'img':'app/img/Tab/Script-24.png' },
-    { 'id':'S', 'name':'Scene',     'href':'/scene',    'img':'app/img/Tab/Scene-24.png' },
-    { 'id':'L', 'name':'Locations', 'href':'/set',      'img':'app/img/Tab/Set-24.png' },
-    { 'id':'R', 'name':'Roles',     'href':'/role',     'img':'app/img/Tab/Role-24.png' },
-    { 'id':'F', 'name':'Folks',     'href':'/folk',     'img':'app/img/Tab/Folk-24.png' },
-    { 'id':'G', 'name':'Gadgets',   'href':'/gadget',   'img':'app/img/Tab/Gadget-24.png' },
-    { 'id':'X', 'name':'SFXs',      'href':'/sfx',      'img':'app/img/Tab/SFX-24.png' },
-    { 'id':'A', 'name':'Audios',    'href':'/audio',    'img':'app/img/Tab/Audio-24.png' },
-    { 'id':'T', 'name':'Schedule',  'href':'/schedule', 'img':'app/img/Tab/Schedule-24.png' },
+    { 'id':'P', 'name':'Project',   'href':'/project',  'class':'x-project',  'img':'app/img/Tab/Project-24.png' },
+    { 'id':'C', 'name':'Script',    'href':'/script',   'class':'x-script',   'img':'app/img/Tab/Script-24.png' },
+    { 'id':'S', 'name':'Scene',     'href':'/scene',    'class':'x-scene',    'img':'app/img/Tab/Scene-24.png' },
+    { 'id':'L', 'name':'Locations', 'href':'/set',      'class':'x-set',      'img':'app/img/Tab/Set-24.png' },
+    { 'id':'R', 'name':'Roles',     'href':'/role',     'class':'x-role',     'img':'app/img/Tab/Role-24.png' },
+    { 'id':'F', 'name':'Folks',     'href':'/folk',     'class':'x-folk',     'img':'app/img/Tab/Folk-24.png' },
+    { 'id':'G', 'name':'Gadgets',   'href':'/gadget',   'class':'x-gadget',   'img':'app/img/Tab/Gadget-24.png' },
+    { 'id':'X', 'name':'SFXs',      'href':'/sfx',      'class':'x-sfx',      'img':'app/img/Tab/SFX-24.png' },
+    { 'id':'A', 'name':'Audios',    'href':'/audio',    'class':'x-audio',    'img':'app/img/Tab/Audio-24.png' },
+    { 'id':'T', 'name':'Schedule',  'href':'/schedule', 'class':'x-schedule', 'img':'app/img/Tab/Schedule-24.png' },
     )
 
 

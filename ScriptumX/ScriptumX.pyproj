@@ -64,6 +64,7 @@
     <Folder Include="app\static\" />
     <Folder Include="app\static\app\" />
     <Folder Include="app\static\app\content\" />
+    <Folder Include="app\static\app\css\" />
     <Folder Include="app\static\app\fonts\" />
     <Folder Include="app\static\app\scripts\" />
     <Folder Include="app\templates\" />
@@ -71,6 +72,9 @@
     <Folder Include="ScriptumX\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="app\static\app\css\bootstrap-slider.css" />
+    <Content Include="app\static\app\css\bootstrap-slider.min.css" />
+    <Content Include="app\static\app\css\x.css" />
     <Content Include="app\templates\app\gadget.html" />
     <Content Include="app\templates\app\home.html" />
     <Content Include="app\templates\app\layout_app.html" />
