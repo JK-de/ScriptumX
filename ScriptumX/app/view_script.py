@@ -20,7 +20,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHolder, Div, Field, HTML
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHolder, Div, Field, MultiField, HTML
 from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.utils import render_crispy_form
 
@@ -46,16 +46,29 @@ class SceneForm(forms.ModelForm):
             'tag3',
             'tag4',
             'tag5',
-            'tag6',
-            'tag7',
-            'tag8',
-            'tag9',
-            'tag10',
-            'tag11',
             'name',
             'description',
             'marker_map',
+
+            'variant',
+            'indentation',
+            'color',
+            'duration',
+            'progress_script',
+            'progress_pre',
+            'progress_shot',
+            'progress_post',
+            'script',
+            'set_location',
+            'persons',
+            'gadgets',
+            'audios',
+            'sfxs',
+ 
             ]
+
+
+
 
     def __init__(self, *args, **kwargs):
         super(SceneForm, self).__init__(*args, **kwargs)
@@ -77,9 +90,26 @@ class SceneForm(forms.ModelForm):
                 Div(FormSymbol(scene_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 css_class='col-sm-offset-2', style="margin-top:10px;", 
             ),
-                Field('name'),
+                Div(
+                    Field('name'), 
+                    Field('color', style="width:10%;", ),
+                    ),
+
                 Field('description', style="max-width:100%; min-width:100%;", rows=10),
 
+                #Div(
+                #    'progress_script',
+                #    'progress_pre', 
+                #    'progress_shot',
+                #    'progress_post', 
+                #    template="app/tmpl_slider_scene_progress.html"),
+                Field('progress_script', template="app/tmpl_slider_progress_script.html"),
+                Field('progress_pre', template="app/tmpl_slider_progress_pre.html"),
+                Field('progress_shot', template="app/tmpl_slider_progress_shot.html"),
+                Field('progress_post', template="app/tmpl_slider_progress_post.html"),
+
+                Field('indentation', template="app/tmpl_slider_indentation.html"),
+               
         )
 
     def clean_name(self):

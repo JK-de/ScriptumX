@@ -24,29 +24,54 @@
 		<div class="list-group" style="height:100%; overflow-y:auto">
 
     		{% for scene in scenes %}
-			
-                <a style="padding:8px" href="/script/{{scene.pk}}"
+			    
+                <a href="/script/{{scene.pk}}" style="padding:0; margin-bottom:8px; margin-left:{{scene.indentation}}%; width:60%;"
                    {% if scene.id == active_id %} 
-                    class="scene list-group-item list-group-item-warning active" id="active_scope"
-                   {% else %} 
-                    class="scene list-group-item"
+                    class="x-scene list-group-item panel panel-default active" id="active_scope"
+                   {% else %}
+                    class="x-scene list-group-item panel panel-default"
                    {% endif %}
                    >
 
-                    {% if scene.note %}
 
-                        <img style="margin-left:-4px; margin-top:-4px; " height="16" width="16" src="{% static 'app/img/notes.png' %}" />
+
+                    <div style="margin:0; padding:4px" class="panel-heading">
+                        {% if scene.note %}
+                            <img style="" height="16" width="16" src="{% static 'app/img/notes.png' %}" />
+                        {% endif %}
+
+                        <strong>{{scene.name}}</strong>
+                        <div class="pull-right"><span class="badge">14</span></div>
+                    </div>
+
+                    <div style="margin:0; padding:4px" class="panel-body">
+                        {% if scene.progress_script > 0 or scene.progress_pre > 0 or scene.progress_shot > 0 or scene.progress_post > 0 %}
+                        <div class="pull-right">
+                            <div style="width:48px; height:8px; margin-bottom: 4px;" class="progress">
+                                <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:{{scene.progress_script}}%"></div>
+                            </div>
+                            <div style="width:48px; height:8px; margin-bottom: 4px;" class="progress">
+                                <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:{{scene.progress_pre}}%"></div>
+                            </div>
+                            <div style="width:48px; height:8px; margin-bottom: 4px;" class="progress">
+                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:{{scene.progress_shot}}%"></div>
+                            </div>
+                            <div style="width:48px; height:8px; margin-bottom: 4px;" class="progress">
+                                <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:{{scene.progress_post}}%"></div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <small>{{scene.description}}</small>
+
+                    </div>
                         
-                    {% endif %}
-
-                    <strong style="margin-right:14px;">{{scene.name}}</strong>
-                    <br/>
-                    <small>{{scene.description}}</small>
                 </a>
+        
 
 	    	{% endfor %}
 
 		</div>
+
 	  </div>
 
 	  <div class="col-xs-6" style="height:100%; overflow-y:auto; padding:0">

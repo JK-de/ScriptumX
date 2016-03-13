@@ -2,11 +2,11 @@ from crispy_forms.layout import HTML
 
 scene_tag_list = (
     { 'idx': 0, 'name':'Note',      'img':'app/img/note.png' },
-    { 'idx': 1, 'name':'???Requisite', 'img':'app/img/G/tag/Requisite.png' },
-    { 'idx': 2, 'name':'???Costume',   'img':'app/img/G/tag/Costume.png' },
-    { 'idx': 3, 'name':'???MakeUp',    'img':'app/img/G/tag/MakeUp.png' },
-    { 'idx': 4, 'name':'???Camera',    'img':'app/img/G/tag/Camera.png' },
-    { 'idx': 5, 'name':'???Gaffer',    'img':'app/img/G/tag/Gaffer.png' },
+    { 'idx': 1, 'name':'(1)', 'img':'app/img/Variant/v1.png' },
+    { 'idx': 2, 'name':'(2)', 'img':'app/img/Variant/v2.png' },
+    { 'idx': 3, 'name':'(3)', 'img':'app/img/Variant/v3.png' },
+    { 'idx': 4, 'name':'(4)', 'img':'app/img/Variant/v4.png' },
+    { 'idx': 5, 'name':'(5)', 'img':'app/img/Variant/v5.png' },
     )
 
 gadget_tag_list = (

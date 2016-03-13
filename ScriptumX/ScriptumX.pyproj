@@ -79,7 +79,13 @@
     <Content Include="app\templates\app\home.html" />
     <Content Include="app\templates\app\layout_app.html" />
     <Content Include="app\templates\app\script.html" />
+    <Content Include="app\templates\app\tmpl_slider_indentation.html" />
     <Content Include="app\templates\app\tmpl_slider_progress.html" />
+    <Content Include="app\templates\app\tmpl_slider_progress_post.html" />
+    <Content Include="app\templates\app\tmpl_slider_progress_pre.html" />
+    <Content Include="app\templates\app\tmpl_slider_progress_script.html" />
+    <Content Include="app\templates\app\tmpl_slider_progress_shot.html" />
+    <Content Include="app\templates\app\tmpl_slider_scene_progress.html" />
     <Content Include="db.sqlite" />
     <Content Include="requirements.txt" />
     <Content Include="app\samples.json" />
