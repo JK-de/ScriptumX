@@ -16,35 +16,38 @@
 
 {% block content %}
 
-<div class="container-fluid x-back" style="height:100%; width:100%;">
+<div class="container-fluid x-script x-back" style="height:100%; width:100%;">
 
 	<div id="abc" class="row" style="height:100%;">
 
 	  <div class="col-xs-6" style="height:100%;" >
-		<div class="list-group" style="height:100%; overflow-y:auto">
+		<div class="list-group" style="height:100%; padding:4px; overflow-y:auto; background-color:#444">
 
     		{% for scene in scenes %}
 			    
                 <a href="/script/{{scene.pk}}" style="padding:0; margin-bottom:8px; margin-left:{{scene.indentation}}%; width:60%;"
                    {% if scene.id == active_id %} 
-                    class="x-scene list-group-item panel panel-default active" id="active_scope"
+                    class="x-script list-group-item panel panel-default active" id="active_scope"
                    {% else %}
-                    class="x-scene list-group-item panel panel-default"
+                    class="x-script list-group-item panel panel-default"
                    {% endif %}
                    >
 
 
 
-                    <div style="margin:0; padding:4px" class="panel-heading">
+                    <div style="margin:0; padding:4px" class="x-script panel-heading">
                         {% if scene.note %}
                             <img style="" height="16" width="16" src="{% static 'app/img/notes.png' %}" />
                         {% endif %}
 
                         <strong>{{scene.name}}</strong>
                         <div class="pull-right"><span class="badge">14</span></div>
+                        {% if scene.duration %}
+                            <div style="color:#888; margin-right:4px;" class="pull-right">{{scene.duration}}</div>
+                        {% endif %}
                     </div>
 
-                    <div style="margin:0; padding:4px" class="panel-body">
+                    <div style="margin:0; padding:4px" class="x-script panel-body">
                         {% if scene.progress_script > 0 or scene.progress_pre > 0 or scene.progress_shot > 0 or scene.progress_post > 0 %}
                         <div class="pull-right">
                             <div style="width:48px; height:8px; margin-bottom: 4px;" class="progress">
@@ -74,8 +77,8 @@
 
 	  </div>
 
-	  <div class="col-xs-6" style="height:100%; overflow-y:auto; padding:0">
-	  <div class="x-item-form" style="">
+	  <div class="col-xs-6" style="height:100%; overflow-y:auto; padding:0;">
+	  <div class="x-script x-item-form" style="">
 
 		  {% if active_scene %}
 
@@ -165,7 +168,7 @@
 {% block toolbar %}
 {% load staticfiles %}
 
-		<div class="nav container-fixed-top" style="background-color:#3e444c; margin-top:0">
+		<div class="nav container-fixed-top x-script x-toolbar" style="margin-top:0">
 
 			<div class="nav navbar-header">
 				<a style="margin:4px; padding:0;" class="navbar-text" href="/script">
