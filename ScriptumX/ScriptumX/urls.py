@@ -6,8 +6,8 @@ from datetime import datetime
 from django.conf.urls import patterns, include, url
 from django.conf.urls.static import static
 from django.contrib import admin
-from app.forms import BootstrapAuthenticationForm
-import app
+from X.forms import BootstrapAuthenticationForm
+import X
 import  django.contrib.auth.views
 from . import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
@@ -16,17 +16,17 @@ from django.views.generic.base import RedirectView
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'^', include('app.urls', namespace="app")),
+    url(r'^', include('X.urls', namespace="X")),
 
-    url(r'^$', app.views.home, name='home'),
+    url(r'^$', X.views.home, name='home'),
 
-    url(r'^contact$', app.views.contact, name='contact'),
-    url(r'^about', app.views.about, name='about'),
-    url(r'^seed', app.views.seed, name='seed'),
+    url(r'^contact$', X.views.contact, name='contact'),
+    url(r'^about', X.views.about, name='about'),
+    url(r'^seed', X.views.seed, name='seed'),
     url(r'^login/$',
         django.contrib.auth.views.login,
         {
-            'template_name': 'app/login.html',
+            'template_name': 'X/login.html',
             'authentication_form': BootstrapAuthenticationForm,
             'extra_context':
             {
