@@ -10,6 +10,7 @@ from colorful.fields import RGBColorField   # replaced by colorfield
 from colorfield.fields import ColorField
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from datetime import datetime
 
 ###############################################################################
 
@@ -45,7 +46,12 @@ class Note(models.Model):
     #    related_query_name="note",
     #    null=True, 
     #    blank=False)
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=False)
+    project = models.ForeignKey(Project)
+
+    def __init__(self, *args, **kwargs):
+        super(Note, self).__init__(*args, **kwargs)
+        #self.project = project
+        self.created = datetime.now()
 
     def __str__(self):
         """Returns a string representation of a Note."""
@@ -62,8 +68,6 @@ class BaseModel(models.Model):
     #Props
     name = models.CharField(max_length=50)
     description = models.TextField(blank=True)
-    #tag_map = models.PositiveIntegerField(default=0x7FFFFFFF)
-    #marker_map = models.PositiveIntegerField(default=0)
 
     tag1 = models.BooleanField(default=False, verbose_name='')
     tag2 = models.BooleanField(default=False, verbose_name='')
@@ -79,7 +83,7 @@ class BaseModel(models.Model):
     tag12 = models.BooleanField(default=False, verbose_name='')
 
     # One to Many
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=False)
+    project = models.ForeignKey(Project)
     note = models.ForeignKey(Note, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
@@ -190,7 +194,7 @@ class Role(BaseModel):
     #Props
     color = ColorField(default='#FFFFFF')
     # One to Many
-    actor = models.ForeignKey(Person, on_delete=models.CASCADE, null=True, blank=True)
+    actor = models.ForeignKey(Person, null=True, blank=True)
     # Many to Many
     gadgets = models.ManyToManyField(Gadget, blank=True)
 
@@ -212,7 +216,7 @@ class Script(models.Model):
     version = models.CharField(max_length=50, blank=True)
     copyright = models.CharField(max_length=300, blank=True)
     # One to Many
-    project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=False)
+    project = models.ForeignKey(Project)
     # Many to Many
     persons = models.ManyToManyField(Person, blank=True)
 
@@ -229,26 +233,40 @@ class Scene(BaseModel):
 
     #Props
     order = models.PositiveIntegerField(default=0)
-    short = models.CharField(max_length=5)
+    short = models.CharField(max_length=5, null=True, blank=True)
     abstract = models.TextField(blank=True)
     indentation = models.PositiveIntegerField(default=0)
-    color = ColorField(default='#FFFFFF')
+    color = ColorField(default='#FFFFFF', null=True, blank=True)
     duration = models.DurationField(null=True, blank=True)
     progress_script = models.PositiveSmallIntegerField(default=0)
     progress_pre = models.PositiveSmallIntegerField(default=0)
     progress_shot = models.PositiveSmallIntegerField(default=0)
     progress_post = models.PositiveSmallIntegerField(default=0)
     # One to Many
-    ###project = models.ForeignKey(Project, on_delete=models.CASCADE, null=True, blank=False)
-    script = models.ForeignKey(Script, on_delete=models.CASCADE, null=True, blank=True)
-    set_location = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
+    script = models.ForeignKey(Script)
+    set_location = models.ForeignKey(Location, null=True, blank=True)
     # Many to Many
     #roles = models.ManyToManyField(Role, blank=True)
     persons = models.ManyToManyField(Person, blank=True)
     gadgets = models.ManyToManyField(Gadget, blank=True)
     audios = models.ManyToManyField(Audio, blank=True)
     sfxs = models.ManyToManyField(SFX, blank=True)
-    #locations = models.ManyToManyField(Location)
+
+    def __init__(self, *args, **kwargs):
+        #self.project = project
+        self.tag1 = True
+        self.tag2 = True
+        self.tag3 = True
+        self.tag4 = True
+        self.tag5 = True
+        self.tag6 = True
+        self.tag7 = True
+        self.tag8 = True
+        self.tag9 = True
+        self.tag10 = True
+        self.tag11 = True
+        self.tag12 = True
+        super(Scene, self).__init__(*args, **kwargs)
 
 ###############################################################################
 
@@ -263,8 +281,8 @@ class SceneItem(models.Model):
     text = models.TextField(blank=True)
 
     # Many to Many
-    role = models.ForeignKey(Role, on_delete=models.CASCADE, null=True, blank=True)
-    scene = models.ForeignKey(Scene, on_delete=models.CASCADE, null=True, blank=True)
+    role = models.ForeignKey(Role, null=True, blank=True)
+    scene = models.ForeignKey(Scene, null=True, blank=True)
     
     def __str__(self):
         """Returns a string representation of a DialogItem."""
@@ -281,7 +299,7 @@ class Appointment(BaseModel):
     time_all = models.DateTimeField(null=True, blank=True)
     duration_all = models.DurationField(blank=True, null=True)
     # One to Many
-    meeting_point = models.ForeignKey(Location, on_delete=models.CASCADE, null=True, blank=True)
+    meeting_point = models.ForeignKey(Location, null=True, blank=True)
     # Many to Many
     scenes = models.ManyToManyField(Scene,
         through='Appointment2Scene',
@@ -294,7 +312,7 @@ class Appointment(BaseModel):
 
 class Appointment2Scene(models.Model):
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
-    scene = models.ForeignKey(Scene, on_delete=models.CASCADE)
+    scene = models.ForeignKey(Scene)
     #Props
     time = models.TimeField(null=True, blank=True)
     duration = models.DurationField(null=True, blank=True)

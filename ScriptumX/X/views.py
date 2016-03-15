@@ -164,18 +164,19 @@ def seed(request):
         script = Script.objects.get(pk=1)
     except:
         script = Script()
+        script.project = project
         script.workingtitle = 'Long Story - Short'
         script.abstract = markov.generate_markov_text(random.randint(2, 5))
         script.description = markov.generate_markov_text(random.randint(20, 30))
         script.author = markov.generate_markov_text(random.randint(2, 3))
         script.copyright = markov.generate_markov_text(random.randint(2, 3))
         script.version = '0.1-beta'
-        script.project = project
         script.save()
 
     # generate Gadgets
     for i in range(0, 30):
         gadget = Gadget()
+        gadget.project = project
         gadget.name = markov.generate_markov_text(random.randint(2, 5))
         gadget.description = markov.generate_markov_text(random.randint(5, 50))
         gadget.progress = i
@@ -183,9 +184,8 @@ def seed(request):
         tagRef = gadget.getTag(random.randint(0, 10))
         tagRef = True
         gadget.setTag(random.randint(1, 11), True)
-        gadget.project = project
         if random.randint(0, 5) == 0:
-            n = Note()
+            n = Note(project=project)
             n.text = markov.generate_markov_text(random.randint(5, 50))
             n.save()
             gadget.note = n
@@ -195,14 +195,25 @@ def seed(request):
     # generate SceneItem with linked Scenes
     for s in range(0, 25):
         scene = Scene()
-        scene.name = markov.generate_markov_text(random.randint(5, 7))
-        scene.description = markov.generate_markov_text(random.randint(10, 30))
-        scene.progress_script = i
-        scene.setTag(random.randint(1, 11), False)
-        scene.script = script
         scene.project = project
+        scene.script = script
+        scene.name = markov.generate_markov_text(random.randint(5, 7))
+        scene.short = str(s)
+        scene.abstract = markov.generate_markov_text(random.randint(10, 30))
+        scene.description = markov.generate_markov_text(random.randint(30, 50))
         if random.randint(0, 5) == 0:
-            n = Note()
+            scene.progress_script = random.randint(0, 100)
+        if random.randint(0, 5) == 0:
+            scene.progress_pre = random.randint(0, 100)
+        if random.randint(0, 5) == 0:
+            scene.progress_shot = random.randint(0, 100)
+        if random.randint(0, 5) == 0:
+            scene.progress_post = random.randint(0, 100)
+        if random.randint(0, 5) == 0:
+            scene.indentation = random.randint(0, 5)*10
+        scene.setTag(random.randint(1, 11), False)
+        if random.randint(0, 5) == 0:
+            n = Note(project=project)
             n.text = markov.generate_markov_text(random.randint(5, 50))
             n.save()
             scene.note = n
@@ -213,7 +224,7 @@ def seed(request):
             item.text = markov.generate_markov_text(random.randint(5, 30))
             item.scene = scene
             if random.randint(0, 5) == 0:
-                n = Note()
+                n = Note(project=project)
                 n.text = markov.generate_markov_text(random.randint(5, 50))
                 n.save()
                 item.note = n

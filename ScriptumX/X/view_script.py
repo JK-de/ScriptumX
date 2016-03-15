@@ -172,7 +172,7 @@ def script(request, scene_id):
 
         # 'Add Note'-Button
         if request.POST.get('btn_note'):
-            active_note = Note(author=request.user, created=datetime.now(), project=project)
+            active_note = Note(project=project, author=request.user)
             active_scene.note = active_note
             #formNote = NoteForm(request.POST or None, instance=active_note) #JK may be re-connect to form???
 

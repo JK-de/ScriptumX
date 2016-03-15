@@ -32,9 +32,9 @@
                     class="x-script list-group-item panel panel-default"
                    {% endif %}
                    >
-                    {#---color---#}}
+                    {#---color---#}
                     {% if not scene.color == "#FFFFFF" %}
-                        <div class="pull-left" style="width:24px; height:24px; margin-left:-4px; margin-right:4px; margin-top:2px; border:1px solid #222; border-radius:12px; background-color:{{scene.color}}; box-sizing: border-box"></div>
+                        <div class="pull-left" style="width:24px; height:24px; margin-left:-1px; margin-right:4px; margin-top:-1px; border:0.5px solid #333; border-top-left-radius: 3px; border-top-right-radius: 0px; border-bottom-right-radius: 24px; border-bottom-left-radius: 0px; background-color:{{scene.color}}; box-sizing: border-box"></div>
                     {% endif %}
 
 
@@ -43,17 +43,25 @@
                             <img style="margin-top:-2px; margin-bottom:-2px;" height="24" width="24" src="{% static 'img/notes.png' %}" />
                         {% endif %}
 
-                        {% if scene.tag1 == True or scene.tag2 == True or scene.tag3 == True or scene.tag4 == True or scene.tag5 == True %}
-                        <div class="pull-right"><span class="badge">
-                             {% if scene.tag1 == True %}1{% endif %}
-                             {% if scene.tag2 == True %}2{% endif %}
-                             {% if scene.tag3 == True %}3{% endif %}
-                             {% if scene.tag4 == True %}4{% endif %}
-                             {% if scene.tag5 == True %}5{% endif %}
-                        </span></div>
+                        {% if scene.tag1 == True and scene.tag2 == True and scene.tag3 == True and scene.tag4 == True and scene.tag5 == True %}
+                        {% elif scene.tag1 == True or scene.tag2 == True or scene.tag3 == True or scene.tag4 == True or scene.tag5 == True %}
+                            <div class="pull-right"><span class="badge">
+                                 {% if scene.tag1 == True %}1{% endif %}
+                                 {% if scene.tag2 == True %}2{% endif %}
+                                 {% if scene.tag3 == True %}3{% endif %}
+                                 {% if scene.tag4 == True %}4{% endif %}
+                                 {% if scene.tag5 == True %}5{% endif %}
+                            </span></div>
+                        {% else %}
+                            <div class="pull-right"><span class="badge">&#x2717;</span></div>
                         {% endif %}
+
                         {% if scene.duration %}
                             <div style="color:#888; margin-right:4px;" class="pull-right">{{scene.duration}}</div>
+                        {% endif %}
+
+                        {% if scene.short %}
+                        <strong>[{{scene.short}}]</strong>
                         {% endif %}
 
                         <strong>{{scene.name}}</strong>
@@ -76,7 +84,7 @@
                             </div>
                         </div>
                         {% endif %}
-                        <small>{{scene.description}}</small>
+                        <small>{{scene.abstract}}</small>
 
                     </div>
                         
