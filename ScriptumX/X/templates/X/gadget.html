@@ -2,7 +2,7 @@
 {% load staticfiles %}
 {% load crispy_forms_tags %}
 
-{############################################################################}}
+{############################################################################}
 
 {% block head %}
 
@@ -12,429 +12,250 @@
 
 {% endblock %}
 
-{############################################################################}}
+{############################################################################}
 
 {% block content %}
 
 <div class="container-fluid x-back" style="height:100%; width:100%;">
 
-	<div id="abc" class="row" style="height:100%;">
+    <div id="abc" class="row" style="height:100%;">
 
-	  <div class="col-xs-6 col-md-4" style="height:100%;" >
-		<div class="list-group" style="height:100%; overflow-y:auto">
+        {#--left side list--#}
+        <div class="col-xs-6 col-md-4" style="height:100%;" >
+            <div class="list-group" style="height:100%; overflow-y:auto">
 
-    		{% for gadget in gadgets %}
+                {% for gadget in gadgets %}
 			
-                <a style="padding:8px" href="/gadget/{{gadget.pk}}"
-                   {% if gadget.id == active_id %} 
-                    class="x-gadget list-group-item active" id="active_scope"
-                   {% else %} 
-                    class="x-gadget list-group-item"
-                   {% endif %}
-                   >
-                    <div class="pull-right" style="margin-right:14px;">
-                    {#<img height="32" width="32" src="{% static 'img/Scene.png' %}" />#}
-                    {% for tag in tag_list %}
-					  {% if tag.idx == 1 and gadget.tag1 %}
-						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
-					  {% endif %}
-					  {% if tag.idx == 2 and gadget.tag2 %}
-						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
-					  {% endif %}
-					  {% if tag.idx == 3 and gadget.tag3 %}
-						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
-					  {% endif %}
-					  {% if tag.idx == 4 and gadget.tag4 %}
-						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
-					  {% endif %}
-					  {% if tag.idx == 5 and gadget.tag5 %}
-						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
-					  {% endif %}
-					  {% if tag.idx == 6 and gadget.tag6 %}
-						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
-					  {% endif %}
-					  {% if tag.idx == 7 and gadget.tag7 %}
-						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
-					  {% endif %}
-					  {% if tag.idx == 8 and gadget.tag8 %}
-						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
-					  {% endif %}
-					  {% if tag.idx == 9 and gadget.tag9 %}
-						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
-					  {% endif %}
-					  {% if tag.idx == 10 and gadget.tag10 %}
-						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
-					  {% endif %}
-					  {% if tag.idx == 11 and gadget.tag11 %}
-						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
-					  {% endif %}
-					  {% if tag.idx == 12 and gadget.tag12 %}
-						  <img style="margin-right:-14px;" src="{% static tag.img %}" />
-					  {% endif %}
-					{% endfor %}
-                       </div>
+                    <a style="padding:8px" href="/gadget/{{gadget.pk}}"
+                        {% if gadget.id == active_id %} 
+                            class="x-gadget list-group-item active" id="active_scope"
+                        {% else %} 
+                            class="x-gadget list-group-item"
+                        {% endif %}
+                        >
 
-                    {% if gadget.note %}
+                        {#--tag images--#}
+                        <div class="pull-right" style="margin-right:14px;">
+                            {% for tag in tag_list %}
+                                {% cycle None gadget.tag1 gadget.tag2 gadget.tag3 gadget.tag4 gadget.tag5 gadget.tag6 gadget.tag7 gadget.tag8 gadget.tag9 gadget.tag10 gadget.tag11 as tag_visible silent %}
+                                {% if tag_visible %}
+                                    <img style="margin-right:-14px;" src="{% static tag.img %}" />
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        {#--note--#}
+                        {% if gadget.note %}
+                            <img style="margin-left:-4px; margin-top:-4px; " height="16" width="16" src="{% static 'img/notes.png' %}" />
+                        {% endif %}
+
+                        {#--name--#}
+                        <strong style="margin-right:14px;">{{gadget.name}}</strong>
+                        <br/>
+
+                        {#--description--#}
+                        <small>{% autoescape off %}{{gadget.description|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
+                        {% comment %}
+                        <br/>
+                        <small>{{gadget.description|striptags|truncatewords:42}}</small>
+                        <br/>
+                        <small>{{gadget.description|truncatewords:15}}</small>
+                        {% endcomment %}
+                    </a>
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+        {#--right side details--#}
+        <div class="col-xs-6 col-md-8" style="height:100%; overflow-y:auto; padding:0">
+            <div class="x-gadget x-item-form">
+
+                {% if active_gadget %}
+
+
+                    <form class="form-horizontal" method="post">
+
+                        {#--note--#}
+                        {% if active_gadget.note %}
+                            <div class="pull-left" style="max-width:12%;">
+                                <img src="{% static 'img/note.png' %}" /><br/>
+                                <small>{{ active_gadget.note.author }}<br/>
+                                {{ active_gadget.note.created|date:"Y-m-d H:i" }}</small>
+                            </div>
+                            {% crispy formNote formNote.helper %}
+                            <hr/>
+                        {% endif %}
+
+                        {#--buttons--#}
+                        <div class="pull-left">
                         
-                        <img style="margin-left:-4px; margin-top:-4px; " height="16" width="16" src="{% static 'img/notes.png' %}" />
-                        
-                    {% endif %}
-
-                    <strong style="margin-right:14px;">{{gadget.name}}</strong>
-                    <br/>
-                    <small>{{gadget.description}}</small>
-                </a>
-
-	    	{% endfor %}
-
-		</div>
-	  </div>
-
-	  <div class="col-xs-6 col-md-8" style="height:100%; overflow-y:auto; padding:0">
-	  <div class="x-gadget x-item-form">
-
-		  {% if active_gadget %}
-
-
-          <form class="form-horizontal" method="post">
-
-            {% if active_gadget.note %}
-                <div class="pull-left" style="max-width:12%;">
-                    <img src="{% static 'img/note.png' %}" /><br/>
-                    <small>{{ active_gadget.note.author }}<br/>
-                    {{ active_gadget.note.created|date:"Y-m-d H:i" }}</small>
-                </div>
-                {% crispy formNote formNote.helper %}
-                <hr/>
-            {% endif %}
-
-<!--             <button style="padding:4px; " class="btn btn-default btn-xs" type="button" data-toggle="collapse" data-target="#collapseNote" aria-expanded="false" aria-controls="collapseExample">
-  <img height="32" width="32" src="{% static 'img/notes.png' %}" /><br/>Note
-</button>
--->              
-   <!-- 
-                         <div class="collapse" id="collapseNote">
-              <div class="form-group">
-				<label for="inputNote" class="col-sm-2 control-label">Note</label>
-				<div class="col-sm-10 col-sm-offset-2">
-				  <textarea style="max-width:70%; min-width:70%; background-color:palegoldenrod" rows="4" class="form-control" id="inputNote" name="notex" placeholder="BlaBla" >{{active_gadget.note}}</textarea>
-				</div>
-			  </div>
-			  </div>
-       -->
-			   <div class="pull-left">
-                <button style="padding:4px;" type="submit" name="btn_save" value="x" class="btn btn-success btn-xs" formmethod="post">
-                <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
-                </button  >
-
-                {% if not active_gadget.note %}
-                <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
-                <img height="32" width="32" src="{% static 'img/note.png' %}" /><br /><small>Note</small>
-                </button  >
-                {% endif %}
-			   </div>
-                
-              <div class="pull-right">
-                <button style="padding:4px;" type="reset" class="btn btn-default btn-xs" formmethod="post">
-                <img height="32" width="32" src="{% static 'img/reset.png' %}" /><br /><small>Reset</small>
-                </button  >
-
-                  <!--
-                <button style="padding:4px;" type="submit" name="delete" value="del" class="btn btn-danger btn-xs" formmethod="post">
-                <img height="32" width="32" src="{% static 'img/delete.png' %}" /><br /><small>Delete</small>
-                </button  >
-                -->
-
-
-				<div class="btn-group" role="group">
-					<button style="padding:4px;" type="button" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown">
-                <img height="32" width="32" src="{% static 'img/delete.png' %}" /><br />
-						<small>Delete</small>
-						<!--<span class="caret"></span>-->
-					</button>
-					<ul class="dropdown-menu pull-right" style="margin-left:-100px;">
-						<li><center>Sure</center></li>
-						<li><center>to</center></li>
-						<li><center>delete?</center></li>
-						<li role="separator" class="divider"></li>
-						<li><center>
-                            <button style="padding:4px; margin-top:0px;" type="submit" name="btn_delete" value="x" class="btn btn-danger btn-xs" formmethod="post">
-                            <img height="16" width="16" src="{% static 'img/delete.png' %}" /> Delete!
+                            <button style="padding:4px;" type="submit" name="btn_save" value="x" class="btn btn-success btn-xs" formmethod="post">
+                            <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
                             </button  >
-                        </center></li>
-					</ul>
-				</div>
 
-			   </div>
+                            {% if not active_gadget.note %}
+                            <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
+                            <img height="32" width="32" src="{% static 'img/note.png' %}" /><br /><small>Note</small>
+                            </button  >
+                            {% endif %}
+
+                        </div>
+                
+                        <div class="pull-right">
+
+                            <button style="padding:4px;" type="reset" class="btn btn-default btn-xs" formmethod="post">
+                            <img height="32" width="32" src="{% static 'img/reset.png' %}" /><br /><small>Reset</small>
+                            </button  >
 
 
-            {% crispy form form.helper %}
+                            <div class="btn-group" role="group">
+                                <button style="padding:4px;" type="button" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown">
+                                <img height="32" width="32" src="{% static 'img/delete.png' %}" /><br />
+	                                <small>Delete</small>
+	                                <!--<span class="caret"></span>-->
+                                </button>
+                                <ul class="dropdown-menu pull-right" style="margin-left:-100px;">
+	                                <li><center>Sure</center></li>
+	                                <li><center>to</center></li>
+	                                <li><center>delete?</center></li>
+	                                <li role="separator" class="divider"></li>
+	                                <li><center>
+                                        <button style="padding:4px; margin-top:0px;" type="submit" name="btn_delete" value="x" class="btn btn-danger btn-xs" formmethod="post">
+                                        <img height="16" width="16" src="{% static 'img/delete.png' %}" /> Delete!
+                                        </button  >
+                                    </center></li>
+                                </ul>
+                            </div>
+
+			            </div>
+
+
+                        {#--model form content--#}
+                        {% crispy form form.helper %}
          
-          </form>
+                    </form>
 
-          
+                {% else %}
 
-          <!--
-          ========================================================
-          <form class="form-horizontal" method="POST" action="" border: 1px solid #159;>{% csrf_token %}
+                    Gadgets: {{ gadgets.count }}
+                    <br />
 
-              {{ form|crispy }}
+                {% endif %}
+            </div>
+        </div>
 
-              <input class="btn btn-warning" type="submit" value="Save"/>
-
-          </form>-->
-
-
-          <!--
-          =========================================================================
-		  <div id="abc2" class="row" style="height:100%; border: 1px solid red;">
-
-			 
-		   
- 
-		  <form class="form-horizontal" style="height:100%; border: 1px solid green;">
-              {% csrf_token %}
-
-			 <div class="form-group">
-
-			   <div class="col-sm-2 control-label">
-			  <button style="padding:4px" type="submit" class="btn btn-primary btn-xs" formmethod="post">
-				  <img height="32" width="32" src="{% static 'img/Scene.png' %}" /><br /><font size="1">Save</font>
-			  </button  >
-				   </div>
-
-			 
-				<div style="margin-top:-60px;" class="col-sm-offset-2 col-sm-10">
-					<div style="margin-left:16px;" id="checkboxlist">
-					{% for tag in tag_list %}
-					  <label  class="checkbox-inline">
-						  <img style="margin-left:-35px; padding-left:4px; padding-right:4px;" src="{% static tag.img %}" /><br />
-						<input type="checkbox" id="tag{{tag.idx}}" name="tag{{tag.idx}}" value="tag{{tag.idx}}">
-					  </label>
-					{% endfor %}
-					</div>
-				</div>
-			  </div>
-
-			  <div class="form-group">
-				<label for="inputName" class="col-sm-2 control-label">Name</label>
-				<div class="col-sm-10">
-				  <input type="text" class="form-control" id="inputName" name="name" placeholder="Lorem" value="{{active_gadget.name}}"> 
-				</div>
-			  </div>
-
-			  <div class="form-group">
-				<label for="inputDescription" class="col-sm-2 control-label">Description</label>
-				<div class="col-sm-10">
-				  <textarea style="max-width:98%; min-width:98%;" rows="4" class="form-control" id="inputDescription" name="description" placeholder="BlaBla" >{{active_gadget.description}}</textarea>
-				</div>
-			  </div>
-
-			  <div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-				  <div class="checkbox">
-					<label>
-					  <input type="checkbox"> Remember me
-					</label>
-				  </div>
-				</div>
-			  </div>
-
-			  <div class="form-group">
-				  
-			  
-			  </div>
-
-			  <div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-			  <select multiple class="form-control">
-					{% for tag in tag_list %}
-					<option>{{ tag.name }}</option>
-					{% endfor %}
-				</select>
-				</div>
-			  </div>
-
-			  <div class="form-group">
-				<label for="inputName" class="col-sm-2 control-label">Name</label>
-				<div class="col-sm-10">
-				  <input type="text" class="form-control" id="inputName" name="marker_map" placeholder="Lorem" value="{{active_gadget.marker_map}}"> 
-				</div>
-			  </div>
-
-			  <div class="form-group">
-				<label for="inputName" class="col-sm-2 control-label">Name</label>
-				<div class="col-sm-10">
-				  <input type="text" class="form-control" id="inputName" name="progress" placeholder="Lorem" value="{{active_gadget.progress}}"> 
-				</div>
-			  </div>
-
-			  <div class="form-group">
-				<div class="col-sm-offset-2 col-sm-10">
-				  <button type="submit" class="btn btn-default">Save</button>
-				</div>
-			  </div>
-
-			</form>
-
-              DEBUG:<br/>
-              		  {{active_gadget.name}}<br/>{{active_gadget.description}}<br/><br/><br/>
-
-
-	  </div>
-          -->
-          {% else %}
-
-          Gadgets: {{ gadgets.count }}
-		  <br />
-
-          {% endif %}
-          </div>
-	  </div>
-
-	</div> <!--row-->
+    </div> <!--row-->
 
 </div>
 
 {% endblock %}
 
-{############################################################################}}
+{############################################################################}
 
 {% block toolbar %}
 {% load staticfiles %}
 
-		<div class="nav container-fixed-top x-gadget x-toolbar" style="margin-top:0">
+<div class="nav container-fixed-top x-gadget x-toolbar" style="margin-top:0">
 
-			<div class="nav navbar-header">
-				<a style="margin:4px; padding:0;" class="navbar-text" href="/gadget">
-					<img src="{% static 'img/Tab/Gadget-64.png' %}" />
-				</a>
-			</div>
+    <div class="nav navbar-header">
+        <a style="margin:4px; padding:0;" class="navbar-text" href="/gadget">
+            <img src="{% static 'img/Tab/Gadget-64.png' %}" />
+        </a>
+    </div>
 
-			<div class="btn-group-vertical" role="group" style="margin-left:16px">
-				<a href="/gadget/tag/all" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/Tab/Common/SelectAll.png' %}" /></a>
-				<a href="/gadget/tag/none" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/Tab/Common/SelectNone.png' %}" /></a>
-			</div>
+    <div class="btn-group-vertical" role="group" style="margin-left:16px">
+        <a href="/gadget/tag/all" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/Tab/Common/SelectAll.png' %}" /></a>
+        <a href="/gadget/tag/none" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/Tab/Common/SelectNone.png' %}" /></a>
+    </div>
 
-			<div class="btn-group btn-group-xs" role="group" style="margin-left:4px">
+    <div class="btn-group btn-group-xs" role="group" style="margin-left:4px">
 
 				
-                {% for tag in tag_list %}
-				<a href="/gadget/tag/{{tag.idx}}" 
-                   role="button" 
+        {% for tag in tag_list %}
+            <a href="/gadget/tag/{{tag.idx}}" role="button" 
                    
-                   {% if tag.active %}
-                        class="btn btn-primary navbar-btn" style="padding:4px" 
-                   {% else %}
-                        class="btn btn-default navbar-btn" style="padding:4px;"   <!-- color:GrayText-->
-                   {% endif %}
-                   >
-                <img src="{% static tag.img %}" />
-                <br />
-                <font size="1">{{tag.name}}</font></a>
-				{% endfor %}
+                {% if tag.active %}
+                    class="btn btn-primary navbar-btn" style="padding:4px" 
+                {% else %}
+                    class="btn btn-default navbar-btn" style="padding:4px;"
+                {% endif %}
+            >
+            <img src="{% static tag.img %}" />
+            <br />
+            <font size="1">{{tag.name}}</font></a>
+        {% endfor %}
 
                 
 				
-			</div>
-            <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
+	</div>
 
-                <a href="/gadget/0" 
-                   role="button" 
-                   class="btn btn-default navbar-btn" style="padding:4px" 
-                   >
-                <img height="32" width="32" src="{% static 'img/files.png' %}" />
-                <br />
-                <small>New</small></a>
+    {#--button new--#}
+    <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
+        <a href="/gadget/0" role="button" 
+            class="btn btn-default navbar-btn" style="padding:4px" 
+            >
+            <img height="32" width="32" src="{% static 'img/files.png' %}" />
+            <br />
+            <small>New</small>
+        </a>
+    </div>
 
-            </div>
 
-            <vr/>
-			<!--<div class="btn-group btn-group-xs" role="group"/>-->
+	<div class="navbar-right" role="group" style="margin-right:16px;">
 
-			<div class="navbar-right" role="group" style="margin-right:16px;">
-
-				<div class="btn-group btn-group-xs" role="group" style="">
-					<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
-						<img height="32" width="32" src="{% static 'img/Paste.png' %}" /><br />
-						<small>Report</small>
-						<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="/" target="_blank">Report 1 in new window</a></li>
-						<li><a href="/" target="_top">Report 2 in top</a></li>
-						<li><a href="/" target="_parent">Report 3 in parent</a></li>
-						<li role="separator" class="divider"></li>
-						<li><a href="#">Report 4</a></li>
-						<li><a href="#">Report 5</a></li>
-						<li><a href="#">Report 6</a></li>
-						<li><a href="#">Report 7</a></li>
-					</ul>
-				</div>
-
-				<div class="btn-group btn-group-xs" role="group" style="">
-					<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
-						<img height="32" width="32" src="{% static 'img/Paste.png' %}" /><br />
-						<small>Summary</small>
-						<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">Summary 1</a></li>
-						<li><a href="#">Summary 2</a></li>
-						<li role="separator" class="divider"></li>
-						<li><a href="#">Summary 3</a></li>
-					</ul>
-				</div>
-		
-				<div class="btn-group btn-group-xs" role="group" style="">
-					<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
-						<img height="32" width="32" src="{% static 'img/Paste.png' %}" /><br />
-						<small>Matrix</small>
-						<span class="caret"></span>
-					</button>
-					<ul class="dropdown-menu" role="menu">
-						<li><a href="#">Matrix 1</a></li>
-						<li><a href="#">Matrix 2</a></li>
-						<li><a href="#">Matrix 3</a></li>
-						<li><a href="#">Matrix 4</a></li>
-						<li><a href="#">Matrix 5</a></li>
-						<li><a href="#">Matrix 6</a></li>
-					</ul>
-				</div>
-		
-<!--
-				<a href="#" style="padding:4px;" role="button" class="btn btn-warning navbar-btn"><img height="32" width="32" src="{% static 'img/diagnostic.png' %}" /><br /><small>List</small></a>
-
-				<div style="" class="btn-group-vertical" role="group">
-					<a href="#" style="padding:4px" role="button" class="btn btn-default btn-xs"><img height="32" width="32" src="{% static 'img/Paste.png' %}" /></a>
-					<button style="padding:0px;" type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-						<span style="color:white; " class="caret"></span>
-						<span class="sr-only">Toggle Dropdown</span>
-					</button>
-					<ul class="dropdown-menu">
-						<li><a href="#">Action</a></li>
-						<li><a href="#">Another action</a></li>
-						<li><a href="#">Something else here</a></li>
-						<li role="separator" class="divider"></li>
-						<li><a href="#">Separated link</a></li>
-					</ul>
-				</div>
--->			   
-				
-
-				<!--<button type="button" class="btn navbar-btn btn-default"><span class="glyphicon glyphicon-star" aria-hidden="true"></span><br />Test</button>-->
-
-				<!--Search-->
-				<!--<form class="navbar-form navbar-left" role="search">
-			<div class="form-group">
-				<input type="text" class="form-control" placeholder="Search">
-			</div>
-			<button type="submit" class="btn btn-default">Submit</button>
-		</form>-->
-
-			</div>
-
+		<div class="btn-group btn-group-xs" role="group" style="">
+			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+				<img height="32" width="32" src="{% static 'img/Paste.png' %}" /><br />
+				<small>Item</small>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="/" target="_blank">Report 1 in new window</a></li>
+				<li><a href="/" target="_top">Report 2 in top</a></li>
+				<li><a href="/" target="_parent">Report 3 in parent</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Report 4</a></li>
+				<li><a href="#">Report 5</a></li>
+				<li><a href="#">Report 6</a></li>
+				<li><a href="#">Report 7</a></li>
+			</ul>
 		</div>
+
+		<div class="btn-group btn-group-xs" role="group" style="">
+			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+				<img height="32" width="32" src="{% static 'img/Paste.png' %}" /><br />
+				<small>List</small>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="#">Summary 1</a></li>
+				<li><a href="#">Summary 2</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Summary 3</a></li>
+			</ul>
+		</div>
+		
+		<div class="btn-group btn-group-xs" role="group" style="">
+			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+				<img height="32" width="32" src="{% static 'img/Paste.png' %}" /><br />
+				<small>Matrix</small>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="#">Matrix 1</a></li>
+				<li><a href="#">Matrix 2</a></li>
+				<li><a href="#">Matrix 3</a></li>
+				<li><a href="#">Matrix 4</a></li>
+				<li><a href="#">Matrix 5</a></li>
+				<li><a href="#">Matrix 6</a></li>
+			</ul>
+		</div>
+
+	</div>
+
+</div>
 {% endblock %}
 
-{############################################################################}}
+{############################################################################}

@@ -18,6 +18,7 @@ from django.db.models import Q
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.functions import Lower
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHolder, Div, Field, HTML
@@ -232,7 +233,7 @@ def gadget(request, gadget_id):
     elif len(query)==0:
         query = g_tag_query_none
     
-    gadgets = Gadget.objects.filter( project=project_id ).filter( query )
+    gadgets = Gadget.objects.filter( project=project_id ).filter( query ).order_by(Lower('name'))
 
     return render(request, 'X/gadget.html', {
         'title': 'Gadget',

@@ -20,7 +20,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHolder, Div, Field, MultiField, HTML
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHolder, Div, Field, MultiField, HTML, Row, Column
 from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.utils import render_crispy_form
 
@@ -90,11 +90,35 @@ class SceneForm(forms.ModelForm):
                 Div(FormSymbol(scene_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 css_class='col-sm-offset-2', style="margin-top:10px;", 
             ),
-                Div(
-                    Field('name', css_class='col-sm-6',), 
-                    Field('short', css_class='col-sm-2',),
-                    css_class='row',
-                    ),
+#                MultiField( 'TEXT1', 
+#                    #Field('name', field_class='col-sm-4', style="max-width:30%; min-width:3%;", ), 
+#                    #Field('short', field_class='col-sm-1',style="max-width:10%; min-width:1%;", ),
+#                    Field('name', field_class='col-sm-4', ), 
+#                    Field('short', field_class='col-sm-3',),
+#                    #css_class='row',
+#                    ),
+##field_class = ‘’
+#Layout(
+#    Column(
+#        'name',
+#        'short',
+        
+#    )
+#),
+#Layout(
+#    Column(
+#                    Field('name', css_class='col-sm-4', ), 
+#                    Field('short', css_class='col-sm-1', ),
+                  
+#    )
+#),
+#    Column(
+#                    Field('name', css_class='col-sm-4', ), 
+#                    Field('short', css_class='col-sm-1', ),
+             
+#    ),
+                    Field('name', css_class='col-sm-4', ), 
+                    Field('short', css_class='col-sm-1', ),
 
                 Field('abstract', style="max-width:100%; min-width:100%;", rows=2),
 

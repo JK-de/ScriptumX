@@ -4,6 +4,7 @@ Django settings for ScriptumX project.
 
 from os import path
 import os
+
 PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
 print('>>> PROJECT_ROOT: '+PROJECT_ROOT)
 
@@ -189,3 +190,7 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
+#try:
+#    execfile(os.path.join(os.path.dirname(__file__), "local_settings.py"))
+#except IOError:
+#    pass
