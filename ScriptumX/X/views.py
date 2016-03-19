@@ -25,6 +25,96 @@ from X.views import Q
 
 #http://agiliq.com/blog/2009/06/generating-pseudo-random-text-with-markov-chains-u/
 
+
+from X.common import *
+
+from .importer import ImporterBase
+
+
+def test(request):
+
+    env = Env(request)
+
+    html_parser = html.parser.HTMLParser()
+
+    pattern = re.compile(r'''
+        <p                      # begin of paragraph block - opening pattern
+        .*?                     # any other token
+        class="(?P<key>.*?)"    # Header name
+        .*?                     # any other token
+        >                       # begin of paragraph block - closing pattern
+        (?P<value>.*?)          # content
+        </p>                    # end of paragraph block
+        ''', re.VERBOSE | re.MULTILINE | re.DOTALL)
+
+    pattern_ws = r'&nbsp;|<br>|\n|:$'
+
+    keys = {}
+
+
+    with open('/tmp/test.celtx', 'rb') as f:
+
+        #data = mmap.mmap(f.fileno(), 0)
+        data_b = f.read()
+        data = data_b.decode('cp1252', 'ignore')   # 'utf-8' 'ascii'
+
+        for match in re.finditer(pattern, data):
+            #print(match)
+
+            #key = match.group(1)
+            #value = match.group(2)
+            key = match.group('key')
+            value_raw = match.group('value')
+
+            value = re.sub(pattern_ws, r' ', value_raw)
+            value = value.strip()
+            #if s.endswith(" "): s = s[:-1]
+            #if s.startswith(" "): s = s[1:]
+
+            value = re.sub(r'<span style="font-weight: bold;">(.*?)</span>', r'<b>\1</b>', value)   # replace bold token with shorter one
+
+
+            #value = html.unescape(value)
+            try:
+                value = html_parser.unescape(value)
+            except:
+                pass
+
+            value = value.replace('´', "'")   # '&acute;' -> '´' -> UnicodeEncodeError : 'charmap' codec can't encode character '\xb4' in position 18: character maps to <undefined>
+
+
+            if key=='action':
+                pass
+
+            elif key=='character':
+                value = re.sub(r'\s+', r' ', value)
+                value = value.rstrip(':')
+                pass
+
+            elif key=='parenthetical':
+                pass
+
+            elif key=='dialog':
+                pass
+
+            elif key=='shot':
+                pass
+            elif key=='sceneheading':
+                pass
+
+            elif key=='transition':
+                pass
+
+
+            print(key + '|' + value + '|')
+
+            keys[key] = value
+
+        print(keys)
+        f.close()
+
+
+
 ###############################################################################
 
 class Markov(object):
@@ -84,6 +174,12 @@ class Markov(object):
 def home(request):
     """Handles home page"""
     
+    env = Env(request)
+
+    imp = ImporterBase(env)
+    imp.doImport('/tmp/test.celtx')
+   
+
     return render(request, 'X/home.html', {
         'title': 'Home',
         'datetime': datetime.now(),

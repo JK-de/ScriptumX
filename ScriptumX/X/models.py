@@ -277,7 +277,7 @@ class SceneItem(models.Model):
 
     #Props
     order = models.PositiveIntegerField(default=0)
-    parenthetical = models.CharField(max_length=100, blank=True)
+    parenthetical = models.CharField(max_length=100, null=True, blank=True)
     text = models.TextField(blank=True)
 
     # Many to Many

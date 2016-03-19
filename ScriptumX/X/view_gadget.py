@@ -145,13 +145,9 @@ class GadgetForm(forms.ModelForm):
 
 def gadget(request, gadget_id):
     """Handles page requests for Gadgets"""
-    
-    project_id = request.session.get('ProjectID', 1)
-    try:
-        active_user = request.user
-        project = Project.objects.get(pk=project_id, users=active_user)
-    except:
-        project = None
+
+    env = Env(request)
+
 
     tag_list = getTagRequestList(request, 'gadget')
 
@@ -168,7 +164,7 @@ def gadget(request, gadget_id):
 
     ### create new gadget object on request '/gadget/0'
     if gadget_id == '0':
-        active_gadget = Gadget(project=project);
+        active_gadget = Gadget(project=env.project);
 
     ### handle buttons
     if request.method == 'POST':
@@ -194,7 +190,7 @@ def gadget(request, gadget_id):
 
         # 'Add Note'-Button
         if request.POST.get('btn_note'):
-            active_note = Note(project=project, author=request.user )
+            active_note = Note(project=env.project, author=env.user )
             active_gadget.note = active_note
             #formNote = NoteForm(request.POST or None, instance=active_note) #JK may be re-connect to form???
 
@@ -233,10 +229,11 @@ def gadget(request, gadget_id):
     elif len(query)==0:
         query = g_tag_query_none
     
-    gadgets = Gadget.objects.filter( project=project_id ).filter( query ).order_by(Lower('name'))
+    gadgets = Gadget.objects.filter( project=env.project_id ).filter( query ).order_by(Lower('name'))
 
     return render(request, 'X/gadget.html', {
         'title': 'Gadget',
+        'env': env,
         'tab_list': g_tab_list,
         'tab_active_id': 'G',
         'tag_list': tag_list,

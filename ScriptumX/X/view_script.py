@@ -150,12 +150,7 @@ class SceneForm(forms.ModelForm):
 def script(request, scene_id):
     """Handles page requests for Script"""
     
-    project_id = request.session.get('ProjectID', 1)
-    try:
-        active_user = request.user
-        project = Project.objects.get(pk=project_id) #, users=active_user)
-    except:
-        project = None
+    env = Env(request)
 
     tag_list = getTagRequestList(request, 'scene')
     
@@ -170,7 +165,7 @@ def script(request, scene_id):
 
     ### create new scene object on request '/script/0'
     if scene_id == '0':
-        active_scene = Scene(project=project);
+        active_scene = Scene(project=env.project, script=env.script);
 
     ### handle buttons
     if request.method == 'POST':
@@ -196,7 +191,7 @@ def script(request, scene_id):
 
         # 'Add Note'-Button
         if request.POST.get('btn_note'):
-            active_note = Note(project=project, author=request.user)
+            active_note = Note(project=env.project, author=env.user)
             active_scene.note = active_note
             #formNote = NoteForm(request.POST or None, instance=active_note) #JK may be re-connect to form???
 
@@ -235,7 +230,7 @@ def script(request, scene_id):
     elif len(query)==0:
         query = g_tag_query_none
     
-    scenes = Scene.objects.filter( project=project_id ).filter( query )
+    scenes = Scene.objects.filter( project=env.project_id, script=env.script_id ).filter( query )
 
     return render(request, 'X/script.html', {
         'title': 'Script',
