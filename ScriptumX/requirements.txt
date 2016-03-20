@@ -1,2 +1,5 @@
-django<2
-pytz
+Django==1.9.4
+django-colorfield==0.1.10
+django-colorful==1.1.0
+django-crispy-forms==1.6.0
+pytz==2016.1

@@ -174,10 +174,10 @@ class Markov(object):
 def home(request):
     """Handles home page"""
     
-    env = Env(request)
+    #env = Env(request)
 
-    imp = ImporterBase(env)
-    imp.doImport('/tmp/test.celtx')
+    #imp = ImporterBase(env)
+    #imp.doImport('/tmp/test.celtx')
    
 
     return render(request, 'X/home.html', {

@@ -1,6 +1,9 @@
 
 import re, mmap
 import html
+from os import path
+from datetime import datetime
+import random
 
 from .models import *
 from X.common import *
@@ -126,9 +129,10 @@ class ImporterBase():
 
 ###############################################################################
 
-    def addSceneItem(self, role_name, parenthetical, text):
+    def addSceneItem(self, type, role_name, parenthetical, text):
 
         sceneItem = SceneItem()
+        sceneItem.type = type
         if role_name:
             sceneItem.role = self.getRole(role_name)
         else:
@@ -163,7 +167,7 @@ class ImporterBase():
     def doImport(self, filename):
 
         actRole = None
-        actParenthetical = None
+        actParenthetical = ''
 
         html_parser = html.parser.HTMLParser()
 
@@ -179,7 +183,6 @@ class ImporterBase():
 
         pattern_ws = r'&nbsp;|<br>|\n|:$'
 
-        keys = {}
 
 
         with open(filename, 'rb') as f:
@@ -191,7 +194,7 @@ class ImporterBase():
             if data[0] != 'P' or data[1] != 'K':
                 pass
 
-            self.addScript('import from celtx')
+            self.addScript('import from celtx ' + str(datetime.now()))
 
             for match in re.finditer(pattern, data):
                 #print(match)
@@ -206,7 +209,11 @@ class ImporterBase():
                 #if s.endswith(" "): s = s[:-1]
                 #if s.startswith(" "): s = s[1:]
 
+                if value=='':
+                    continue
+
                 value = re.sub(r'<span style="font-weight: bold;">(.*?)</span>', r'<b>\1</b>', value)   # replace bold token with shorter one
+                value = re.sub(r'<span style="text-decoration: underline;">(.*?)</span>', r'<u>\1</u>', value)   # replace underline token with shorter one
 
 
                 #value = html.unescape(value)
@@ -219,7 +226,7 @@ class ImporterBase():
 
 
                 if key=='action':
-                    self.addSceneItem(None, None, value)
+                    self.addSceneItem('A', None, '', value)
                     pass
 
                 elif key=='character':
@@ -233,8 +240,8 @@ class ImporterBase():
                     pass
 
                 elif key=='dialog':
-                    self.addSceneItem(actRole, actParenthetical, value)
-                    actParenthetical = None
+                    self.addSceneItem('D', actRole, actParenthetical, value)
+                    actParenthetical = ''
                     pass
 
                 elif key=='shot':
@@ -249,9 +256,7 @@ class ImporterBase():
 
                 print(key + '|' + value + '|')
 
-                keys[key] = value
 
-            print(keys)
             f.close()
 
             pass

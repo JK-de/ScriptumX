@@ -70,11 +70,11 @@ class GadgetForm(forms.ModelForm):
         self.helper.form_tag = False
         self.helper.layout = Layout(
 
-            ButtonHolder(
+            #ButtonHolder(
                 #Submit('submit', '<i class="fa fa-floppy-o fa-2x"/> Save', css_class='btn btn-default')
                 #Submit('submit', 'Save', css_class='btn btn-primary'),
                 #Submit('delete', 'Del', css_class='btn btn-danger'),
-            ),
+            #),
             Div(
                 Div(FormSymbol(gadget_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(gadget_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
@@ -87,11 +87,16 @@ class GadgetForm(forms.ModelForm):
                 Div(FormSymbol(gadget_tag_list[9]['img']),  Field('tag9'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(gadget_tag_list[10]['img']), Field('tag10'), style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(gadget_tag_list[11]['img']), Field('tag11'), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                css_class='col-sm-offset-2', style="margin-top:10px;", 
+                css_class='col-sm-offset-2', style="margin-top:0px;", 
             ),
             #Fieldset(
                 #'first arg is the legend of the fieldset',
-                Field('name'),
+                Field('name', style="width:30em; min-width:30em; max-width:100%; "),
+
+                #Field('progress', template="./templates/X/tmpl_slider_progress.html"),
+                #Field('progress', template="D:/X/ScriptumX/X/templates/X/tmpl_slider_progress.html"),
+                Field('progress', template="X/tmpl_slider_progress.html"),
+
                 Field('description', style="max-width:100%; min-width:100%;", rows=10),
 
 #Div(  data-provide="slider", data-slider-min="0", data-slider-max="100", data-slider-step="1"
@@ -119,9 +124,6 @@ class GadgetForm(forms.ModelForm):
 
                 #Field('progress'),
 
-                #Field('progress', template="./templates/X/tmpl_slider_progress.html"),
-                #Field('progress', template="D:/X/ScriptumX/X/templates/X/tmpl_slider_progress.html"),
-                Field('progress', template="X/tmpl_slider_progress.html"),
 
                 #Div(
                 #    'progress',
@@ -231,7 +233,7 @@ def gadget(request, gadget_id):
     
     gadgets = Gadget.objects.filter( project=env.project_id ).filter( query ).order_by(Lower('name'))
 
-    return render(request, 'X/gadget.html', {
+    return render(request, 'X/gadgets.html', {
         'title': 'Gadget',
         'env': env,
         'tab_list': g_tab_list,

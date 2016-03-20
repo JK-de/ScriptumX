@@ -50,7 +50,6 @@ class SceneForm(forms.ModelForm):
             'short',
             'abstract',
             'description',
-
             'indentation',
             'color',
             'duration',
@@ -58,13 +57,11 @@ class SceneForm(forms.ModelForm):
             'progress_pre',
             'progress_shot',
             'progress_post',
-            'script',
             'set_location',
             'persons',
             'gadgets',
             'audios',
             'sfxs',
- 
             ]
 
 
@@ -88,7 +85,7 @@ class SceneForm(forms.ModelForm):
                 Div(FormSymbol(scene_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(scene_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(scene_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                css_class='col-sm-offset-2', style="margin-top:10px;", 
+                css_class='col-sm-offset-2', style="margin-top:0px;", 
             ),
 #                MultiField( 'TEXT1', 
 #                    #Field('name', field_class='col-sm-4', style="max-width:30%; min-width:3%;", ), 
@@ -117,27 +114,25 @@ class SceneForm(forms.ModelForm):
 #                    Field('short', css_class='col-sm-1', ),
              
 #    ),
-                    Field('name', css_class='col-sm-4', ), 
-                    Field('short', css_class='col-sm-1', ),
+                Field('name', style="max-width:30em; min-width:30em;" ), 
+                Field('short', style="max-width:5em; min-width:5em;", ),
+                Field('duration', style="max-width:10em; min-width:10em;", ),
+
+                Field('set_location'),
 
                 Field('abstract', style="max-width:100%; min-width:100%;", rows=2),
 
-                # http://jscolor.com/examples/
-                Field('color', style="width:10%;", css_class="jscolor {width:243, height:150, position:'right', borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}"),
+                Field('indentation', template="X/tmpl_slider_indentation.html"),
 
-                #Div(
-                #    'progress_script',
-                #    'progress_pre', 
-                #    'progress_shot',
-                #    'progress_post', 
-                #    template="X/tmpl_slider_scene_progress.html"),
                 Field('progress_script', template="X/tmpl_slider_progress_script.html"),
                 Field('progress_pre', template="X/tmpl_slider_progress_pre.html"),
                 Field('progress_shot', template="X/tmpl_slider_progress_shot.html"),
                 Field('progress_post', template="X/tmpl_slider_progress_post.html"),
 
-                Field('indentation', template="X/tmpl_slider_indentation.html"),
                
+                # http://jscolor.com/examples/
+                Field('color', style="width:10%;", css_class="jscolor {width:243, height:150, position:'right', borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}"),
+
                 Field('description', style="max-width:100%; min-width:100%;", rows=10),
         )
 

@@ -19,7 +19,7 @@ def get_sentinel_user():
 
 class Project(models.Model):
     #Props
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=50)
     # One to Many
     ###creater = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
     #        models.ForeignKey(settings.AUTH_USER_MODEL)
@@ -159,6 +159,21 @@ class BaseModel(models.Model):
             self.tag12,
             )
 
+    def setAllTags(self, value):
+        #self.project = project
+        self.tag1 = value
+        self.tag2 = value
+        self.tag3 = value
+        self.tag4 = value
+        self.tag5 = value
+        self.tag6 = value
+        self.tag7 = value
+        self.tag8 = value
+        self.tag9 = value
+        self.tag10 = value
+        self.tag11 = value
+        self.tag12 = value
+
 ###############################################################################
 
 class Gadget(BaseModel):
@@ -233,7 +248,7 @@ class Scene(BaseModel):
 
     #Props
     order = models.PositiveIntegerField(default=0)
-    short = models.CharField(max_length=5, null=True, blank=True)
+    short = models.CharField(max_length=5, blank=True, default='')
     abstract = models.TextField(blank=True)
     indentation = models.PositiveIntegerField(default=0)
     color = ColorField(default='#FFFFFF', null=True, blank=True)
@@ -254,18 +269,7 @@ class Scene(BaseModel):
 
     def __init__(self, *args, **kwargs):
         #self.project = project
-        self.tag1 = True
-        self.tag2 = True
-        self.tag3 = True
-        self.tag4 = True
-        self.tag5 = True
-        self.tag6 = True
-        self.tag7 = True
-        self.tag8 = True
-        self.tag9 = True
-        self.tag10 = True
-        self.tag11 = True
-        self.tag12 = True
+        self.setAllTags(True)   #JKJKJK
         super(Scene, self).__init__(*args, **kwargs)
 
 ###############################################################################
@@ -277,7 +281,8 @@ class SceneItem(models.Model):
 
     #Props
     order = models.PositiveIntegerField(default=0)
-    parenthetical = models.CharField(max_length=100, null=True, blank=True)
+    type = models.CharField(max_length=1, blank=True, default='')
+    parenthetical = models.CharField(max_length=100, blank=True, default='')
     text = models.TextField(blank=True)
 
     # Many to Many

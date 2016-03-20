@@ -5,24 +5,6 @@ Customizations for the Django administration interface.
 from django.contrib import admin
 from X.models import *
 
-#class ChoiceInline(admin.TabularInline):
-#    """Choice objects can be edited inline in the Poll editor."""
-#    model = Choice
-#    extra = 3
-
-#class PollAdmin(admin.ModelAdmin):
-#    """Definition of the Poll editor."""
-#    fieldsets = [
-#        (None, {'fields': ['text']}),
-#        ('Date information', {'fields': ['pub_date']}),
-#    ]
-#    inlines = [ChoiceInline]
-#    list_display = ('text', 'pub_date')
-#    list_filter = ['pub_date']
-#    search_fields = ['text']
-#    date_hierarchy = 'pub_date'
-
-#admin.site.register(Poll, PollAdmin)
 
 class ProjectAdmin(admin.ModelAdmin):
     """Definition of the Project editor."""
@@ -32,7 +14,7 @@ class ProjectAdmin(admin.ModelAdmin):
     ]
     #inlines = [ChoiceInline]
     list_display = ('name',)
-    list_filter = ['name']
+    #list_filter = ['name']
     search_fields = ['name']
     #date_hierarchy = 'pub_date'
 
@@ -45,7 +27,7 @@ class NoteAdmin(admin.ModelAdmin):
         ('_12M', {'fields': ['project', 'author']}),
     ]
     list_display = ('created', 'text', 'project')
-    list_filter = ['text']
+    list_filter = ['project']
     search_fields = ['text']
 
 admin.site.register(Note, NoteAdmin)
@@ -59,7 +41,7 @@ class GadgetAdmin(admin.ModelAdmin):
     ]
     #inlines = [ChoiceInline]
     list_display = ('name', 'description')
-    list_filter = ['name']
+    list_filter = ['project']
     search_fields = ['name']
     #date_hierarchy = 'pub_date'
 
@@ -74,7 +56,7 @@ class AudioAdmin(admin.ModelAdmin):
     ]
     #inlines = [ChoiceInline]
     list_display = ('name', 'description')
-    list_filter = ['name']
+    list_filter = ['project']
     search_fields = ['name']
     #date_hierarchy = 'pub_date'
 
@@ -89,7 +71,7 @@ class SfxAdmin(admin.ModelAdmin):
     ]
     #inlines = [ChoiceInline]
     list_display = ('name', 'description')
-    list_filter = ['name']
+    list_filter = ['project']
     search_fields = ['name']
     #date_hierarchy = 'pub_date'
 
@@ -104,7 +86,7 @@ class PersonAdmin(admin.ModelAdmin):
     ]
     #inlines = [ChoiceInline]
     list_display = ('name', 'description')
-    list_filter = ['name']
+    list_filter = ['project']
     search_fields = ['name']
     #date_hierarchy = 'pub_date'
 
@@ -121,7 +103,7 @@ class RoleAdmin(admin.ModelAdmin):
     ]
     #inlines = [ChoiceInline]
     list_display = ('name', 'description')
-    list_filter = ['name']
+    list_filter = ['project']
     search_fields = ['name']
     #date_hierarchy = 'pub_date'
 
@@ -136,7 +118,7 @@ class LocationAdmin(admin.ModelAdmin):
     ]
     #inlines = [ChoiceInline]
     list_display = ('name', 'description')
-    list_filter = ['name']
+    list_filter = ['project']
     search_fields = ['name']
     #date_hierarchy = 'pub_date'
 
@@ -151,8 +133,8 @@ class ScriptAdmin(admin.ModelAdmin):
         ('_M2M', {'fields': ['persons']}),
     ]
     #inlines = [ChoiceInline]
-    list_display = ('workingtitle', 'description')
-    list_filter = ['workingtitle']
+    list_display = ('workingtitle', 'abstract', 'description')
+    list_filter = ['project']
     search_fields = ['workingtitle']
     #date_hierarchy = 'pub_date'
 
@@ -168,8 +150,8 @@ class SceneAdmin(admin.ModelAdmin):
         ('_M2M', {'fields': ['persons', 'gadgets', 'audios', 'sfxs']}),
     ]
     #inlines = [ChoiceInline]
-    list_display = ('short', 'name', 'abstract')
-    list_filter = ['name']
+    list_display = ('name', 'short', 'order', 'abstract')
+    list_filter = ['project', 'script']
     search_fields = ['name']
     #date_hierarchy = 'pub_date'
 
@@ -178,11 +160,11 @@ admin.site.register(Scene, SceneAdmin)
 class SceneItemAdmin(admin.ModelAdmin):
     """Definition of the SceneItem editor."""
     fieldsets = [
-        ('_Prop', {'fields': ['order', 'parenthetical', 'text']}),
+        ('_Prop', {'fields': ['order', 'type', 'parenthetical', 'text']}),
         ('_12M', {'fields': ['role', 'scene']}),
     ]
-    list_display = ('order', 'text')
-    list_filter = ['order']
+    list_display = ('type', 'text', 'order')
+    list_filter = ['scene']
     search_fields = ['text']
     #date_hierarchy = 'order'
 
