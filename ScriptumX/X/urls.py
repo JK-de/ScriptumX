@@ -44,7 +44,7 @@ urlpatterns = [
     url(r'^sfx/(?P<sfx_id>\d+)?$', X.view_sfxs.sfx, name='sfx'),
     url(r'^sfx/tag/(?P<tag_id>\w+)?$', X.view_sfxs.sfxTag, name='sfxTag'),
 
-    url(r'^scheduler/(?P<scheduler_id>\d+)?$', X.view_scheduler.scheduler, name='scheduler'),
+    url(r'^scheduler/(?P<appointment_id>\d+)?$', X.view_scheduler.scheduler, name='scheduler'),
     url(r'^scheduler/tag/(?P<tag_id>\w+)?$', X.view_scheduler.schedulerTag, name='schedulerTag'),
 
     #url(r'^project/(?P<id>\d+)?$', X.views.dummy, name='dummy'),

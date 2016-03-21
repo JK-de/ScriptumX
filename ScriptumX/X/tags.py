@@ -1,5 +1,20 @@
 from crispy_forms.layout import HTML
 
+project_tag_list = (
+    { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
+    { 'idx': 1, 'name':'<1>',       'img':'img/favorits.png' },
+    { 'idx': 2, 'name':'<2>',       'img':'img/favorits.png' },
+    { 'idx': 3, 'name':'<3>',       'img':'img/favorits.png' },
+    { 'idx': 4, 'name':'<4>',       'img':'img/favorits.png' },
+    { 'idx': 5, 'name':'<5>',       'img':'img/favorits.png' },
+    { 'idx': 6, 'name':'<6>',       'img':'img/favorits.png' },
+    { 'idx': 7, 'name':'<7>',       'img':'img/favorits.png' },
+    { 'idx': 8, 'name':'<8>',       'img':'img/favorits.png' },
+    { 'idx': 9, 'name':'<9>',       'img':'img/favorits.png' },
+    { 'idx':10, 'name':'<10>',      'img':'img/favorits.png' },
+    { 'idx':11, 'name':'<11>',      'img':'img/favorits.png' },
+    )
+
 scene_tag_list = (
     { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
     { 'idx': 1, 'name':'1', 'img':'img/variant/v1.png' },
@@ -7,6 +22,66 @@ scene_tag_list = (
     { 'idx': 3, 'name':'3', 'img':'img/variant/v3.png' },
     { 'idx': 4, 'name':'4', 'img':'img/variant/v4.png' },
     { 'idx': 5, 'name':'5', 'img':'img/variant/v5.png' },
+    )
+
+sceneitem_tag_list = (
+    { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
+    { 'idx': 1, 'name':'<1>',       'img':'img/favorits.png' },
+    { 'idx': 2, 'name':'<2>',       'img':'img/favorits.png' },
+    { 'idx': 3, 'name':'<3>',       'img':'img/favorits.png' },
+    { 'idx': 4, 'name':'<4>',       'img':'img/favorits.png' },
+    { 'idx': 5, 'name':'<5>',       'img':'img/favorits.png' },
+    { 'idx': 6, 'name':'<6>',       'img':'img/favorits.png' },
+    { 'idx': 7, 'name':'<7>',       'img':'img/favorits.png' },
+    { 'idx': 8, 'name':'<8>',       'img':'img/favorits.png' },
+    { 'idx': 9, 'name':'<9>',       'img':'img/favorits.png' },
+    { 'idx':10, 'name':'<10>',      'img':'img/favorits.png' },
+    { 'idx':11, 'name':'<11>',      'img':'img/favorits.png' },
+    )
+
+role_tag_list = (
+    { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
+    { 'idx': 1, 'name':'Male',      'img':'img/r/tag/male.png' },
+    { 'idx': 2, 'name':'Female',    'img':'img/r/tag/female.png' },
+    { 'idx': 3, 'name':'Other',     'img':'img/r/tag/other.png' },
+    { 'idx': 4, 'name':'<4>',       'img':'img/favorits.png' },
+    { 'idx': 5, 'name':'<5>',       'img':'img/favorits.png' },
+    { 'idx': 6, 'name':'<6>',       'img':'img/favorits.png' },
+    { 'idx': 7, 'name':'<7>',       'img':'img/favorits.png' },
+    { 'idx': 8, 'name':'<8>',       'img':'img/favorits.png' },
+    { 'idx': 9, 'name':'<9>',       'img':'img/favorits.png' },
+    { 'idx':10, 'name':'<10>',      'img':'img/favorits.png' },
+    { 'idx':11, 'name':'<11>',      'img':'img/favorits.png' },
+    )
+
+person_tag_list = (
+    { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
+    { 'idx': 1, 'name':'Actor',     'img':'img/f/tag/actor.png' },
+    { 'idx': 2, 'name':'Extra',     'img':'img/f/tag/extra.png' },
+    { 'idx': 3, 'name':'Stant',     'img':'img/f/tag/extra.png' },
+    { 'idx': 4, 'name':'Crew',      'img':'img/f/tag/crew.png' },
+    { 'idx': 5, 'name':'Prod',      'img':'img/f/tag/prod.png' },
+    { 'idx': 6, 'name':'Post',      'img':'img/f/tag/post.png' },
+    { 'idx': 7, 'name':'Service',   'img':'img/f/tag/service.png' },
+    { 'idx': 8, 'name':'Sponsor',   'img':'img/f/tag/sponsor.png' },
+    { 'idx': 9, 'name':'Press',     'img':'img/f/tag/press.png' },
+    { 'idx':10, 'name':'Fan',       'img':'img/f/tag/none.png' },
+    { 'idx':11, 'name':'Universal', 'img':'img/f/tag/universal.png' },
+    )
+
+location_tag_list = (
+    { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
+    { 'idx': 1, 'name':'Intern',    'img':'img/l/tag/intern.png' },
+    { 'idx': 2, 'name':'Extern',    'img':'img/l/tag/extern.png' },
+    { 'idx': 3, 'name':'Green',     'img':'img/l/tag/greenscreen.png' },
+    { 'idx': 4, 'name':'Blue',      'img':'img/l/tag/bluescreen.png' },
+    { 'idx': 5, 'name':'Unknown',   'img':'img/l/tag/unknown.png' },
+    { 'idx': 6, 'name':'<6>',       'img':'img/l/tag/set.png' },
+    { 'idx': 7, 'name':'<7>',       'img':'img/l/tag/set.png' },
+    { 'idx': 8, 'name':'<8>',       'img':'img/l/tag/set.png' },
+    { 'idx': 9, 'name':'<9>',       'img':'img/l/tag/set.png' },
+    { 'idx':10, 'name':'<10>',      'img':'img/l/tag/set.png' },
+    { 'idx':11, 'name':'<11>',      'img':'img/l/tag/set.png' },
     )
 
 gadget_tag_list = (
@@ -24,19 +99,57 @@ gadget_tag_list = (
     { 'idx':11, 'name':'Catering',  'img':'img/g/tag/catering.png' },
     )
 
-project_tag_list = gadget_tag_list
-sceneitem_tag_list = gadget_tag_list
-role_tag_list = gadget_tag_list
-location_tag_list = gadget_tag_list
-audio_tag_list = gadget_tag_list
-sfx_tag_list = gadget_tag_list
-appointment_tag_list = gadget_tag_list
+audio_tag_list = (
+    { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
+    { 'idx': 1, 'name':'<1>',       'img':'img/favorits.png' },
+    { 'idx': 2, 'name':'<2>',       'img':'img/favorits.png' },
+    { 'idx': 3, 'name':'<3>',       'img':'img/favorits.png' },
+    { 'idx': 4, 'name':'<4>',       'img':'img/favorits.png' },
+    { 'idx': 5, 'name':'<5>',       'img':'img/favorits.png' },
+    { 'idx': 6, 'name':'<6>',       'img':'img/favorits.png' },
+    { 'idx': 7, 'name':'<7>',       'img':'img/favorits.png' },
+    { 'idx': 8, 'name':'<8>',       'img':'img/favorits.png' },
+    { 'idx': 9, 'name':'<9>',       'img':'img/favorits.png' },
+    { 'idx':10, 'name':'<10>',      'img':'img/favorits.png' },
+    { 'idx':11, 'name':'<11>',      'img':'img/favorits.png' },
+    )
+
+sfx_tag_list = (
+    { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
+    { 'idx': 1, 'name':'<1>',       'img':'img/favorits.png' },
+    { 'idx': 2, 'name':'<2>',       'img':'img/favorits.png' },
+    { 'idx': 3, 'name':'<3>',       'img':'img/favorits.png' },
+    { 'idx': 4, 'name':'<4>',       'img':'img/favorits.png' },
+    { 'idx': 5, 'name':'<5>',       'img':'img/favorits.png' },
+    { 'idx': 6, 'name':'<6>',       'img':'img/favorits.png' },
+    { 'idx': 7, 'name':'<7>',       'img':'img/favorits.png' },
+    { 'idx': 8, 'name':'<8>',       'img':'img/favorits.png' },
+    { 'idx': 9, 'name':'<9>',       'img':'img/favorits.png' },
+    { 'idx':10, 'name':'<10>',      'img':'img/favorits.png' },
+    { 'idx':11, 'name':'<11>',      'img':'img/favorits.png' },
+    )
+
+appointment_tag_list = (
+    { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
+    { 'idx': 1, 'name':'<1>',       'img':'img/favorits.png' },
+    { 'idx': 2, 'name':'<2>',       'img':'img/favorits.png' },
+    { 'idx': 3, 'name':'<3>',       'img':'img/favorits.png' },
+    { 'idx': 4, 'name':'<4>',       'img':'img/favorits.png' },
+    { 'idx': 5, 'name':'<5>',       'img':'img/favorits.png' },
+    { 'idx': 6, 'name':'<6>',       'img':'img/favorits.png' },
+    { 'idx': 7, 'name':'<7>',       'img':'img/favorits.png' },
+    { 'idx': 8, 'name':'<8>',       'img':'img/favorits.png' },
+    { 'idx': 9, 'name':'<9>',       'img':'img/favorits.png' },
+    { 'idx':10, 'name':'<10>',      'img':'img/favorits.png' },
+    { 'idx':11, 'name':'<11>',      'img':'img/favorits.png' },
+    )
 
 all_tag_list = {}
 all_tag_list['project']     = project_tag_list   #TODO
 all_tag_list['scene']       = scene_tag_list
 all_tag_list['sceneitem']   = sceneitem_tag_list   #TODO
 all_tag_list['role']        = role_tag_list   #TODO
+all_tag_list['person']      = person_tag_list   #TODO
 all_tag_list['location']    = location_tag_list   #TODO
 all_tag_list['gadget']      = gadget_tag_list
 all_tag_list['audio']       = audio_tag_list   #TODO

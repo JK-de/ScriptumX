@@ -21,12 +21,12 @@
     <div id="abc" class="row" style="height:100%;">
 
         {#--left side list--#}
-        <div class="col-xs-6 col-md-4" style="height:100%;" >
+        <div class="col-xs-6 col-md-6" style="height:100%;" >
             <div class="list-group" style="height:100%; overflow-y:auto">
 
                 {% for sceneitem in sceneitems %}
 			
-                    <a style="padding:8px" href="/sceneitem/{{sceneitem.pk}}"
+                    <a style="padding:8px" href="/scene/{{sceneitem.pk}}"
                         {% if sceneitem.id == active_id %} 
                             class="x-sceneitem list-group-item active" id="active_scope"
                         {% else %} 
@@ -49,12 +49,14 @@
                             <img style="margin-left:-4px; margin-top:-4px; " height="16" width="16" src="{% static 'img/notes.png' %}" />
                         {% endif %}
 
-                        {#--name--#}
-                        <strong style="margin-right:14px;">{{sceneitem.name}}</strong>
+                        {#--role--#}
+                        {% if sceneitem.role %}
+                        <strong style="margin-left:4em;">{{sceneitem.role}}</strong>
                         <br/>
+                        {% endif %}
 
                         {#--description--#}
-                        <small>{% autoescape off %}{{sceneitem.description|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
+                        {% autoescape off %}{{sceneitem.text|removetags:"a span"|truncatewords:42}}{% endautoescape %}
                         {% comment %}
                         <br/>
                         <small>{{sceneitem.description|striptags|truncatewords:42}}</small>
@@ -69,7 +71,7 @@
         </div>
 
         {#--right side details--#}
-        <div class="col-xs-6 col-md-8" style="height:100%; overflow-y:auto; padding:0">
+        <div class="col-xs-6 col-md-6" style="height:100%; overflow-y:auto; padding:0">
             <div class="x-sceneitem x-item-form">
 
                 {% if active_sceneitem %}
@@ -160,21 +162,21 @@
 <div class="nav container-fixed-top x-sceneitem x-toolbar" style="margin-top:0">
 
     <div class="nav navbar-header">
-        <a style="margin:4px; padding:0;" class="navbar-text" href="/sceneitem">
-            <img src="{% static 'img/tab/sceneitem-64.png' %}" />
+        <a style="margin:4px; padding:0;" class="navbar-text" href="/scene">
+            <img src="{% static 'img/tab/scene-64.png' %}" />
         </a>
     </div>
 
     <div class="btn-group-vertical" role="group" style="margin-left:16px">
-        <a href="/sceneitem/tag/all" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/tab/common/selectall.png' %}" /></a>
-        <a href="/sceneitem/tag/none" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/tab/common/selectnone.png' %}" /></a>
+        <a href="/scene/tag/all" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/tab/common/selectall.png' %}" /></a>
+        <a href="/scene/tag/none" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/tab/common/selectnone.png' %}" /></a>
     </div>
 
     <div class="btn-group btn-group-xs" role="group" style="margin-left:4px">
 
 				
         {% for tag in tag_list %}
-            <a href="/sceneitem/tag/{{tag.idx}}" role="button" 
+            <a href="/scene/tag/{{tag.idx}}" role="button" 
                    
                 {% if tag.active %}
                     class="btn btn-primary navbar-btn" style="padding:4px" 
@@ -193,7 +195,7 @@
 
     {#--button new--#}
     <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
-        <a href="/sceneitem/0" role="button" 
+        <a href="/scene/0" role="button" 
             class="btn btn-default navbar-btn" style="padding:4px" 
             >
             <img height="32" width="32" src="{% static 'img/files.png' %}" />

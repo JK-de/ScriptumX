@@ -90,7 +90,7 @@ def scene(request, sceneitem_id):
 
     ### create new sceneitem object on request '/scene/0'
     if sceneitem_id == '0':
-        active_sceneitem = SceneItem(project=env.project);
+        active_sceneitem = SceneItem(script=env.script, scene=env.scene);
 
     ### handle buttons
     if request.method == 'POST':
@@ -142,22 +142,23 @@ def scene(request, sceneitem_id):
         formNote = NoteForm(instance=active_note)
     
     ### conglomerate queries
-    query = Q()
-    for tag in tag_list:
-        if tag['active']:
-            if len(query)==0:
-                query = g_tag_queries[tag['idx']]
-            else:
-                query |= g_tag_queries[tag['idx']]
+    #query = Q()
+    #for tag in tag_list:
+    #    if tag['active']:
+    #        if len(query)==0:
+    #            query = g_tag_queries[tag['idx']]
+    #        else:
+    #            query |= g_tag_queries[tag['idx']]
 
-    if len(query)==len(tag_list):
-        query = Q()
-    elif len(query)==0:
-        query = g_tag_query_none
+    #if len(query)==len(tag_list):
+    #    query = Q()
+    #elif len(query)==0:
+    #    query = g_tag_query_none
     
-    sceneitems = SceneItem.objects.filter( project=env.project_id ).filter( query ).order_by(Lower('name'))
+    #filter(script=env.script, scene=env.scene)
+    sceneitems = SceneItem.objects.all().order_by(Lower('order'))
 
-    return render(request, 'X/scenes.html', {
+    return render(request, 'X/scene.html', {
         'title': 'SceneItem',
         'env': env,
         'tab_list': g_tab_list,

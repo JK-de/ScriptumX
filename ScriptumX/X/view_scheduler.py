@@ -53,7 +53,6 @@ class AppointmentForm(forms.ModelForm):
             'tag11',
             'name',
             'description',
-            'progress',
             ]
 
     def __init__(self, *args, **kwargs):
@@ -84,7 +83,7 @@ class AppointmentForm(forms.ModelForm):
 
             Field('name', style="width:30em; min-width:30em; max-width:100%; "),
 
-            Field('progress', template="X/tmpl_slider_progress.html"),
+            #Field('progress', template="X/tmpl_slider_progress.html"),
 
             Field('description', style="max-width:100%; min-width:100%;", rows=10),
             )
@@ -95,7 +94,7 @@ class AppointmentForm(forms.ModelForm):
 
 ###############################################################################
 
-def appointment(request, appointment_id):
+def scheduler(request, appointment_id):
     """Handles page requests for Appointments"""
 
     env = Env(request)
@@ -200,7 +199,7 @@ def appointment(request, appointment_id):
 
 ###############################################################################
 
-def appointmentTag(request, tag_id):
+def schedulerTag(request, tag_id):
 
     handleTagRequest(request, tag_id, 'appointment')
 
