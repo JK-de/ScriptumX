@@ -1,0 +1,210 @@
+﻿{% extends "X/layout_X.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{############################################################################}
+
+{% block head %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'X/css/bootstrap-slider.css' %}" media="all" />
+<link rel="stylesheet" type="text/css" href="{% static 'X/css/x.css' %}" media="all" />
+<script src="{% static 'X/scripts/bootstrap-slider.js' %}"></script>
+
+{% endblock %}
+
+{############################################################################}
+
+{% block content %}
+
+<div class="container-fluid x-back" style="height:100%; width:100%;">
+
+    <div id="abc" class="row" style="height:100%;">
+
+        {#--left side list--#}
+        <div class="col-xs-6 col-md-4" style="height:100%;" >
+            <div class="list-group" style="height:100%; overflow-y:auto">
+
+                {% for project in projects %}
+			
+                    <a style="padding:8px" href="/project/{{project.pk}}"
+                        {% if project.id == active_id %} 
+                            class="x-project list-group-item active" id="active_scope"
+                        {% else %} 
+                            class="x-project list-group-item"
+                        {% endif %}
+                        >
+
+                        {#--tag images--#}
+                        <div class="pull-right" style="margin-right:14px;">
+                            {% for tag in tag_list %}
+                                {% cycle None project.tag1 project.tag2 project.tag3 project.tag4 project.tag5 project.tag6 project.tag7 project.tag8 project.tag9 project.tag10 project.tag11 as tag_visible silent %}
+                                {% if tag_visible %}
+                                    <img style="margin-right:-14px;" src="{% static tag.img %}" />
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+
+                        {#--note--#}
+                        {% if project.note %}
+                            <img style="margin-left:-4px; margin-top:-4px; " height="16" width="16" src="{% static 'img/notes.png' %}" />
+                        {% endif %}
+
+                        {#--name--#}
+                        <strong style="margin-right:14px;">{{project.name}}</strong>
+                        <br/>
+
+                        {#--description--#}
+                        <small>{% autoescape off %}{{project.description|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
+                        {% comment %}
+                        <br/>
+                        <small>{{project.description|striptags|truncatewords:42}}</small>
+                        <br/>
+                        <small>{{project.description|truncatewords:15}}</small>
+                        {% endcomment %}
+                    </a>
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+        {#--right side details--#}
+        <div class="col-xs-6 col-md-8" style="height:100%; overflow-y:auto; padding:0">
+            <div class="x-project x-item-form">
+
+                {% if active_project %}
+
+
+                    <form class="form-horizontal" method="post">
+
+                        {#--note--#}
+                        {% if active_project.note %}
+                            <div class="pull-left" style="max-width:12%;">
+                                <img src="{% static 'img/note.png' %}" /><br/>
+                                <small>{{ active_project.note.author }}<br/>
+                                {{ active_project.note.created|date:"Y-m-d H:i" }}</small>
+                            </div>
+                            {% crispy formNote formNote.helper %}
+                            <hr/>
+                        {% endif %}
+
+                        {#--buttons--#}
+                        <div class="pull-left">
+                        
+                            <button style="padding:4px;" type="submit" name="btn_save" value="x" class="btn btn-success btn-xs" formmethod="post">
+                            <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
+                            </button  >
+
+                            {% if not active_project.note %}
+                            <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
+                            <img height="32" width="32" src="{% static 'img/note.png' %}" /><br /><small>Note</small>
+                            </button  >
+                            {% endif %}
+
+                        </div>
+                
+                        <div class="pull-right">
+
+                            <button style="padding:4px;" type="reset" class="btn btn-default btn-xs" formmethod="post">
+                            <img height="32" width="32" src="{% static 'img/reset.png' %}" /><br /><small>Reset</small>
+                            </button  >
+
+
+                            <div class="btn-group" role="group">
+                                <button style="padding:4px;" type="button" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown">
+                                <img height="32" width="32" src="{% static 'img/delete.png' %}" /><br />
+	                                <small>Delete</small>
+	                                <!--<span class="caret"></span>-->
+                                </button>
+                                <ul class="dropdown-menu pull-right" style="margin-left:-100px;">
+	                                <li><center>Sure</center></li>
+	                                <li><center>to</center></li>
+	                                <li><center>delete?</center></li>
+	                                <li role="separator" class="divider"></li>
+	                                <li><center>
+                                        <button style="padding:4px; margin-top:0px;" type="submit" name="btn_delete" value="x" class="btn btn-danger btn-xs" formmethod="post">
+                                        <img height="16" width="16" src="{% static 'img/delete.png' %}" /> Delete!
+                                        </button  >
+                                    </center></li>
+                                </ul>
+                            </div>
+
+			            </div>
+
+
+                        {#--model form content--#}
+                        {% crispy form form.helper %}
+         
+                    </form>
+
+                {% else %}
+
+                    Audio Items: {{ projects.count }}
+                    <br />
+
+                {% endif %}
+            </div>
+        </div>
+
+    </div> <!--row-->
+
+</div>
+
+{% endblock %}
+
+{############################################################################}
+
+{% block toolbar %}
+{% load staticfiles %}
+
+<div class="nav container-fixed-top x-project x-toolbar" style="margin-top:0">
+
+    <div class="nav navbar-header">
+        <a style="margin:4px; padding:0;" class="navbar-text" href="/project">
+            <img src="{% static 'img/tab/project-64.png' %}" />
+        </a>
+    </div>
+
+    <div class="btn-group-vertical" role="group" style="margin-left:16px">
+        <a href="/project/tag/all" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/tab/common/selectall.png' %}" /></a>
+        <a href="/project/tag/none" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/tab/common/selectnone.png' %}" /></a>
+    </div>
+
+    <div class="btn-group btn-group-xs" role="group" style="margin-left:4px">
+
+				
+        {% for tag in tag_list %}
+            <a href="/project/tag/{{tag.idx}}" role="button" 
+                   
+                {% if tag.active %}
+                    class="btn btn-primary navbar-btn" style="padding:4px" 
+                {% else %}
+                    class="btn btn-default navbar-btn" style="padding:4px;"
+                {% endif %}
+            >
+            <img src="{% static tag.img %}" />
+            <br />
+            <font size="1">{{tag.name}}</font></a>
+        {% endfor %}
+
+                
+				
+	</div>
+
+    {#--button new--#}
+    <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
+        <a href="/project/0" role="button" 
+            class="btn btn-default navbar-btn" style="padding:4px" 
+            >
+            <img height="32" width="32" src="{% static 'img/files.png' %}" />
+            <br />
+            <small>New</small>
+        </a>
+    </div>
+
+
+
+</div>
+{% endblock %}
+
+{############################################################################}

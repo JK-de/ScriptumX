@@ -24,9 +24,24 @@ gadget_tag_list = (
     { 'idx':11, 'name':'Catering',  'img':'img/g/tag/catering.png' },
     )
 
+project_tag_list = gadget_tag_list
+sceneitem_tag_list = gadget_tag_list
+role_tag_list = gadget_tag_list
+location_tag_list = gadget_tag_list
+audio_tag_list = gadget_tag_list
+sfx_tag_list = gadget_tag_list
+appointment_tag_list = gadget_tag_list
+
 all_tag_list = {}
-all_tag_list['scene'] = scene_tag_list
-all_tag_list['gadget'] = gadget_tag_list
+all_tag_list['project']     = project_tag_list   #TODO
+all_tag_list['scene']       = scene_tag_list
+all_tag_list['sceneitem']   = sceneitem_tag_list   #TODO
+all_tag_list['role']        = role_tag_list   #TODO
+all_tag_list['location']    = location_tag_list   #TODO
+all_tag_list['gadget']      = gadget_tag_list
+all_tag_list['audio']       = audio_tag_list   #TODO
+all_tag_list['sfx']         = sfx_tag_list   #TODO
+all_tag_list['appointment'] = appointment_tag_list   #TODO
 
 
 def FormSymbol(imageName):

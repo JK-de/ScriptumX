@@ -21,12 +21,10 @@ class Project(models.Model):
     #Props
     name = models.CharField(max_length=50)
     # One to Many
-    ###creater = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=False)
-    #        models.ForeignKey(settings.AUTH_USER_MODEL)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="project_owned",)
     # Many to Many
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL,
-        #on_delete=models.SET(get_sentinel_user), 
-        blank=True)
+    users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="project_user", blank=True)
+    readers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="project_reader", blank=True)
 
     def __str__(self):
         """Returns a string representation of a Script."""

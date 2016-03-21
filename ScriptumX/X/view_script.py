@@ -35,7 +35,6 @@ from .tags import FormSymbol, scene_tag_list, handleTagRequest, getTagRequestLis
 
 ###############################################################################
 
-
 class SceneForm(forms.ModelForm):
     """Edit form for Script model"""
     class Meta:

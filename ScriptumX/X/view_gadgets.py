@@ -36,7 +36,6 @@ from .tags import FormSymbol, gadget_tag_list, handleTagRequest, getTagRequestLi
 
 ###############################################################################
 
-
 class GadgetForm(forms.ModelForm):
     """Edit form for Gadget model"""
     class Meta:

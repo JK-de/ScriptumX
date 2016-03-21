@@ -149,6 +149,8 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     #my apps
     'X',
+    'web',
+    'authentication',
     'report',
     #third party apps
     'crispy_forms',
