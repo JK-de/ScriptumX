@@ -30,91 +30,6 @@ from X.common import *
 
 from .importer import ImporterBase
 
-
-def test(request):
-
-    env = Env(request)
-
-    html_parser = html.parser.HTMLParser()
-
-    pattern = re.compile(r'''
-        <p                      # begin of paragraph block - opening pattern
-        .*?                     # any other token
-        class="(?P<key>.*?)"    # Header name
-        .*?                     # any other token
-        >                       # begin of paragraph block - closing pattern
-        (?P<value>.*?)          # content
-        </p>                    # end of paragraph block
-        ''', re.VERBOSE | re.MULTILINE | re.DOTALL)
-
-    pattern_ws = r'&nbsp;|<br>|\n|:$'
-
-    keys = {}
-
-
-    with open('/tmp/test.celtx', 'rb') as f:
-
-        #data = mmap.mmap(f.fileno(), 0)
-        data_b = f.read()
-        data = data_b.decode('cp1252', 'ignore')   # 'utf-8' 'ascii'
-
-        for match in re.finditer(pattern, data):
-            #print(match)
-
-            #key = match.group(1)
-            #value = match.group(2)
-            key = match.group('key')
-            value_raw = match.group('value')
-
-            value = re.sub(pattern_ws, r' ', value_raw)
-            value = value.strip()
-            #if s.endswith(" "): s = s[:-1]
-            #if s.startswith(" "): s = s[1:]
-
-            value = re.sub(r'<span style="font-weight: bold;">(.*?)</span>', r'<b>\1</b>', value)   # replace bold token with shorter one
-
-
-            #value = html.unescape(value)
-            try:
-                value = html_parser.unescape(value)
-            except:
-                pass
-
-            value = value.replace('´', "'")   # '&acute;' -> '´' -> UnicodeEncodeError : 'charmap' codec can't encode character '\xb4' in position 18: character maps to <undefined>
-
-
-            if key=='action':
-                pass
-
-            elif key=='character':
-                value = re.sub(r'\s+', r' ', value)
-                value = value.rstrip(':')
-                pass
-
-            elif key=='parenthetical':
-                pass
-
-            elif key=='dialog':
-                pass
-
-            elif key=='shot':
-                pass
-            elif key=='sceneheading':
-                pass
-
-            elif key=='transition':
-                pass
-
-
-            print(key + '|' + value + '|')
-
-            keys[key] = value
-
-        print(keys)
-        f.close()
-
-
-
 ###############################################################################
 
 class Markov(object):
@@ -174,12 +89,6 @@ class Markov(object):
 def home(request):
     """Handles home page"""
     
-    #env = Env(request)
-
-    #imp = ImporterBase(env)
-    #imp.doImport('/tmp/test.celtx')
-   
-
     return render(request, 'X/home.html', {
         'title': 'Home',
         'datetime': datetime.now(),
@@ -237,6 +146,17 @@ def seed(request):
     #        choice.votes = 0
     #        choice.save()
 
+
+    env = Env(request)
+
+
+    try:
+        imp = ImporterBase(env)
+        imp.doImport('/tmp/test.celtx')
+    except:
+        pass   
+
+
     #file_ = open('app\loremipsum\default\sample.txt')
     file_ = open('jeeves.txt')
 
@@ -269,25 +189,69 @@ def seed(request):
         script.version = '0.1-beta'
         script.save()
 
+    # generate Location
+    for i in range(0, 30):
+        location = Location()
+        location.project = project
+        location.name = markov.generate_markov_text(random.randint(2, 5))
+        location.description = markov.generate_markov_text(random.randint(5, 40))
+        location.setTag(random.randint(1, 11), True)
+        if random.randint(0, 5) == 0:
+            n = Note(project=project)
+            n.text = markov.generate_markov_text(random.randint(5, 40))
+            n.save()
+            location.note = n
+        location.save()
+
+
     # generate Gadgets
     for i in range(0, 30):
         gadget = Gadget()
         gadget.project = project
         gadget.name = markov.generate_markov_text(random.randint(2, 5))
-        gadget.description = markov.generate_markov_text(random.randint(5, 50))
+        gadget.description = markov.generate_markov_text(random.randint(5, 40))
         gadget.progress = i
-        #gadget.note__text = "Hallo"
-        tagRef = gadget.getTag(random.randint(0, 10))
-        tagRef = True
         gadget.setTag(random.randint(1, 11), True)
         if random.randint(0, 5) == 0:
             n = Note(project=project)
-            n.text = markov.generate_markov_text(random.randint(5, 50))
+            n.text = markov.generate_markov_text(random.randint(5, 40))
             n.save()
             gadget.note = n
         gadget.save()
 
+
+    # generate Audio
+    for i in range(0, 30):
+        audio = Audio()
+        audio.project = project
+        audio.name = markov.generate_markov_text(random.randint(2, 5))
+        audio.description = markov.generate_markov_text(random.randint(5, 40))
+        audio.progress = i
+        audio.setTag(random.randint(1, 11), True)
+        if random.randint(0, 5) == 0:
+            n = Note(project=project)
+            n.text = markov.generate_markov_text(random.randint(5, 40))
+            n.save()
+            audio.note = n
+        audio.save()
+
     
+    # generate sfx
+    for i in range(0, 30):
+        sfx = SFX()
+        sfx.project = project
+        sfx.name = markov.generate_markov_text(random.randint(2, 5))
+        sfx.description = markov.generate_markov_text(random.randint(5, 40))
+        sfx.progress = i
+        sfx.setTag(random.randint(1, 11), True)
+        if random.randint(0, 5) == 0:
+            n = Note(project=project)
+            n.text = markov.generate_markov_text(random.randint(5, 40))
+            n.save()
+            sfx.note = n
+        sfx.save()
+
+
     # generate SceneItem with linked Scenes
     for s in range(0, 25):
         scene = Scene()
@@ -295,8 +259,8 @@ def seed(request):
         scene.script = script
         scene.name = markov.generate_markov_text(random.randint(5, 7))
         scene.short = str(s)
-        scene.abstract = markov.generate_markov_text(random.randint(10, 30))
-        scene.description = markov.generate_markov_text(random.randint(30, 50))
+        scene.abstract = markov.generate_markov_text(random.randint(10, 25))
+        scene.description = markov.generate_markov_text(random.randint(30, 40))
         if random.randint(0, 5) == 0:
             scene.progress_script = random.randint(0, 100)
         if random.randint(0, 5) == 0:
@@ -310,14 +274,14 @@ def seed(request):
         scene.setTag(random.randint(1, 11), False)
         if random.randint(0, 5) == 0:
             n = Note(project=project)
-            n.text = markov.generate_markov_text(random.randint(5, 50))
+            n.text = markov.generate_markov_text(random.randint(5, 40))
             n.save()
             scene.note = n
         scene.save()
 
         for s in range(0, 25):
             item = SceneItem()
-            item.text = markov.generate_markov_text(random.randint(5, 30))
+            item.text = markov.generate_markov_text(random.randint(5, 25))
             item.scene = scene
             if random.randint(0, 5) == 0:
                 n = Note(project=project)

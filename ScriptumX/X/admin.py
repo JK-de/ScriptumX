@@ -10,7 +10,8 @@ class ProjectAdmin(admin.ModelAdmin):
     """Definition of the Project editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_M2M', {'fields': ['users']}),
+        ('_12M', {'fields': ['owner']}),
+        ('_M2M', {'fields': ['users', 'readers']}),
     ]
     #inlines = [ChoiceInline]
     list_display = ('name',)
@@ -150,7 +151,7 @@ class SceneAdmin(admin.ModelAdmin):
         ('_M2M', {'fields': ['persons', 'gadgets', 'audios', 'sfxs']}),
     ]
     #inlines = [ChoiceInline]
-    list_display = ('name', 'short', 'order', 'abstract')
+    list_display = ('order', 'short', 'name', 'abstract')
     list_filter = ['project', 'script']
     search_fields = ['name']
     #date_hierarchy = 'pub_date'
@@ -163,7 +164,7 @@ class SceneItemAdmin(admin.ModelAdmin):
         ('_Prop', {'fields': ['order', 'type', 'parenthetical', 'text']}),
         ('_12M', {'fields': ['role', 'scene']}),
     ]
-    list_display = ('type', 'text', 'order')
+    list_display = ('order', 'type', 'role', 'parenthetical', 'text')
     list_filter = ['scene']
     search_fields = ['text']
     #date_hierarchy = 'order'
