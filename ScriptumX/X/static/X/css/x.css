@@ -8,6 +8,7 @@
   class: slider;
 }
 
+/***********************************************/
 
 #slider_indentation .slider-selection {
 	background: #BABABA;
@@ -28,6 +29,7 @@
 	background: #888;
 }
 
+/***********************************************/
 
 .progress {
 	background-color: #CCC;
@@ -60,7 +62,7 @@ input[type="checkbox"] {
 
 .x-back,
 .a.x-back {
-    background-color: hsl(30, 15%, 15%);
+    background-color: hsl(30, 0%, 15%);
     margin: 0;
     padding: 16px;
 }
@@ -73,10 +75,6 @@ input[type="checkbox"] {
     border-radius: 4px;
 }
 
-.x-gadget.nav-tabs > li.active > a {
-    background-color: hsl(30, 30%, 90%) !important;
-    color: hsl(30, 15%, 10%);
-}
 
 
 
@@ -124,6 +122,139 @@ a.x-script.list-group-item.active {
 }
 
 
+/***********************************************/
+
+.x-role.x-back,
+.x-role.a.x-back {
+    background-color: hsl(40, 15%, 15%);
+    margin: 0;
+    padding: 16px;
+}
+
+.x-role.nav-tabs > li.active > a {
+    background-color: hsl(40, 30%, 90%) !important;
+    color: hsl(40, 15%, 10%);
+}
+
+a.x-role.list-group-item {
+    background-color: hsl(40, 30%, 90%);
+    color: hsl(40, 15%, 10%);
+    padding: 8px;
+    border: 1px solid #CCC;
+}
+
+a.x-role.list-group-item:hover {
+    background-color: hsl(40, 30%, 95%);
+}
+
+a.x-role.list-group-item.active, 
+.x-role.x-item-form {
+    background-color: hsl(40, 15%, 25%);
+    color: hsl(40, 30%, 90%);
+    border: 1px solid hsl(40, 15%, 5%);
+}
+
+a.x-role.list-group-item.active:hover {
+    background-color: hsl(40, 15%, 30%);
+}
+/*3e444c*/
+.x-role.x-toolbar {
+    background-image: linear-gradient(#3e444c, hsl(40, 15%, 25%));
+}
+
+/***********************************************/
+
+.x-person.x-back,
+.x-person.a.x-back {
+    background-color: hsl(60, 15%, 15%);
+    margin: 0;
+    padding: 16px;
+}
+
+.x-person.nav-tabs > li.active > a {
+    background-color: hsl(60, 30%, 90%) !important;
+    color: hsl(60, 15%, 10%);
+}
+
+a.x-person.list-group-item {
+    background-color: hsl(60, 30%, 90%);
+    color: hsl(60, 15%, 10%);
+    padding: 8px;
+    border: 1px solid #CCC;
+}
+
+a.x-person.list-group-item:hover {
+    background-color: hsl(60, 30%, 95%);
+}
+
+a.x-person.list-group-item.active, 
+.x-person.x-item-form {
+    background-color: hsl(60, 15%, 25%);
+    color: hsl(60, 30%, 90%);
+    border: 1px solid hsl(60, 15%, 5%);
+}
+
+a.x-person.list-group-item.active:hover {
+    background-color: hsl(60, 15%, 30%);
+}
+/*3e444c*/
+.x-person.x-toolbar {
+    background-image: linear-gradient(#3e444c, hsl(60, 15%, 25%));
+}
+
+/***********************************************/
+
+.x-location.x-back,
+.x-location.a.x-back {
+    background-color: hsl(120, 11%, 15%);
+    margin: 0;
+    padding: 16px;
+}
+
+.x-location.nav-tabs > li.active > a {
+    background-color: hsl(120, 30%, 90%) !important;
+    color: hsl(120, 11%, 10%);
+}
+
+a.x-location.list-group-item {
+    background-color: hsl(120, 30%, 90%);
+    color: hsl(120, 11%, 10%);
+    padding: 8px;
+    border: 1px solid #CCC;
+}
+
+a.x-location.list-group-item:hover {
+    background-color: hsl(120, 30%, 95%);
+}
+
+a.x-location.list-group-item.active, 
+.x-location.x-item-form {
+    background-color: hsl(120, 11%, 25%);
+    color: hsl(120, 30%, 90%);
+    border: 1px solid hsl(120, 11%, 5%);
+}
+
+a.x-location.list-group-item.active:hover {
+    background-color: hsl(120, 11%, 30%);
+}
+/*3e444c*/
+.x-location.x-toolbar {
+    background-image: linear-gradient(#3e444c, hsl(120, 11%, 25%));
+}
+
+/***********************************************/
+
+.x-gadget.x-back,
+.x-gadget.a.x-back {
+    background-color: hsl(30, 15%, 15%);
+    margin: 0;
+    padding: 16px;
+}
+
+.x-gadget.nav-tabs > li.active > a {
+    background-color: hsl(30, 30%, 90%) !important;
+    color: hsl(30, 15%, 10%);
+}
 
 a.x-gadget.list-group-item {
     background-color: hsl(30, 30%, 90%);
@@ -150,3 +281,84 @@ a.x-gadget.list-group-item.active:hover {
 .x-gadget.x-toolbar {
     background-image: linear-gradient(#3e444c, hsl(30, 15%, 25%));
 }
+
+/***********************************************/
+
+.x-sfx.x-back,
+.x-sfx.a.x-back {
+    background-color: hsl(195, 15%, 15%);
+    margin: 0;
+    padding: 16px;
+}
+
+.x-sfx.nav-tabs > li.active > a {
+    background-color: hsl(195, 30%, 90%) !important;
+    color: hsl(195, 15%, 10%);
+}
+
+a.x-sfx.list-group-item {
+    background-color: hsl(195, 30%, 90%);
+    color: hsl(195, 15%, 10%);
+    padding: 8px;
+    border: 1px solid #CCC;
+}
+
+a.x-sfx.list-group-item:hover {
+    background-color: hsl(195, 30%, 95%);
+}
+
+a.x-sfx.list-group-item.active, 
+.x-sfx.x-item-form {
+    background-color: hsl(195, 15%, 25%);
+    color: hsl(195, 30%, 90%);
+    border: 1px solid hsl(195, 15%, 5%);
+}
+
+a.x-sfx.list-group-item.active:hover {
+    background-color: hsl(195, 15%, 30%);
+}
+/*3e444c*/
+.x-sfx.x-toolbar {
+    background-image: linear-gradient(#3e444c, hsl(195, 15%, 25%));
+}
+
+/***********************************************/
+
+.x-audio.x-back,
+.x-audio.a.x-back {
+    background-color: hsl(300, 8%, 15%);
+    margin: 0;
+    padding: 16px;
+}
+
+.x-audio.nav-tabs > li.active > a {
+    background-color: hsl(300, 30%, 90%) !important;
+    color: hsl(300, 15%, 10%);
+}
+
+a.x-audio.list-group-item {
+    background-color: hsl(300, 30%, 90%);
+    color: hsl(300, 8%, 10%);
+    padding: 8px;
+    border: 1px solid #CCC;
+}
+
+a.x-audio.list-group-item:hover {
+    background-color: hsl(300, 30%, 95%);
+}
+
+a.x-audio.list-group-item.active, 
+.x-audio.x-item-form {
+    background-color: hsl(300, 8%, 25%);
+    color: hsl(300, 30%, 90%);
+    border: 1px solid hsl(300, 8%, 5%);
+}
+
+a.x-audio.list-group-item.active:hover {
+    background-color: hsl(300, 8%, 30%);
+}
+/*3e444c*/
+.x-audio.x-toolbar {
+    background-image: linear-gradient(#3e444c, hsl(300, 8%, 25%));
+}
+
