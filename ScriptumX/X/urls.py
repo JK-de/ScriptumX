@@ -18,6 +18,8 @@ import X
 
 urlpatterns = [
 
+    url(r'^project/import$', X.view_project.project_import, name='projectImport'),
+    url(r'^project/(?P<project_id>\d+)/(?P<script_id>\d+)?$', X.view_project.project, name='project'),
     url(r'^project/(?P<project_id>\d+)?$', X.view_project.project, name='project'),
 
     url(r'^script/(?P<scene_id>\d+)?$', X.view_script.script, name='script'),

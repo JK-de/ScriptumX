@@ -95,6 +95,7 @@ class SFXForm(forms.ModelForm):
 
 ###############################################################################
 
+@login_required
 def sfx(request, sfx_id):
     """Handles page requests for SFXs"""
 
@@ -200,6 +201,7 @@ def sfx(request, sfx_id):
 
 ###############################################################################
 
+@login_required
 def sfxTag(request, tag_id):
 
     handleTagRequest(request, tag_id, 'sfx')

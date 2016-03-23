@@ -144,6 +144,7 @@ class GadgetForm(forms.ModelForm):
 
 ###############################################################################
 
+@login_required
 def gadget(request, gadget_id):
     """Handles page requests for Gadgets"""
 
@@ -249,6 +250,7 @@ def gadget(request, gadget_id):
 
 ###############################################################################
 
+@login_required
 def gadgetTag(request, tag_id):
 
     handleTagRequest(request, tag_id, 'gadget')

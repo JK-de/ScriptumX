@@ -96,6 +96,7 @@ class PersonForm(forms.ModelForm):
 
 ###############################################################################
 
+@login_required
 def person(request, person_id):
     """Handles page requests for Persons"""
 
@@ -201,6 +202,7 @@ def person(request, person_id):
 
 ###############################################################################
 
+@login_required
 def personTag(request, tag_id):
 
     handleTagRequest(request, tag_id, 'person')

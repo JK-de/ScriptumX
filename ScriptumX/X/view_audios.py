@@ -96,6 +96,7 @@ class AudioForm(forms.ModelForm):
 
 ###############################################################################
 
+@login_required
 def audio(request, audio_id):
     """Handles page requests for Audios"""
 
@@ -201,6 +202,7 @@ def audio(request, audio_id):
 
 ###############################################################################
 
+@login_required
 def audioTag(request, tag_id):
 
     handleTagRequest(request, tag_id, 'audio')

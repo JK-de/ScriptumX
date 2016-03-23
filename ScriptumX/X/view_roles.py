@@ -97,6 +97,7 @@ class RoleForm(forms.ModelForm):
 
 ###############################################################################
 
+@login_required
 def role(request, role_id):
     """Handles page requests for Roles"""
 
@@ -202,6 +203,7 @@ def role(request, role_id):
 
 ###############################################################################
 
+@login_required
 def roleTag(request, tag_id):
 
     handleTagRequest(request, tag_id, 'role')

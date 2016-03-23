@@ -1,4 +1,4 @@
-{% extends "X/layout.html" %}
+{% extends "web/layout.html" %}
 
 {% block content %}
 
@@ -43,8 +43,8 @@
 
 
 {% block scripts %}
+{% load staticfiles %}
 
-    {% load staticfiles %}
 <script src="{% static 'X/scripts/jquery.validate.min.js' %}"></script>
 
 {% endblock %}

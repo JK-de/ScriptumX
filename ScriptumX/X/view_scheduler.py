@@ -94,6 +94,7 @@ class AppointmentForm(forms.ModelForm):
 
 ###############################################################################
 
+@login_required
 def scheduler(request, appointment_id):
     """Handles page requests for Appointments"""
 
@@ -199,6 +200,7 @@ def scheduler(request, appointment_id):
 
 ###############################################################################
 
+@login_required
 def schedulerTag(request, tag_id):
 
     handleTagRequest(request, tag_id, 'appointment')

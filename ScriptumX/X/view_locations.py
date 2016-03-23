@@ -96,6 +96,7 @@ class LocationForm(forms.ModelForm):
 
 ###############################################################################
 
+@login_required
 def location(request, location_id):
     """Handles page requests for Locations"""
 
@@ -201,6 +202,7 @@ def location(request, location_id):
 
 ###############################################################################
 
+@login_required
 def locationTag(request, tag_id):
 
     handleTagRequest(request, tag_id, 'location')

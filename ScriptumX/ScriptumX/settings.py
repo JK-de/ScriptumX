@@ -5,7 +5,7 @@ Django settings for ScriptumX project.
 from os import path
 import os
 
-PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__)))
+PROJECT_ROOT = path.dirname(path.abspath(path.dirname(__file__))).replace('\\', '/')
 print('>>> PROJECT_ROOT: '+PROJECT_ROOT)
 
 DEBUG = True

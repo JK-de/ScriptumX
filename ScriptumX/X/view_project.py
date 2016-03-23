@@ -67,7 +67,8 @@ class ProjectForm(forms.ModelForm):
 
 ###############################################################################
 
-def project(request, project_id):
+@login_required
+def project(request, project_id, script_id=0):
     """Handles page requests for Projects"""
 
     env = Env(request)
@@ -128,6 +129,17 @@ def project(request, project_id):
         'form': formItem,
         'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
+    })
+
+###############################################################################
+
+@login_required
+def project_import(request):
+    """Handles import page"""
+    
+    return render(request, 'X/home.html', {
+        'title': 'Home',
+        'datetime': datetime.now(),
     })
 
 ###############################################################################

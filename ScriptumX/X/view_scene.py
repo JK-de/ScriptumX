@@ -69,6 +69,7 @@ class SceneForm(forms.ModelForm):
 
 ###############################################################################
 
+@login_required
 def scene(request, sceneitem_id):
     """Handles page requests for SceneItems"""
 
@@ -175,6 +176,7 @@ def scene(request, sceneitem_id):
 
 ###############################################################################
 
+@login_required
 def sceneTag(request, tag_id):
 
     handleTagRequest(request, tag_id, 'sceneitem')

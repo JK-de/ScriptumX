@@ -1,0 +1,63 @@
+<ul class="nav navbar-nav navbar-right" style="margin-right:8px">
+
+    <li><a href="/admin">Admin</a></li>
+
+{% if user.is_authenticated %}
+
+    {#<li><span class="nav navbar-text">User: {{ user.username }}</span></li>#}
+
+    <li>
+        <form id="logoutForm" action="/logout" method="post" >
+            {% csrf_token %}
+        </form>
+    </li>
+
+    <li>
+        <div class="btn-group" style="margin-top:6px">
+            <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" href="#">
+            <i class="fa fa-user fa-fw"></i> {{ user.username }}</button>
+            <ul class="dropdown-menu">
+                <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out fa-fw"></i> Log off</a></li>
+                <li><a href="/password_change"><i class="fa fa-key fa-fw"></i> Change Password</a></li>
+                <li class="divider"></li>
+                <li><a href="/login"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+            </ul>
+        </div>
+    </li>
+
+{% else %}
+
+    <li>
+        <form class="form-inline navbar-nav" action="/login/" method="post" style="margin-top:6px">
+            {% csrf_token %}
+            {#<ul class="nav navbar-nav">#}
+                <div class="input-group margin-bottom-sm">
+                    <span class="input-group-addon"><i class="fa fa-user fa-fw"></i></span>
+                    <input class="form-control" type="text" name="username" placeholder="Email address">
+                </div>
+                <div class="input-group margin-bottom-sm">
+                    <span class="input-group-addon"><i class="fa fa-key fa-fw"></i></span>
+                    <input class="form-control" type="password" name="password" placeholder="Password">
+                </div>
+
+                <div class="btn-group">
+                    <input type="hidden" name="next" value="/project" />
+                    <button class="btn btn-primary" type="submit"><i class="fa fa-sign-in fa-fw"></i> Log in</button>
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown" href="#">
+                    <span class="fa fa-caret-down"></span></button>
+                    <ul class="dropdown-menu">
+                    <li><a href="/password_reset"><i class="fa fa-key fa-fw"></i> Reset Password</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/login"><i class="fa fa-sign-in fa-fw"></i> Login Page</a></li>
+                    </ul>
+                </div>
+
+            {#</ul>#}
+        </form>
+    </li>
+
+    {#<li><a href="{% url 'authentication:login' %}"><i class="fa fa-user fa-fw"></i> Login</a></li>#}
+
+{% endif %}
+
+</ul>
