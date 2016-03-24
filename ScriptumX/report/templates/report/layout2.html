@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Lorem Ipsum" />
+    <meta name="keywords" content="movie, script" />
+    <meta name="author" content="JK" />
+    <meta name="copyright" content="share alike" />
+    
+    <meta name="robots" content="index, follow">
+    <meta name="googlebot" content="index, follow">
+    
+    <title>{{ title }} - ScriptumX</title>
+    {% load staticfiles %}
+
+    <style type="text/css">
+        @page {
+            size: 'A4';
+            margin: 1cm;
+            @frame footer {
+                -pdf-frame-content: footerContent;
+                bottom: 0cm;
+                margin-left: 9cm;
+                margin-right: 9cm;
+                height: 1cm;
+            }
+        }
+    </style>
+</head>
+
+<body style="overflow:auto;">
+
+
+    <div style="" class="container-fluid body-content">
+        
+        {% block content %}{% endblock %}
+        
+        <hr/>
+        <footer>
+            <p>&copy; {{ datetime }} - LoremIpsum</p>
+        </footer>
+    </div>
+
+{% block scripts %}{% endblock %}
+
+    <div id="footerContent">
+        {%block page_foot%}
+            Page <pdf:pagenumber>
+        {%endblock%}
+    </div>
+</body>
+</html>

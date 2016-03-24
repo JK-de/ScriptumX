@@ -130,6 +130,10 @@
     <Folder Include="ScriptumX\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="report\templates\report\layout2.html" />
+    <Content Include="report\templates\report\test2.html" />
+    <Content Include="report\templates\report\test.html" />
+    <Content Include="report\templates\report\layout.html" />
     <Content Include="ScriptumX\templates\base.html" />
     <Content Include="ScriptumX\templates\ScriptumX\base.html" />
     <Content Include="web\templates\web\layout.html" />
