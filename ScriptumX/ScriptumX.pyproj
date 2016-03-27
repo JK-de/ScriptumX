@@ -6,6 +6,7 @@
     <RootNamespace>ScriptumX</RootNamespace>
     <InterpreterId>{46ef7998-f6af-471c-ad68-b40d19e3486a}</InterpreterId>
     <InterpreterVersion>3.5</InterpreterVersion>
+    <PublishUrl>D:\Xpublish</PublishUrl>
   </PropertyGroup>
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -40,6 +41,9 @@
     <Compile Include="authentication\__init__.py" />
     <Compile Include="report\admin.py" />
     <Compile Include="report\apps.py" />
+    <Compile Include="report\M.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="report\models.py" />
     <Compile Include="report\tests.py" />
     <Compile Include="report\urls.py" />
@@ -131,11 +135,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="report\templates\report\layout2.html" />
+    <Content Include="report\templates\report\testM1.html" />
     <Content Include="report\templates\report\test2.html" />
     <Content Include="report\templates\report\test.html" />
     <Content Include="report\templates\report\layout.html" />
     <Content Include="ScriptumX\templates\base.html" />
     <Content Include="ScriptumX\templates\ScriptumX\base.html" />
+    <Content Include="web\templates\web\impressum.html" />
     <Content Include="web\templates\web\layout.html" />
     <Content Include="X\static\X\css\bootstrap-slider.css" />
     <Content Include="X\static\X\css\bootstrap-slider.min.css" />

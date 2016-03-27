@@ -8,9 +8,6 @@
     <meta name="author" content="JK" />
     <meta name="copyright" content="share alike" />
     
-    <meta name="robots" content="index, follow">
-    <meta name="googlebot" content="index, follow">
-    
     <title>{{ title }} - ScriptumX</title>
     {% load staticfiles %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -23,33 +20,14 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
     
     <script src="{% static 'X/scripts/modernizr-2.6.2.js' %}"></script>
-
-    <style type="text/css">
-        @page {
-            size: {{ pagesize }};
-            margin: 1cm;
-            @frame footer {
-                -pdf-frame-content: footerContent;
-                bottom: 0cm;
-                margin-left: 9cm;
-                margin-right: 9cm;
-                height: 1cm;
-            }
-        }
-    </style>
 </head>
 
-<body style="overflow:auto;">
-
+<body>
 
     <div style="" class="container-fluid body-content">
         
         {% block content %}{% endblock %}
-        
-        <hr/>
-        <footer>
-            <p>&copy; {{ datetime }} - LoremIpsum</p>
-        </footer>
+
     </div>
 
     <script src="{% static 'X/scripts/jquery-1.10.2.js' %}"></script>
@@ -57,10 +35,5 @@
     <script src="{% static 'X/scripts/respond.js' %}"></script>
 {% block scripts %}{% endblock %}
 
-    <div id="footerContent">
-        {%block page_foot%}
-            Page <pdf:pagenumber>
-        {%endblock%}
-    </div>
 </body>
 </html>

@@ -13,4 +13,6 @@ urlpatterns = [
     url(r'^contact$', web.views.contact, name='contact'),
 
     url(r'^about', web.views.about, name='about'),
+
+    url(r'^impressum', web.views.impressum, name='impressum'),
     ]

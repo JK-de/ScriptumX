@@ -6,9 +6,9 @@
 #from cgi import escape
 
 
-from report.models import *
-from X.models import *
+from os import path
 from datetime import datetime
+
 from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse
 from django.http import HttpRequest, HttpResponseRedirect
@@ -16,14 +16,18 @@ from django.shortcuts import get_object_or_404, get_list_or_404, render
 from django.template import RequestContext
 from django.utils import timezone
 from django.views.generic import ListView, DetailView
-from os import path
 from django.core.exceptions import ObjectDoesNotExist
-from crispy_forms.utils import render_crispy_form
 from django.db.models import Q
 from django.db.models.functions import Lower
+from django.views.generic.base import TemplateView
 
+from crispy_forms.utils import render_crispy_form
+
+from report.models import *
+from X.models import *
 from X.common import *
 from X.tags import FormSymbol, gadget_tag_list, handleTagRequest, getTagRequestList
+from .M import *
 
 #django-wkhtmltopdf
 
@@ -68,7 +72,7 @@ from X.tags import FormSymbol, gadget_tag_list, handleTagRequest, getTagRequestL
 
 
 
-from wkhtmltopdf.views import PDFTemplateView
+#from easy_pdf.views import PDFTemplateView
 
 def test2(request):
     """Handles home page"""
@@ -78,21 +82,28 @@ def test2(request):
     tag_list = getTagRequestList(request, 'gadget')
     gadgets = Gadget.objects.filter( project=env.project_id ).order_by(Lower('name'))
 
-    return render(request, 'report/test.html', {
-        'pagesize':'A4',
+    return render(request, 'report/test2.html', {
         'title': 'TEST',
         'tag_list': tag_list,
         'gadgets': gadgets,
         'datetime': datetime.now(),
     })
 
-class MyPDF(PDFTemplateView):
-    filename = 'my_pdf.pdf'
-    template_name = 'report/test2.html'
-    cmd_options = {
-        'pagesize':'A4',
-        'title': 'TEST',
-    }
+
+#class MyPDF(PDFTemplateView):
+#    filename = 'my_pdf.pdf'
+#    template_name = 'report/test2.html'
+#    cmd_options = {
+#        'pagesize':'A4',
+#        'title': 'TEST',
+#    }
+
+#    def get_context_data(self, **kwargs):
+#        return super(HelloPDFView, self).get_context_data(
+#            pagesize="A4",
+#            title="Hi there!",
+#            **kwargs
+#        )
 
 ###############################################################################
 
@@ -112,3 +123,49 @@ def test1(request):
     })
 
 ###############################################################################
+
+class Test3View(TemplateView):
+    template_name = "report/test.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(Test3View, self).get_context_data(**kwargs)
+        
+        env = Env(context['view'].request)
+        tag_list = getTagRequestList(env.request, 'gadget')
+        gadgets = Gadget.objects.filter( project=env.project_id ).order_by(Lower('name'))
+
+        context['title'] = 'TEST'
+        context['tag_list'] = tag_list
+        context['gadgets'] = gadgets
+        context['datetime'] = datetime.now()
+
+        return context
+
+class TestM1View(TemplateView):
+    template_name = "report/testM1.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(TestM1View, self).get_context_data(**kwargs)
+        
+        env = Env(context['view'].request)
+        tag_list = getTagRequestList(env.request, 'gadget')
+        gadgets = Gadget.objects.filter( project=env.project_id ).order_by(Lower('name'))
+        scenes = Scene.objects.filter( project=env.project_id, script=env.script_id ).order_by(Lower('name'))
+
+        m = M(gadgets, scenes)
+
+        for scene in scenes:
+            row = m.getRowIndex(scene)
+
+            linked_gadgets = scene.gadgets.all()
+            for g in linked_gadgets:
+                col = m.getColIndex(g)
+                m.cells[row][col].text = "&#x26AB;"
+
+
+        context['title'] = 'TEST'
+        context['tag_list'] = tag_list
+        context['M'] = m
+        context['datetime'] = datetime.now()
+
+        return context

@@ -1,6 +1,16 @@
 {% extends "report/layout2.html" %}
 {% load staticfiles %}
 
+{% block extra_style %}
+    <style type="text/css">
+        @font-face { font-family: Lato; src: url(fonts/Lato-Reg.ttf); }
+        body {
+            font-family: "Lato", "Helvetica", "sans-serif";
+            color: #333333;
+        }
+    </style>
+{% endblock %}
+
 {% block content %}
 
 <h2>{{title}}.</h2>

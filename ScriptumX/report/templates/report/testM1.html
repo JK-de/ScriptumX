@@ -1,0 +1,61 @@
+{% extends "report/layout.html" %}
+{% load staticfiles %}
+
+{% block content %}
+
+<style>
+td, th {
+    padding: 4px;
+    min-width:28px;
+}
+th, td {
+    border: 1px solid #AAA;
+}
+</style>
+
+{% spaceless %}
+{% autoescape off %}
+<table align="left" sortable>
+
+    {% for m_row in M.cells %}
+
+        {% if forloop.first %}
+            <thead>
+        {% endif %}
+        {% if forloop.counter == 2 %}
+            <tbody>
+        {% endif %}
+
+        <tr>
+
+            {% for m_cell in m_row %}
+
+                {% if m_cell.colHeader and m_cell.rowHeader %}
+                    <th BGCOLOR="#FFF" align="center" style="border:0px;">{{m_cell.text}}TEST</th>
+                {% elif m_cell.colHeader %}
+                    <th BGCOLOR="#EEE" align="center" VALIGN="BOTTOM" style="writing-mode:sideways-lr;">{{m_cell.text|truncatechars_html:25}}</th>
+                {% elif m_cell.rowHeader %}
+                    <th BGCOLOR="#EEE" align="left">{{m_cell.text|truncatechars_html:25}}</th>
+                {% else %}
+                    <td align="center">{{m_cell.text}}</td>
+                {% endif %}
+
+            {% endfor %}
+
+        </tr>
+
+        {% if forloop.last %}
+            </tbody>
+        {% endif %}
+        {% if forloop.first %}
+            </thead>
+        {% endif %}
+
+    {% endfor %}
+
+</table>
+{% endautoescape %}
+{% endspaceless %}
+<br/>
+
+{% endblock %}

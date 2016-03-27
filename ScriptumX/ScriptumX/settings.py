@@ -156,7 +156,8 @@ INSTALLED_APPS = (
     'crispy_forms',
     'colorful',
     'colorfield',
-    'wkhtmltopdf',
+    #'easy_pdf',
+    #'debug_toolbar',
 )
 
 # A sample logging configuration. The only tangible logging

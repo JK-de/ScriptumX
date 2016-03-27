@@ -37,10 +37,12 @@
             <div style="padding:0px" class="navbar-collapse collapse">
 
                 <ul class="nav nav-tabs" role="tablist" style="padding:0px; padding-bottom:0px; margin:0;">
-                    <li><a href="/gadget">Gadget</a></li>
+                    {% if user.is_authenticated %}
+                    <li><a href="/project"><img src="{% static 'img/tab/project-24.png' %}"> Project</a></li>
+                    {% endif %}
                     <li><a href="/seed">Seed</a></li>
                     <li><a href="{% url 'web:about' %}">About</a></li>
-                    <li><a class="pull-right" href="{% url 'web:about' %}">Impressum</a></li>
+                    <li><a class="navbar-right" href="{% url 'web:impressum' %}">Impressum</a></li>
                    
                 </ul>
 
