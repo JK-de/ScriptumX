@@ -159,7 +159,9 @@ def scheduler(request, appointment_id):
             active_appointment.note = active_note
 
             if active_appointment:
-                active_appointment.save()
+                if formItem.is_valid():
+                    formItem.save()
+                #active_appointment.save()
 
             if appointment_id == '0':   # previously new item
                 return HttpResponseRedirect('/scheduler/' + str(active_appointment.id))

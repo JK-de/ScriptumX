@@ -89,6 +89,9 @@ class RoleForm(forms.ModelForm):
             #Field('progress', template="X/tmpl_slider_progress.html"),
 
             Field('description', style="max-width:100%; min-width:100%;", rows=10),
+
+            'actor',
+            'gadgets',
             )
 
     def clean_name(self):
@@ -162,7 +165,9 @@ def role(request, role_id):
             active_role.note = active_note
 
             if active_role:
-                active_role.save()
+                if formItem.is_valid():
+                    formItem.save()
+                #active_role.save()
 
             if role_id == '0':   # previously new item
                 return HttpResponseRedirect('/role/' + str(active_role.id))

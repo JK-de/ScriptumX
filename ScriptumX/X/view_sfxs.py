@@ -160,7 +160,9 @@ def sfx(request, sfx_id):
             active_sfx.note = active_note
 
             if active_sfx:
-                active_sfx.save()
+                if formItem.is_valid():
+                    formItem.save()
+                #active_sfx.save()
 
             if sfx_id == '0':   # previously new item
                 return HttpResponseRedirect('/sfx/' + str(active_sfx.id))

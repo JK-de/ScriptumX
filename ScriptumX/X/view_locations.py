@@ -161,7 +161,9 @@ def location(request, location_id):
             active_location.note = active_note
 
             if active_location:
-                active_location.save()
+                if formItem.is_valid():
+                    formItem.save()
+                #active_location.save()
 
             if location_id == '0':   # previously new item
                 return HttpResponseRedirect('/location/' + str(active_location.id))

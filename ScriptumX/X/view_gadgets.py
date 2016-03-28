@@ -209,7 +209,9 @@ def gadget(request, gadget_id):
             active_gadget.note = active_note
 
             if active_gadget:
-                active_gadget.save()
+                if formItem.is_valid():
+                    formItem.save()
+                #active_gadget.save()
 
             if gadget_id == '0':   # previously new item
                 return HttpResponseRedirect('/gadget/' + str(active_gadget.id))

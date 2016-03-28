@@ -150,7 +150,7 @@ class TestM1View(TemplateView):
         env = Env(context['view'].request)
         tag_list = getTagRequestList(env.request, 'gadget')
         gadgets = Gadget.objects.filter( project=env.project_id ).order_by(Lower('name'))
-        scenes = Scene.objects.filter( project=env.project_id, script=env.script_id ).order_by(Lower('name'))
+        scenes = Scene.objects.filter( project=env.project_id, script=env.script_id ).order_by('order')
 
         m = M(gadgets, scenes)
 

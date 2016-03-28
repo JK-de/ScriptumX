@@ -88,7 +88,8 @@ def project(request, project_id, script_id=0):
     ### create new project object on request '/project/0'
     if project_id == '0':
         active_project = Project(project=env.project);
-
+    
+    #TODO
     ### handle buttons
     if request.method == 'POST':
         if not active_project:   # you shall not pass ... without valid scope

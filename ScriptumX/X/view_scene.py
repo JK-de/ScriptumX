@@ -134,7 +134,9 @@ def scene(request, sceneitem_id):
             active_sceneitem.note = active_note
 
             if active_sceneitem:
-                active_sceneitem.save()
+                if formItem.is_valid():
+                    formItem.save()
+                #active_sceneitem.save()
 
             if sceneitem_id == '0':   # previously new item
                 return HttpResponseRedirect('/scene/' + str(active_sceneitem.id))

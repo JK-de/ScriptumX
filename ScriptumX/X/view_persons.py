@@ -161,7 +161,9 @@ def person(request, person_id):
             active_person.note = active_note
 
             if active_person:
-                active_person.save()
+                if formItem.is_valid():
+                    formItem.save()
+                #active_person.save()
 
             if person_id == '0':   # previously new item
                 return HttpResponseRedirect('/person/' + str(active_person.id))

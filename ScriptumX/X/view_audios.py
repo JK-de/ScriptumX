@@ -161,7 +161,9 @@ def audio(request, audio_id):
             active_audio.note = active_note
 
             if active_audio:
-                active_audio.save()
+                if formItem.is_valid():
+                    formItem.save()
+                #active_audio.save()
 
             if audio_id == '0':   # previously new item
                 return HttpResponseRedirect('/audio/' + str(active_audio.id))

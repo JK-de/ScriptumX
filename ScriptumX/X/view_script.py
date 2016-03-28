@@ -133,6 +133,11 @@ class SceneForm(forms.ModelForm):
                 Field('color', style="width:10%;", css_class="jscolor {width:243, height:150, position:'right', borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}"),
 
                 Field('description', style="max-width:100%; min-width:100%;", rows=10),
+
+                'persons',
+                'gadgets',
+                'audios',
+                'sfxs',
         )
 
     def clean_name(self):
@@ -203,7 +208,9 @@ def script(request, scene_id):
             active_scene.note = active_note
 
             if active_scene:
-                active_scene.save()
+                if formItem.is_valid():
+                    formItem.save()
+                #active_scene.save()
 
             if scene_id == '0':   # previously new item
                 return HttpResponseRedirect('/script/' + str(active_scene.id))
