@@ -26,7 +26,6 @@ from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.utils import render_crispy_form
 
 from X.models import *
-from X.forms import NoteForm
 from X.views import g_tab_list
 from X.views import Q
 from X.common import *
@@ -35,7 +34,7 @@ from .tags import FormSymbol, sceneitem_tag_list, handleTagRequest, getTagReques
 
 ###############################################################################
 
-class SceneForm(forms.ModelForm):
+class SceneItemForm(forms.ModelForm):
     """Edit form for SceneItem model"""
     class Meta:
         model = SceneItem
@@ -46,7 +45,7 @@ class SceneForm(forms.ModelForm):
             ]
 
     def __init__(self, *args, **kwargs):
-        super(SceneForm, self).__init__(*args, **kwargs)
+        super(SceneItemForm, self).__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_class = 'blueForms'
@@ -56,7 +55,7 @@ class SceneForm(forms.ModelForm):
         self.helper.form_tag = False
         self.helper.layout = Layout(
 
-            Field('role'),
+            Field('role', css_class='chosen-select'),
 
             Field('parenthetical', style="max-width:100%; min-width:100%;"),
 
@@ -70,7 +69,7 @@ class SceneForm(forms.ModelForm):
 ###############################################################################
 
 @login_required
-def scene(request, sceneitem_id):
+def scene(request, sceneitem_id, sceneitem_type='?'):
     """Handles page requests for SceneItems"""
 
     env = Env(request)
@@ -83,15 +82,13 @@ def scene(request, sceneitem_id):
     try:
         active_sceneitem = SceneItem.objects.get(pk = sceneitem_id)
         active_id = active_sceneitem.id
-        active_note = active_sceneitem.note
     except ObjectDoesNotExist:
         active_sceneitem = None
         active_id = None
-        active_note = None
 
     ### create new sceneitem object on request '/scene/0'
     if sceneitem_id == '0':
-        active_sceneitem = SceneItem(script=env.script, scene=env.scene);
+        active_sceneitem = SceneItem(scene=env.scene);
 
     ### handle buttons
     if request.method == 'POST':
@@ -99,40 +96,17 @@ def scene(request, sceneitem_id):
             raise AssertionError 
 
         # generate forms and/or get data out of the edited forms
-        formNote = NoteForm(request.POST or None, instance=active_note)
-        if formNote.is_valid():
-            active_note = formNote.instance
-        formItem = SceneForm(request.POST or None, instance=active_sceneitem)
+        formItem = SceneItemForm(request.POST or None, instance=active_sceneitem)
         if formItem.is_valid():
             active_sceneitem = formItem.instance
 
         # 'Delete'-Button
         if request.POST.get('btn_delete'):
-            if active_note:
-                if active_note.id:
-                    active_note.delete()
-            active_sceneitem.note = None
             active_sceneitem.delete()
             return HttpResponseRedirect('/scene/')
 
-        # 'Add Note'-Button
-        if request.POST.get('btn_note'):
-            active_note = Note(project=env.project, author=env.user )
-            active_sceneitem.note = active_note
-            #formNote = NoteForm(request.POST or None, instance=active_note) #JK may be re-connect to form???
-
         # 'Save'-Button
         if request.POST.get('btn_save'):
-            if active_note:
-                if active_note.text=='':
-                    if active_note.id:
-                        active_note.delete()
-                    active_note = None
-                else:
-                    active_note.save()
-
-            active_sceneitem.note = active_note
-
             if active_sceneitem:
                 if formItem.is_valid():
                     formItem.save()
@@ -141,8 +115,7 @@ def scene(request, sceneitem_id):
             if sceneitem_id == '0':   # previously new item
                 return HttpResponseRedirect('/scene/' + str(active_sceneitem.id))
     else:
-        formItem = SceneForm(instance=active_sceneitem)
-        formNote = NoteForm(instance=active_note)
+        formItem = SceneItemForm(instance=active_sceneitem)
     
     ### conglomerate queries
     #query = Q()
@@ -159,7 +132,7 @@ def scene(request, sceneitem_id):
     #    query = g_tag_query_none
     
     #filter(script=env.script, scene=env.scene)
-    sceneitems = SceneItem.objects.all().order_by(Lower('order'))
+    sceneitems = SceneItem.objects.all().order_by('order')
 
     return render(request, 'X/scene.html', {
         'title': 'SceneItem',
@@ -171,7 +144,6 @@ def scene(request, sceneitem_id):
         'active_sceneitem': active_sceneitem,
         'active_id': active_id,
         'form': formItem,
-        'formNote': formNote,
         'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
     })

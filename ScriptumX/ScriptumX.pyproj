@@ -124,6 +124,7 @@
     <Folder Include="web\templates\web\" />
     <Folder Include="X\" />
     <Folder Include="X\static\" />
+    <Folder Include="X\static\chosen\" />
     <Folder Include="X\static\X\" />
     <Folder Include="X\static\X\content\" />
     <Folder Include="X\static\X\css\" />
@@ -143,6 +144,13 @@
     <Content Include="ScriptumX\templates\ScriptumX\base.html" />
     <Content Include="web\templates\web\impressum.html" />
     <Content Include="web\templates\web\layout.html" />
+    <Content Include="X\static\chosen\bootstrap-chosen.css" />
+    <Content Include="X\static\chosen\chosen-sprite%402x.png" />
+    <Content Include="X\static\chosen\chosen-sprite.png" />
+    <Content Include="X\static\chosen\chosen.css" />
+    <Content Include="X\static\chosen\chosen.jquery.js" />
+    <Content Include="X\static\chosen\chosen.jquery.min.js" />
+    <Content Include="X\static\chosen\chosen.min.css" />
     <Content Include="X\static\X\css\bootstrap-slider.css" />
     <Content Include="X\static\X\css\bootstrap-slider.min.css" />
     <Content Include="X\static\X\css\x.css" />

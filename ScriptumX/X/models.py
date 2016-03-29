@@ -81,7 +81,7 @@ class BaseModel(models.Model):
     tag12 = models.BooleanField(default=False, verbose_name='')
 
     # One to Many
-    project = models.ForeignKey(Project)
+    project = models.ForeignKey(Project)   # for internal relations only
     note = models.ForeignKey(Note, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
@@ -229,7 +229,7 @@ class Script(models.Model):
     version = models.CharField(max_length=50, blank=True)
     copyright = models.CharField(max_length=300, blank=True)
     # One to Many
-    project = models.ForeignKey(Project)
+    project = models.ForeignKey(Project)   # for internal relations only
     # Many to Many
     persons = models.ManyToManyField(Person, blank=True)
 
@@ -256,7 +256,7 @@ class Scene(BaseModel):
     progress_shot = models.PositiveSmallIntegerField(default=0)
     progress_post = models.PositiveSmallIntegerField(default=0)
     # One to Many
-    script = models.ForeignKey(Script)
+    script = models.ForeignKey(Script)   # for internal relations only
     set_location = models.ForeignKey(Location, null=True, blank=True)
     # Many to Many
     #roles = models.ManyToManyField(Role, blank=True)
@@ -285,7 +285,7 @@ class SceneItem(models.Model):
 
     # Many to Many
     role = models.ForeignKey(Role, null=True, blank=True)
-    scene = models.ForeignKey(Scene, null=True, blank=True)
+    scene = models.ForeignKey(Scene, null=True, blank=True)   # for internal relations only
     
     def __str__(self):
         """Returns a string representation of a DialogItem."""
@@ -313,7 +313,7 @@ class Appointment(BaseModel):
     persons = models.ManyToManyField(Person, blank=True)
     gadgets = models.ManyToManyField(Gadget, blank=True)
 
-class Appointment2Scene(models.Model):
+class Appointment2Scene(models.Model):   # for internal relations only
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
     scene = models.ForeignKey(Scene)
     #Props

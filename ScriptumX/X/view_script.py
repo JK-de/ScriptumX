@@ -64,8 +64,6 @@ class SceneForm(forms.ModelForm):
             ]
 
 
-
-
     def __init__(self, *args, **kwargs):
         super(SceneForm, self).__init__(*args, **kwargs)
 
@@ -113,31 +111,31 @@ class SceneForm(forms.ModelForm):
 #                    Field('short', css_class='col-sm-1', ),
              
 #    ),
-                Field('name', style="max-width:30em; min-width:30em;" ), 
-                Field('short', style="max-width:5em; min-width:5em;", ),
-                Field('duration', style="max-width:10em; min-width:10em;", ),
+            Field('name', style="max-width:30em; min-width:30em;" ), 
+            Field('short', style="max-width:5em; min-width:5em;", ),
+            Field('duration', style="max-width:10em; min-width:10em;", ),
 
-                Field('set_location'),
+            Field('abstract', style="max-width:100%; min-width:100%;", rows=2),
 
-                Field('abstract', style="max-width:100%; min-width:100%;", rows=2),
+            Field('set_location', css_class='chosen-select'),
 
-                Field('indentation', template="X/tmpl_slider_indentation.html"),
+            Field('persons', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
+            Field('gadgets', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
+            Field('audios', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
+            Field('sfxs', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
 
-                Field('progress_script', template="X/tmpl_slider_progress_script.html"),
-                Field('progress_pre', template="X/tmpl_slider_progress_pre.html"),
-                Field('progress_shot', template="X/tmpl_slider_progress_shot.html"),
-                Field('progress_post', template="X/tmpl_slider_progress_post.html"),
+            Field('indentation', template="X/tmpl_slider_indentation.html"),
 
-               
-                # http://jscolor.com/examples/
-                Field('color', style="width:10%;", css_class="jscolor {width:243, height:150, position:'right', borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}"),
+            Field('progress_script', template="X/tmpl_slider_progress_script.html"),
+            Field('progress_pre', template="X/tmpl_slider_progress_pre.html"),
+            Field('progress_shot', template="X/tmpl_slider_progress_shot.html"),
+            Field('progress_post', template="X/tmpl_slider_progress_post.html"),
 
-                Field('description', style="max-width:100%; min-width:100%;", rows=10),
+            # http://jscolor.com/examples/
+            Field('color', style="width:10%;", css_class="jscolor {width:243, height:150, position:'right', borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}"),
 
-                'persons',
-                'gadgets',
-                'audios',
-                'sfxs',
+            Field('description', style="max-width:100%; min-width:100%;", rows=10),
+
         )
 
     def clean_name(self):

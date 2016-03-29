@@ -86,12 +86,14 @@ class RoleForm(forms.ModelForm):
 
             Field('name', style="width:30em; min-width:30em; max-width:100%; "),
 
-            #Field('progress', template="X/tmpl_slider_progress.html"),
+            Field('actor', css_class='chosen-select'),
+
+            Field('gadgets', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
+
+            Field('color'),
 
             Field('description', style="max-width:100%; min-width:100%;", rows=10),
 
-            'actor',
-            'gadgets',
             )
 
     def clean_name(self):

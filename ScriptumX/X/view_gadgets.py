@@ -94,9 +94,9 @@ class GadgetForm(forms.ModelForm):
 
                 #Field('progress', template="./templates/X/tmpl_slider_progress.html"),
                 #Field('progress', template="D:/X/ScriptumX/X/templates/X/tmpl_slider_progress.html"),
-                Field('progress', template="X/tmpl_slider_progress.html"),
+            Field('progress', template="X/tmpl_slider_progress.html"),
 
-                Field('description', style="max-width:100%; min-width:100%;", rows=10),
+            Field('description', style="max-width:100%; min-width:100%;", rows=10),
 
 #Div(  data-provide="slider", data-slider-min="0", data-slider-max="100", data-slider-step="1"
 #                Field('progress',  data-provide="slider", data-slider-min="0", data-slider-max="100", data-slider-step="1" ),
