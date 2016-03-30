@@ -21,25 +21,25 @@
 
     {% block head %}{% endblock %}
 
-<script type="text/javascript" >
-    $(document).ready(function () {
-        $(window).on('resize', do_resize );
+    <script type="text/javascript" >
+        $(document).ready(function () {
+            $(window).on('resize', do_resize );
 
-        function do_resize () {
-            var $window = $(this), //this = window
-                height = Math.ceil($window.height()),
-                previousHeight = $window.data('previousHeight');
+            function do_resize () {
+                var $window = $(this), //this = window
+                    height = Math.ceil($window.height()),
+                    previousHeight = $window.data('previousHeight');
 
-            if (height !== previousHeight) {
-                $("#app_container").css('height', height - 150);
-                $window.data('previousHeight', height);
-            }
-        };
+                if (height !== previousHeight) {
+                    $("#app_container").css('height', height - 150);
+                    $window.data('previousHeight', height);
+                }
+            };
 
-        do_resize();
-        document.getElementById("active_scope").scrollIntoView();
-    });
-</script>
+            do_resize();
+            document.getElementById("active_scope").scrollIntoView();
+        });
+    </script>
 
 </head>
 

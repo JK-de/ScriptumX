@@ -10,30 +10,66 @@
     
     <title>{{ title }} - ScriptumX</title>
     {% load staticfiles %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">#}
     
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <!-- Optional theme -->
 {#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">#}
     <!-- Latest compiled and minified JavaScript -->
+
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
-    
-    <script src="{% static 'X/scripts/modernizr-2.6.2.js' %}"></script>
+
+    {#<script src="{% static 'X/scripts/modernizr-2.6.2.js' %}"></script>#}
+
+    {#<script src="{% static 'X/scripts/jquery-1.10.2.js' %}"></script>#}
+    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
+    {#<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>#}
+
+    <!-- fixedheadertable JavaScript 
+    <link rel="stylesheet" href="{% static 'fixedheadertable/fixedheadertable.css' %}">
+    <script src="{% static 'fixedheadertable/jquery.fixedheadertable.min.js' %}"></script>-->
+
+    <!-- freezeheader JavaScript 
+    <link rel="stylesheet" href="{% static 'freezeheader/style.css' %}">
+    <script src="{% static 'freezeheader/jquery.freezeheader.js' %}"></script>-->
+
+    <!-- tfh JavaScript -->
+    <script src="{% static 'tfh/jquery.michiweber.table-head-fixed.min.js' %}"></script>
+    <style>
+        table.table-fixed-head .table-fixed-head-thead {
+          border-bottom: 1px solid #dddddd;
+          background: #fafafa;
+          color: #222;
+        }
+    </style>
+
+    {% block head %}{% endblock %}
+
 </head>
 
 <body>
+    blabla<br/>
 
-    <div style="" class="container-fluid body-content">
+
+    {#<div style="" class="container-fluid body-content">#}
         
         {% block content %}{% endblock %}
 
-    </div>
+    {#</div>#}
 
-    <script src="{% static 'X/scripts/jquery-1.10.2.js' %}"></script>
+    {#<script src="{% static 'X/scripts/jquery-1.10.2.js' %}"></script>#}
     {#<script src="{% static 'X/scripts/bootstrap.js' %}"></script>#}
-    <script src="{% static 'X/scripts/respond.js' %}"></script>
+    {#<script src="{% static 'X/scripts/respond.js' %}"></script>#}
 {% block scripts %}{% endblock %}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#table1').fixedHeaderTable({ footer: false, cloneHeadToFoot: false, fixedColumns: 1, autoShow: true });
+            $('#table1').fixedHeaderTable('show');
+            $('#table2').freezeHeader();
+        });
+    </script>
 
 </body>
 </html>

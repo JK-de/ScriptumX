@@ -114,6 +114,10 @@
     <Folder Include="authentication\templates\" />
     <Folder Include="authentication\templates\authentication\" />
     <Folder Include="report\" />
+    <Folder Include="report\static\" />
+    <Folder Include="report\static\fixedheadertable\" />
+    <Folder Include="report\static\fixedheadertable\lib\" />
+    <Folder Include="report\static\tfh\" />
     <Folder Include="report\templates\" />
     <Folder Include="report\templates\report\" />
     <Folder Include="ScriptumX\static\" />
@@ -135,6 +139,12 @@
     <Folder Include="ScriptumX\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="report\static\fixedheadertable\fixedheadertable.css" />
+    <Content Include="report\static\fixedheadertable\jquery.fixedheadertable.js" />
+    <Content Include="report\static\fixedheadertable\jquery.fixedheadertable.min.js" />
+    <Content Include="report\static\fixedheadertable\jquery.mousewheel.js" />
+    <Content Include="report\static\fixedheadertable\lib\jquery.mousewheel.js" />
+    <Content Include="report\static\tfh\jquery.michiweber.table-head-fixed.js" />
     <Content Include="report\templates\report\layout2.html" />
     <Content Include="report\templates\report\testM1.html" />
     <Content Include="report\templates\report\test2.html" />
