@@ -10,6 +10,25 @@
 <link rel="stylesheet" type="text/css" href="{% static 'X/css/x.css' %}" media="all" />
 <script src="{% static 'X/scripts/bootstrap-slider.js' %}"></script>
 
+<script type="text/javascript">
+    $(document).ready(function () {
+
+    $('#sceneselect').on('change', function (evt, params) {
+        // can now use params.selected and params.deselected
+        //alert("evt: " + evt + "\nparams: " + params.selected);
+        window.location.href = "/scene/set/" + params.selected;
+    });
+
+    //$("#sceneselect").chosen().change(function () {
+    //    alert(+$(this).val());
+    //    console.log('select2 change', event, $(event.target).val());
+    //    //$('#' + $(this).val()).show();
+    //});
+
+    //console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
+    });
+</script>
+
 {% endblock %}
 
 {############################################################################}
@@ -166,6 +185,13 @@
             <img src="{% static 'img/tab/scene-64.png' %}" />
         </a>
     </div>
+
+    <select id="sceneselect" class="chosen-select" data-placeholder="Select Your Options">
+    {% for scene in scenes %}
+        <option value="{{scene.pk}}">{{scene.name}}</option>
+    {% endfor %}
+    </select>
+
 
     <div class="btn-group-vertical" role="group" style="margin-left:16px">
         <a href="/scene/tag/all" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/tab/common/selectall.png' %}" /></a>

@@ -130,9 +130,11 @@ def scene(request, sceneitem_id, sceneitem_type='?'):
     #    query = Q()
     #elif len(query)==0:
     #    query = g_tag_query_none
+
+    scenes = Scene.objects.filter( project=env.project_id, script=env.script_id ).order_by('order')
     
     #filter(script=env.script, scene=env.scene)
-    sceneitems = SceneItem.objects.all().order_by('order')
+    sceneitems = SceneItem.objects.filter(scene=env.scene).order_by('order')
 
     return render(request, 'X/scene.html', {
         'title': 'SceneItem',
@@ -140,6 +142,8 @@ def scene(request, sceneitem_id, sceneitem_type='?'):
         'tab_list': g_tab_list,
         'tab_active_id': 'S',
         'tag_list': tag_list,
+        'scenes': scenes,
+        'active_scene': env.scene,
         'sceneitems': sceneitems,
         'active_sceneitem': active_sceneitem,
         'active_id': active_id,
@@ -154,6 +158,21 @@ def scene(request, sceneitem_id, sceneitem_type='?'):
 def sceneTag(request, tag_id):
 
     handleTagRequest(request, tag_id, 'sceneitem')
+
+    return scene(request, None)
+
+###############################################################################
+
+@login_required
+def sceneSet(request, scene_id):
+
+    env = Env(request)
+
+    try:
+        next_scene = Scene.objects.get( project=env.project_id, script=env.script_id, id=scene_id )
+        env.setScene(next_scene)
+    except:
+        pass
 
     return scene(request, None)
 
