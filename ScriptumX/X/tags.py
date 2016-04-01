@@ -88,7 +88,7 @@ gadget_tag_list = (
     { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
     { 'idx': 1, 'name':'Requisite', 'img':'img/g/tag/requisite.png' },
     { 'idx': 2, 'name':'Costume',   'img':'img/g/tag/costume.png' },
-    { 'idx': 3, 'name':'MakeUp',    'img':'img/g/tag/makeUp.png' },
+    { 'idx': 3, 'name':'MakeUp',    'img':'img/g/tag/makeup.png' },
     { 'idx': 4, 'name':'Camera',    'img':'img/g/tag/camera.png' },
     { 'idx': 5, 'name':'Gaffer',    'img':'img/g/tag/gaffer.png' },
     { 'idx': 6, 'name':'Grip',      'img':'img/g/tag/grip.png' },
@@ -145,16 +145,16 @@ appointment_tag_list = (
     )
 
 all_tag_list = {}
-all_tag_list['project']     = project_tag_list   #TODO
+all_tag_list['project']     = project_tag_list
 all_tag_list['scene']       = scene_tag_list
-all_tag_list['sceneitem']   = sceneitem_tag_list   #TODO
-all_tag_list['role']        = role_tag_list   #TODO
-all_tag_list['person']      = person_tag_list   #TODO
-all_tag_list['location']    = location_tag_list   #TODO
+all_tag_list['sceneitem']   = sceneitem_tag_list
+all_tag_list['role']        = role_tag_list
+all_tag_list['person']      = person_tag_list
+all_tag_list['location']    = location_tag_list
 all_tag_list['gadget']      = gadget_tag_list
-all_tag_list['audio']       = audio_tag_list   #TODO
-all_tag_list['sfx']         = sfx_tag_list   #TODO
-all_tag_list['appointment'] = appointment_tag_list   #TODO
+all_tag_list['audio']       = audio_tag_list
+all_tag_list['sfx']         = sfx_tag_list
+all_tag_list['appointment'] = appointment_tag_list
 
 
 def FormSymbol(imageName):

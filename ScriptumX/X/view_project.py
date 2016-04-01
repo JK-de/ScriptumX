@@ -117,16 +117,18 @@ def project(request, project_id, script_id=0):
     
     ### conglomerate queries
     
-    projects = Project.objects.filter( users=env.user ).order_by(Lower('name'))
+    projects = Project.objects.filter( users=env.user )
+    scripts = Script.objects.filter( project=env.project )
 
     return render(request, 'X/project.html', {
-        'title': 'Project',
+        'title': 'Projects',
         'env': env,
         'tab_list': g_tab_list,
         'tab_active_id': 'P',
         'projects': projects,
+        'scripts': scripts,
         'active_project': active_project,
-        'active_id': active_id,
+        'active_project_id': active_id,
         'form': formItem,
         'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
