@@ -55,7 +55,9 @@ class SceneItemForm(forms.ModelForm):
         self.helper.form_tag = False
         self.helper.layout = Layout(
 
-            Field('role', css_class='chosen-select'),
+            #HTML('<hr style="border: none; background-color: #123455;"/>'),
+
+            Field('role', css_class='chosen-select-box'),
 
             Field('parenthetical', style="max-width:100%; min-width:100%;"),
 
@@ -169,7 +171,7 @@ def sceneSet(request, scene_id):
     env = Env(request)
 
     try:
-        next_scene = Scene.objects.get( project=env.project_id, script=env.script_id, id=scene_id )
+        next_scene = Scene.objects.get( project=env.project, script=env.script, id=scene_id )
         env.setScene(next_scene)
     except:
         pass

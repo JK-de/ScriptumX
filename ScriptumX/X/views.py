@@ -12,6 +12,7 @@ from django.template import RequestContext
 from django.utils import timezone
 from django.views.generic import ListView, DetailView
 from os import path
+import os
 from django.core.exceptions import ObjectDoesNotExist
 from X.forms import NoteForm
 from crispy_forms.utils import render_crispy_form
@@ -19,6 +20,8 @@ from .tags import gadget_tag_list, handleTagRequest, getTagRequestList
 from django.db.models import Q
 #from X.generator import get_sentences, get_paragraph
 import random
+from ScriptumX.settings import PROJECT_ROOT
+
 
 import json
 from X.views import Q
@@ -150,15 +153,9 @@ def seed(request):
     env = Env(request)
 
 
-    try:
-        imp = ImporterBase(env)
-        imp.doImport('/tmp/test.celtx')
-    except:
-        pass   
-
-
     #file_ = open('app\loremipsum\default\sample.txt')
-    file_ = open('jeeves.txt')
+    filename = path.join(PROJECT_ROOT, 'pg1342.txt')
+    file_ = open(filename, 'r')
 
     markov = Markov(file_)
 
@@ -298,6 +295,25 @@ def seed(request):
 
 ###############################################################################
 
+@login_required
+def importceltx(request):
+    """Seeds the database with samples."""
+   
+
+
+    env = Env(request)
+
+
+    #try:
+    imp = ImporterBase(env)
+    filename = path.join(PROJECT_ROOT, 'test.celtx')
+    imp.doImport(filename)
+    #except:
+    #    pass   
+
+    return HttpResponseRedirect('/')
+
+###############################################################################
 #def get_or_none(classmodel, **kwargs):
 #    try:
 #        return classmodel.objects.get(**kwargs)

@@ -86,7 +86,7 @@ class RoleForm(forms.ModelForm):
 
             Field('name', style="width:30em; min-width:30em; max-width:100%; "),
 
-            Field('actor', css_class='chosen-select'),
+            Field('actor', css_class='chosen-select-box'),
 
             Field('gadgets', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
 

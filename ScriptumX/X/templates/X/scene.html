@@ -35,7 +35,7 @@
 
 {% block content %}
 
-<div class="container-fluid x-back" style="height:100%; width:100%;">
+<div class="container-fluid x-scene x-back" style="height:100%; width:100%;">
 
     <div id="abc" class="row" style="height:100%;">
 
@@ -45,37 +45,43 @@
 
                 {% for sceneitem in sceneitems %}
 			
-                    <a style="padding:8px" href="/scene/{{sceneitem.pk}}"
+                    <a href="/scene/{{sceneitem.pk}}"
                         {% if sceneitem.id == active_id %} 
                             class="x-sceneitem list-group-item active" id="active_scope"
                         {% else %} 
                             class="x-sceneitem list-group-item"
                         {% endif %}
+                        {% if sceneitem.role %}
+                            style="padding:8px; background-color:{{sceneitem.role.color}};" 
+                        {% else %}
+                            style="padding:8px;" 
+                        {% endif %}
                         >
 
-                        {#--tag images--#}
-                        <div class="pull-right" style="margin-right:14px;">
-                            {% for tag in tag_list %}
-                                {% cycle None sceneitem.tag1 sceneitem.tag2 sceneitem.tag3 sceneitem.tag4 sceneitem.tag5 sceneitem.tag6 sceneitem.tag7 sceneitem.tag8 sceneitem.tag9 sceneitem.tag10 sceneitem.tag11 as tag_visible silent %}
-                                {% if tag_visible %}
-                                    <img style="margin-right:-14px;" src="{% static tag.img %}" />
-                                {% endif %}
-                            {% endfor %}
-                        </div>
+                        {% if sceneitem.type == 'A' %}
+                            {#--description--#}
+                            {% autoescape off %}{{sceneitem.text|removetags:"a span"}}{% endautoescape %}
 
-                        {#--note--#}
-                        {% if sceneitem.note %}
-                            <img style="margin-left:-4px; margin-top:-4px; " height="16" width="16" src="{% static 'img/notes.png' %}" />
+                        {% elif sceneitem.type == 'D' %}
+
+                            <div style="margin-left:4em;">
+                            {#--role--#}
+                            {% if sceneitem.role %}
+                                <strong style="margin-left:4em;">{{sceneitem.role}}</strong>
+                            {% endif %}
+                            {% if sceneitem.parenthetical %}
+                                <span style="margin-left:1em;">({{sceneitem.parenthetical}})</span>
+                            {% endif %}
+                                <br/>
+
+                            {#--description--#}
+                            {% autoescape off %}{{sceneitem.text|removetags:"a span"}}{% endautoescape %}
+                            </div>
+
+                        {% else %}
+                            ???
                         {% endif %}
 
-                        {#--role--#}
-                        {% if sceneitem.role %}
-                        <strong style="margin-left:4em;">{{sceneitem.role}}</strong>
-                        <br/>
-                        {% endif %}
-
-                        {#--description--#}
-                        {% autoescape off %}{{sceneitem.text|removetags:"a span"|truncatewords:42}}{% endautoescape %}
                         {% comment %}
                         <br/>
                         <small>{{sceneitem.description|striptags|truncatewords:42}}</small>
@@ -116,12 +122,6 @@
                             <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
                             </button  >
 
-                            {% if not active_sceneitem.note %}
-                            <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
-                            <img height="32" width="32" src="{% static 'img/note.png' %}" /><br /><small>Note</small>
-                            </button  >
-                            {% endif %}
-
                         </div>
                 
                         <div class="pull-right">
@@ -152,6 +152,7 @@
 
 			            </div>
 
+                        &emsp;<br/>&emsp;<br/>&emsp;<br/>
 
                         {#--model form content--#}
                         {% crispy form form.helper %}
@@ -188,7 +189,7 @@
 
     <select id="sceneselect" class="chosen-select" data-placeholder="Select Your Options">
     {% for scene in scenes %}
-        <option value="{{scene.pk}}">{{scene.name}}</option>
+        <option value="{{scene.pk}}" {% if scene == env.scene %}selected{% endif %}>{{scene.name}}</option>
     {% endfor %}
     </select>
 

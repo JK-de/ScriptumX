@@ -39,33 +39,47 @@ class Env():
 
         self.request = request
 
+        # get user
+        self.user = request.user
+
+        # get project
         self.project_id = request.session.get('ProjectID', 1)
         try:
-            self.user = request.user
-            #self.project = Project.objects.get(pk=self.project_id, users=self.user)
-            self.project = Project.objects.get(pk=self.project_id)
+            self.project = Project.objects.get(pk=self.project_id, users=self.user)
+            #self.project = Project.objects.get(pk=self.project_id)
         except:
+            self.project_id = 0
             pass
 
+        # get script
         self.script_id = request.session.get('ScriptID', 0)
         try:
-            if self.script_id==0:
+            self.script = Script.objects.get(pk=self.script_id, project=self.project)
+        except:
+            self.script_id = 0
+
+        if self.script_id == 0:
+            try:
                 self.script = Script.objects.filter(project=self.project).last()
                 self.script_id = self.script.id
-            else:
-                self.script = Script.objects.get(pk=self.script_id, project=self.project)
-        except:
-            pass
+            except:
+                pass
 
+        # get scene
         self.scene_id = request.session.get('SceneID', 0)
         try:
-            if self.scene_id==0:
+            self.scene = Scene.objects.get(pk=self.scene_id, project=self.project, script=self.script)
+        except:
+            self.scene_id = 0
+
+        if self.scene_id == 0:
+            try:
                 self.scene = Scene.objects.filter(project=self.project, script=self.script).first()
                 self.scene_id = self.scene.id
-            else:
-                self.scene = Scene.objects.get(pk=self.scene_id, project=self.project, scene=self.script)
-        except:
-            pass
+            except:
+                pass
+
+
 
     def setScript(self, script):
         self.script = script

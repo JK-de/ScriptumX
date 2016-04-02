@@ -27,6 +27,7 @@ urlpatterns = [
     url('^', include('django.contrib.auth.urls')),
 
     url(r'^seed', X.views.seed, name='seed'),
+    url(r'^importceltx', X.views.importceltx, name='importceltx'),
 
     url(r'^admin/', include(admin.site.urls)),
 

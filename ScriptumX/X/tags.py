@@ -26,9 +26,9 @@ scene_tag_list = (
 
 sceneitem_tag_list = (
     { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
-    { 'idx': 1, 'name':'<1>',       'img':'img/favorits.png' },
-    { 'idx': 2, 'name':'<2>',       'img':'img/favorits.png' },
-    { 'idx': 3, 'name':'<3>',       'img':'img/favorits.png' },
+    { 'idx': 1, 'name':'Action',       'img':'img/favorits.png' },
+    { 'idx': 2, 'name':'Dialog',       'img':'img/favorits.png' },
+    { 'idx': 3, 'name':'Trans',       'img':'img/favorits.png' },
     { 'idx': 4, 'name':'<4>',       'img':'img/favorits.png' },
     { 'idx': 5, 'name':'<5>',       'img':'img/favorits.png' },
     { 'idx': 6, 'name':'<6>',       'img':'img/favorits.png' },

@@ -164,6 +164,7 @@ def script(request, scene_id):
     ### create new scene object on request '/script/0'
     if scene_id == '0':
         active_scene = Scene(project=env.project, script=env.script);
+        active_scene.setAllTags(True)
 
     ### handle buttons
     if request.method == 'POST':
@@ -234,6 +235,7 @@ def script(request, scene_id):
 
     return render(request, 'X/script.html', {
         'title': 'Script',
+        'env': env,
         'tab_list': g_tab_list,
         'tab_active_id': 'C',
         'tag_list': tag_list,

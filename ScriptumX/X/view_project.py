@@ -42,6 +42,8 @@ class ProjectForm(forms.ModelForm):
         fields = [
             'name',
             'users',
+            'readers',
+            'owner'
             ]
 
     def __init__(self, *args, **kwargs):
@@ -57,8 +59,11 @@ class ProjectForm(forms.ModelForm):
 
             Field('name', style="width:30em; min-width:30em; max-width:100%; "),
 
-            Field('users'),
+            Field('users', css_class='chosen-select', style="max-width:95%; min-width:95%; min-height:48px;"),
 
+            Field('readers', css_class='chosen-select', style="max-width:95%; min-width:95%; min-height:48px;"),
+
+            Field('owner', css_class='chosen-select-box'),
             )
 
     def clean_name(self):
@@ -79,41 +84,41 @@ def project(request, project_id, script_id=0):
     #projects = get_list_or_404(Project)
     
     try:
-        active_project = Project.objects.get(pk = project_id)
-        active_id = active_project.id
+        selected_project = Project.objects.get(pk = project_id)
+        selected_id = selected_project.id
     except ObjectDoesNotExist:
-        active_project = None
-        active_id = None
+        selected_project = None
+        selected_id = None
 
     ### create new project object on request '/project/0'
     if project_id == '0':
-        active_project = Project(project=env.project);
+        selected_project = Project(project=env.project);
     
     #TODO
     ### handle buttons
     if request.method == 'POST':
-        if not active_project:   # you shall not pass ... without valid scope
+        if not selected_project:   # you shall not pass ... without valid scope
             raise AssertionError 
 
         # generate forms and/or get data out of the edited forms
-        formItem = ProjectForm(request.POST or None, instance=active_project)
+        formItem = ProjectForm(request.POST or None, instance=selected_project)
         if formItem.is_valid():
-            active_project = formItem.instance
+            selected_project = formItem.instance
 
         # 'Delete'-Button
         if request.POST.get('btn_delete'):
-            active_project.delete()
+            selected_project.delete()
             return HttpResponseRedirect('/project/')
 
         # 'Save'-Button
         if request.POST.get('btn_save'):
-            if active_project:
-                active_project.save()
+            if selected_project:
+                selected_project.save()
 
             if project_id == '0':   # previously new item
-                return HttpResponseRedirect('/project/' + str(active_project.id))
+                return HttpResponseRedirect('/project/' + str(selected_project.id))
     else:
-        formItem = ProjectForm(instance=active_project)
+        formItem = ProjectForm(instance=selected_project)
     
     ### conglomerate queries
     
@@ -124,11 +129,11 @@ def project(request, project_id, script_id=0):
         'title': 'Projects',
         'env': env,
         'tab_list': g_tab_list,
-        'tab_active_id': 'P',
+        'tab_selected_id': 'P',
         'projects': projects,
         'scripts': scripts,
-        'active_project': active_project,
-        'active_project_id': active_id,
+        'selected_project': selected_project,
+        'selected_project_id': selected_id,
         'form': formItem,
         'datetime': datetime.now(),
         #'error_message': "Please make a selection.",

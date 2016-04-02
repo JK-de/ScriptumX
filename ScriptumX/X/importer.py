@@ -16,6 +16,7 @@ class ImporterBase():
 
     env = None
     sceneItem_counter = 1
+    scene_counter = 1
 
 
 ###############################################################################
@@ -41,6 +42,7 @@ class ImporterBase():
         if name==None:
             name = '<unknown>'
 
+        name = name[:50]
         try:
             role = Role.objects.get(name__iexact=name)
         except:
@@ -56,7 +58,8 @@ class ImporterBase():
     def getLocation(self, name):
         if name==None:
             name = '<unknown>'
-
+        
+        name = name[:50]
         try:
             location = Location.objects.get(name__iexact=name)
         except:
@@ -73,12 +76,16 @@ class ImporterBase():
         if name==None:
             name = '<unknown>'
 
+        name = name[:50]
         self.sceneItem_counter = 1
 
         scene = Scene()
+        scene.setAllTags(True)
         scene.name = name
         scene.project = self.env.project
         scene.script = self.env.script
+        scene.order = self.scene_counter
+        self.scene_counter += 1
         scene.save()
 
         self.env.setScene(scene)
@@ -90,13 +97,14 @@ class ImporterBase():
 
 ###############################################################################
 
-    def addScript(self, name):
+    def addScript(self, name, abstract=''):
         if name==None:
             name = '<unknown>'
 
+        name = name[:50]
         script = Script()
         script.workingtitle = name
-        #script.abstract = markov.generate_markov_text(random.randint(2, 5))
+        script.abstract = abstract
         #script.description = markov.generate_markov_text(random.randint(20, 30))
         #script.author = markov.generate_markov_text(random.randint(2, 3))
         #script.copyright = markov.generate_markov_text(random.randint(2, 3))
@@ -111,6 +119,7 @@ class ImporterBase():
         if name==None:
             name = '<unknown>'
 
+        name = name[:50]
         try:
             script = Script.objects.get(name=name)
         except:
@@ -134,9 +143,11 @@ class ImporterBase():
         sceneItem = SceneItem()
         sceneItem.type = type
         if role_name:
+            role_name = role_name[:50]
             sceneItem.role = self.getRole(role_name)
         else:
             sceneItem.role = None
+        parenthetical = parenthetical[:100]
         sceneItem.parenthetical = parenthetical
         sceneItem.text = text
         sceneItem.scene = self.env.scene
@@ -152,6 +163,7 @@ class ImporterBase():
         if name==None:
             name = '<unknown>'
 
+        role_name = role_name[:50]
         try:
             project = Project.objects.get(name=name)
         except:
@@ -194,7 +206,7 @@ class ImporterBase():
             if data[0] != 'P' or data[1] != 'K':
                 pass
 
-            self.addScript('import from celtx ' + str(datetime.now()))
+            self.addScript('IMPORT', 'import from celtx ' + filename + ' at ' + str(datetime.now()))
 
             for match in re.finditer(pattern, data):
                 #print(match)
@@ -246,6 +258,7 @@ class ImporterBase():
 
                 elif key=='shot':
                     pass
+
                 elif key=='sceneheading':
                     self.addScene(value)
                     pass
@@ -254,7 +267,7 @@ class ImporterBase():
                     pass
 
 
-                print(key + '|' + value + '|')
+                #print(key + '|' + value + '|')
 
 
             f.close()

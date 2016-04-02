@@ -31,7 +31,7 @@
                 {% for project in projects %}
 			
                     <a style="padding:8px" href="/project/{{project.pk}}"
-                        {% if project.id == active_project_id %} 
+                        {% if project.id == selected_project_id %} 
                             class="x-project list-group-item active"
                         {% else %} 
                             class="x-project list-group-item"
@@ -76,17 +76,17 @@
         <div class="col-xs-6 col-md-8" style="height:100%; overflow-y:auto; padding:0">
             <div class="x-project x-item-form">
 
-                {% if active_project %}
+                {% if selected_project %}
 
 
                     <form class="form-horizontal" method="post">
 
                         {#--note--#}
-                        {% if active_project.note %}
+                        {% if selected_project.note %}
                             <div class="pull-left" style="max-width:12%;">
                                 <img src="{% static 'img/note.png' %}" /><br/>
-                                <small>{{ active_project.note.author }}<br/>
-                                {{ active_project.note.created|date:"Y-m-d H:i" }}</small>
+                                <small>{{ selected_project.note.author }}<br/>
+                                {{ selected_project.note.created|date:"Y-m-d H:i" }}</small>
                             </div>
                             {% crispy formNote formNote.helper %}
                             <hr/>
@@ -98,12 +98,6 @@
                             <button style="padding:4px;" type="submit" name="btn_save" value="x" class="btn btn-success btn-xs" formmethod="post">
                             <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
                             </button  >
-
-                            {% if not active_project.note %}
-                            <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
-                            <img height="32" width="32" src="{% static 'img/note.png' %}" /><br /><small>Note</small>
-                            </button  >
-                            {% endif %}
 
                         </div>
                 
@@ -135,10 +129,15 @@
 
 			            </div>
 
+                        &emsp;<br/>&emsp;<br/>&emsp;<br/>
 
                         {#--model form content--#}
                         {% crispy form form.helper %}
          
+                        <div class="row">
+                            <div class="col-sm-2">Warning!</div>
+                            <div class="col-sm-10">Lorem Ipsum</div>
+                        </div>
                     </form>
 
                 {% else %}
@@ -166,7 +165,7 @@
                 {% for script in scripts %}
 			
                     <a style="padding:8px" href="/script/{{script.pk}}"
-                        {% if script.id == active_script_id %} 
+                        {% if script.id == selected_script_id %} 
                             class="x-script list-group-item active"
                         {% else %} 
                             class="x-script list-group-item"
@@ -201,17 +200,17 @@
         <div class="col-xs-6 col-md-8" style="height:100%; overflow-y:auto; padding:0">
             <div class="x-script x-item-form">
 
-                {% if active_script %}
+                {% if selected_script %}
 
 
                     <form class="form-horizontal" method="post">
 
                         {#--note--#}
-                        {% if active_script.note %}
+                        {% if selected_script.note %}
                             <div class="pull-left" style="max-width:12%;">
                                 <img src="{% static 'img/note.png' %}" /><br/>
-                                <small>{{ active_script.note.author }}<br/>
-                                {{ active_script.note.created|date:"Y-m-d H:i" }}</small>
+                                <small>{{ selected_script.note.author }}<br/>
+                                {{ selected_script.note.created|date:"Y-m-d H:i" }}</small>
                             </div>
                             {% crispy formNote formNote.helper %}
                             <hr/>
@@ -223,12 +222,6 @@
                             <button style="padding:4px;" type="submit" name="btn_save" value="x" class="btn btn-success btn-xs" formmethod="post">
                             <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
                             </button  >
-
-                            {% if not active_script.note %}
-                            <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
-                            <img height="32" width="32" src="{% static 'img/note.png' %}" /><br /><small>Note</small>
-                            </button  >
-                            {% endif %}
 
                         </div>
                 
@@ -260,6 +253,7 @@
 
 			            </div>
 
+                        &emsp;<br/>&emsp;<br/>&emsp;<br/>
 
                         {#--model form content--#}
                         {% crispy form form.helper %}
