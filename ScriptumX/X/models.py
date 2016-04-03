@@ -24,7 +24,7 @@ class Project(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="project_owned",)
     # Many to Many
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="project_user", blank=True)
-    readers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="project_reader", blank=True)
+    guests = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="project_guest", blank=True)
 
     def __str__(self):
         """Returns a string representation of a Script."""
@@ -222,7 +222,7 @@ class Location(BaseModel):
 
 class Script(models.Model):
     #Props
-    workingtitle = models.CharField(max_length=50)
+    name = models.CharField(max_length=50)
     abstract = models.TextField(blank=True)
     description = models.TextField(blank=True)
     author = models.CharField(max_length=300, blank=True)
@@ -235,7 +235,7 @@ class Script(models.Model):
 
     def __str__(self):
         """Returns a string representation of a Script."""
-        return self.workingtitle
+        return self.name
 
 ###############################################################################
 

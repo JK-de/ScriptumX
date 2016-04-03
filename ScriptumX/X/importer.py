@@ -103,7 +103,7 @@ class ImporterBase():
 
         name = name[:50]
         script = Script()
-        script.workingtitle = name
+        script.name = name
         script.abstract = abstract
         #script.description = markov.generate_markov_text(random.randint(20, 30))
         #script.author = markov.generate_markov_text(random.randint(2, 3))
@@ -124,7 +124,7 @@ class ImporterBase():
             script = Script.objects.get(name=name)
         except:
             script = Script()
-            script.workingtitle = 'Long Story - Short'
+            script.name = 'Long Story - Short'
             script.abstract = markov.generate_markov_text(random.randint(2, 5))
             script.description = markov.generate_markov_text(random.randint(20, 30))
             script.author = markov.generate_markov_text(random.randint(2, 3))

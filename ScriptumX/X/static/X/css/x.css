@@ -50,6 +50,12 @@ a.list-group-item:hover {
     color: #3e444c;
 }
 
+a.list-group-item.active {
+    background-color: #666;
+    color: #FFF;
+    /*border: 3px solid #F80;*/
+}
+
 input[type="checkbox"] {
     margin: 0;
     padding: 4px;
@@ -57,7 +63,7 @@ input[type="checkbox"] {
 }
 
 .list-group-item.active {
-    color: #3e444c;
+    color: #777;
 }
 
 .x-back,
@@ -68,7 +74,7 @@ input[type="checkbox"] {
 }
 
 .x-item-form {
-    background-color: #525860;
+    background-color: #666;
     /*color: hsl(30, 15%, 10%);*/
     margin-right: 16px; 
     padding: 16px; 

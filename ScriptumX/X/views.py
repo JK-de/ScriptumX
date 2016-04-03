@@ -178,7 +178,7 @@ def seed(request):
     except:
         script = Script()
         script.project = project
-        script.workingtitle = 'Long Story - Short'
+        script.name = 'Long Story - Short'
         script.abstract = markov.generate_markov_text(random.randint(2, 5))
         script.description = markov.generate_markov_text(random.randint(20, 30))
         script.author = markov.generate_markov_text(random.randint(2, 3))

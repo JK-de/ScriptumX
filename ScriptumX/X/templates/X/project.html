@@ -38,33 +38,13 @@
                         {% endif %}
                         >
 
-                        {#--tag images--#}
-                        <div class="pull-right" style="margin-right:14px;">
-                            {% for tag in tag_list %}
-                                {% cycle None project.tag1 project.tag2 project.tag3 project.tag4 project.tag5 project.tag6 project.tag7 project.tag8 project.tag9 project.tag10 project.tag11 as tag_visible silent %}
-                                {% if tag_visible %}
-                                    <img style="margin-right:-14px;" src="{% static tag.img %}" />
-                                {% endif %}
-                            {% endfor %}
-                        </div>
-
-                        {#--note--#}
-                        {% if project.note %}
-                            <img style="margin-left:-4px; margin-top:-4px; " height="16" width="16" src="{% static 'img/notes.png' %}" />
-                        {% endif %}
-
                         {#--name--#}
-                        <strong style="margin-right:14px;">{{project.name}}</strong>
+                        <strong style="margin-right:14px;">
+                            {% if project == env.project %}<i class="fa fa-check-square"></i>{% endif %}
+                            {{project.name}}
+                        </strong>
                         <br/>
 
-                        {#--description--#}
-                        <small>{% autoescape off %}{{project.description|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
-                        {% comment %}
-                        <br/>
-                        <small>{{project.description|striptags|truncatewords:42}}</small>
-                        <br/>
-                        <small>{{project.description|truncatewords:15}}</small>
-                        {% endcomment %}
                     </a>
 
                 {% endfor %}
@@ -80,17 +60,6 @@
 
 
                     <form class="form-horizontal" method="post">
-
-                        {#--note--#}
-                        {% if selected_project.note %}
-                            <div class="pull-left" style="max-width:12%;">
-                                <img src="{% static 'img/note.png' %}" /><br/>
-                                <small>{{ selected_project.note.author }}<br/>
-                                {{ selected_project.note.created|date:"Y-m-d H:i" }}</small>
-                            </div>
-                            {% crispy formNote formNote.helper %}
-                            <hr/>
-                        {% endif %}
 
                         {#--buttons--#}
                         <div class="pull-left">
@@ -172,23 +141,16 @@
                         {% endif %}
                         >
 
-                        {#--note--#}
-                        {% if script.note %}
-                            <img style="margin-left:-4px; margin-top:-4px; " height="16" width="16" src="{% static 'img/notes.png' %}" />
-                        {% endif %}
-
                         {#--name--#}
-                        <strong style="margin-right:14px;">{{script.name}}</strong>
+                        <strong style="margin-right:14px;">
+                            {% if script == env.script %}<i class="fa fa-check-square"></i>{% endif %}
+                            {{script.name}}
+                        </strong>
                         <br/>
 
-                        {#--description--#}
-                        <small>{% autoescape off %}{{script.description|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
-                        {% comment %}
-                        <br/>
-                        <small>{{script.description|striptags|truncatewords:42}}</small>
-                        <br/>
-                        <small>{{script.description|truncatewords:15}}</small>
-                        {% endcomment %}
+                        {#--abstract--#}
+                        <small>{% autoescape off %}{{script.abstract|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
+                       
                     </a>
 
                 {% endfor %}
@@ -204,17 +166,6 @@
 
 
                     <form class="form-horizontal" method="post">
-
-                        {#--note--#}
-                        {% if selected_script.note %}
-                            <div class="pull-left" style="max-width:12%;">
-                                <img src="{% static 'img/note.png' %}" /><br/>
-                                <small>{{ selected_script.note.author }}<br/>
-                                {{ selected_script.note.created|date:"Y-m-d H:i" }}</small>
-                            </div>
-                            {% crispy formNote formNote.helper %}
-                            <hr/>
-                        {% endif %}
 
                         {#--buttons--#}
                         <div class="pull-left">

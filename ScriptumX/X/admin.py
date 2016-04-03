@@ -11,7 +11,7 @@ class ProjectAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['name']}),
         ('_12M', {'fields': ['owner']}),
-        ('_M2M', {'fields': ['users', 'readers']}),
+        ('_M2M', {'fields': ['users', 'guests']}),
     ]
     #inlines = [ChoiceInline]
     list_display = ('name',)
@@ -128,15 +128,15 @@ admin.site.register(Location, LocationAdmin)
 class ScriptAdmin(admin.ModelAdmin):
     """Definition of the Script editor."""
     fieldsets = [
-        (None, {'fields': ['workingtitle']}),
+        (None, {'fields': ['name']}),
         ('_Prop', {'fields': ['abstract', 'description', 'author', 'version', 'copyright',]}),
         ('_12M', {'fields': ['project']}),
         ('_M2M', {'fields': ['persons']}),
     ]
     #inlines = [ChoiceInline]
-    list_display = ('workingtitle', 'abstract', 'description')
+    list_display = ('name', 'abstract', 'description')
     list_filter = ['project']
-    search_fields = ['workingtitle']
+    search_fields = ['name']
     #date_hierarchy = 'pub_date'
 
 admin.site.register(Script, ScriptAdmin)

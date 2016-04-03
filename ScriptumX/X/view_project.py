@@ -42,7 +42,7 @@ class ProjectForm(forms.ModelForm):
         fields = [
             'name',
             'users',
-            'readers',
+            'guests',
             'owner'
             ]
 
@@ -59,9 +59,9 @@ class ProjectForm(forms.ModelForm):
 
             Field('name', style="width:30em; min-width:30em; max-width:100%; "),
 
-            Field('users', css_class='chosen-select', style="max-width:95%; min-width:95%; min-height:48px;"),
+            Field('users', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
 
-            Field('readers', css_class='chosen-select', style="max-width:95%; min-width:95%; min-height:48px;"),
+            Field('guests', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
 
             Field('owner', css_class='chosen-select-box'),
             )
@@ -129,7 +129,7 @@ def project(request, project_id, script_id=0):
         'title': 'Projects',
         'env': env,
         'tab_list': g_tab_list,
-        'tab_selected_id': 'P',
+        'tab_active_id': 'P',
         'projects': projects,
         'scripts': scripts,
         'selected_project': selected_project,
