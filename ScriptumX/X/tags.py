@@ -25,18 +25,10 @@ scene_tag_list = (
     )
 
 sceneitem_tag_list = (
-    { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
-    { 'idx': 1, 'name':'Action',       'img':'img/favorits.png' },
-    { 'idx': 2, 'name':'Dialog',       'img':'img/favorits.png' },
-    { 'idx': 3, 'name':'Trans',       'img':'img/favorits.png' },
-    { 'idx': 4, 'name':'<4>',       'img':'img/favorits.png' },
-    { 'idx': 5, 'name':'<5>',       'img':'img/favorits.png' },
-    { 'idx': 6, 'name':'<6>',       'img':'img/favorits.png' },
-    { 'idx': 7, 'name':'<7>',       'img':'img/favorits.png' },
-    { 'idx': 8, 'name':'<8>',       'img':'img/favorits.png' },
-    { 'idx': 9, 'name':'<9>',       'img':'img/favorits.png' },
-    { 'idx':10, 'name':'<10>',      'img':'img/favorits.png' },
-    { 'idx':11, 'name':'<11>',      'img':'img/favorits.png' },
+    { 'idx': 0, 'name':'Note',      'img':'img/s/tag/note.png' },
+    { 'idx': 1, 'name':'Action',    'img':'img/s/tag/action.png' },
+    { 'idx': 2, 'name':'Dialog',    'img':'img/s/tag/dialog.png' },
+    { 'idx': 3, 'name':'Trans',     'img':'img/s/tag/trans.png' },
     )
 
 role_tag_list = (
