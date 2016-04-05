@@ -184,7 +184,6 @@
     <Content Include="X\templates\X\tmpl_slider_progress_shot.html" />
     <Content Include="db.sqlite" />
     <Content Include="requirements.txt" />
-    <Content Include="X\samples.json" />
     <Content Include="X\templates\X\details.html" />
     <Content Include="X\templates\X\results.html" />
     <Content Include="X\static\X\content\bootstrap.css" />

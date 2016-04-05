@@ -98,3 +98,64 @@ class Env():
         self.request.session['SceneID'] = self.scene_id
 
 ###############################################################################
+
+ORDER_STEP = 65536
+
+def reorderList(list):
+    
+    newOrder = ORDER_STEP
+
+    for item in list:
+        oldIndex = item.order
+        if oldIndex != newOrder:
+            item.order = newOrder
+            item.save()
+        newOrder += ORDER_STEP
+
+
+def getOrderNumber(list,ref_id,offset):
+    
+    ref_id = int(ref_id)
+    refIndex = None
+    items = len(list)
+    for i in range(items):
+        if list[i].id == ref_id:
+            refIndex = i
+            break
+
+    if not refIndex:
+        return None
+
+    offset = int(offset)
+    if offset < 0:   # befor...
+        newIndex = refIndex + offset + 1
+        if newIndex <= 0:
+            newIndex = 0
+            if list[newIndex].order < 2:
+                reorderList(list)
+            return int(list[newIndex].order / 2)
+        else:
+            if (list[newIndex].order - list[newIndex-1].order) < 2:
+                reorderList(list)
+            return int((list[newIndex].order - list[newIndex-1].order) / 2) + list[newIndex-1].order
+            
+    elif offset > 0:   # after...
+        newIndex = refIndex + offset - 1
+        if newIndex >= items-1:
+            newIndex = items-1
+            return list[newIndex].order + ORDER_STEP
+        else:
+            if (list[newIndex+1].order - list[newIndex].order) < 2:
+                reorderList(list)
+            return int((list[newIndex+1].order - list[newIndex].order) / 2) + list[newIndex].order
+            
+    else:
+        return list[refIndex].order
+
+
+
+        
+    
+
+###############################################################################
+

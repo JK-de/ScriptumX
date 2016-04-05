@@ -222,43 +222,97 @@
 
     {#--button new--#}
     <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
-        <a href="/scene/0" role="button" 
-            class="btn btn-default navbar-btn" style="padding:4px" 
-            >
-            <img height="32" width="32" src="{% static 'img/s/ins_b.png' %}" />
-            <br />
-            <small>+New</small>
-        </a>
-        <a href="/scene/0" role="button" 
-            class="btn btn-default navbar-btn" style="padding:4px" 
-            >
-            <img height="32" width="32" src="{% static 'img/s/ins_a.png' %}" />
-            <br />
-            <small>New+</small>
-        </a>
+        <div class="btn-group btn-group-xs" role="group" >
+		    <button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not active_sceneitem %}disabled{% endif %}>
+			    <img height="32" width="32" src="{% static 'img/s/ins_b.png' %}" /><br />
+			    <span class="caret"></span>
+			    <small>New</small>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">Inser befor selected:</li>
+			    <li><a href="/scene/{{active_sceneitem.pk}}/new/N/-1">Note</a></li>
+			    <li><a href="/scene/{{active_sceneitem.pk}}/new/A/-1">Action</a></li>
+			    <li><a href="/scene/{{active_sceneitem.pk}}/new/D/-1">Dialog</a></li>
+			    <li><a href="/scene/{{active_sceneitem.pk}}/new/T/-1">Trans</a></li>
+		    </ul>
+        </div>
+        <div class="btn-group btn-group-xs" role="group" >
+		    <button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not active_sceneitem %}disabled{% endif %}>
+			    <img height="32" width="32" src="{% static 'img/s/ins_a.png' %}" /><br />
+			    <small>New</small>
+			    <span class="caret"></span>
+		    </button>
+		    <ul class="dropdown-menu" role="menu">
+                <li class="dropdown-header">Inser after selected:</li>
+			    <li><a href="/scene/{{active_sceneitem.pk}}/new/N/1">Note</a></li>
+			    <li><a href="/scene/{{active_sceneitem.pk}}/new/A/1">Action</a></li>
+			    <li><a href="/scene/{{active_sceneitem.pk}}/new/D/1">Dialog</a></li>
+			    <li><a href="/scene/{{active_sceneitem.pk}}/new/T/1">Trans</a></li>
+		    </ul>
+        </div>
     </div>
 
     {#--button move--#}
     <div class="btn-group btn-group-xs" role="group" style="margin-left:8px">
-        <a href="/scene/0" role="button" 
-            class="btn btn-default navbar-btn" style="padding:4px" 
-            >
-            <img height="32" width="32" src="{% static 'img/s/move.png' %}" />
-            <br />
-            <small>Move</small>
-        </a>
+		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not active_sceneitem %}disabled{% endif %}>
+			<img height="32" width="32" src="{% static 'img/s/move.png' %}" /><br />
+			<small>Move</small>
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+            <li class="dropdown-header">Befor selected:</li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/-99999">First</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/-20">-20</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/-10">-10</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/-9">-9</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/-8">-8</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/-7">-7</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/-6">-6</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/-5">-5</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/-4">-4</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/-3">-3</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/-2">-2</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/-1">-1</a></li>
+            <li role="separator" class="divider"></li>
+            <li class="dropdown-header">After selected:</li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/1">1</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/2">2</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/3">3</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/4">4</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/5">5</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/6">6</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/7">7</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/8">8</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/9">9</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/10">10</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/20">20</a></li>
+			<li><a href="/scene/{{active_sceneitem.pk}}/move/99999">last</a></li>
+		</ul>
     </div>
 
 
     {#--button Tool--#}
     <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
-        <a href="/scene/0" role="button" 
-            class="btn btn-default navbar-btn" style="padding:4px" 
-            >
-            <img height="32" width="32" src="{% static 'img/tool.png' %}" />
-            <br />
-            <small>Tool</small>
-        </a>
+		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+			<img height="32" width="32" src="{% static 'img/tool.png' %}" /><br />
+			<small>Tool</small>
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+            {% if active_sceneitem %}
+            <li class="dropdown-header">Selected Item:</li>
+			<li><a href="#">BlaBla</a></li>
+			<li><a href="#">BlaBla</a></li>
+			<li><a href="#">BlaBla</a></li>
+			<li><a href="#">BlaBla</a></li>
+            <li role="separator" class="divider"></li>
+            {% endif %}
+            <li class="dropdown-header">All Items:</li>
+			<li><a href="#">BlaBla</a></li>
+			<li><a href="#">BlaBla</a></li>
+			<li><a href="#">BlaBla</a></li>
+			<li><a href="#">BlaBla</a></li>
+		</ul>
     </div>
 
 

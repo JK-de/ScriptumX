@@ -25,6 +25,8 @@ urlpatterns = [
     url(r'^script/(?P<scene_id>\d+)?$', X.view_script.script, name='script'),
     url(r'^script/tag/(?P<tag_id>\w+)$', X.view_script.scriptTag, name='scriptTag'),
 
+    url(r'^scene/(?P<sceneitem_id>\d+)/new/(?P<sceneitem_type>[NADT])/(?P<offset>[-]?\d+)$', X.view_scene.sceneNew, name='sceneNew'),
+    url(r'^scene/(?P<sceneitem_id>\d+)/move/(?P<offset>[-]?\d+)$', X.view_scene.sceneMove, name='sceneMove'),
     url(r'^scene/(?P<sceneitem_id>\d+)?$', X.view_scene.scene, name='scene'),
     url(r'^scene/tag/(?P<tag_id>\w+)$', X.view_scene.sceneTag, name='sceneTag'),
     url(r'^scene/set/(?P<scene_id>\w+)$', X.view_scene.sceneSet, name='sceneSet'),

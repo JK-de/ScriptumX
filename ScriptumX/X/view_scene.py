@@ -71,7 +71,7 @@ class SceneItemForm(forms.ModelForm):
 ###############################################################################
 
 @login_required
-def scene(request, sceneitem_id, sceneitem_type='?'):
+def scene(request, sceneitem_id, sceneitem_type='?', order=0):
     """Handles page requests for SceneItems"""
 
     env = Env(request)
@@ -91,6 +91,8 @@ def scene(request, sceneitem_id, sceneitem_type='?'):
     ### create new sceneitem object on request '/scene/0'
     if sceneitem_id == '0':
         active_sceneitem = SceneItem(scene=env.scene);
+        active_sceneitem.type = sceneitem_type
+        active_sceneitem.order = order
 
     ### handle buttons
     if request.method == 'POST':
@@ -179,3 +181,40 @@ def sceneSet(request, scene_id):
     return scene(request, None)
 
 ###############################################################################
+
+@login_required
+def sceneMove(request, sceneitem_id, offset):
+
+    env = Env(request)
+
+    try:
+        sceneitems = SceneItem.objects.filter( scene=env.scene )
+        
+        offset = int(offset)
+        if offset < 0:
+            offset -= 1
+        if offset > 0:
+            offset += 1
+        newOrder = getOrderNumber(sceneitems, sceneitem_id, offset)
+        if newOrder:
+            selected_sceneitem = SceneItem.objects.get( scene=env.scene, id=sceneitem_id )
+            selected_sceneitem.order = newOrder
+            selected_sceneitem.save()
+            
+    except:
+        pass
+
+    return scene(request, sceneitem_id)
+
+###############################################################################
+
+def sceneNew(request, sceneitem_id, sceneitem_type, offset):
+
+    try:
+        sceneitems = SceneItem.objects.filter( scene=env.scene )
+        
+        newOrder = getOrderNumber(sceneitems, sceneitem_id, offset)
+    except:
+        pass
+
+    return scene(request, 0, sceneitem_type, newOrder)
