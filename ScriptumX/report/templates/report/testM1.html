@@ -11,12 +11,19 @@ td, th {
 th, td {
     border: 1px solid #AAA;
 }
+th {
+    white-space:nowrap; 
+    overflow:hidden; 
+    text-overflow: ellipsis;
+    max-width: 200px;
+    max-height: 200px;
+}
 </style>
 
 {% spaceless %}
 {% autoescape off %}
 {#table table-striped table-hover#} 
-<table id="table" class="table-fixed-head" align="left" sortable>
+<table id="table" class="fht-table table-fixed-head" align="left" sortable>
 
     {% for m_row in M.cells %}
 
@@ -32,11 +39,12 @@ th, td {
             {% for m_cell in m_row %}
 
                 {% if m_cell.colHeader and m_cell.rowHeader %}
-                    <th BGCOLOR="#FFF" align="center" style="">{{m_cell.text}}TEST</th>
+                    <th BGCOLOR="#DDD" align="center" valign="top" style="">{{m_cell.text}}TEST</th>
                 {% elif m_cell.colHeader %}
-                    <th BGCOLOR="#EEE" align="center" VALIGN="BOTTOM" style="writing-mode:sideways-lr; min-width:29px;">{{m_cell.text|truncatechars_html:25}}</th>
+            <!-- -->
+                    <th BGCOLOR="#EEE" align="center" valign="bottom" style="writing-mode:sideways-lr; min-width:29px;">{{m_cell.text|truncatechars_html:225}}</th>
                 {% elif m_cell.rowHeader %}
-                    <th BGCOLOR="#EEE" align="left">{{m_cell.text|truncatechars_html:25}}</th>
+                    <th BGCOLOR="#EEE" align="left">{{m_cell.text|truncatechars_html:225}}</th>
                 {% else %}
                     <td align="center">{{m_cell.text}}</td>
                 {% endif %}

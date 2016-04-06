@@ -163,6 +163,38 @@ class TestM1View(TemplateView):
                 m.cells[row][col].text = "&#x26AB;"
 
 
+        context['env'] = env
+        context['title'] = 'TEST'
+        context['tag_list'] = tag_list
+        context['M'] = m
+        context['datetime'] = datetime.now()
+
+        return context
+
+class TestM2View(TemplateView):
+    template_name = "report/testM1.html"
+
+    def get_context_data(self, **kwargs):
+        context = super(TestM2View, self).get_context_data(**kwargs)
+        
+        env = Env(context['view'].request)
+        tag_list = getTagRequestList(env.request, 'role')
+        roles = Role.objects.filter( project=env.project_id ).order_by(Lower('name'))
+        scenes = Scene.objects.filter( project=env.project_id, script=env.script_id ).order_by('order')
+
+        m = M(roles, scenes)
+
+        for scene in scenes:
+            row = m.getRowIndex(scene)
+
+            sceneitems = SceneItem.objects.filter( scene=scene )
+            for sceneitem in sceneitems:
+                if sceneitem.role:
+                    col = m.getColIndex(sceneitem.role)
+                    m.cells[row][col].text = "&#x26AB;"
+
+
+        context['env'] = env
         context['title'] = 'TEST'
         context['tag_list'] = tag_list
         context['M'] = m
