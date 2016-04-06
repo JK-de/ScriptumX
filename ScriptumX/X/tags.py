@@ -1,20 +1,5 @@
 from crispy_forms.layout import HTML
 
-project_tag_list = (
-    { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
-    { 'idx': 1, 'name':'<1>',       'img':'img/favorits.png' },
-    { 'idx': 2, 'name':'<2>',       'img':'img/favorits.png' },
-    { 'idx': 3, 'name':'<3>',       'img':'img/favorits.png' },
-    { 'idx': 4, 'name':'<4>',       'img':'img/favorits.png' },
-    { 'idx': 5, 'name':'<5>',       'img':'img/favorits.png' },
-    { 'idx': 6, 'name':'<6>',       'img':'img/favorits.png' },
-    { 'idx': 7, 'name':'<7>',       'img':'img/favorits.png' },
-    { 'idx': 8, 'name':'<8>',       'img':'img/favorits.png' },
-    { 'idx': 9, 'name':'<9>',       'img':'img/favorits.png' },
-    { 'idx':10, 'name':'<10>',      'img':'img/favorits.png' },
-    { 'idx':11, 'name':'<11>',      'img':'img/favorits.png' },
-    )
-
 scene_tag_list = (
     { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
     { 'idx': 1, 'name':'1', 'img':'img/variant/v1.png' },
@@ -25,10 +10,11 @@ scene_tag_list = (
     )
 
 sceneitem_tag_list = (
-    { 'idx': 0, 'name':'Note',      'img':'img/s/tag/note.png' },
-    { 'idx': 1, 'name':'Action',    'img':'img/s/tag/action.png' },
-    { 'idx': 2, 'name':'Dialog',    'img':'img/s/tag/dialog.png' },
-    { 'idx': 3, 'name':'Trans',     'img':'img/s/tag/trans.png' },
+    { 'idx': 0, 'name':'Note',    'type':'N',  'img':'img/s/tag/note.png' },
+    { 'idx': 1, 'name':'Action',  'type':'A',  'img':'img/s/tag/action.png' },
+    { 'idx': 2, 'name':'Dialog',  'type':'D',  'img':'img/s/tag/dialog.png' },
+    { 'idx': 3, 'name':'Trans',   'type':'T',  'img':'img/s/tag/trans.png' },
+    { 'idx': 4, 'name':'N.S.R.',  'type':'R',  'img':'img/s/tag/action.png' },
     )
 
 role_tag_list = (
@@ -137,7 +123,6 @@ appointment_tag_list = (
     )
 
 all_tag_list = {}
-all_tag_list['project']     = project_tag_list
 all_tag_list['scene']       = scene_tag_list
 all_tag_list['sceneitem']   = sceneitem_tag_list
 all_tag_list['role']        = role_tag_list
@@ -154,6 +139,7 @@ def FormSymbol(imageName):
     htmlLine += imageName
     htmlLine += '" %}" />'
     return HTML(htmlLine)
+
 
 def handleTagRequest(request, tag_id, item):
     
@@ -184,6 +170,7 @@ def handleTagRequest(request, tag_id, item):
         request.session[tagStr] = value
         return
 
+
 def getTagRequestListX(request, item):
     list = []
 
@@ -194,6 +181,7 @@ def getTagRequestListX(request, item):
 
     return list
 
+
 def getTagRequestList(request, group):
     list = []
 
@@ -203,6 +191,8 @@ def getTagRequestList(request, group):
         tagItem['idx'] = tag['idx']
         tagItem['name'] = tag['name']
         tagItem['img'] = tag['img']
+        if 'type' in tag:
+            tagItem['type'] = tag['type']
         
         tagStr = '_' + group + '_tag_' + str(tag['idx'])
         active = request.session.get(tagStr, True)

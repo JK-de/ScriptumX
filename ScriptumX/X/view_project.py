@@ -31,7 +31,7 @@ from X.views import g_tab_list
 from X.views import Q
 from X.common import *
 
-from .tags import FormSymbol, project_tag_list, handleTagRequest, getTagRequestList
+from .tags import FormSymbol, handleTagRequest, getTagRequestList
 
 ###############################################################################
 
@@ -79,7 +79,7 @@ def project(request, project_id, script_id=0):
     env = Env(request)
 
 
-    tag_list = getTagRequestList(request, 'project')
+    #tag_list = getTagRequestList(request, 'project')
 
     #projects = get_list_or_404(Project)
     
@@ -126,7 +126,7 @@ def project(request, project_id, script_id=0):
     scripts = Script.objects.filter( project=env.project )
 
     return render(request, 'X/project.html', {
-        'title': 'Projects',
+        'title': 'Project',
         'env': env,
         'tab_list': g_tab_list,
         'tab_active_id': 'P',
@@ -135,7 +135,6 @@ def project(request, project_id, script_id=0):
         'selected_project': selected_project,
         'selected_project_id': selected_id,
         'form': formItem,
-        'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
     })
 
@@ -147,7 +146,6 @@ def project_import(request):
     
     return render(request, 'X/home.html', {
         'title': 'Home',
-        'datetime': datetime.now(),
     })
 
 ###############################################################################

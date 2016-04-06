@@ -26,7 +26,8 @@
 
                 {% for role in roles %}
 			
-                    <a style="padding:8px" href="/role/{{role.pk}}"
+                    <a style="padding:8px; background-color:{{role.color}};" 
+                       href="/role/{{role.pk}}"
                         {% if role.id == active_id %} 
                             class="x-role list-group-item active" id="active_scope"
                         {% else %} 

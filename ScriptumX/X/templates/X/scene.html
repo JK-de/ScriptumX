@@ -78,6 +78,34 @@
                             {% autoescape off %}{{sceneitem.text|removetags:"a span"}}{% endautoescape %}
                             </div>
 
+                        {% elif sceneitem.type == 'N' %}
+
+                            <div style="background-color:palegoldenrod;">
+                            {% autoescape off %}{{sceneitem.text|removetags:"a span"}}{% endautoescape %}
+                            </div>
+
+                        {% elif sceneitem.type == 'R' %}
+
+                            <div style="">
+                            {#--role--#}
+                            {% if sceneitem.role %}
+                                <strong style="">{{sceneitem.role}}</strong>
+                            {% endif %}
+                            {% if sceneitem.parenthetical %}
+                                <span style="margin-left:1em;">({{sceneitem.parenthetical}})</span>
+                            {% endif %}
+                            {% if sceneitem.text %}
+                                : {% autoescape off %}{{sceneitem.text|removetags:"a span"}}{% endautoescape %}
+                            {% endif %}
+                            </div>
+
+                        {% elif sceneitem.type == 'T' %}
+
+                            <div class="pull-right">
+                            {#--description--#}
+                            {% autoescape off %}{{sceneitem.text|removetags:"a span"}}{% endautoescape %}
+                            </div>
+
                         {% else %}
                             ???
                         {% endif %}
@@ -152,11 +180,13 @@
 
 			            </div>
 
-                        &emsp;<br/>&emsp;<br/>&emsp;<br/>
+                        &emsp;<br/>&emsp;<br/>&emsp;<br/>&emsp;<br/>
 
                         {#--model form content--#}
+                        <div style="margin-top:0px;">
                         {% crispy form form.helper %}
-         
+                        </div>
+                             
                     </form>
 
                 {% else %}
@@ -230,10 +260,11 @@
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
                 <li class="dropdown-header">Inser befor selected:</li>
-			    <li><a href="/scene/{{active_sceneitem.pk}}/new/N/-1">Note</a></li>
-			    <li><a href="/scene/{{active_sceneitem.pk}}/new/A/-1">Action</a></li>
-			    <li><a href="/scene/{{active_sceneitem.pk}}/new/D/-1">Dialog</a></li>
-			    <li><a href="/scene/{{active_sceneitem.pk}}/new/T/-1">Trans</a></li>
+			    <li><a href="/scene/new/N/{{active_sceneitem.pk}}/-1">Note</a></li>
+			    <li><a href="/scene/new/A/{{active_sceneitem.pk}}/-1">Action</a></li>
+			    <li><a href="/scene/new/D/{{active_sceneitem.pk}}/-1">Dialog</a></li>
+			    <li><a href="/scene/new/T/{{active_sceneitem.pk}}/-1">Trans</a></li>
+			    <li><a href="/scene/new/R/{{active_sceneitem.pk}}/-1">Non-Speaking Role</a></li>
 		    </ul>
         </div>
         <div class="btn-group btn-group-xs" role="group" >
@@ -244,10 +275,11 @@
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
                 <li class="dropdown-header">Inser after selected:</li>
-			    <li><a href="/scene/{{active_sceneitem.pk}}/new/N/1">Note</a></li>
-			    <li><a href="/scene/{{active_sceneitem.pk}}/new/A/1">Action</a></li>
-			    <li><a href="/scene/{{active_sceneitem.pk}}/new/D/1">Dialog</a></li>
-			    <li><a href="/scene/{{active_sceneitem.pk}}/new/T/1">Trans</a></li>
+			    <li><a href="/scene/new/N/{{active_sceneitem.pk}}/1">Note</a></li>
+			    <li><a href="/scene/new/A/{{active_sceneitem.pk}}/1">Action</a></li>
+			    <li><a href="/scene/new/D/{{active_sceneitem.pk}}/1">Dialog</a></li>
+			    <li><a href="/scene/new/T/{{active_sceneitem.pk}}/1">Trans</a></li>
+			    <li><a href="/scene/new/R/{{active_sceneitem.pk}}/1">Non-Speaking Role</a></li>
 		    </ul>
         </div>
     </div>
@@ -261,32 +293,32 @@
 		</button>
 		<ul class="dropdown-menu" role="menu">
             <li class="dropdown-header">Befor selected:</li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/-99999">First</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/-20">-20</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/-10">-10</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/-9">-9</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/-8">-8</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/-7">-7</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/-6">-6</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/-5">-5</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/-4">-4</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/-3">-3</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/-2">-2</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/-1">-1</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/-99999">First</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/-20">-20</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/-10">-10</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/-9">-9</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/-8">-8</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/-7">-7</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/-6">-6</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/-5">-5</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/-4">-4</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/-3">-3</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/-2">-2</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/-1">-1</a></li>
             <li role="separator" class="divider"></li>
             <li class="dropdown-header">After selected:</li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/1">1</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/2">2</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/3">3</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/4">4</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/5">5</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/6">6</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/7">7</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/8">8</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/9">9</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/10">10</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/20">20</a></li>
-			<li><a href="/scene/{{active_sceneitem.pk}}/move/99999">last</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/1">1</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/2">2</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/3">3</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/4">4</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/5">5</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/6">6</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/7">7</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/8">8</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/9">9</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/10">10</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/20">20</a></li>
+			<li><a href="/scene/move/{{active_sceneitem.pk}}/99999">last</a></li>
 		</ul>
     </div>
 

@@ -21,7 +21,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models.functions import Lower
 
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHolder, Div, Field, HTML
+from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHolder, Div, Field, HTML, Hidden
 from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.utils import render_crispy_form
 
@@ -55,8 +55,6 @@ class SceneItemForm(forms.ModelForm):
         self.helper.form_tag = False
         self.helper.layout = Layout(
 
-            #HTML('<hr style="border: none; background-color: #123455;"/>'),
-
             Field('role', css_class='chosen-select-box'),
 
             Field('parenthetical', style="max-width:100%; min-width:100%;"),
@@ -71,7 +69,7 @@ class SceneItemForm(forms.ModelForm):
 ###############################################################################
 
 @login_required
-def scene(request, sceneitem_id, sceneitem_type='?', order=0):
+def scene(request, sceneitem_id, new_type='?', new_order=0):
     """Handles page requests for SceneItems"""
 
     env = Env(request)
@@ -91,8 +89,8 @@ def scene(request, sceneitem_id, sceneitem_type='?', order=0):
     ### create new sceneitem object on request '/scene/0'
     if sceneitem_id == '0':
         active_sceneitem = SceneItem(scene=env.scene);
-        active_sceneitem.type = sceneitem_type
-        active_sceneitem.order = order
+        active_sceneitem.type = new_type
+        active_sceneitem.order = new_order
 
     ### handle buttons
     if request.method == 'POST':
@@ -121,24 +119,31 @@ def scene(request, sceneitem_id, sceneitem_type='?', order=0):
     else:
         formItem = SceneItemForm(instance=active_sceneitem)
     
-    ### conglomerate queries
-    #query = Q()
-    #for tag in tag_list:
-    #    if tag['active']:
-    #        if len(query)==0:
-    #            query = g_tag_queries[tag['idx']]
-    #        else:
-    #            query |= g_tag_queries[tag['idx']]
+    if active_sceneitem:
+        if active_sceneitem.type == 'A' or active_sceneitem.type == 'N' or active_sceneitem.type == 'T':
+            formItem.helper[0:2].update_attributes(type="hidden")
+        if active_sceneitem.type == 'N':
+            formItem.helper[2:3].update_attributes(style="max-width:100%; min-width:100%; background-color:palegoldenrod;")
+            formItem.fields['text'].label = "Note"
 
-    #if len(query)==len(tag_list):
-    #    query = Q()
+    ### conglomerate queries
+    query = Q()
+    for tag in tag_list:
+        if tag['active']:
+            if len(query)==0:
+                query = Q(type=tag['type'])
+            else:
+                query |= Q(type=tag['type'])
+
+    if len(query)==len(tag_list):
+        query = Q()
     #elif len(query)==0:
     #    query = g_tag_query_none
 
+    # scenes for toolbar
     scenes = Scene.objects.filter( project=env.project_id, script=env.script_id ).order_by('order')
     
-    #filter(script=env.script, scene=env.scene)
-    sceneitems = SceneItem.objects.filter(scene=env.scene).order_by('order')
+    sceneitems = SceneItem.objects.filter(scene=env.scene).filter( query ).order_by('order')
 
     return render(request, 'X/scene.html', {
         'title': 'SceneItem',
@@ -204,17 +209,23 @@ def sceneMove(request, sceneitem_id, offset):
     except:
         pass
 
-    return scene(request, sceneitem_id)
+    url ='/scene/' + sceneitem_id
+    return HttpResponseRedirect(url)
+    #return scene(request, sceneitem_id)
 
 ###############################################################################
 
 def sceneNew(request, sceneitem_id, sceneitem_type, offset):
+
+    env = Env(request)
 
     try:
         sceneitems = SceneItem.objects.filter( scene=env.scene )
         
         newOrder = getOrderNumber(sceneitems, sceneitem_id, offset)
     except:
-        pass
+        newOrder = 0
 
-    return scene(request, 0, sceneitem_type, newOrder)
+    url ='/scene/0/' + sceneitem_type + '/' + str(newOrder)
+    return HttpResponseRedirect(url)
+    #return scene(request, 0, sceneitem_type, newOrder)
