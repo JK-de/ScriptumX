@@ -184,6 +184,10 @@ class TestM2View(TemplateView):
 
         m = M(roles, scenes)
 
+        for role in roles:
+            col = m.getColIndex(role)
+            m.cells[0][col].background_color = role.color
+
         for scene in scenes:
             row = m.getRowIndex(scene)
 

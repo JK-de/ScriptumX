@@ -1,14 +1,12 @@
 {% extends "report/layout.html" %}
 {% load staticfiles %}
 
-{% block content %}
+{% block head %}
 
 <style>
 td, th {
     padding: 4px;
-    min-width:28px;
-}
-th, td {
+    min-width: 29px;
     border: 1px solid #AAA;
 }
 th {
@@ -20,15 +18,19 @@ th {
 }
 </style>
 
+{% endblock%}
+
+{% block content %}
+
 {% spaceless %}
 {% autoescape off %}
 {#table table-striped table-hover#} 
-<table id="table" class="fht-table table-fixed-head" align="left" sortable>
+<table id="table" class="table-fixed-head" align="left">
 
     {% for m_row in M.cells %}
 
         {% if forloop.first %}
-            <thead>
+            <thead style="max-height:100px; max-width:100px;">
         {% endif %}
         {% if forloop.counter == 2 %}
             <tbody>
@@ -39,14 +41,31 @@ th {
             {% for m_cell in m_row %}
 
                 {% if m_cell.colHeader and m_cell.rowHeader %}
-                    <th BGCOLOR="#DDD" align="center" valign="top" style="">{{m_cell.text}}TEST</th>
+                    <th 
+                        BGCOLOR="{% if m_cell.background_color %}{{m_cell.background_color}}{% else %}#DDDDDD{% endif %}"
+                        align="center" valign="top" 
+                        style="">
+                        {{m_cell.text}}TEST</th>
+
                 {% elif m_cell.colHeader %}
-            <!-- -->
-                    <th BGCOLOR="#EEE" align="center" valign="bottom" style="writing-mode:sideways-lr; min-width:29px;">{{m_cell.text|truncatechars_html:225}}</th>
+                    <th 
+                        BGCOLOR="{% if m_cell.background_color %}{{m_cell.background_color}}{% else %}#EEEEEE{% endif %}"
+                        align="center" valign="bottom" 
+                        style="writing-mode:sideways-lr; min-width:29px;">
+                        {{m_cell.text|truncatechars_html:225}}</th>
+
                 {% elif m_cell.rowHeader %}
-                    <th BGCOLOR="#EEE" align="left">{{m_cell.text|truncatechars_html:225}}</th>
+                    <th 
+                        BGCOLOR="{% if m_cell.background_color %}{{m_cell.background_color}}{% else %}#EEEEEE{% endif %}"
+                        align="left">
+                        {{m_cell.text|truncatechars_html:225}}</th>
+
                 {% else %}
-                    <td align="center">{{m_cell.text}}</td>
+                    <td 
+                        {% if m_cell.background_color and m_cell.background_color != '#FFFFFF' %}BGCOLOR="{{m_cell.background_color}}"{% else %}{% endif %}
+                        align="center">
+                        {{m_cell.text}}</td>
+
                 {% endif %}
 
             {% endfor %}
