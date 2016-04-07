@@ -67,9 +67,9 @@
         padding-top: 10px;
         padding-bottom: 10px;
     }
-    </style>
+    </style>-->
 </head>
-     -->
+     
 
 <body style="overflow:auto; padding-top:120px">
 
@@ -85,7 +85,7 @@
                     <span class="icon-bar"></span>
                 </button>
               
-                <a style="padding:8px;  margin:0px" class="navbar-text" href="/"><img height="16" width="16" src="{% static 'img/ScriptumX32.png' %}" /></a>
+                <a style="padding:8px;  margin:0px" class="navbar-text" href="/"><img height="24" width="24" src="{% static 'img/ScriptumX48.png' %}" /></a>
             </div>
             <div style="padding:0px; " class="navbar-collapse collapse">
                 <ul class="nav nav-tabs" role="tablist" style="padding-bottom:0; margin:0; ">
@@ -93,11 +93,11 @@
                     {% for tab in tab_list %}
                     {%if tab.id == tab_active_id %} 
                             <li class="active">
-                            <a class="{{tab.class}}" href="{{tab.href}}"><img src="{% static tab.img %}"> <br/>{{tab.name}}</a>
+                            <a class="{{tab.class}}" href="{{tab.href}}"><img src="{% static tab.img %}"> {{tab.name}}</a>
                             </li>
                         {% else %}
-                            <li>
-                            <a href="{{tab.href}}"><img src="{% static tab.img %}"> <span class="visible-lg-block">{{tab.name}}</span><small class="visible-md-block">{{tab.name}}</small></a>
+                            <li> <!--class="visible-md-block visible-lg-block"-->
+                            <a href="{{tab.href}}"><img src="{% static tab.img %}"> <div class="visible-lg-inline">{{tab.name}}</div><small class="visible-md-inline">{{tab.name}}</small></a>
                             </li>
                         {% endif %}
                     {% endfor %}

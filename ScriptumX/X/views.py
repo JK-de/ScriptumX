@@ -324,13 +324,13 @@ g_tab_list = (
     { 'id':'P', 'name':'Project',   'href':'/project',  'class':'x-project',  'img':'img/tab/project-24.png' },
     { 'id':'C', 'name':'Script',    'href':'/script',   'class':'x-script',   'img':'img/tab/script-24.png' },
     { 'id':'S', 'name':'Scene',     'href':'/scene',    'class':'x-scene',    'img':'img/tab/scene-24.png' },
-    { 'id':'R', 'name':'Roles',     'href':'/role',     'class':'x-role',     'img':'img/tab/role-24.png' },
-    { 'id':'F', 'name':'Persons',   'href':'/person',   'class':'x-person',   'img':'img/tab/person-24.png' },
-    { 'id':'L', 'name':'Locations', 'href':'/location', 'class':'x-location', 'img':'img/tab/location-24.png' },
-    { 'id':'G', 'name':'Gadgets',   'href':'/gadget',   'class':'x-gadget',   'img':'img/tab/gadget-24.png' },
-    { 'id':'X', 'name':'SFXs',      'href':'/sfx',      'class':'x-sfx',      'img':'img/tab/sfx-24.png' },
-    { 'id':'A', 'name':'Audios',    'href':'/audio',    'class':'x-audio',    'img':'img/tab/audio-24.png' },
-    { 'id':'T', 'name':'Scheduler', 'href':'/scheduler','class':'x-scheduler','img':'img/tab/scheduler-24.png' },
+    { 'id':'R', 'name':'Role',      'href':'/role',     'class':'x-role',     'img':'img/tab/role-24.png' },
+    { 'id':'F', 'name':'Person',    'href':'/person',   'class':'x-person',   'img':'img/tab/person-24.png' },
+    { 'id':'L', 'name':'Location',  'href':'/location', 'class':'x-location', 'img':'img/tab/location-24.png' },
+    { 'id':'G', 'name':'Gadget',    'href':'/gadget',   'class':'x-gadget',   'img':'img/tab/gadget-24.png' },
+    { 'id':'X', 'name':'SFX',       'href':'/sfx',      'class':'x-sfx',      'img':'img/tab/sfx-24.png' },
+    { 'id':'A', 'name':'Audio',     'href':'/audio',    'class':'x-audio',    'img':'img/tab/audio-24.png' },
+    { 'id':'T', 'name':'', 'href':'/scheduler','class':'x-scheduler','img':'img/tab/scheduler-24.png' },
     )
 
 
