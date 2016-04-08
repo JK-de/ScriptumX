@@ -81,6 +81,14 @@ class Env():
 
 
 
+    def setProject(self, project):
+        self.project = project
+        if project:
+            self.project_id = self.project.id
+        else:
+            self.project_id = 0
+        self.request.session['ProjectID'] = self.project_id
+
     def setScript(self, script):
         self.script = script
         if script:

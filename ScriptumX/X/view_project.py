@@ -43,7 +43,7 @@ class ProjectForm(forms.ModelForm):
             'name',
             'users',
             'guests',
-            'owner'
+            'owner',
             ]
 
     def __init__(self, *args, **kwargs):
@@ -72,58 +72,157 @@ class ProjectForm(forms.ModelForm):
 
 ###############################################################################
 
+class ScriptForm(forms.ModelForm):
+    """Edit form for Script model"""
+    class Meta:
+        model = Script
+        fields = [
+            'name',
+            'abstract',
+            'description',
+            'author',
+            'version',
+            'copyright',
+            'persons',
+            ]
+
+    def __init__(self, *args, **kwargs):
+        super(ScriptForm, self).__init__(*args, **kwargs)
+
+        self.helper = FormHelper()
+        self.helper.form_class = 'blueForms'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-sm-2'
+        self.helper.field_class = 'col-sm-10'
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+
+            Field('name', style="width:30em; min-width:30em; max-width:100%; "),
+
+            Field('abstract', style="max-width:100%; min-width:100%;", rows=2),
+
+            Field('persons', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
+
+            Field('author', style="max-width:100%; min-width:100%;"),
+            Field('version', style="max-width:100%; min-width:100%;"),
+            Field('copyright', style="max-width:100%; min-width:100%;"),
+
+            Field('description', style="max-width:100%; min-width:100%;", rows=10),
+            )
+
+    def clean_name(self):
+      name = self.cleaned_data.get('name')
+      return name
+
+###############################################################################
+
 @login_required
-def project(request, project_id, script_id=0):
+def project(request, project_id, script_id=None):
     """Handles page requests for Projects"""
 
     env = Env(request)
 
-
-    #tag_list = getTagRequestList(request, 'project')
-
-    #projects = get_list_or_404(Project)
+    selected_project = None
+    selected_script = None
     
-    try:
-        selected_project = Project.objects.get(pk = project_id)
-        selected_id = selected_project.id
-    except ObjectDoesNotExist:
-        selected_project = None
-        selected_id = None
-
-    ### create new project object on request '/project/0'
     if project_id == '0':
-        selected_project = Project(project=env.project);
-    
-    #TODO
-    ### handle buttons
-    if request.method == 'POST':
-        if not selected_project:   # you shall not pass ... without valid scope
-            raise AssertionError 
-
-        # generate forms and/or get data out of the edited forms
-        formItem = ProjectForm(request.POST or None, instance=selected_project)
-        if formItem.is_valid():
-            selected_project = formItem.instance
-
-        # 'Delete'-Button
-        if request.POST.get('btn_delete'):
-            selected_project.delete()
-            return HttpResponseRedirect('/project/')
-
-        # 'Save'-Button
-        if request.POST.get('btn_save'):
-            if selected_project:
-                selected_project.save()
-
-            if project_id == '0':   # previously new item
-                return HttpResponseRedirect('/project/' + str(selected_project.id))
+        ### create new project object on request '/project/0'
+        selected_project = Project(owner=env.user);
     else:
-        formItem = ProjectForm(instance=selected_project)
+        try:
+            selected_project = Project.objects.get(pk = project_id)
+        except ObjectDoesNotExist:
+            selected_project = None
+
+        if script_id == '0':
+            ### create new project object on request '/project/0'
+            if selected_project:
+                selected_script = Script(project=selected_project);
+            else:
+                selected_script = Script(project=env.project);
+        else:
+            try:
+                selected_script = Script.objects.get(pk = script_id)
+            except ObjectDoesNotExist:
+                selected_script = None
+
+
+    formItemProject = None
+    formItemScript = None
     
+    if selected_script:
+        
+        ### handle buttons
+        if request.method == 'POST':
+            if not selected_script:   # you shall not pass ... without valid scope
+                raise AssertionError 
+
+            # generate forms and/or get data out of the edited forms
+            formItemScript = ScriptForm(request.POST or None, instance=selected_script)
+            if formItemScript.is_valid():
+                selected_script = formItemScript.instance
+
+            # 'Delete'-Button
+            if request.POST.get('btn_delete'):
+                selected_script.delete()
+                return HttpResponseRedirect('/project/' + str(selected_project.id))
+
+            # 'Save'-Button
+            if request.POST.get('btn_save'):
+                if formItemScript.is_valid():
+                    formItemScript.save()
+
+                if script_id == '0':   # previously new item
+                    env.setProject(selected_project)
+                    env.setScript(selected_script)
+                    return HttpResponseRedirect('/project/' + str(selected_project.id) + '/' + str(selected_script.id))
+
+            # 'Activate'-Button
+            if request.POST.get('btn_activate'):
+                env.setProject(selected_project)
+                env.setScript(selected_script)
+
+        else:
+            formItemScript = ScriptForm(instance=selected_script)
+    
+    elif selected_project:
+
+        ### handle buttons
+        if request.method == 'POST':
+            if not selected_project:   # you shall not pass ... without valid scope
+                raise AssertionError 
+
+            # generate forms and/or get data out of the edited forms
+            formItemProject = ProjectForm(request.POST or None, instance=selected_project)
+            if formItemProject.is_valid():
+                selected_project = formItemProject.instance
+
+            # 'Delete'-Button
+            if request.POST.get('btn_delete'):
+                selected_project.delete()
+                return HttpResponseRedirect('/project/')
+
+            # 'Save'-Button
+            if request.POST.get('btn_save'):
+                if formItemProject.is_valid():
+                    formItemProject.save()
+
+                if project_id == '0':   # previously new item
+                    return HttpResponseRedirect('/project/' + str(selected_project.id))
+        else:
+            formItemProject = ProjectForm(instance=selected_project)
+
     ### conglomerate queries
     
-    projects = Project.objects.filter( users=env.user )
-    scripts = Script.objects.filter( project=env.project )
+    projects = Project.objects.filter( Q(owner=env.user) | Q(users=env.user) | Q(guests=env.user) )
+
+    if selected_project:
+        scripts = Script.objects.filter( project=selected_project )
+        scenes_project_id = selected_project.id
+    else:
+        scripts = Script.objects.filter( project=env.project )
+        scenes_project_id = env.project_id
+
 
     return render(request, 'X/project.html', {
         'title': 'Project',
@@ -133,8 +232,10 @@ def project(request, project_id, script_id=0):
         'projects': projects,
         'scripts': scripts,
         'selected_project': selected_project,
-        'selected_project_id': selected_id,
-        'form': formItem,
+        'selected_script': selected_script,
+        'formScript': formItemScript,
+        'formProject': formItemProject,
+        'scenes_project_id': scenes_project_id,
         #'error_message': "Please make a selection.",
     })
 
