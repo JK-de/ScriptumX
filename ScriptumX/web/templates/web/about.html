@@ -1,9 +1,36 @@
 {% extends "web/layout.html" %}
+{% load staticfiles %}
 
 {% block content %}
 
-<h2>{{title}}.</h2>
+<h3>About</h3>
+
+<img class="pull-right" src="{% static 'img/ScriptumX48.png' %}" />
 
 <p>This is a test application that demonstrates the use of Django web framework.</p>
+
+<hr />
+
+<h3>Contributions</h3>
+
+<p>This is a test application that demonstrates the use of Django web framework.</p>
+
+<hr />
+
+<h3>Support</h3>
+
+<p>This is a test application that demonstrates the use of Django web framework.</p>
+
+<hr />
+
+<h3>Copyright and License</h3>
+
+<p>Code and documentation copyright 2016 Jochen Krapf. Code released under the MIT license. Docs released under Creative Commons.</p>
+
+<hr />
+
+<h3>Attribution</h3>
+
+<p>Lorem ipsum</p>
 
 {% endblock %}
