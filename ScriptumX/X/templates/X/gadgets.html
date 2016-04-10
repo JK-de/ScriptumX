@@ -27,8 +27,8 @@
                 {% for gadget in gadgets %}
 			
                     <a style="padding:8px" href="/gadget/{{gadget.pk}}"
-                        {% if gadget.id == active_id %} 
-                            class="x-gadget list-group-item active" id="active_scope"
+                        {% if gadget == selected_gadget %} 
+                            class="x-gadget list-group-item active" id="selected_scope"
                         {% else %} 
                             class="x-gadget list-group-item"
                         {% endif %}
@@ -72,17 +72,17 @@
         <div class="col-xs-6 col-md-8" style="height:100%; overflow-y:auto; padding:0">
             <div class="x-gadget x-item-form">
 
-                {% if active_gadget %}
+                {% if selected_gadget %}
 
 
                     <form class="form-horizontal" method="post">
 
                         {#--note--#}
-                        {% if active_gadget.note %}
+                        {% if selected_gadget.note %}
                             <div class="pull-left" style="max-width:12%;">
                                 <img src="{% static 'img/note.png' %}" /><br/>
-                                <small>{{ active_gadget.note.author }}<br/>
-                                {{ active_gadget.note.created|date:"Y-m-d H:i" }}</small>
+                                <small>{{ selected_gadget.note.author }}<br/>
+                                {{ selected_gadget.note.created|date:"Y-m-d H:i" }}</small>
                             </div>
                             {% crispy formNote formNote.helper %}
                             <hr/>
@@ -95,7 +95,7 @@
                             <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
                             </button  >
 
-                            {% if not active_gadget.note %}
+                            {% if not selected_gadget.note %}
                             <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
                             <img height="32" width="32" src="{% static 'img/note.png' %}" /><br /><small>Note</small>
                             </button  >

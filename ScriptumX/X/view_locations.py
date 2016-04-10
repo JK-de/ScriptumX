@@ -108,68 +108,66 @@ def location(request, location_id):
     #locations = get_list_or_404(Location)
     
     try:
-        active_location = Location.objects.get(pk = location_id)
-        active_id = active_location.id
-        active_note = active_location.note
+        selected_location = Location.objects.get(pk = location_id)
+        selected_note = selected_location.note
     except ObjectDoesNotExist:
-        active_location = None
-        active_id = None
-        active_note = None
+        selected_location = None
+        selected_note = None
 
     ### create new location object on request '/location/0'
     if location_id == '0':
-        active_location = Location(project=env.project);
+        selected_location = Location(project=env.project);
 
     ### handle buttons
     if request.method == 'POST':
-        if not active_location:   # you shall not pass ... without valid scope
+        if not selected_location:   # you shall not pass ... without valid scope
             raise AssertionError 
 
         # generate forms and/or get data out of the edited forms
-        formNote = NoteForm(request.POST or None, instance=active_note)
+        formNote = NoteForm(request.POST or None, instance=selected_note)
         if formNote.is_valid():
-            active_note = formNote.instance
-        formItem = LocationForm(request.POST or None, instance=active_location)
+            selected_note = formNote.instance
+        formItem = LocationForm(request.POST or None, instance=selected_location)
         if formItem.is_valid():
-            active_location = formItem.instance
+            selected_location = formItem.instance
 
         # 'Delete'-Button
         if request.POST.get('btn_delete'):
-            if active_note:
-                if active_note.id:
-                    active_note.delete()
-            active_location.note = None
-            active_location.delete()
+            if selected_note:
+                if selected_note.id:
+                    selected_note.delete()
+            selected_location.note = None
+            selected_location.delete()
             return HttpResponseRedirect('/location/')
 
         # 'Add Note'-Button
         if request.POST.get('btn_note'):
-            active_note = Note(project=env.project, author=env.user )
-            active_location.note = active_note
-            #formNote = NoteForm(request.POST or None, instance=active_note) #JK may be re-connect to form???
+            selected_note = Note(project=env.project, author=env.user )
+            selected_location.note = selected_note
+            #formNote = NoteForm(request.POST or None, instance=selected_note) #JK may be re-connect to form???
 
         # 'Save'-Button
         if request.POST.get('btn_save'):
-            if active_note:
-                if active_note.text=='':
-                    if active_note.id:
-                        active_note.delete()
-                    active_note = None
+            if selected_note:
+                if selected_note.text=='':
+                    if selected_note.id:
+                        selected_note.delete()
+                    selected_note = None
                 else:
-                    active_note.save()
+                    selected_note.save()
 
-            active_location.note = active_note
+            selected_location.note = selected_note
 
-            if active_location:
+            if selected_location:
                 if formItem.is_valid():
                     formItem.save()
-                #active_location.save()
+                #selected_location.save()
 
             if location_id == '0':   # previously new item
-                return HttpResponseRedirect('/location/' + str(active_location.id))
+                return HttpResponseRedirect('/location/' + str(selected_location.id))
     else:
-        formItem = LocationForm(instance=active_location)
-        formNote = NoteForm(instance=active_note)
+        formItem = LocationForm(instance=selected_location)
+        formNote = NoteForm(instance=selected_note)
     
     ### conglomerate queries
     query = Q()
@@ -194,11 +192,9 @@ def location(request, location_id):
         'tab_active_id': 'L',
         'tag_list': tag_list,
         'locations': locations,
-        'active_location': active_location,
-        'active_id': active_id,
+        'selected_location': selected_location,
         'form': formItem,
         'formNote': formNote,
-        'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
     })
 

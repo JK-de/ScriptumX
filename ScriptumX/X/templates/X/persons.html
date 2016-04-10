@@ -27,8 +27,8 @@
                 {% for person in persons %}
 			
                     <a style="padding:8px" href="/person/{{person.pk}}"
-                        {% if person.id == active_id %} 
-                            class="x-person list-group-item active" id="active_scope"
+                        {% if person == selected_person %} 
+                            class="x-person list-group-item active" id="selected_scope"
                         {% else %} 
                             class="x-person list-group-item"
                         {% endif %}
@@ -72,17 +72,17 @@
         <div class="col-xs-6 col-md-8" style="height:100%; overflow-y:auto; padding:0">
             <div class="x-person x-item-form">
 
-                {% if active_person %}
+                {% if selected_person %}
 
 
                     <form class="form-horizontal" method="post">
 
                         {#--note--#}
-                        {% if active_person.note %}
+                        {% if selected_person.note %}
                             <div class="pull-left" style="max-width:12%;">
                                 <img src="{% static 'img/note.png' %}" /><br/>
-                                <small>{{ active_person.note.author }}<br/>
-                                {{ active_person.note.created|date:"Y-m-d H:i" }}</small>
+                                <small>{{ selected_person.note.author }}<br/>
+                                {{ selected_person.note.created|date:"Y-m-d H:i" }}</small>
                             </div>
                             {% crispy formNote formNote.helper %}
                             <hr/>
@@ -95,7 +95,7 @@
                             <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
                             </button  >
 
-                            {% if not active_person.note %}
+                            {% if not selected_person.note %}
                             <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
                             <img height="32" width="32" src="{% static 'img/note.png' %}" /><br /><small>Note</small>
                             </button  >
@@ -202,6 +202,58 @@
         </a>
     </div>
 
+
+	<div class="navbar-right" role="group" style="margin-right:16px;">
+
+		<div class="btn-group btn-group-xs" role="group" style="">
+			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+				<img height="32" width="32" src="{% static 'img/report.png' %}" /><br />
+				<small>Item</small>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="/test3" target="_blank">Report 1 in new window</a></li>
+				<li><a href="/test3" target="_top">Report 2 in top</a></li>
+				<li><a href="/test3" target="_parent">Report 3 in parent</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Report 4</a></li>
+				<li><a href="#">Report 5</a></li>
+				<li><a href="#">Report 6</a></li>
+				<li><a href="#">Report 7</a></li>
+			</ul>
+		</div>
+
+		<div class="btn-group btn-group-xs" role="group" style="">
+			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+				<img height="32" width="32" src="{% static 'img/report.png' %}" /><br />
+				<small>List</small>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="#">Summary 1</a></li>
+				<li><a href="#">Summary 2</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Summary 3</a></li>
+			</ul>
+		</div>
+		
+		<div class="btn-group btn-group-xs" role="group" style="">
+			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+				<img height="32" width="32" src="{% static 'img/matrix.png' %}" /><br />
+				<small>Matrix</small>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="#">Matrix 1</a></li>
+				<li><a href="#">Matrix 2</a></li>
+				<li><a href="#">Matrix 3</a></li>
+				<li><a href="#">Matrix 4</a></li>
+				<li><a href="#">Matrix 5</a></li>
+				<li><a href="#">Matrix 6</a></li>
+			</ul>
+		</div>
+
+	</div>
 
 
 </div>

@@ -108,68 +108,66 @@ def audio(request, audio_id):
     #audios = get_list_or_404(Audio)
     
     try:
-        active_audio = Audio.objects.get(pk = audio_id)
-        active_id = active_audio.id
-        active_note = active_audio.note
+        selected_audio = Audio.objects.get(pk = audio_id)
+        selected_note = selected_audio.note
     except ObjectDoesNotExist:
-        active_audio = None
-        active_id = None
-        active_note = None
+        selected_audio = None
+        selected_note = None
 
     ### create new audio object on request '/audio/0'
     if audio_id == '0':
-        active_audio = Audio(project=env.project);
+        selected_audio = Audio(project=env.project);
 
     ### handle buttons
     if request.method == 'POST':
-        if not active_audio:   # you shall not pass ... without valid scope
+        if not selected_audio:   # you shall not pass ... without valid scope
             raise AssertionError 
 
         # generate forms and/or get data out of the edited forms
-        formNote = NoteForm(request.POST or None, instance=active_note)
+        formNote = NoteForm(request.POST or None, instance=selected_note)
         if formNote.is_valid():
-            active_note = formNote.instance
-        formItem = AudioForm(request.POST or None, instance=active_audio)
+            selected_note = formNote.instance
+        formItem = AudioForm(request.POST or None, instance=selected_audio)
         if formItem.is_valid():
-            active_audio = formItem.instance
+            selected_audio = formItem.instance
 
         # 'Delete'-Button
         if request.POST.get('btn_delete'):
-            if active_note:
-                if active_note.id:
-                    active_note.delete()
-            active_audio.note = None
-            active_audio.delete()
+            if selected_note:
+                if selected_note.id:
+                    selected_note.delete()
+            selected_audio.note = None
+            selected_audio.delete()
             return HttpResponseRedirect('/audio/')
 
         # 'Add Note'-Button
         if request.POST.get('btn_note'):
-            active_note = Note(project=env.project, author=env.user )
-            active_audio.note = active_note
-            #formNote = NoteForm(request.POST or None, instance=active_note) #JK may be re-connect to form???
+            selected_note = Note(project=env.project, author=env.user )
+            selected_audio.note = selected_note
+            #formNote = NoteForm(request.POST or None, instance=selected_note) #JK may be re-connect to form???
 
         # 'Save'-Button
         if request.POST.get('btn_save'):
-            if active_note:
-                if active_note.text=='':
-                    if active_note.id:
-                        active_note.delete()
-                    active_note = None
+            if selected_note:
+                if selected_note.text=='':
+                    if selected_note.id:
+                        selected_note.delete()
+                    selected_note = None
                 else:
-                    active_note.save()
+                    selected_note.save()
 
-            active_audio.note = active_note
+            selected_audio.note = selected_note
 
-            if active_audio:
+            if selected_audio:
                 if formItem.is_valid():
                     formItem.save()
-                #active_audio.save()
+                #selected_audio.save()
 
             if audio_id == '0':   # previously new item
-                return HttpResponseRedirect('/audio/' + str(active_audio.id))
+                return HttpResponseRedirect('/audio/' + str(selected_audio.id))
     else:
-        formItem = AudioForm(instance=active_audio)
-        formNote = NoteForm(instance=active_note)
+        formItem = AudioForm(instance=selected_audio)
+        formNote = NoteForm(instance=selected_note)
     
     ### conglomerate queries
     query = Q()
@@ -194,11 +192,9 @@ def audio(request, audio_id):
         'tab_active_id': 'A',
         'tag_list': tag_list,
         'audios': audios,
-        'active_audio': active_audio,
-        'active_id': active_id,
+        'selected_audio': selected_audio,
         'form': formItem,
         'formNote': formNote,
-        'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
     })
 

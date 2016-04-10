@@ -145,7 +145,7 @@ class SceneForm(forms.ModelForm):
 ###############################################################################
 
 @login_required
-def script(request, scene_id):
+def script(request, scene_id, new_order=0):
     """Handles page requests for Script"""
     
     env = Env(request)
@@ -153,69 +153,68 @@ def script(request, scene_id):
     tag_list = getTagRequestList(request, 'scene')
     
     try:
-        active_scene = Scene.objects.get(pk = scene_id)
-        active_id = active_scene.id
-        active_note = active_scene.note
+        selected_scene = Scene.objects.get(pk = scene_id)
+        selected_note = selected_scene.note
     except ObjectDoesNotExist:
-        active_scene = None
-        active_id = None
-        active_note = None
+        selected_scene = None
+        selected_note = None
 
     ### create new scene object on request '/script/0'
     if scene_id == '0':
-        active_scene = Scene(project=env.project, script=env.script);
-        active_scene.setAllTags(True)
+        selected_scene = Scene(project=env.project, script=env.script);
+        selected_scene.setAllTags(True)
+        selected_scene.order = new_order
 
     ### handle buttons
     if request.method == 'POST':
-        if not active_scene:   # you shall not pass ... without valid scope
+        if not selected_scene:   # you shall not pass ... without valid scope
             raise AssertionError 
 
         # generate forms and/or get data out of the edited forms
-        formNote = NoteForm(request.POST or None, instance=active_note)
+        formNote = NoteForm(request.POST or None, instance=selected_note)
         if formNote.is_valid():
-            active_note = formNote.instance
-        formItem = SceneForm(request.POST or None, instance=active_scene)
+            selected_note = formNote.instance
+        formItem = SceneForm(request.POST or None, instance=selected_scene)
         if formItem.is_valid():
-            active_scene = formItem.instance
+            selected_scene = formItem.instance
 
         # 'Delete'-Button
         if request.POST.get('btn_delete'):
-            if active_note:
-                if active_note.id:
-                    active_note.delete()
-            active_scene.note = None
-            active_scene.delete()
+            if selected_note:
+                if selected_note.id:
+                    selected_note.delete()
+            selected_scene.note = None
+            selected_scene.delete()
             return HttpResponseRedirect('/script/')
 
         # 'Add Note'-Button
         if request.POST.get('btn_note'):
-            active_note = Note(project=env.project, author=env.user)
-            active_scene.note = active_note
-            #formNote = NoteForm(request.POST or None, instance=active_note) #JK may be re-connect to form???
+            selected_note = Note(project=env.project, author=env.user)
+            selected_scene.note = selected_note
+            #formNote = NoteForm(request.POST or None, instance=selected_note) #JK may be re-connect to form???
 
         # 'Save'-Button
         if request.POST.get('btn_save'):
-            if active_note:
-                if active_note.text=='':
-                    if active_note.id:
-                        active_note.delete()
-                    active_note = None
+            if selected_note:
+                if selected_note.text=='':
+                    if selected_note.id:
+                        selected_note.delete()
+                    selected_note = None
                 else:
-                    active_note.save()
+                    selected_note.save()
 
-            active_scene.note = active_note
+            selected_scene.note = selected_note
 
-            if active_scene:
+            if selected_scene:
                 if formItem.is_valid():
                     formItem.save()
-                #active_scene.save()
+                #selected_scene.save()
 
             if scene_id == '0':   # previously new item
-                return HttpResponseRedirect('/script/' + str(active_scene.id))
+                return HttpResponseRedirect('/script/' + str(selected_scene.id))
     else:
-        formItem = SceneForm(instance=active_scene)
-        formNote = NoteForm(instance=active_note)
+        formItem = SceneForm(instance=selected_scene)
+        formNote = NoteForm(instance=selected_note)
     
     ### conglomerate queries
     query = Q()
@@ -240,11 +239,9 @@ def script(request, scene_id):
         'tab_active_id': 'C',
         'tag_list': tag_list,
         'scenes': scenes,
-        'active_scene': active_scene,
-        'active_id': active_id,
+        'selected_scene': selected_scene,
         'form': formItem,
         'formNote': formNote,
-        'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
     })
 
@@ -258,11 +255,46 @@ def scriptTag(request, tag_id):
     return script(request, None)
 
 ###############################################################################
-#if not form.is_valid():
-#    context['form_errors'] = form.errors
-#    return render(request, template, context)
 
-#and in your template:
+@login_required
+def scriptMove(request, scene_id, offset):
 
-#{% crispy form %}
-#<div id='form-errors'>{{ form_errors }}</div>
+    env = Env(request)
+
+    try:
+        scene = Scene.objects.filter( project=env.project_id, script=env.script_id )
+        
+        offset = int(offset)
+        if offset < 0:
+            offset -= 1
+        if offset > 0:
+            offset += 1
+        newOrder = getOrderNumber(scene, scene_id, offset)
+        if newOrder:
+            selected_scene = Scene.objects.get( project=env.project_id, script=env.script_id, id=scene_id )
+            selected_scene.order = newOrder
+            selected_scene.save()
+            
+    except:
+        pass
+
+    url ='/script/' + scene_id
+    return HttpResponseRedirect(url)
+
+###############################################################################
+
+def scriptNew(request, scene_id, offset):
+
+    env = Env(request)
+
+    try:
+        scene = Scene.objects.filter( project=env.project_id, script=env.script_id )
+        
+        newOrder = getOrderNumber(scene, scene_id, offset)
+    except:
+        newOrder = 0
+
+    url ='/script/0/' + str(newOrder)
+    return HttpResponseRedirect(url)
+
+###############################################################################

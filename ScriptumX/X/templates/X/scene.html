@@ -46,8 +46,8 @@
                 {% for sceneitem in sceneitems %}
 			
                     <a href="/scene/{{sceneitem.pk}}"
-                        {% if sceneitem.id == active_id %} 
-                            class="x-sceneitem list-group-item active" id="active_scope"
+                        {% if sceneitem == selected_sceneitem %} 
+                            class="x-sceneitem list-group-item active" id="selected_scope"
                         {% else %} 
                             class="x-sceneitem list-group-item"
                         {% endif %}
@@ -127,17 +127,17 @@
         <div class="col-xs-6 col-md-6" style="height:100%; overflow-y:auto; padding:0">
             <div class="x-sceneitem x-item-form">
 
-                {% if active_sceneitem %}
+                {% if selected_sceneitem %}
 
 
                     <form class="form-horizontal" method="post">
 
                         {#--note--#}
-                        {% if active_sceneitem.note %}
+                        {% if selected_sceneitem.note %}
                             <div class="pull-left" style="max-width:12%;">
                                 <img src="{% static 'img/note.png' %}" /><br/>
-                                <small>{{ active_sceneitem.note.author }}<br/>
-                                {{ active_sceneitem.note.created|date:"Y-m-d H:i" }}</small>
+                                <small>{{ selected_sceneitem.note.author }}<br/>
+                                {{ selected_sceneitem.note.created|date:"Y-m-d H:i" }}</small>
                             </div>
                             {% crispy formNote formNote.helper %}
                             <hr/>
@@ -253,72 +253,72 @@
     {#--button new--#}
     <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
         <div class="btn-group btn-group-xs" role="group" >
-		    <button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not active_sceneitem %}disabled{% endif %}>
+		    <button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_sceneitem %}disabled{% endif %}>
 			    <img height="32" width="32" src="{% static 'img/s/ins_b.png' %}" /><br />
 			    <span class="caret"></span>
 			    <small>New</small>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
                 <li class="dropdown-header">Inser befor selected:</li>
-			    <li><a href="/scene/new/N/{{active_sceneitem.pk}}/-1">Note</a></li>
-			    <li><a href="/scene/new/A/{{active_sceneitem.pk}}/-1">Action</a></li>
-			    <li><a href="/scene/new/D/{{active_sceneitem.pk}}/-1">Dialog</a></li>
-			    <li><a href="/scene/new/T/{{active_sceneitem.pk}}/-1">Trans</a></li>
-			    <li><a href="/scene/new/R/{{active_sceneitem.pk}}/-1">Non-Speaking Role</a></li>
+			    <li><a href="/scene/new/N/{{selected_sceneitem.pk}}/-1">Note</a></li>
+			    <li><a href="/scene/new/A/{{selected_sceneitem.pk}}/-1">Action</a></li>
+			    <li><a href="/scene/new/D/{{selected_sceneitem.pk}}/-1">Dialog</a></li>
+			    <li><a href="/scene/new/T/{{selected_sceneitem.pk}}/-1">Trans</a></li>
+			    <li><a href="/scene/new/R/{{selected_sceneitem.pk}}/-1">Non-Speaking Role</a></li>
 		    </ul>
         </div>
         <div class="btn-group btn-group-xs" role="group" >
-		    <button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not active_sceneitem %}disabled{% endif %}>
+		    <button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_sceneitem %}disabled{% endif %}>
 			    <img height="32" width="32" src="{% static 'img/s/ins_a.png' %}" /><br />
 			    <small>New</small>
 			    <span class="caret"></span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
                 <li class="dropdown-header">Inser after selected:</li>
-			    <li><a href="/scene/new/N/{{active_sceneitem.pk}}/1">Note</a></li>
-			    <li><a href="/scene/new/A/{{active_sceneitem.pk}}/1">Action</a></li>
-			    <li><a href="/scene/new/D/{{active_sceneitem.pk}}/1">Dialog</a></li>
-			    <li><a href="/scene/new/T/{{active_sceneitem.pk}}/1">Trans</a></li>
-			    <li><a href="/scene/new/R/{{active_sceneitem.pk}}/1">Non-Speaking Role</a></li>
+			    <li><a href="/scene/new/N/{{selected_sceneitem.pk}}/1">Note</a></li>
+			    <li><a href="/scene/new/A/{{selected_sceneitem.pk}}/1">Action</a></li>
+			    <li><a href="/scene/new/D/{{selected_sceneitem.pk}}/1">Dialog</a></li>
+			    <li><a href="/scene/new/T/{{selected_sceneitem.pk}}/1">Trans</a></li>
+			    <li><a href="/scene/new/R/{{selected_sceneitem.pk}}/1">Non-Speaking Role</a></li>
 		    </ul>
         </div>
     </div>
 
     {#--button move--#}
     <div class="btn-group btn-group-xs" role="group" style="margin-left:8px">
-		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not active_sceneitem %}disabled{% endif %}>
+		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_sceneitem %}disabled{% endif %}>
 			<img height="32" width="32" src="{% static 'img/s/move.png' %}" /><br />
 			<small>Move</small>
 			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
             <li class="dropdown-header">Befor selected:</li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/-99999">First</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/-20">-20</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/-10">-10</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/-9">-9</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/-8">-8</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/-7">-7</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/-6">-6</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/-5">-5</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/-4">-4</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/-3">-3</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/-2">-2</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/-1">-1</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/-99999">First</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/-20">-20</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/-10">-10</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/-9">-9</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/-8">-8</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/-7">-7</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/-6">-6</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/-5">-5</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/-4">-4</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/-3">-3</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/-2">-2</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/-1">-1</a></li>
             <li role="separator" class="divider"></li>
             <li class="dropdown-header">After selected:</li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/1">1</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/2">2</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/3">3</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/4">4</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/5">5</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/6">6</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/7">7</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/8">8</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/9">9</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/10">10</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/20">20</a></li>
-			<li><a href="/scene/move/{{active_sceneitem.pk}}/99999">last</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/1">1</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/2">2</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/3">3</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/4">4</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/5">5</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/6">6</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/7">7</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/8">8</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/9">9</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/10">10</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/20">20</a></li>
+			<li><a href="/scene/move/{{selected_sceneitem.pk}}/99999">last</a></li>
 		</ul>
     </div>
 
@@ -331,7 +331,7 @@
 			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
-            {% if active_sceneitem %}
+            {% if selected_sceneitem %}
             <li class="dropdown-header">Selected Item:</li>
 			<li><a href="#">BlaBla</a></li>
 			<li><a href="#">BlaBla</a></li>

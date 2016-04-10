@@ -108,68 +108,66 @@ def person(request, person_id):
     #persons = get_list_or_404(Person)
     
     try:
-        active_person = Person.objects.get(pk = person_id)
-        active_id = active_person.id
-        active_note = active_person.note
+        selected_person = Person.objects.get(pk = person_id)
+        selected_note = selected_person.note
     except ObjectDoesNotExist:
-        active_person = None
-        active_id = None
-        active_note = None
+        selected_person = None
+        selected_note = None
 
     ### create new person object on request '/person/0'
     if person_id == '0':
-        active_person = Person(project=env.project);
+        selected_person = Person(project=env.project);
 
     ### handle buttons
     if request.method == 'POST':
-        if not active_person:   # you shall not pass ... without valid scope
+        if not selected_person:   # you shall not pass ... without valid scope
             raise AssertionError 
 
         # generate forms and/or get data out of the edited forms
-        formNote = NoteForm(request.POST or None, instance=active_note)
+        formNote = NoteForm(request.POST or None, instance=selected_note)
         if formNote.is_valid():
-            active_note = formNote.instance
-        formItem = PersonForm(request.POST or None, instance=active_person)
+            selected_note = formNote.instance
+        formItem = PersonForm(request.POST or None, instance=selected_person)
         if formItem.is_valid():
-            active_person = formItem.instance
+            selected_person = formItem.instance
 
         # 'Delete'-Button
         if request.POST.get('btn_delete'):
-            if active_note:
-                if active_note.id:
-                    active_note.delete()
-            active_person.note = None
-            active_person.delete()
+            if selected_note:
+                if selected_note.id:
+                    selected_note.delete()
+            selected_person.note = None
+            selected_person.delete()
             return HttpResponseRedirect('/person/')
 
         # 'Add Note'-Button
         if request.POST.get('btn_note'):
-            active_note = Note(project=env.project, author=env.user )
-            active_person.note = active_note
-            #formNote = NoteForm(request.POST or None, instance=active_note) #JK may be re-connect to form???
+            selected_note = Note(project=env.project, author=env.user )
+            selected_person.note = selected_note
+            #formNote = NoteForm(request.POST or None, instance=selected_note) #JK may be re-connect to form???
 
         # 'Save'-Button
         if request.POST.get('btn_save'):
-            if active_note:
-                if active_note.text=='':
-                    if active_note.id:
-                        active_note.delete()
-                    active_note = None
+            if selected_note:
+                if selected_note.text=='':
+                    if selected_note.id:
+                        selected_note.delete()
+                    selected_note = None
                 else:
-                    active_note.save()
+                    selected_note.save()
 
-            active_person.note = active_note
+            selected_person.note = selected_note
 
-            if active_person:
+            if selected_person:
                 if formItem.is_valid():
                     formItem.save()
-                #active_person.save()
+                #selected_person.save()
 
             if person_id == '0':   # previously new item
-                return HttpResponseRedirect('/person/' + str(active_person.id))
+                return HttpResponseRedirect('/person/' + str(selected_person.id))
     else:
-        formItem = PersonForm(instance=active_person)
-        formNote = NoteForm(instance=active_note)
+        formItem = PersonForm(instance=selected_person)
+        formNote = NoteForm(instance=selected_note)
     
     ### conglomerate queries
     query = Q()
@@ -194,11 +192,9 @@ def person(request, person_id):
         'tab_active_id': 'F',
         'tag_list': tag_list,
         'persons': persons,
-        'active_person': active_person,
-        'active_id': active_id,
+        'selected_person': selected_person,
         'form': formItem,
         'formNote': formNote,
-        'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
     })
 

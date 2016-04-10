@@ -27,8 +27,8 @@
                 {% for scene in scenes %}
 			    
                     <a href="/script/{{scene.pk}}" style="padding:0; margin-bottom:8px; margin-left:{{scene.indentation}}%; width:60%;"
-                    {% if scene.id == active_id %} 
-                        class="x-script list-group-item panel panel-default active" id="active_scope"
+                    {% if scene == selected_scene %} 
+                        class="x-script list-group-item panel panel-default active" id="selected_scope"
                     {% else %}
                         class="x-script list-group-item panel panel-default"
                     {% endif %}
@@ -102,15 +102,15 @@
         <div class="col-xs-6" style="height:100%; overflow-y:auto; padding:0;">
             <div class="x-script x-item-form" style="">
 
-                {% if active_scene %}
+                {% if selected_scene %}
 
                     <form class="form-horizontal" method="post">
 
-                        {% if active_scene.note %}
+                        {% if selected_scene.note %}
                             <div class="pull-left" style="max-width:12%;">
                                 <img src="{% static 'img/note.png' %}" /><br/>
-                                <small>{{ active_scene.note.author }}<br/>
-                                {{ active_scene.note.created|date:"Y-m-d H:i" }}</small>
+                                <small>{{ selected_scene.note.author }}<br/>
+                                {{ selected_scene.note.created|date:"Y-m-d H:i" }}</small>
                             </div>
                             {% crispy formNote formNote.helper %}
                             <hr/>
@@ -121,7 +121,7 @@
                                 <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
                             </button  >
 
-                            {% if not active_scene.note %}
+                            {% if not selected_scene.note %}
                                 <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
                                     <img height="32" width="32" src="{% static 'img/note.png' %}" /><br /><small>Note</small>
                                 </button  >
@@ -213,15 +213,147 @@
 
     <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
 
-        <a href="/script/0" 
-            role="button" 
-            class="btn btn-default navbar-btn" style="padding:4px" 
+        <a href="/script/new/{{selected_scene.pk}}/-1" 
+            role="button" style="padding:4px" 
+            {% if not selected_scene %}
+            class="btn btn-default navbar-btn disabled" disabled
+            {% else %}
+            class="btn btn-default navbar-btn"
+            {% endif %}
             >
-        <img height="32" width="32" src="{% static 'img/files.png' %}" />
+        <img height="32" width="32" src="{% static 'img/s/ins_b.png' %}" />
+        <br />
+        <small>New</small></a>
+
+        <a href="/script/new/{{selected_scene.pk}}/1" 
+            role="button" style="padding:4px" 
+            {% if not selected_scene %}
+            class="btn btn-default navbar-btn disabled" disabled
+            {% else %}
+            class="btn btn-default navbar-btn"
+            {% endif %}
+            >
+        <img height="32" width="32" src="{% static 'img/s/ins_a.png' %}" />
         <br />
         <small>New</small></a>
 
     </div>
+
+    {#--button move--#}
+    <div class="btn-group btn-group-xs" role="group" style="margin-left:8px">
+		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_scene %}disabled{% endif %}>
+			<img height="32" width="32" src="{% static 'img/s/move.png' %}" /><br />
+			<small>Move</small>
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+            <li class="dropdown-header">Befor selected:</li>
+			<li><a href="/script/move/{{selected_scene.pk}}/-99999">First</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/-20">-20</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/-10">-10</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/-9">-9</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/-8">-8</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/-7">-7</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/-6">-6</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/-5">-5</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/-4">-4</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/-3">-3</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/-2">-2</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/-1">-1</a></li>
+            <li role="separator" class="divider"></li>
+            <li class="dropdown-header">After selected:</li>
+			<li><a href="/script/move/{{selected_scene.pk}}/1">1</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/2">2</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/3">3</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/4">4</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/5">5</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/6">6</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/7">7</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/8">8</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/9">9</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/10">10</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/20">20</a></li>
+			<li><a href="/script/move/{{selected_scene.pk}}/99999">last</a></li>
+		</ul>
+    </div>
+
+
+    {#--button Tool--#}
+    <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
+		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+			<img height="32" width="32" src="{% static 'img/tool.png' %}" /><br />
+			<small>Tool</small>
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+            {% if selected_sceneitem %}
+            <li class="dropdown-header">Selected Item:</li>
+			<li><a href="#">BlaBla</a></li>
+			<li><a href="#">BlaBla</a></li>
+			<li><a href="#">BlaBla</a></li>
+			<li><a href="#">BlaBla</a></li>
+            <li role="separator" class="divider"></li>
+            {% endif %}
+            <li class="dropdown-header">All Items:</li>
+			<li><a href="#">BlaBla</a></li>
+			<li><a href="#">BlaBla</a></li>
+			<li><a href="#">BlaBla</a></li>
+			<li><a href="#">BlaBla</a></li>
+		</ul>
+    </div>
+
+
+	<div class="navbar-right" role="group" style="margin-right:16px;">
+
+		<div class="btn-group btn-group-xs" role="group" style="">
+			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+				<img height="32" width="32" src="{% static 'img/report.png' %}" /><br />
+				<small>Item</small>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="/test3" target="_blank">Report 1 in new window</a></li>
+				<li><a href="/test3" target="_top">Report 2 in top</a></li>
+				<li><a href="/test3" target="_parent">Report 3 in parent</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Report 4</a></li>
+				<li><a href="#">Report 5</a></li>
+				<li><a href="#">Report 6</a></li>
+				<li><a href="#">Report 7</a></li>
+			</ul>
+		</div>
+
+		<div class="btn-group btn-group-xs" role="group" style="">
+			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+				<img height="32" width="32" src="{% static 'img/report.png' %}" /><br />
+				<small>List</small>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="#">Summary 1</a></li>
+				<li><a href="#">Summary 2</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">Summary 3</a></li>
+			</ul>
+		</div>
+		
+		<div class="btn-group btn-group-xs" role="group" style="">
+			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+				<img height="32" width="32" src="{% static 'img/matrix.png' %}" /><br />
+				<small>Matrix</small>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="#">Matrix 1</a></li>
+				<li><a href="#">Matrix 2</a></li>
+				<li><a href="#">Matrix 3</a></li>
+				<li><a href="#">Matrix 4</a></li>
+				<li><a href="#">Matrix 5</a></li>
+				<li><a href="#">Matrix 6</a></li>
+			</ul>
+		</div>
+
+	</div>
 
 </div>
 {% endblock %}

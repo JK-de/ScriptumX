@@ -22,6 +22,9 @@ urlpatterns = [
     url(r'^project/(?P<project_id>\d+)/(?P<script_id>\d+)?$', X.view_project.project, name='project'),
     url(r'^project/(?P<project_id>\d+)?$', X.view_project.project, name='project'),
 
+    url(r'^script/new/(?P<scene_id>\d+)/(?P<offset>[-]?\d+)$', X.view_script.scriptNew, name='scriptNew'),
+    url(r'^script/move/(?P<scene_id>\d+)/(?P<offset>[-]?\d+)$', X.view_script.scriptMove, name='scriptMove'),
+    url(r'^script/(?P<scene_id>[0])/(?P<new_order>\d+)$', X.view_script.script, name='script'),
     url(r'^script/(?P<scene_id>\d+)?$', X.view_script.script, name='script'),
     url(r'^script/tag/(?P<tag_id>\w+)$', X.view_script.scriptTag, name='scriptTag'),
 

@@ -114,68 +114,66 @@ def role(request, role_id):
     #roles = get_list_or_404(Role)
     
     try:
-        active_role = Role.objects.get(pk = role_id)
-        active_id = active_role.id
-        active_note = active_role.note
+        selected_role = Role.objects.get(pk = role_id)
+        selected_note = selected_role.note
     except ObjectDoesNotExist:
-        active_role = None
-        active_id = None
-        active_note = None
+        selected_role = None
+        selected_note = None
 
     ### create new role object on request '/role/0'
     if role_id == '0':
-        active_role = Role(project=env.project);
+        selected_role = Role(project=env.project);
 
     ### handle buttons
     if request.method == 'POST':
-        if not active_role:   # you shall not pass ... without valid scope
+        if not selected_role:   # you shall not pass ... without valid scope
             raise AssertionError 
 
         # generate forms and/or get data out of the edited forms
-        formNote = NoteForm(request.POST or None, instance=active_note)
+        formNote = NoteForm(request.POST or None, instance=selected_note)
         if formNote.is_valid():
-            active_note = formNote.instance
-        formItem = RoleForm(request.POST or None, instance=active_role)
+            selected_note = formNote.instance
+        formItem = RoleForm(request.POST or None, instance=selected_role)
         if formItem.is_valid():
-            active_role = formItem.instance
+            selected_role = formItem.instance
 
         # 'Delete'-Button
         if request.POST.get('btn_delete'):
-            if active_note:
-                if active_note.id:
-                    active_note.delete()
-            active_role.note = None
-            active_role.delete()
+            if selected_note:
+                if selected_note.id:
+                    selected_note.delete()
+            selected_role.note = None
+            selected_role.delete()
             return HttpResponseRedirect('/role/')
 
         # 'Add Note'-Button
         if request.POST.get('btn_note'):
-            active_note = Note(project=env.project, author=env.user )
-            active_role.note = active_note
-            #formNote = NoteForm(request.POST or None, instance=active_note) #JK may be re-connect to form???
+            selected_note = Note(project=env.project, author=env.user )
+            selected_role.note = selected_note
+            #formNote = NoteForm(request.POST or None, instance=selected_note) #JK may be re-connect to form???
 
         # 'Save'-Button
         if request.POST.get('btn_save'):
-            if active_note:
-                if active_note.text=='':
-                    if active_note.id:
-                        active_note.delete()
-                    active_note = None
+            if selected_note:
+                if selected_note.text=='':
+                    if selected_note.id:
+                        selected_note.delete()
+                    selected_note = None
                 else:
-                    active_note.save()
+                    selected_note.save()
 
-            active_role.note = active_note
+            selected_role.note = selected_note
 
-            if active_role:
+            if selected_role:
                 if formItem.is_valid():
                     formItem.save()
-                #active_role.save()
+                #selected_role.save()
 
             if role_id == '0':   # previously new item
-                return HttpResponseRedirect('/role/' + str(active_role.id))
+                return HttpResponseRedirect('/role/' + str(selected_role.id))
     else:
-        formItem = RoleForm(instance=active_role)
-        formNote = NoteForm(instance=active_note)
+        formItem = RoleForm(instance=selected_role)
+        formNote = NoteForm(instance=selected_note)
     
     ### conglomerate queries
     query = Q()
@@ -200,11 +198,9 @@ def role(request, role_id):
         'tab_active_id': 'R',
         'tag_list': tag_list,
         'roles': roles,
-        'active_role': active_role,
-        'active_id': active_id,
+        'selected_role': selected_role,
         'form': formItem,
         'formNote': formNote,
-        'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
     })
 

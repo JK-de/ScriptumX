@@ -80,49 +80,47 @@ def scene(request, sceneitem_id, new_type='?', new_order=0):
     #sceneitems = get_list_or_404(SceneItem)
     
     try:
-        active_sceneitem = SceneItem.objects.get(pk = sceneitem_id)
-        active_id = active_sceneitem.id
+        selected_sceneitem = SceneItem.objects.get(pk = sceneitem_id)
     except ObjectDoesNotExist:
-        active_sceneitem = None
-        active_id = None
+        selected_sceneitem = None
 
     ### create new sceneitem object on request '/scene/0'
     if sceneitem_id == '0':
-        active_sceneitem = SceneItem(scene=env.scene);
-        active_sceneitem.type = new_type
-        active_sceneitem.order = new_order
+        selected_sceneitem = SceneItem(scene=env.scene);
+        selected_sceneitem.type = new_type
+        selected_sceneitem.order = new_order
 
     ### handle buttons
     if request.method == 'POST':
-        if not active_sceneitem:   # you shall not pass ... without valid scope
+        if not selected_sceneitem:   # you shall not pass ... without valid scope
             raise AssertionError 
 
         # generate forms and/or get data out of the edited forms
-        formItem = SceneItemForm(request.POST or None, instance=active_sceneitem)
+        formItem = SceneItemForm(request.POST or None, instance=selected_sceneitem)
         if formItem.is_valid():
-            active_sceneitem = formItem.instance
+            selected_sceneitem = formItem.instance
 
         # 'Delete'-Button
         if request.POST.get('btn_delete'):
-            active_sceneitem.delete()
+            selected_sceneitem.delete()
             return HttpResponseRedirect('/scene/')
 
         # 'Save'-Button
         if request.POST.get('btn_save'):
-            if active_sceneitem:
+            if selected_sceneitem:
                 if formItem.is_valid():
                     formItem.save()
-                #active_sceneitem.save()
+                #selected_sceneitem.save()
 
             if sceneitem_id == '0':   # previously new item
-                return HttpResponseRedirect('/scene/' + str(active_sceneitem.id))
+                return HttpResponseRedirect('/scene/' + str(selected_sceneitem.id))
     else:
-        formItem = SceneItemForm(instance=active_sceneitem)
+        formItem = SceneItemForm(instance=selected_sceneitem)
     
-    if active_sceneitem:
-        if active_sceneitem.type == 'A' or active_sceneitem.type == 'N' or active_sceneitem.type == 'T':
+    if selected_sceneitem:
+        if selected_sceneitem.type == 'A' or selected_sceneitem.type == 'N' or selected_sceneitem.type == 'T':
             formItem.helper[0:2].update_attributes(type="hidden")
-        if active_sceneitem.type == 'N':
+        if selected_sceneitem.type == 'N':
             formItem.helper[2:3].update_attributes(style="max-width:100%; min-width:100%; background-color:palegoldenrod;")
             formItem.fields['text'].label = "Note"
 
@@ -152,12 +150,10 @@ def scene(request, sceneitem_id, new_type='?', new_order=0):
         'tab_active_id': 'S',
         'tag_list': tag_list,
         'scenes': scenes,
-        'active_scene': env.scene,
+        'selected_scene': env.scene,
         'sceneitems': sceneitems,
-        'active_sceneitem': active_sceneitem,
-        'active_id': active_id,
+        'selected_sceneitem': selected_sceneitem,
         'form': formItem,
-        'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
     })
 

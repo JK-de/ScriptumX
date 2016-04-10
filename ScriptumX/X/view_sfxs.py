@@ -107,68 +107,66 @@ def sfx(request, sfx_id):
     #sfxs = get_list_or_404(SFX)
     
     try:
-        active_sfx = SFX.objects.get(pk = sfx_id)
-        active_id = active_sfx.id
-        active_note = active_sfx.note
+        selected_sfx = SFX.objects.get(pk = sfx_id)
+        selected_note = selected_sfx.note
     except ObjectDoesNotExist:
-        active_sfx = None
-        active_id = None
-        active_note = None
+        selected_sfx = None
+        selected_note = None
 
     ### create new sfx object on request '/sfx/0'
     if sfx_id == '0':
-        active_sfx = SFX(project=env.project);
+        selected_sfx = SFX(project=env.project);
 
     ### handle buttons
     if request.method == 'POST':
-        if not active_sfx:   # you shall not pass ... without valid scope
+        if not selected_sfx:   # you shall not pass ... without valid scope
             raise AssertionError 
 
         # generate forms and/or get data out of the edited forms
-        formNote = NoteForm(request.POST or None, instance=active_note)
+        formNote = NoteForm(request.POST or None, instance=selected_note)
         if formNote.is_valid():
-            active_note = formNote.instance
-        formItem = SFXForm(request.POST or None, instance=active_sfx)
+            selected_note = formNote.instance
+        formItem = SFXForm(request.POST or None, instance=selected_sfx)
         if formItem.is_valid():
-            active_sfx = formItem.instance
+            selected_sfx = formItem.instance
 
         # 'Delete'-Button
         if request.POST.get('btn_delete'):
-            if active_note:
-                if active_note.id:
-                    active_note.delete()
-            active_sfx.note = None
-            active_sfx.delete()
+            if selected_note:
+                if selected_note.id:
+                    selected_note.delete()
+            selected_sfx.note = None
+            selected_sfx.delete()
             return HttpResponseRedirect('/sfx/')
 
         # 'Add Note'-Button
         if request.POST.get('btn_note'):
-            active_note = Note(project=env.project, author=env.user )
-            active_sfx.note = active_note
-            #formNote = NoteForm(request.POST or None, instance=active_note) #JK may be re-connect to form???
+            selected_note = Note(project=env.project, author=env.user )
+            selected_sfx.note = selected_note
+            #formNote = NoteForm(request.POST or None, instance=selected_note) #JK may be re-connect to form???
 
         # 'Save'-Button
         if request.POST.get('btn_save'):
-            if active_note:
-                if active_note.text=='':
-                    if active_note.id:
-                        active_note.delete()
-                    active_note = None
+            if selected_note:
+                if selected_note.text=='':
+                    if selected_note.id:
+                        selected_note.delete()
+                    selected_note = None
                 else:
-                    active_note.save()
+                    selected_note.save()
 
-            active_sfx.note = active_note
+            selected_sfx.note = selected_note
 
-            if active_sfx:
+            if selected_sfx:
                 if formItem.is_valid():
                     formItem.save()
-                #active_sfx.save()
+                #selected_sfx.save()
 
             if sfx_id == '0':   # previously new item
-                return HttpResponseRedirect('/sfx/' + str(active_sfx.id))
+                return HttpResponseRedirect('/sfx/' + str(selected_sfx.id))
     else:
-        formItem = SFXForm(instance=active_sfx)
-        formNote = NoteForm(instance=active_note)
+        formItem = SFXForm(instance=selected_sfx)
+        formNote = NoteForm(instance=selected_note)
     
     ### conglomerate queries
     query = Q()
@@ -193,11 +191,9 @@ def sfx(request, sfx_id):
         'tab_active_id': 'X',
         'tag_list': tag_list,
         'sfxs': sfxs,
-        'active_sfx': active_sfx,
-        'active_id': active_id,
+        'selected_sfx': selected_sfx,
         'form': formItem,
         'formNote': formNote,
-        'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
     })
 

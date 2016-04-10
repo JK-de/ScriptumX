@@ -271,64 +271,40 @@
         </a>
     </div>
 
-    <div class="btn-group btn-group-xs" role="group" style="margin-left:4px">
 
-				
-        {% for tag in tag_list %}
-            <a href="/project/tag/{{tag.idx}}" role="button" 
-                   
-                {% if tag.active %}
-                    class="btn btn-primary navbar-btn" style="padding:4px" 
-                {% else %}
-                    class="btn btn-default navbar-btn" style="padding:4px;"
-                {% endif %}
-            >
-            <img src="{% static tag.img %}" />
-            <br />
-            <font size="1">{{tag.name}}</font></a>
-        {% endfor %}
-
-                
-				
-	</div>
-
-    {#--button new--#}
+    {#--button new Project--#}
     <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
         <a href="/project/0" role="button" 
             class="btn btn-default navbar-btn" style="padding:4px" 
             >
-            <img height="32" width="32" src="{% static 'img/files.png' %}" />
+            <img height="32" width="32" src="{% static 'img/new.png' %}" />
             <br />
             <small>New Project</small>
         </a>
     </div>
 
-    {#--button new--#}
+    {#--button new Script--#}
     <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
-        <button type="button" formaction="/project/{{selected_project.id}}/0" formmethod="get"
-            class="btn btn-default navbar-btn" style="padding:4px" 
-             {% if not selected_project %}disabled{% endif %}>
-            <img height="32" width="32" src="{% static 'img/files.png' %}" />
-            <br />
-            <small>New Script</small>
-        </button>
-    </div>
-
-    <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
-        <a href="/project/{{selected_project.id}}/0" role="button" 
-            class="btn btn-default navbar-btn" style="padding:4px" 
-             {% if not selected_project %}disabled{% endif %}>
-            <img height="32" width="32" src="{% static 'img/files.png' %}" />
+        <a href="/project/{{selected_project.id}}/0" role="button" style="padding:4px" 
+             {% if not selected_project %}
+                disabled
+                class="btn btn-default navbar-btn disabled" 
+             {% else %}
+                class="btn btn-default navbar-btn" 
+             {% endif %}>
+            <img height="32" width="32" src="{% static 'img/new.png' %}" />
             <br />
             <small>New Script</small>
         </a>
-    </div>
-
-    <div class="btn-group btn-group-xs" role="group" style="">
-        <a href="/project/0/0" role="button" 
-            class="btn btn-default navbar-btn" style="padding:4px" 
-            >
-            <img height="32" width="32" src="{% static 'img/files.png' %}" />
+   
+        <a href="/project/{{selected_project.id}}/import" role="button" style="padding:4px" 
+             {% if not selected_project %}
+                disabled
+                class="btn btn-default navbar-btn disabled" 
+             {% else %}
+                class="btn btn-default navbar-btn" 
+             {% endif %}>
+            <img height="32" width="32" src="{% static 'img/new.png' %}" />
             <br />
             <small>Import Script</small>
         </a>

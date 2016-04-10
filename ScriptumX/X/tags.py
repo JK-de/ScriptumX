@@ -14,7 +14,7 @@ sceneitem_tag_list = (
     { 'idx': 1, 'name':'Action',  'type':'A',  'img':'img/s/tag/action.png' },
     { 'idx': 2, 'name':'Dialog',  'type':'D',  'img':'img/s/tag/dialog.png' },
     { 'idx': 3, 'name':'Trans',   'type':'T',  'img':'img/s/tag/trans.png' },
-    { 'idx': 4, 'name':'N.S.R.',  'type':'R',  'img':'img/s/tag/action.png' },
+    { 'idx': 4, 'name':'N.S.R.',  'type':'R',  'img':'img/s/tag/nsr.png' },
     )
 
 role_tag_list = (

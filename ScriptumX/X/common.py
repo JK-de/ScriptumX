@@ -27,12 +27,14 @@ g_tag_query_none = Q(tag1=False) & Q(tag2=False) & Q(tag3=False) & Q(tag4=False)
 class Env():
     request = None
     user = None
+    user_level = 0
     project_id = 0
     project = None
     script_id = 0
     script = None
     scene_id = 0
     scene = None
+
 
     def __init__(self, request, *args, **kwargs):
         super(Env, self).__init__(*args, **kwargs)
@@ -43,13 +45,34 @@ class Env():
         self.user = request.user
 
         # get project
-        self.project_id = request.session.get('ProjectID', 1)
+        self.project_id = request.session.get('ProjectID', 0)
+        #test self.project_id = 123
         try:
-            self.project = Project.objects.get(pk=self.project_id, users=self.user)
-            #self.project = Project.objects.get(pk=self.project_id)
+            self.project = Project.objects.get(pk=self.project_id)
         except:
             self.project_id = 0
-            pass
+
+        if not self.project:
+            try:
+                self.project = Project.objects.filter( Q(owner=self.user) | Q(users=self.user) | Q(guests=self.user) ).last()
+                #self.project_id = self.project.id
+                setProject(self.project)
+            except:
+                self.project_id = 0
+
+
+        if self.project:
+            if self.user.id == 1:
+                user_level = 42
+            elif self.project.owner == self.user:
+                user_level = 30
+            elif self.project.users.filter(pk=self.user.id):
+                user_level = 20
+            elif self.project.guests.filter(pk=self.user.id):
+                user_level = 10
+            else:
+                user_level = 0
+                self.project = None
 
         # get script
         self.script_id = request.session.get('ScriptID', 0)
@@ -58,10 +81,11 @@ class Env():
         except:
             self.script_id = 0
 
-        if self.script_id == 0:
+        if not self.script:
             try:
                 self.script = Script.objects.filter(project=self.project).last()
-                self.script_id = self.script.id
+                #self.script_id = self.script.id
+                setScript(self.script)
             except:
                 pass
 
@@ -72,10 +96,11 @@ class Env():
         except:
             self.scene_id = 0
 
-        if self.scene_id == 0:
+        if not self.scene:
             try:
                 self.scene = Scene.objects.filter(project=self.project, script=self.script).first()
-                self.scene_id = self.scene.id
+                #self.scene_id = self.scene.id
+                setScene(self.scene)
             except:
                 pass
 

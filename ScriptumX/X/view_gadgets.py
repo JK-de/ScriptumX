@@ -156,68 +156,66 @@ def gadget(request, gadget_id):
     #gadgets = get_list_or_404(Gadget)
     
     try:
-        active_gadget = Gadget.objects.get(pk = gadget_id)
-        active_id = active_gadget.id
-        active_note = active_gadget.note
+        selected_gadget = Gadget.objects.get(pk = gadget_id)
+        selected_note = selected_gadget.note
     except ObjectDoesNotExist:
-        active_gadget = None
-        active_id = None
-        active_note = None
+        selected_gadget = None
+        selected_note = None
 
     ### create new gadget object on request '/gadget/0'
     if gadget_id == '0':
-        active_gadget = Gadget(project=env.project);
+        selected_gadget = Gadget(project=env.project);
 
     ### handle buttons
     if request.method == 'POST':
-        if not active_gadget:   # you shall not pass ... without valid scope
+        if not selected_gadget:   # you shall not pass ... without valid scope
             raise AssertionError 
 
         # generate forms and/or get data out of the edited forms
-        formNote = NoteForm(request.POST or None, instance=active_note)
+        formNote = NoteForm(request.POST or None, instance=selected_note)
         if formNote.is_valid():
-            active_note = formNote.instance
-        formItem = GadgetForm(request.POST or None, instance=active_gadget)
+            selected_note = formNote.instance
+        formItem = GadgetForm(request.POST or None, instance=selected_gadget)
         if formItem.is_valid():
-            active_gadget = formItem.instance
+            selected_gadget = formItem.instance
 
         # 'Delete'-Button
         if request.POST.get('btn_delete'):
-            if active_note:
-                if active_note.id:
-                    active_note.delete()
-            active_gadget.note = None
-            active_gadget.delete()
+            if selected_note:
+                if selected_note.id:
+                    selected_note.delete()
+            selected_gadget.note = None
+            selected_gadget.delete()
             return HttpResponseRedirect('/gadget/')
 
         # 'Add Note'-Button
         if request.POST.get('btn_note'):
-            active_note = Note(project=env.project, author=env.user )
-            active_gadget.note = active_note
-            #formNote = NoteForm(request.POST or None, instance=active_note) #JK may be re-connect to form???
+            selected_note = Note(project=env.project, author=env.user )
+            selected_gadget.note = selected_note
+            #formNote = NoteForm(request.POST or None, instance=selected_note) #JK may be re-connect to form???
 
         # 'Save'-Button
         if request.POST.get('btn_save'):
-            if active_note:
-                if active_note.text=='':
-                    if active_note.id:
-                        active_note.delete()
-                    active_note = None
+            if selected_note:
+                if selected_note.text=='':
+                    if selected_note.id:
+                        selected_note.delete()
+                    selected_note = None
                 else:
-                    active_note.save()
+                    selected_note.save()
 
-            active_gadget.note = active_note
+            selected_gadget.note = selected_note
 
-            if active_gadget:
+            if selected_gadget:
                 if formItem.is_valid():
                     formItem.save()
-                #active_gadget.save()
+                #selected_gadget.save()
 
             if gadget_id == '0':   # previously new item
-                return HttpResponseRedirect('/gadget/' + str(active_gadget.id))
+                return HttpResponseRedirect('/gadget/' + str(selected_gadget.id))
     else:
-        formItem = GadgetForm(instance=active_gadget)
-        formNote = NoteForm(instance=active_note)
+        formItem = GadgetForm(instance=selected_gadget)
+        formNote = NoteForm(instance=selected_note)
     
     ### conglomerate queries
     query = Q()
@@ -242,11 +240,9 @@ def gadget(request, gadget_id):
         'tab_active_id': 'G',
         'tag_list': tag_list,
         'gadgets': gadgets,
-        'active_gadget': active_gadget,
-        'active_id': active_id,
+        'selected_gadget': selected_gadget,
         'form': formItem,
         'formNote': formNote,
-        'datetime': datetime.now(),
         #'error_message': "Please make a selection.",
     })
 

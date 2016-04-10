@@ -34,9 +34,11 @@ DATABASES = {
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        #'BACKEND': 'django.template.backends.jinja2.Jinja2',
         'APP_DIRS': True,
         'DIRS': [
             path.join(PROJECT_ROOT, 'X/templates'),
+            path.join(PROJECT_ROOT, 'web/templates'),
             ],
         'OPTIONS': {
             'context_processors': [
