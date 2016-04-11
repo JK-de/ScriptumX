@@ -48,6 +48,9 @@
     <Compile Include="report\tests.py" />
     <Compile Include="report\urls.py" />
     <Compile Include="report\views.py" />
+    <Compile Include="report\view_L.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="report\__init__.py" />
     <Compile Include="ScriptumX\wsgi.py" />
     <Compile Include="web\admin.py" />
@@ -124,6 +127,9 @@
     <Folder Include="ScriptumX\templates\" />
     <Folder Include="ScriptumX\templates\ScriptumX\" />
     <Folder Include="web\" />
+    <Folder Include="web\static\" />
+    <Folder Include="web\static\img\" />
+    <Folder Include="web\static\img\web\" />
     <Folder Include="web\templates\" />
     <Folder Include="web\templates\web\" />
     <Folder Include="X\" />
