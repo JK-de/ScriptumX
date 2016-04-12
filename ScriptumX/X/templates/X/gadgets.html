@@ -72,6 +72,10 @@
         <div class="col-xs-6 col-md-8" style="height:100%; overflow-y:auto; padding:0">
             <div class="x-gadget x-item-form">
 
+                {% if error_message %}
+                <p class="text-danger">{{error_message}}</p>
+                {% endif %}
+
                 {% if selected_gadget %}
 
 

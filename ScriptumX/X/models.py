@@ -12,6 +12,8 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from datetime import datetime
 
+from .tags import *
+
 ###############################################################################
 
 def get_sentinel_user():
@@ -84,9 +86,11 @@ class BaseModel(models.Model):
     project = models.ForeignKey(Project)   # for internal relations only
     note = models.ForeignKey(Note, on_delete=models.CASCADE, null=True, blank=True)
 
+
     def __str__(self):
         """Returns a string representation of a Base-Item."""
         return self.name
+
 
     def getTag(self, idx):
         if idx == 1:
@@ -115,6 +119,7 @@ class BaseModel(models.Model):
             return self.tag12
         return None
 
+
     def setTag(self, idx, value):
         if idx == 1:
             self.tag1 = value
@@ -141,6 +146,7 @@ class BaseModel(models.Model):
         if idx == 12:
             self.tag12 = value
 
+
     def getTagList(self):
         return (
             self.tag1 ,
@@ -157,6 +163,7 @@ class BaseModel(models.Model):
             self.tag12,
             )
 
+
     def setAllTags(self, value):
         #self.project = project
         self.tag1 = value
@@ -172,16 +179,30 @@ class BaseModel(models.Model):
         self.tag11 = value
         self.tag12 = value
 
+
 ###############################################################################
 
 class Gadget(BaseModel):
+    group_id = 'gadget'
     #Props
     progress = models.PositiveSmallIntegerField(default=0)
     # Many to Many
 
+    @property
+    def getActiveTagImages(self):
+        list = []
+
+        for tag in all_tag_list[self.group_id]:
+            if self.getTag(tag['idx']):
+                pass #list.append((0,tag['img']))
+
+        return list
+
+
 ###############################################################################
 
 class Audio(BaseModel):
+    group_id = 'audio'
     #Props
     progress = models.PositiveSmallIntegerField(default=0)
     # Many to Many
@@ -189,6 +210,7 @@ class Audio(BaseModel):
 ###############################################################################
 
 class SFX(BaseModel):
+    group_id = 'sfx'
     #Props
     progress = models.PositiveSmallIntegerField(default=0)
     # Many to Many
@@ -196,6 +218,7 @@ class SFX(BaseModel):
 ###############################################################################
 
 class Person(BaseModel):
+    group_id = 'person'
     #Props
     contact = models.TextField(blank=True)
     email = models.EmailField(blank=True)
@@ -204,6 +227,7 @@ class Person(BaseModel):
 ###############################################################################
 
 class Role(BaseModel):
+    group_id = 'role'
     #Props
     color = ColorField(default='#FFFFFF')
     # One to Many
@@ -214,6 +238,7 @@ class Role(BaseModel):
 ###############################################################################
 
 class Location(BaseModel):
+    group_id = 'location'
     #Props
     # Many to Many
     persons = models.ManyToManyField(Person, blank=True)
@@ -240,6 +265,7 @@ class Script(models.Model):
 ###############################################################################
 
 class Scene(BaseModel):
+    group_id = 'scene'
     class Meta:
         # model metadata options go here
         ordering = ['order']
@@ -294,6 +320,7 @@ class SceneItem(models.Model):
 ###############################################################################
 
 class Appointment(BaseModel):
+    group_id = 'appointment'
     class Meta:
         # model metadata options go here
         ordering = ['time_all']

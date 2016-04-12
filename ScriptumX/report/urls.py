@@ -18,6 +18,9 @@ urlpatterns = [
 
     url(r'^L$', L_GadgetView.as_view(), name='L_'),
 
+    url(r'^report/L/simple_role$', L_GadgetView.as_view(), name='L_'),
+    url(r'^report/M/scene_role$', TestM2View.as_view(), name='testM2'),
+
     #url(r'^pdf2/$', MyPDF.as_view(), name='pdf2'),
     #url(r'^pdf1/$', PDFTemplateView.as_view(template_name='report/test2.html', filename='my_pdf.pdf'), name='pdf1'),
     ]

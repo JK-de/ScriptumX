@@ -6,42 +6,57 @@
 
 {% if form %}
 
-    <h1>{{title}}</h1>
+    <br/><br/>
 
-    <h3>Select filter tags for list</h3>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3>{{title}}</h3>
+        
+                <h5>Select filter tags for list</h5>
+            </div>
+            <div class="panel-body">
     
-    {% crispy form form.helper %}
+                {% crispy form form.helper %}
+
+            </div>
+        </div>
+    </div>
 
 {% else %}
 
-    <h2>{{title}}.</h2>
+    <h3>{{title}}</h3>
 
     <table id="table" class="table table-striped table-hover table-fixed-head" data-table-fixed-head-trigger="0" data-table-fixed-head-top="0">
 
         <thead>
             <tr BGCOLOR="#DDDDDD">
-                <th>Tags____</th>
+                <th style="min-width:80px;">Tags</th>
                 <th>Name</th>
                 <th>Description</th>
             </tr>
         </thead>
 
         <tbody>
-        {% for gadget in gadgets %}
+        {% for item in items %}
 
             <tr>
                 <td>
                     {% for tag in tag_list %}
-                        {% cycle None gadget.tag1 gadget.tag2 gadget.tag3 gadget.tag4 gadget.tag5 gadget.tag6 gadget.tag7 gadget.tag8 gadget.tag9 gadget.tag10 gadget.tag11 as tag_visible silent %}
+                        {% cycle None item.tag1 item.tag2 item.tag3 item.tag4 item.tag5 item.tag6 item.tag7 item.tag8 item.tag9 item.tag10 item.tag11 as tag_visible silent %}
                         {% if tag_visible %}
                             <img style="margin-right:-14px;" src="{% static tag.img %}" />
                         {% endif %}
                     {% endfor %}
+
+                    {% for image in item.getActiveTagImages %}
+                        <img style="margin-right:-14px;" src="{% static image %}" />
+                    {% endfor %}
                 </td>
 
-                <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow: ellipsis;"><strong>{{gadget.name}}</strong></td>
+                <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow: ellipsis;"><strong>{{item.name}}</strong></td>
 
-                <td style="hyphens: auto;">{% autoescape off %}{{gadget.description|removetags:"a span"}}{% endautoescape %}</td>
+                <td style="hyphens: auto;">{% autoescape off %}{{item.description|removetags:"a span"}}{% endautoescape %}</td>
             </tr>
 
         {% endfor %}

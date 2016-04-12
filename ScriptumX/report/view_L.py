@@ -45,18 +45,18 @@ class ExampleForm(forms.Form):
         required = False,
     )
 
-    tag0 = forms.BooleanField( label = "0", required = False, )
-    tag1 = forms.BooleanField( label = "1", required = False, )
-    tag2 = forms.BooleanField( label = "2", required = False, )
-    tag3 = forms.BooleanField( label = "3", required = False, )
-    tag4 = forms.BooleanField( label = "4", required = False, )
-    tag5 = forms.BooleanField( label = "5", required = False, )
-    tag6 = forms.BooleanField( label = "6", required = False, )
-    tag7 = forms.BooleanField( label = "7", required = False, )
-    tag8 = forms.BooleanField( label = "8", required = False, )
-    tag9 = forms.BooleanField( label = "9", required = False, )
-    tag10 = forms.BooleanField( label = "10", required = False, )
-    tag11 = forms.BooleanField( label = "11", required = False, )
+    tag0  = forms.BooleanField( label = "", required = False, )
+    tag1  = forms.BooleanField( label = "", required = False, )
+    tag2  = forms.BooleanField( label = "", required = False, )
+    tag3  = forms.BooleanField( label = "", required = False, )
+    tag4  = forms.BooleanField( label = "", required = False, )
+    tag5  = forms.BooleanField( label = "", required = False, )
+    tag6  = forms.BooleanField( label = "", required = False, )
+    tag7  = forms.BooleanField( label = "", required = False, )
+    tag8  = forms.BooleanField( label = "", required = False, )
+    tag9  = forms.BooleanField( label = "", required = False, )
+    tag10 = forms.BooleanField( label = "", required = False, )
+    tag11 = forms.BooleanField( label = "", required = False, )
 
     def __init__(self, *args, **kwargs):
         super(ExampleForm, self).__init__(*args, **kwargs)
@@ -129,22 +129,25 @@ class L_GadgetView(View):
             'form': form,
         })
 
-    def render_list(self, request, form):
-        color = form.cleaned_data['favorite_color']
+    def render_list(self, request, form, tag_list):
+        #color = form.cleaned_data['favorite_color']
 
         env = Env(request)
-        tag_list = getTagRequestList(env.request, self.x_group)
-        gadgets = Gadget.objects.filter( project=env.project_id ).order_by(Lower('name'))
+        query = getTagQuery(tag_list)
+        items = Gadget.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+
+        item = items[0]
+        l = item.getActiveTagImages
 
         return render(request, self.template_name, {
             'title': self.title,
             'tag_list': tag_list,
-            'gadgets': gadgets,
+            'items': items,
         })
 
     def get(self, request, *args, **kwargs):
-        env = Env(request)
-        tag_list = getTagRequestList(env.request, self.x_group)
+        #env = Env(request)
+        tag_list = getTagRequestList(request, self.x_group)
         for tag in tag_list:
             self.initial['tag'+str(tag['idx'])] = tag['active']
         form = self.form_class(initial=self.initial)
@@ -153,6 +156,9 @@ class L_GadgetView(View):
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
-            return self.render_list(request, form)
+            tag_list = getTagRequestList(request, self.x_group)
+            for tag in tag_list:
+                tag['active'] = form.cleaned_data['tag'+str(tag['idx'])]
+            return self.render_list(request, form, tag_list)
 
         return self.render_form(request, form)
