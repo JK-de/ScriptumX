@@ -4,7 +4,9 @@
 
     {#<li><span class="nav navbar-text">User: {{ user.username }}</span></li>#}
 
+    {% if user.is_superuser %}
     <li><a href="/admin">[Admin-Page]</a></li>
+    {% endif %}
 
     <li>
         <form id="logoutForm" action="/logout" method="post" >

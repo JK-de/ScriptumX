@@ -22,6 +22,22 @@ g_tag_queries = [
 
 g_tag_query_none = Q(tag1=False) & Q(tag2=False) & Q(tag3=False) & Q(tag4=False) & Q(tag5=False) & Q(tag6=False) & Q(tag7=False) & Q(tag8=False) & Q(tag9=False) & Q(tag10=False) & Q(tag11=False) & Q(tag12=False)
 
+def getTagQuery(tag_list):
+    query = Q()
+    for tag in tag_list:
+        if tag['active']:
+            if len(query)==0:
+                query = g_tag_queries[tag['idx']]
+            else:
+                query |= g_tag_queries[tag['idx']]
+
+    if len(query)==len(tag_list):
+        query = Q()
+    elif len(query)==0:
+        query = g_tag_query_none
+    
+    return query
+
 ###############################################################################
 
 class Env():
@@ -43,6 +59,8 @@ class Env():
 
         # get user
         self.user = request.user
+        if not self.user.is_active:
+            self.user = None
 
         # get project
         self.project_id = request.session.get('ProjectID', 0)
@@ -56,22 +74,29 @@ class Env():
             try:
                 self.project = Project.objects.filter( Q(owner=self.user) | Q(users=self.user) | Q(guests=self.user) ).last()
                 #self.project_id = self.project.id
-                setProject(self.project)
+                self.setProject(self.project)
             except:
                 self.project_id = 0
 
+        if not self.project:
+            self.script = None
+            self.scene = None
+            self.user_level = 0
+            return
 
         if self.project:
-            if self.user.id == 1:
-                user_level = 42
+            if self.user.is_superuser:
+                self.user_level = 42
+            elif self.user.is_staff:
+                self.user_level = 40
             elif self.project.owner == self.user:
-                user_level = 30
+                self.user_level = 30
             elif self.project.users.filter(pk=self.user.id):
-                user_level = 20
+                self.user_level = 20
             elif self.project.guests.filter(pk=self.user.id):
-                user_level = 10
+                self.user_level = 10
             else:
-                user_level = 0
+                self.user_level = 0
                 self.project = None
 
         # get script
@@ -85,7 +110,7 @@ class Env():
             try:
                 self.script = Script.objects.filter(project=self.project).last()
                 #self.script_id = self.script.id
-                setScript(self.script)
+                self.setScript(self.script)
             except:
                 pass
 
@@ -100,7 +125,7 @@ class Env():
             try:
                 self.scene = Scene.objects.filter(project=self.project, script=self.script).first()
                 #self.scene_id = self.scene.id
-                setScene(self.scene)
+                self.setScene(self.scene)
             except:
                 pass
 

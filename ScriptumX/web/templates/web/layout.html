@@ -43,8 +43,10 @@
                     <li><a href="{% url 'web:about' %}">About</a></li>
                     <li><a class="navbar-right" href="{% url 'web:impressum' %}">Impressum</a></li>
 
+                    {% if user.is_superuser %}
                     <li><a href="/seed">[Seed]</a></li>
                     <li><a href="/importceltx">[Import]</a></li>
+                    {% endif %}
                    
                 </ul>
 
