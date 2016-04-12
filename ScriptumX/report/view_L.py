@@ -69,7 +69,7 @@ class ExampleForm(forms.Form):
         self.helper.field_class = 'col-sm-5'
         #self.helper.form_action = 'submit_survey'
 
-        self.helper.add_input(Submit('submit', 'Submit'))
+        self.helper.add_input(Submit('submit', 'Show List'))
         self.helper.layout = Layout(
 
             #ButtonHolder(
@@ -137,7 +137,7 @@ class L_GadgetView(View):
         items = Gadget.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
 
         item = items[0]
-        l = item.getActiveTagImages
+        l = item.active_tag_images
 
         return render(request, self.template_name, {
             'title': self.title,

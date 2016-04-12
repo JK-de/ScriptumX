@@ -10,7 +10,7 @@
     
     <title>{{ title }} - ScriptumX</title>
     {% load staticfiles %}
-    {#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">#}
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
@@ -29,22 +29,24 @@
     <!-- fixedheadertable JavaScript --- http://jsfiddle.net/ANVNY/209/
     <link rel="stylesheet" href="{% static 'fixedheadertable/fixedheadertable.css' %}">
     <script src="{% static 'fixedheadertable/jquery.fixedheadertable.min.js' %}"></script>
-    <link rel="stylesheet" href="http://www.fixedheadertable.com/css/defaultTheme.css" media="screen" />
-        -->
+    <link rel="stylesheet" href="http://www.fixedheadertable.com/css/defaultTheme.css" media="screen" />-->
+        
 
-    <!-- freezeheader JavaScript 
+    <!-- freezeheader JavaScript -->
     <link rel="stylesheet" href="{% static 'freezeheader/style.css' %}">
-    <script src="{% static 'freezeheader/jquery.freezeheader.js' %}"></script>-->
+    <script src="{% static 'freezeheader/jquery.freezeheader.js' %}"></script>
 
-    <!-- tfh JavaScript -->
-    <script src="{% static 'tfh/jquery.michiweber.table-head-fixed.min.js' %}" media="screen"></script>
-    <style>
+    <!-- tfh JavaScript 
+    <script media="screen" src="{% static 'tfh/jquery.michiweber.table-head-fixed.min.js' %}"></script>
+    <style >
+        @media screen {
         table.table-fixed-head .table-fixed-head-thead {
           border-bottom: 1px solid #dddddd;
           background: #fafafa;
           color: #222;
         }
-    </style>
+        }
+    </style> -->
 
     {% block head %}{% endblock %}
 
@@ -53,8 +55,9 @@
 <body>
 
     {#<div style="" class="container-fluid body-content">#}
-        
+    <div>    
         {% block content %}{% endblock %}
+    </div>
 
     {#<div class="fancyTable"> .. Your Table Goes Here .. </div>#}
 
@@ -63,6 +66,10 @@
     {#<script src="{% static 'X/scripts/jquery-1.10.2.js' %}"></script>#}
     {#<script src="{% static 'X/scripts/bootstrap.js' %}"></script>#}
     {#<script src="{% static 'X/scripts/respond.js' %}"></script>#}
+
+
+    <small>&copy; ScriptumX &emsp; <i class="fa fa-user"></i> {{env.user}} &emsp; <i class="fa fa-film"></i> {{env.project}} &emsp; <i class="fa fa-book"></i> {{env.script}} &emsp; <i class="fa fa-calendar-o"></i> {% now "Y-m-d" %} &ensp; <i class="fa fa-clock-o"></i> {% now "H:i" %}</small>
+
 {% block scripts %}{% endblock %}
 
     <script type="text/javascript">
@@ -70,7 +77,7 @@
             $('#tableXXX').fixedHeaderTable({
                 footer: false, cloneHeadToFoot: false, fixedColumns: 1, autoShow: true, width: '100%', height: '600px', altClass: 'fancyTable'});
             $('#tableXXX').fixedHeaderTable('show');
-            //$('#table2').freezeHeader();
+            $('table').freezeHeader();
         });
     </script>
 

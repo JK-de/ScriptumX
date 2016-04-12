@@ -26,7 +26,7 @@
 {% else %}
 
     <h3>{{title}}</h3>
-
+    <div>
     <table id="table" class="table table-striped table-hover table-fixed-head" data-table-fixed-head-trigger="0" data-table-fixed-head-top="0">
 
         <thead>
@@ -42,19 +42,13 @@
 
             <tr>
                 <td>
-                    {% for tag in tag_list %}
-                        {% cycle None item.tag1 item.tag2 item.tag3 item.tag4 item.tag5 item.tag6 item.tag7 item.tag8 item.tag9 item.tag10 item.tag11 as tag_visible silent %}
-                        {% if tag_visible %}
-                            <img style="margin-right:-14px;" src="{% static tag.img %}" />
-                        {% endif %}
-                    {% endfor %}
-
-                    {% for image in item.getActiveTagImages %}
+                    {% for image in item.active_tag_images %}
                         <img style="margin-right:-14px;" src="{% static image %}" />
                     {% endfor %}
                 </td>
 
-                <td style="max-width:200px; white-space:nowrap; overflow:hidden; text-overflow: ellipsis;"><strong>{{item.name}}</strong></td>
+                <!--<td style="max-width:25%; white-space:nowrap; overflow:hidden; text-overflow: ellipsis;"><strong>{{item.name}}</strong></td>-->
+                <td style="max-width:25%;"><strong>{{item.name}}</strong></td>
 
                 <td style="hyphens: auto;">{% autoescape off %}{{item.description|removetags:"a span"}}{% endautoescape %}</td>
             </tr>
@@ -63,8 +57,7 @@
         </tbody>
 
     </table>
-
-    <p>This is a test.</p>
+    </div>
 
 {% endif %}
 

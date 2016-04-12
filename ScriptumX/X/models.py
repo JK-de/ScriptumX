@@ -179,6 +179,15 @@ class BaseModel(models.Model):
         self.tag11 = value
         self.tag12 = value
 
+    @property
+    def active_tag_images(self):
+        list = []
+
+        for tag in all_tag_list[self.group_id]:
+            if self.getTag(tag['idx']):
+                list.append(tag['img'])
+
+        return list
 
 ###############################################################################
 
@@ -187,17 +196,6 @@ class Gadget(BaseModel):
     #Props
     progress = models.PositiveSmallIntegerField(default=0)
     # Many to Many
-
-    @property
-    def getActiveTagImages(self):
-        list = []
-
-        for tag in all_tag_list[self.group_id]:
-            if self.getTag(tag['idx']):
-                pass #list.append((0,tag['img']))
-
-        return list
-
 
 ###############################################################################
 
