@@ -22,6 +22,15 @@
     <link rel="stylesheet" href="{% static 'freezeheader/style.css' %}">
     <script src="{% static 'freezeheader/jquery.freezeheader.js' %}"></script>
 
+    <style>
+        @media print
+{    
+    .no-print, .no-print *
+    {
+        display: none !important;
+    }
+}
+    </style>
     {% block head %}{% endblock %}
 
 </head>
@@ -37,7 +46,7 @@
         $(document).ready(function(){
             $('#table').freezeHeader({ offset: '0px', top: true, left: true });
 
-            $('#printbutton a').click(function (event) {
+            $('#printbutton').click(function (event) {
                 event.preventDefault();
                 window.print();
             });
