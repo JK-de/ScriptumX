@@ -19,6 +19,8 @@ from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHo
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import InlineCheckboxes
 
+#from easy_pdf.views import PDFTemplateView
+
 from report.models import *
 from X.models import *
 from X.common import *
@@ -27,7 +29,7 @@ from .M import *
 
 ###############################################################################
 
-class ExampleForm(forms.Form):
+class TESTFilterForm(forms.Form):
     favorite_food = forms.CharField(
         label = "What is your favorite food?",
         max_length = 80,
@@ -58,8 +60,10 @@ class ExampleForm(forms.Form):
     tag10 = forms.BooleanField( label = "", required = False, )
     tag11 = forms.BooleanField( label = "", required = False, )
 
+    show_notes = forms.BooleanField( label = "Show Notes", required = False, )
+
     def __init__(self, *args, **kwargs):
-        super(ExampleForm, self).__init__(*args, **kwargs)
+        super(TESTFilterForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_id = 'id-exampleForm'
         #self.helper.form_class = 'blueForms'
@@ -92,7 +96,90 @@ class ExampleForm(forms.Form):
                 Div(FormSymbol(gadget_tag_list[11]['img']), Field('tag11'), style="padding:0; margin:0;", css_class='checkbox-inline'),
                 css_class='col-sm-offset-2', style="margin-top:0px;", 
             ),
+
+            Field('show_notes'), 
         )
+
+###############################################################################
+
+class FormHelperX(FormHelper):
+    def __init__(self, *args, **kwargs):
+        super(FormHelperX, self).__init__(*args, **kwargs)
+        self.form_id = 'id-FilterForm'
+        self.form_method = 'post'
+        self.form_class = 'form-horizontal'
+        self.label_class = 'col-sm-2'
+        self.field_class = 'col-sm-5'
+
+        self.add_input(Submit('submit', 'Show List'))
+
+###############################################################################
+
+class RoleFilterForm(forms.Form):
+
+    tag0  = forms.BooleanField( label = "", required = False, )
+    tag1  = forms.BooleanField( label = "", required = False, )
+    tag2  = forms.BooleanField( label = "", required = False, )
+    tag3  = forms.BooleanField( label = "", required = False, )
+
+    show_notes = forms.BooleanField( label = "Show Notes", required = False, )
+
+    def __init__(self, *args, **kwargs):
+        super(RoleFilterForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelperX()
+        self.helper.layout = Layout(
+            Div(
+                Div(FormSymbol(role_tag_list[0]['img']),  Field('tag0'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(role_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(role_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(role_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                css_class='col-sm-offset-2', style="margin-top:0px;", 
+                ),
+
+            Field('show_notes'),
+            )
+
+###############################################################################
+
+class GadgetFilterForm(forms.Form):
+
+    tag0  = forms.BooleanField( label = "", required = False, )
+    tag1  = forms.BooleanField( label = "", required = False, )
+    tag2  = forms.BooleanField( label = "", required = False, )
+    tag3  = forms.BooleanField( label = "", required = False, )
+    tag4  = forms.BooleanField( label = "", required = False, )
+    tag5  = forms.BooleanField( label = "", required = False, )
+    tag6  = forms.BooleanField( label = "", required = False, )
+    tag7  = forms.BooleanField( label = "", required = False, )
+    tag8  = forms.BooleanField( label = "", required = False, )
+    tag9  = forms.BooleanField( label = "", required = False, )
+    tag10 = forms.BooleanField( label = "", required = False, )
+    tag11 = forms.BooleanField( label = "", required = False, )
+
+    show_notes = forms.BooleanField( label = "Show Notes", required = False, )
+
+    def __init__(self, *args, **kwargs):
+        super(GadgetFilterForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelperX()
+        self.helper.layout = Layout(
+            Div(
+                Div(FormSymbol(gadget_tag_list[0]['img']),  Field('tag0'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(gadget_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(gadget_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(gadget_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(gadget_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(gadget_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(gadget_tag_list[6]['img']),  Field('tag6'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(gadget_tag_list[7]['img']),  Field('tag7'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(gadget_tag_list[8]['img']),  Field('tag8'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(gadget_tag_list[9]['img']),  Field('tag9'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(gadget_tag_list[10]['img']), Field('tag10'), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(gadget_tag_list[11]['img']), Field('tag11'), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                css_class='col-sm-offset-2', style="margin-top:0px;", 
+                ),
+
+            Field('show_notes'), 
+            )
 
 ###############################################################################
 
@@ -115,13 +202,12 @@ class L_GadgetViewXXX(TemplateView):
 
 ###############################################################################
 
-
-class L_GadgetView(View):
-    form_class = ExampleForm
-    x_group = 'gadget'
-    initial = {'favorite_color': 'abc', 'favorite_food': 'xyz', 'favorite_number': 1}
-    template_name = "report/test.html"
-    title = 'Gadget List'
+class L_BaseView(View):
+    form_class = GadgetFilterForm
+    x_group = '???'
+    initial = {}
+    template_name = "report/L_X_simple.html"
+    title = '??? List'
 
     def render_form(self, request, form):
         return render(request, self.template_name, {
@@ -130,23 +216,24 @@ class L_GadgetView(View):
         })
 
     def render_list(self, request, form, tag_list):
-        #color = form.cleaned_data['favorite_color']
+        show_notes = form.cleaned_data['show_notes']
 
         env = Env(request)
         query = getTagQuery(tag_list)
         items = Gadget.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
 
-        item = items[0]
-        l = item.active_tag_images
+        #item = items[0]
+        #l = item.active_tag_images
 
         return render(request, self.template_name, {
             'title': self.title,
+            'env': env,
             'tag_list': tag_list,
             'items': items,
+            'show_notes': show_notes,
         })
 
     def get(self, request, *args, **kwargs):
-        #env = Env(request)
         tag_list = getTagRequestList(request, self.x_group)
         for tag in tag_list:
             self.initial['tag'+str(tag['idx'])] = tag['active']
@@ -162,3 +249,47 @@ class L_GadgetView(View):
             return self.render_list(request, form, tag_list)
 
         return self.render_form(request, form)
+
+###############################################################################
+
+class L_RoleView(L_BaseView):
+    form_class = RoleFilterForm
+    x_group = 'role'
+    initial = {'show_notes': True}
+    title = 'Role List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        query = getTagQuery(tag_list)
+        items = Role.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'items': items,
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+
+class L_GadgetView(L_BaseView):
+    form_class = GadgetFilterForm
+    x_group = 'gadget'
+    initial = {'show_notes': True}
+    title = 'Gadget List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        query = getTagQuery(tag_list)
+        items = Gadget.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'items': items,
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################

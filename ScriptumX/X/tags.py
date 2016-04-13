@@ -22,14 +22,6 @@ role_tag_list = (
     { 'idx': 1, 'name':'Male',      'img':'img/r/tag/male.png' },
     { 'idx': 2, 'name':'Female',    'img':'img/r/tag/female.png' },
     { 'idx': 3, 'name':'Other',     'img':'img/r/tag/other.png' },
-    { 'idx': 4, 'name':'<4>',       'img':'img/favorits.png' },
-    { 'idx': 5, 'name':'<5>',       'img':'img/favorits.png' },
-    { 'idx': 6, 'name':'<6>',       'img':'img/favorits.png' },
-    { 'idx': 7, 'name':'<7>',       'img':'img/favorits.png' },
-    { 'idx': 8, 'name':'<8>',       'img':'img/favorits.png' },
-    { 'idx': 9, 'name':'<9>',       'img':'img/favorits.png' },
-    { 'idx':10, 'name':'<10>',      'img':'img/favorits.png' },
-    { 'idx':11, 'name':'<11>',      'img':'img/favorits.png' },
     )
 
 person_tag_list = (
@@ -54,12 +46,6 @@ location_tag_list = (
     { 'idx': 3, 'name':'Green',     'img':'img/l/tag/greenscreen.png' },
     { 'idx': 4, 'name':'Blue',      'img':'img/l/tag/bluescreen.png' },
     { 'idx': 5, 'name':'Unknown',   'img':'img/l/tag/unknown.png' },
-    { 'idx': 6, 'name':'<6>',       'img':'img/l/tag/set.png' },
-    { 'idx': 7, 'name':'<7>',       'img':'img/l/tag/set.png' },
-    { 'idx': 8, 'name':'<8>',       'img':'img/l/tag/set.png' },
-    { 'idx': 9, 'name':'<9>',       'img':'img/l/tag/set.png' },
-    { 'idx':10, 'name':'<10>',      'img':'img/l/tag/set.png' },
-    { 'idx':11, 'name':'<11>',      'img':'img/l/tag/set.png' },
     )
 
 gadget_tag_list = (

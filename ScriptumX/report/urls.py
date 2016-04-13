@@ -16,9 +16,11 @@ urlpatterns = [
     url(r'^testM1$', TestM1View.as_view(), name='testM1'),
     url(r'^testM2$', TestM2View.as_view(), name='testM2'),
 
-    url(r'^L$', L_GadgetView.as_view(), name='L_'),
+    url(r'^L$', L_RoleView.as_view(), name='L_'),
 
-    url(r'^report/L/simple_role$', L_GadgetView.as_view(), name='L_'),
+    url(r'^report/L/simple_role$', L_RoleView.as_view(), name='L_Role'),
+    url(r'^report/L/simple_gadget$', L_GadgetView.as_view(), name='L_Gadget'),
+
     url(r'^report/M/scene_role$', TestM2View.as_view(), name='testM2'),
 
     #url(r'^pdf2/$', MyPDF.as_view(), name='pdf2'),

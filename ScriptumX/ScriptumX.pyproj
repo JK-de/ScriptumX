@@ -151,7 +151,9 @@
     <Content Include="report\static\fixedheadertable\jquery.mousewheel.js" />
     <Content Include="report\static\fixedheadertable\lib\jquery.mousewheel.js" />
     <Content Include="report\static\tfh\jquery.michiweber.table-head-fixed.js" />
+    <Content Include="report\templates\report\layout_L.html" />
     <Content Include="report\templates\report\layout2.html" />
+    <Content Include="report\templates\report\L_X_simple.html" />
     <Content Include="report\templates\report\testM1.html" />
     <Content Include="report\templates\report\test2.html" />
     <Content Include="report\templates\report\test.html" />
