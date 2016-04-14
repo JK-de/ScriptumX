@@ -22,20 +22,11 @@
     <link rel="stylesheet" href="{% static 'freezeheader/style.css' %}">
     <script src="{% static 'freezeheader/jquery.freezeheader.js' %}"></script>
 
-    <style>
-        @media print
-{    
-    .no-print, .no-print *
-    {
-        display: none !important;
-    }
-}
-    </style>
     {% block head %}{% endblock %}
 
 </head>
 
-<body style="overflow-x:hidden; overflow-y:auto;" {#onload="window.print()"#}>
+<body style="overflow-x:auto; overflow-y:auto;" {#onload="window.print()"#}>
 
     {% block content %}{% endblock %}
 

@@ -1,5 +1,6 @@
 {% extends "report/layout_M.html" %}
 {% load staticfiles %}
+{% load crispy_forms_tags %}
 
 {% block head %}
 
@@ -21,6 +22,33 @@ th {
 {% endblock%}
 
 {% block content %}
+
+{% if form %}
+
+    <br/><br/>
+
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>{{title}}</h3>
+        
+                <h5>Select filter tags for matrix columns</h5>
+            </div>
+            <div class="panel-body">
+    
+                {% crispy form form.helper %}
+
+            </div>
+        </div>
+    </div>
+
+{% else %}
+
+    <a id="printbutton" class="btn btn-default pull-right hidden-print" role="button" style="padding:4px;"><i class="fa fa-print fa-2x" aria-hidden="true"></i></a>
+
+    <small style="color:#CCC;" class="pull-right">ScriptumX &emsp; <i class="fa fa-user"></i> {{env.user}} &emsp; <i class="fa fa-film"></i> {{env.project}} &emsp; <i class="fa fa-book"></i> {{env.script}} &emsp; <i class="fa fa-calendar-o"></i> {% now "Y-m-d" %} &ensp; <i class="fa fa-clock-o"></i> {% now "H:i" %} &ensp;</small>
+
+    <h3>{{title}}</h3>
 
 {% spaceless %}
 {% autoescape off %}
@@ -45,7 +73,7 @@ th {
                         BGCOLOR="{% if m_cell.background_color %}{{m_cell.background_color}}{% else %}#DDDDDD{% endif %}"
                         align="center" valign="top" 
                         style="">
-                        {{m_cell.text}}TEST</th>
+                        {{title}} {{m_cell.text}}</th>
 
                 {% elif m_cell.colHeader %}
                     <th 
@@ -84,6 +112,7 @@ th {
 </table>
 {% endautoescape %}
 {% endspaceless %}
-<br/>
+
+{% endif %}
 
 {% endblock %}

@@ -25,7 +25,6 @@ from report.models import *
 from X.models import *
 from X.common import *
 from X.tags import FormSymbol, gadget_tag_list, handleTagRequest, getTagRequestList
-from .M import *
 
 ###############################################################################
 
@@ -141,6 +140,78 @@ class RoleFilterForm(forms.Form):
 
 ###############################################################################
 
+class PersonFilterForm(forms.Form):
+
+    tag0  = forms.BooleanField( label = "", required = False, )
+    tag1  = forms.BooleanField( label = "", required = False, )
+    tag2  = forms.BooleanField( label = "", required = False, )
+    tag3  = forms.BooleanField( label = "", required = False, )
+    tag4  = forms.BooleanField( label = "", required = False, )
+    tag5  = forms.BooleanField( label = "", required = False, )
+    tag6  = forms.BooleanField( label = "", required = False, )
+    tag7  = forms.BooleanField( label = "", required = False, )
+    tag8  = forms.BooleanField( label = "", required = False, )
+    tag9  = forms.BooleanField( label = "", required = False, )
+    tag10 = forms.BooleanField( label = "", required = False, )
+    tag11 = forms.BooleanField( label = "", required = False, )
+
+    show_notes = forms.BooleanField( label = "Show Notes", required = False, )
+
+    def __init__(self, *args, **kwargs):
+        super(PersonFilterForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelperX()
+        self.helper.layout = Layout(
+            Div(
+                Div(FormSymbol(person_tag_list[0]['img']),  Field('tag0'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(person_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(person_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(person_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(person_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(person_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(person_tag_list[6]['img']),  Field('tag6'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(person_tag_list[7]['img']),  Field('tag7'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(person_tag_list[8]['img']),  Field('tag8'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(person_tag_list[9]['img']),  Field('tag9'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(person_tag_list[10]['img']), Field('tag10'), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(person_tag_list[11]['img']), Field('tag11'), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                css_class='col-sm-offset-2', style="margin-top:0px;", 
+                ),
+
+            Field('show_notes'), 
+            )
+
+###############################################################################
+
+class LocationFilterForm(forms.Form):
+
+    tag0  = forms.BooleanField( label = "", required = False, )
+    tag1  = forms.BooleanField( label = "", required = False, )
+    tag2  = forms.BooleanField( label = "", required = False, )
+    tag3  = forms.BooleanField( label = "", required = False, )
+    tag4  = forms.BooleanField( label = "", required = False, )
+    tag5  = forms.BooleanField( label = "", required = False, )
+
+    show_notes = forms.BooleanField( label = "Show Notes", required = False, )
+
+    def __init__(self, *args, **kwargs):
+        super(LocationFilterForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelperX()
+        self.helper.layout = Layout(
+            Div(
+                Div(FormSymbol(location_tag_list[0]['img']),  Field('tag0'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(location_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(location_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(location_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(location_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(location_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                css_class='col-sm-offset-2', style="margin-top:0px;", 
+                ),
+
+            Field('show_notes'), 
+            )
+
+###############################################################################
+
 class GadgetFilterForm(forms.Form):
 
     tag0  = forms.BooleanField( label = "", required = False, )
@@ -183,22 +254,138 @@ class GadgetFilterForm(forms.Form):
 
 ###############################################################################
 
-class L_GadgetViewXXX(TemplateView):
-    template_name = "report/test.html"
+class SFXFilterForm(forms.Form):
 
-    def get_context_data(self, **kwargs):
-        context = super(L_GadgetView, self).get_context_data(**kwargs)
+    tag0  = forms.BooleanField( label = "", required = False, )
+    tag1  = forms.BooleanField( label = "", required = False, )
+    tag2  = forms.BooleanField( label = "", required = False, )
+    tag3  = forms.BooleanField( label = "", required = False, )
+    tag4  = forms.BooleanField( label = "", required = False, )
+    tag5  = forms.BooleanField( label = "", required = False, )
+    tag6  = forms.BooleanField( label = "", required = False, )
+    tag7  = forms.BooleanField( label = "", required = False, )
+    tag8  = forms.BooleanField( label = "", required = False, )
+    tag9  = forms.BooleanField( label = "", required = False, )
+    tag10 = forms.BooleanField( label = "", required = False, )
+    tag11 = forms.BooleanField( label = "", required = False, )
+
+    show_notes = forms.BooleanField( label = "Show Notes", required = False, )
+
+    def __init__(self, *args, **kwargs):
+        super(SFXFilterForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelperX()
+        self.helper.layout = Layout(
+            Div(
+                Div(FormSymbol(sfx_tag_list[0]['img']),  Field('tag0'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(sfx_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(sfx_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(sfx_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(sfx_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(sfx_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(sfx_tag_list[6]['img']),  Field('tag6'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(sfx_tag_list[7]['img']),  Field('tag7'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(sfx_tag_list[8]['img']),  Field('tag8'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(sfx_tag_list[9]['img']),  Field('tag9'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(sfx_tag_list[10]['img']), Field('tag10'), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(sfx_tag_list[11]['img']), Field('tag11'), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                css_class='col-sm-offset-2', style="margin-top:0px;", 
+                ),
+
+            Field('show_notes'), 
+            )
+
+###############################################################################
+
+class AudioFilterForm(forms.Form):
+
+    tag0  = forms.BooleanField( label = "", required = False, )
+    tag1  = forms.BooleanField( label = "", required = False, )
+    tag2  = forms.BooleanField( label = "", required = False, )
+    tag3  = forms.BooleanField( label = "", required = False, )
+    tag4  = forms.BooleanField( label = "", required = False, )
+    tag5  = forms.BooleanField( label = "", required = False, )
+    tag6  = forms.BooleanField( label = "", required = False, )
+    tag7  = forms.BooleanField( label = "", required = False, )
+    tag8  = forms.BooleanField( label = "", required = False, )
+    tag9  = forms.BooleanField( label = "", required = False, )
+    tag10 = forms.BooleanField( label = "", required = False, )
+    tag11 = forms.BooleanField( label = "", required = False, )
+
+    show_notes = forms.BooleanField( label = "Show Notes", required = False, )
+
+    def __init__(self, *args, **kwargs):
+        super(AudioFilterForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelperX()
+        self.helper.layout = Layout(
+            Div(
+                Div(FormSymbol(audio_tag_list[0]['img']),  Field('tag0'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(audio_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(audio_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(audio_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(audio_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(audio_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(audio_tag_list[6]['img']),  Field('tag6'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(audio_tag_list[7]['img']),  Field('tag7'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(audio_tag_list[8]['img']),  Field('tag8'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(audio_tag_list[9]['img']),  Field('tag9'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(audio_tag_list[10]['img']), Field('tag10'), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(audio_tag_list[11]['img']), Field('tag11'), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                css_class='col-sm-offset-2', style="margin-top:0px;", 
+                ),
+
+            Field('show_notes'), 
+            )
+
+###############################################################################
+
+class SceneFilterForm(forms.Form):
+
+    tag0  = forms.BooleanField( label = "", required = False, )
+    tag1  = forms.BooleanField( label = "", required = False, )
+    tag2  = forms.BooleanField( label = "", required = False, )
+    tag3  = forms.BooleanField( label = "", required = False, )
+    tag4  = forms.BooleanField( label = "", required = False, )
+    tag5  = forms.BooleanField( label = "", required = False, )
+
+    show_notes = forms.BooleanField( label = "Show Notes", required = False, )
+
+    def __init__(self, *args, **kwargs):
+        super(SceneFilterForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelperX()
+        self.helper.layout = Layout(
+            Div(
+                Div(FormSymbol(scene_tag_list[0]['img']),  Field('tag0'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(scene_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(scene_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(scene_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(scene_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(scene_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                css_class='col-sm-offset-2', style="margin-top:0px;", 
+                ),
+
+            Field('show_notes'), 
+            )
+
+###############################################################################
+
+###############################################################################
+
+#class L_GadgetViewXXX(TemplateView):
+#    template_name = "report/test.html"
+
+#    def get_context_data(self, **kwargs):
+#        context = super(L_GadgetView, self).get_context_data(**kwargs)
         
-        env = Env(context['view'].request)
-        tag_list = getTagRequestList(env.request, 'gadget')
-        gadgets = Gadget.objects.filter( project=env.project_id ).order_by(Lower('name'))
+#        env = Env(context['view'].request)
+#        tag_list = getTagRequestList(env.request, 'gadget')
+#        gadgets = Gadget.objects.filter( project=env.project_id ).order_by(Lower('name'))
 
-        context['title'] = 'Gadget List'
-        context['tag_list'] = tag_list
-        context['gadgets'] = gadgets
-        context['form'] = ExampleForm()
+#        context['title'] = 'Gadget List'
+#        context['tag_list'] = tag_list
+#        context['gadgets'] = gadgets
+#        context['form'] = ExampleForm()
 
-        return context
+#        return context
 
 ###############################################################################
 
@@ -215,23 +402,23 @@ class L_BaseView(View):
             'form': form,
         })
 
-    def render_list(self, request, form, tag_list):
-        show_notes = form.cleaned_data['show_notes']
+    #def render_list(self, request, form, tag_list):
+    #    show_notes = form.cleaned_data['show_notes']
 
-        env = Env(request)
-        query = getTagQuery(tag_list)
-        items = Gadget.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+    #    env = Env(request)
+    #    query = getTagQuery(tag_list)
+    #    items = Gadget.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
 
-        #item = items[0]
-        #l = item.active_tag_images
+    #    #item = items[0]
+    #    #l = item.active_tag_images
 
-        return render(request, self.template_name, {
-            'title': self.title,
-            'env': env,
-            'tag_list': tag_list,
-            'items': items,
-            'show_notes': show_notes,
-        })
+    #    return render(request, self.template_name, {
+    #        'title': self.title,
+    #        'env': env,
+    #        'tag_list': tag_list,
+    #        'lists': [(None,list)],
+    #        'show_notes': show_notes,
+    #    })
 
     def get(self, request, *args, **kwargs):
         tag_list = getTagRequestList(request, self.x_group)
@@ -261,13 +448,55 @@ class L_RoleView(L_BaseView):
     def render_list(self, request, form, tag_list):
         env = Env(request)
         query = getTagQuery(tag_list)
-        items = Role.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+        list = Role.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
 
         return render(request, self.template_name, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
-            'items': items,
+            'lists': [(None,list)],
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+
+class L_PersonView(L_BaseView):
+    form_class = PersonFilterForm
+    x_group = 'person'
+    initial = {'show_notes': True}
+    title = 'Person List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        query = getTagQuery(tag_list)
+        list = Person.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'lists': [(None,list)],
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+
+class L_LocationView(L_BaseView):
+    form_class = LocationFilterForm
+    x_group = 'location'
+    initial = {'show_notes': True}
+    title = 'Location List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        query = getTagQuery(tag_list)
+        list = Location.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'lists': [(None,list)],
             'show_notes': form.cleaned_data['show_notes'],
         })
 
@@ -282,13 +511,240 @@ class L_GadgetView(L_BaseView):
     def render_list(self, request, form, tag_list):
         env = Env(request)
         query = getTagQuery(tag_list)
-        items = Gadget.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+        list = Gadget.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
 
         return render(request, self.template_name, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
-            'items': items,
+            'lists': [(None,list)],
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+
+class L_SFXView(L_BaseView):
+    form_class = SFXFilterForm
+    x_group = 'sfx'
+    initial = {'show_notes': True}
+    title = 'SFX List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        query = getTagQuery(tag_list)
+        list = SFX.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'lists': [(None,list)],
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+
+class L_AudioView(L_BaseView):
+    form_class = AudioFilterForm
+    x_group = 'audio'
+    initial = {'show_notes': True}
+    title = 'Audio List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        query = getTagQuery(tag_list)
+        list = Audio.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'lists': [(None,list)],
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+
+class L_SceneView(L_BaseView):
+    form_class = SceneFilterForm
+    x_group = 'scene'
+    initial = {'show_notes': True}
+    title = 'Scene List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        query = getTagQuery(tag_list)
+        list = Scene.objects.filter( project=env.project_id, script=env.script_id ).filter(query).order_by('order')
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'lists': [(None,list)],
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+###############################################################################
+###############################################################################
+
+class L_GroupedRoleView(L_BaseView):
+    form_class = RoleFilterForm
+    x_group = 'role'
+    initial = {'show_notes': True}
+    title = 'Grouped Role List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        lists = []
+        for tag in tag_list:
+            if tag['active']:
+                query = g_tag_queries[tag['idx']]
+                list = Role.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+                if len(list):
+                    list_t = (tag['name'], list)
+                    lists.append( list_t )
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'lists': lists,
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+
+class L_GroupedPersonView(L_BaseView):
+    form_class = PersonFilterForm
+    x_group = 'person'
+    initial = {'show_notes': True}
+    title = 'Grouped Person List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        lists = []
+        for tag in tag_list:
+            if tag['active']:
+                query = g_tag_queries[tag['idx']]
+                list = Person.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+                if len(list):
+                    list_t = (tag['name'], list)
+                    lists.append( list_t )
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'lists': lists,
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+
+class L_GroupedLocationView(L_BaseView):
+    form_class = LocationFilterForm
+    x_group = 'location'
+    initial = {'show_notes': True}
+    title = 'Grouped Location List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        lists = []
+        for tag in tag_list:
+            if tag['active']:
+                query = g_tag_queries[tag['idx']]
+                list = Location.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+                if len(list):
+                    list_t = (tag['name'], list)
+                    lists.append( list_t )
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'lists': lists,
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+
+class L_GroupedGadgetView(L_BaseView):
+    form_class = GadgetFilterForm
+    x_group = 'gadget'
+    initial = {'show_notes': True}
+    title = 'Grouped Gadget List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        lists = []
+        for tag in tag_list:
+            if tag['active']:
+                query = g_tag_queries[tag['idx']]
+                list = Gadget.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+                if len(list):
+                    list_t = (tag['name'], list)
+                    lists.append( list_t )
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'lists': lists,
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+
+class L_GroupedSFXView(L_BaseView):
+    form_class = SFXFilterForm
+    x_group = 'sfx'
+    initial = {'show_notes': True}
+    title = 'Grouped SFX List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        lists = []
+        for tag in tag_list:
+            if tag['active']:
+                query = g_tag_queries[tag['idx']]
+                list = SFX.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+                if len(list):
+                    list_t = (tag['name'], list)
+                    lists.append( list_t )
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'lists': lists,
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+
+class L_GroupedAudioView(L_BaseView):
+    form_class = AudioFilterForm
+    x_group = 'audio'
+    initial = {'show_notes': True}
+    title = 'Grouped Audio List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        lists = []
+        for tag in tag_list:
+            if tag['active']:
+                query = g_tag_queries[tag['idx']]
+                list = Audio.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+                if len(list):
+                    list_t = (tag['name'], list)
+                    lists.append( list_t )
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'lists': lists,
             'show_notes': form.cleaned_data['show_notes'],
         })
 

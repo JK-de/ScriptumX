@@ -48,6 +48,7 @@
     <Compile Include="report\tests.py" />
     <Compile Include="report\urls.py" />
     <Compile Include="report\views.py" />
+    <Compile Include="report\view_M.py" />
     <Compile Include="report\view_L.py">
       <SubType>Code</SubType>
     </Compile>
@@ -151,9 +152,11 @@
     <Content Include="report\static\fixedheadertable\jquery.mousewheel.js" />
     <Content Include="report\static\fixedheadertable\lib\jquery.mousewheel.js" />
     <Content Include="report\static\tfh\jquery.michiweber.table-head-fixed.js" />
+    <Content Include="report\templates\report\layout_M.html" />
     <Content Include="report\templates\report\layout_L.html" />
     <Content Include="report\templates\report\layout2.html" />
     <Content Include="report\templates\report\L_X_simple.html" />
+    <Content Include="report\templates\report\M_X.html" />
     <Content Include="report\templates\report\testM1.html" />
     <Content Include="report\templates\report\test2.html" />
     <Content Include="report\templates\report\test.html" />

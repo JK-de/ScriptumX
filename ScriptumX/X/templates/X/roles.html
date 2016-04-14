@@ -37,11 +37,8 @@
 
                         {#--tag images--#}
                         <div class="pull-right" style="margin-right:14px;">
-                            {% for tag in tag_list %}
-                                {% cycle None role.tag1 role.tag2 role.tag3 role.tag4 role.tag5 role.tag6 role.tag7 role.tag8 role.tag9 role.tag10 role.tag11 as tag_visible silent %}
-                                {% if tag_visible %}
-                                    <img style="margin-right:-14px;" src="{% static tag.img %}" />
-                                {% endif %}
+                            {% for image in role.active_tag_images %}
+                                <img style="margin-right:-14px;" src="{% static image %}" />
                             {% endfor %}
                         </div>
 
@@ -213,14 +210,13 @@
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
-				<li><a href="/test3" target="_blank">Report 1 in new window</a></li>
-				<li><a href="/test3" target="_top">Report 2 in top</a></li>
-				<li><a href="/test3" target="_parent">Report 3 in parent</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
 				<li role="separator" class="divider"></li>
-				<li><a href="#">Report 4</a></li>
-				<li><a href="#">Report 5</a></li>
-				<li><a href="#">Report 6</a></li>
-				<li><a href="#">Report 7</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
 			</ul>
 		</div>
 
@@ -232,9 +228,14 @@
 			</button>
 			<ul class="dropdown-menu" role="menu">
 				<li><a href="/report/L/simple_role" target="_blank">Simple List by Tag</a></li>
-				<li><a href="#">TEST 2</a></li>
+				<li><a href="/report/L/grouped_role" target="_blank">Grouped List by Tag</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
 				<li role="separator" class="divider"></li>
-				<li><a href="#">TEST 3</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
 			</ul>
 		</div>
 		
@@ -246,11 +247,13 @@
 			</button>
 			<ul class="dropdown-menu" role="menu">
 				<li><a href="/report/M/scene_role" target="_blank">Scenes vs Roles</a></li>
-				<li><a href="#">TEST 2</a></li>
-				<li><a href="#">TEST 3</a></li>
-				<li><a href="#">TEST 4</a></li>
-				<li><a href="#">TEST 5</a></li>
-				<li><a href="#">TEST 6</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
 			</ul>
 		</div>
 

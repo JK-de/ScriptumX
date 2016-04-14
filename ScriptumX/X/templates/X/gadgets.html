@@ -36,11 +36,8 @@
 
                         {#--tag images--#}
                         <div class="pull-right" style="margin-right:14px;">
-                            {% for tag in tag_list %}
-                                {% cycle None gadget.tag1 gadget.tag2 gadget.tag3 gadget.tag4 gadget.tag5 gadget.tag6 gadget.tag7 gadget.tag8 gadget.tag9 gadget.tag10 gadget.tag11 as tag_visible silent %}
-                                {% if tag_visible %}
-                                    <img style="margin-right:-14px;" src="{% static tag.img %}" />
-                                {% endif %}
+                            {% for image in gadget.active_tag_images %}
+                                <img style="margin-right:-14px;" src="{% static image %}" />
                             {% endfor %}
                         </div>
 
@@ -216,14 +213,13 @@
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
-				<li><a href="/test3" target="_blank">Report 1 in new window</a></li>
-				<li><a href="/test3" target="_top">Report 2 in top</a></li>
-				<li><a href="/test3" target="_parent">Report 3 in parent</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
 				<li role="separator" class="divider"></li>
-				<li><a href="#">Report 4</a></li>
-				<li><a href="#">Report 5</a></li>
-				<li><a href="#">Report 6</a></li>
-				<li><a href="#">Report 7</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
 			</ul>
 		</div>
 
@@ -234,10 +230,15 @@
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
-				<li><a href="#">Summary 1</a></li>
-				<li><a href="#">Summary 2</a></li>
+				<li><a href="/report/L/simple_gadget" target="_blank">Simple List by Tag</a></li>
+				<li><a href="/report/L/grouped_gadget" target="_blank">Grouped List by Tag</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
 				<li role="separator" class="divider"></li>
-				<li><a href="#">Summary 3</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
 			</ul>
 		</div>
 		
@@ -248,12 +249,14 @@
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
-				<li><a href="#">Matrix 1</a></li>
-				<li><a href="#">Matrix 2</a></li>
-				<li><a href="#">Matrix 3</a></li>
-				<li><a href="#">Matrix 4</a></li>
-				<li><a href="#">Matrix 5</a></li>
-				<li><a href="#">Matrix 6</a></li>
+				<li><a href="/report/M/scene_gadget" target="_blank">Scene vs Gadget</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
 			</ul>
 		</div>
 
