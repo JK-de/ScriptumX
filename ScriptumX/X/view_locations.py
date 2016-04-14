@@ -48,6 +48,7 @@ class LocationForm(forms.ModelForm):
             'name',
             'description',
             'persons',
+            'gadgets',
             ]
 
     def __init__(self, *args, **kwargs):
@@ -73,6 +74,7 @@ class LocationForm(forms.ModelForm):
             Field('name', style="width:30em; min-width:30em; max-width:100%; "),
 
             Field('persons', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
+            Field('gadgets', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
 
             Field('description', style="max-width:100%; min-width:100%;", rows=10),
 

@@ -240,6 +240,7 @@ class Location(BaseModel):
     #Props
     # Many to Many
     persons = models.ManyToManyField(Person, blank=True)
+    gadgets = models.ManyToManyField(Gadget, blank=True)
 
 ###############################################################################
 
