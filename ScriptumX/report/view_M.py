@@ -193,6 +193,15 @@ class M_SceneGadgetView(M_BaseView):
                         if col:
                             m.cells[row][col].text = "&#x26AA;"
 
+            # search for linked gadgets over scene -> set_location.gadgets
+            linked_location = scene.set_location
+            if linked_location:
+                linked_gadgets = linked_location.gadgets.all()
+                for item in linked_gadgets:
+                    col = m.getColIndex(item)
+                    if col:
+                        m.cells[row][col].text = "&#x26AA;"
+
             # search for linked gadgets
             linked_gadgets = scene.gadgets.all()
             for item in linked_gadgets:
