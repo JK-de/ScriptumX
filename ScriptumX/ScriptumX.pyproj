@@ -155,6 +155,7 @@
     <Content Include="report\templates\report\layout_M.html" />
     <Content Include="report\templates\report\layout_L.html" />
     <Content Include="report\templates\report\layout2.html" />
+    <Content Include="report\templates\report\L_X_simple_scene.html" />
     <Content Include="report\templates\report\L_X_simple.html" />
     <Content Include="report\templates\report\M_X.html" />
     <Content Include="report\templates\report\testM1.html" />

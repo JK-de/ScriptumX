@@ -570,6 +570,7 @@ class L_SceneView(L_BaseView):
     x_group = 'scene'
     initial = {'show_notes': True}
     title = 'Scene List'
+    template_name = "report/L_X_simple_scene.html"   # special for tag overlay
 
     def render_list(self, request, form, tag_list):
         env = Env(request)

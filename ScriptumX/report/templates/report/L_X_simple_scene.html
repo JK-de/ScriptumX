@@ -1,0 +1,90 @@
+{% extends "report/layout_L.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+{% if form %}
+
+    <br/><br/>
+
+    <div class="container">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>{{title}}</h3>
+        
+                <h5>Select filter tags for list</h5>
+            </div>
+            <div class="panel-body">
+    
+                {% crispy form form.helper %}
+
+            </div>
+        </div>
+    </div>
+
+{% else %}
+
+    <a id="printbutton" class="btn btn-default pull-right hidden-print" role="button" style="padding:4px;"><i class="fa fa-print fa-2x" aria-hidden="true"></i></a>
+
+    <small style="color:#CCC;" class="pull-right">ScriptumX &emsp; <i class="fa fa-user"></i> {{env.user}} &emsp; <i class="fa fa-film"></i> {{env.project}} &emsp; <i class="fa fa-book"></i> {{env.script}} &emsp; <i class="fa fa-calendar-o"></i> {% now "Y-m-d" %} &ensp; <i class="fa fa-clock-o"></i> {% now "H:i" %} &ensp;</small>
+
+    <h3>{{title}}</h3>
+
+    {% for header, list in lists %}
+
+    {% if header %}
+        <h5>{{header}}</h5>
+    {% endif %}
+    <div>
+    <table style="min-width:480px; max-width:100%;" class="table table-striped table-hover table-responsive table-condensed">
+
+        <thead>
+            <tr BGCOLOR="#DDDDDD">
+                <th style="min-width:80px;">Tags</th>
+                <th>Name</th>
+                <th>
+                    Description
+                    {% if show_notes %}
+                        / <i>Note</i>
+                    {% endif %}
+                </th>
+            </tr>
+        </thead>
+
+        <tbody>
+        {% for item in list %}
+
+            <tr>
+                <td>
+                    {% if item.tag1 == True or item.tag2 == True or item.tag3 == True or item.tag4 == True or item.tag5 == True %}
+                        {% for image in item.active_tag_images %}
+                            <img style="margin-right:-36px;" src="{% static image %}" />
+                        {% endfor %}
+                    {% else %}
+                        <img style="margin-right:-36px;" src="{% static 'img/variant/v0.png' %}" />
+                    {% endif %}
+                </td>
+
+                <!--<td style="max-width:25%; white-space:nowrap; overflow:hidden; text-overflow: ellipsis;"><strong>{{item.name}}</strong></td>-->
+                <td style=""><strong>{{item.name}}</strong></td>
+
+                <td style="hyphens: auto;">
+                    {% if show_notes and item.note %}
+                        <span style="color:darkgoldenrod;"><i>Note: {% autoescape off %}{{item.note.text|removetags:"a span"}}{% endautoescape %}</i></span><br/>
+                        <hr style="margin:4px;"/>
+                    {% endif %}
+                    {% autoescape off %}{{item.description|removetags:"a span"}}{% endautoescape %}
+                </td>
+            </tr>
+
+        {% endfor %}
+        </tbody>
+
+    </table>
+    </div>
+    {% endfor %}
+
+{% endif %}
+
+{% endblock %}

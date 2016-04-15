@@ -45,6 +45,22 @@
                                 <img style="margin-top:-2px; margin-bottom:-2px;" height="24" width="24" src="{% static 'img/notes.png' %}" />
                             {% endif %}
 
+                            {#--tag images (tag overlay)--#}
+                            {% if scene.tag1 == True and scene.tag2 == True and scene.tag3 == True and scene.tag4 == True and scene.tag5 == True %}
+                            {# no output #}
+                            {% elif scene.tag1 == True or scene.tag2 == True or scene.tag3 == True or scene.tag4 == True or scene.tag5 == True %}
+                                <div class="pull-right" style="margin-right:32px;">
+                                    {% for image in scene.active_tag_images %}
+                                        <img style="margin:0; margin-right:-36px; margin-top:-5px;" src="{% static image %}" />
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="pull-right" style="margin-right:32px;">
+                                    <img style="margin:0; margin-right:-36px; margin-top:-5px;" src="{% static 'img/variant/v0.png' %}" />
+                                </div>
+                            {% endif %}
+
+                            {#--tag badges--#}
                             {% if scene.tag1 == True and scene.tag2 == True and scene.tag3 == True and scene.tag4 == True and scene.tag5 == True %}
                             {# no output #}
                             {% elif scene.tag1 == True or scene.tag2 == True or scene.tag3 == True or scene.tag4 == True or scene.tag5 == True %}
