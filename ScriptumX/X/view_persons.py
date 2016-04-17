@@ -154,6 +154,8 @@ def person(request, person_id):
                         selected_note.delete()
                     selected_note = None
                 else:
+                    selected_note.project=env.project
+                    selected_note.author=env.user
                     selected_note.save()
 
             selected_person.note = selected_note

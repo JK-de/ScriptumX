@@ -51,7 +51,7 @@ class RoleForm(forms.ModelForm):
             ]
 
     def __init__(self, *args, **kwargs):
-        super(RoleForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_class = 'blueForms'
@@ -144,6 +144,8 @@ def role(request, role_id):
                         selected_note.delete()
                     selected_note = None
                 else:
+                    selected_note.project=env.project
+                    selected_note.author=env.user
                     selected_note.save()
 
             selected_role.note = selected_note
@@ -159,6 +161,9 @@ def role(request, role_id):
         formItem = RoleForm(instance=selected_role)
         formNote = NoteForm(instance=selected_note)
     
+    formItem.fields['actor'].queryset = Person.objects.filter(project=env.project)
+    formItem.fields['gadgets'].queryset = Gadget.objects.filter(project=env.project)
+
     ### conglomerate queries
     query = Q()
     for tag in tag_list:

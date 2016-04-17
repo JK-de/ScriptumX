@@ -65,7 +65,12 @@ class SceneForm(forms.ModelForm):
 
 
     def __init__(self, *args, **kwargs):
-        super(SceneForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
+
+        #self.fields['persons'].queryset = Person.objects.filter(project=env.project)
+        #self.fields['gadgets'].queryset = Gadget.objects.filter(project=env.project)
+        #self.fields['audios'].queryset = Audio.objects.filter(project=env.project)
+        #self.fields['sfxs'].queryset = SFX.objects.filter(project=env.project)
 
         self.helper = FormHelper()
         self.helper.form_class = 'blueForms'
@@ -201,6 +206,8 @@ def script(request, scene_id, new_order=0):
                         selected_note.delete()
                     selected_note = None
                 else:
+                    selected_note.project=env.project
+                    selected_note.author=env.user
                     selected_note.save()
 
             selected_scene.note = selected_note
@@ -215,6 +222,12 @@ def script(request, scene_id, new_order=0):
     else:
         formItem = SceneForm(instance=selected_scene)
         formNote = NoteForm(instance=selected_note)
+
+    formItem.fields['set_location'].queryset = Location.objects.filter(project=env.project)
+    formItem.fields['persons'].queryset = Person.objects.filter(project=env.project)
+    formItem.fields['gadgets'].queryset = Gadget.objects.filter(project=env.project)
+    formItem.fields['audios'].queryset = Audio.objects.filter(project=env.project)
+    formItem.fields['sfxs'].queryset = SFX.objects.filter(project=env.project)
     
     ### conglomerate queries
     query = Q()

@@ -194,6 +194,7 @@ class BaseModel(models.Model):
 class Gadget(BaseModel):
     group_id = 'gadget'
     #Props
+    pervasive = models.BooleanField(default=False)
     progress = models.PositiveSmallIntegerField(default=0)
     # Many to Many
 
@@ -218,6 +219,7 @@ class SFX(BaseModel):
 class Person(BaseModel):
     group_id = 'person'
     #Props
+    pervasive = models.BooleanField(default=False)
     contact = models.TextField(blank=True)
     email = models.EmailField(blank=True)
     # Many to Many

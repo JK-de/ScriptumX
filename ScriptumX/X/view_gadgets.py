@@ -202,6 +202,8 @@ def gadget(request, gadget_id):
                         selected_note.delete()
                     selected_note = None
                 else:
+                    selected_note.project=env.project
+                    selected_note.author=env.user
                     selected_note.save()
 
             selected_gadget.note = selected_note

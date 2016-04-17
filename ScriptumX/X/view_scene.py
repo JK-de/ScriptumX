@@ -45,7 +45,7 @@ class SceneItemForm(forms.ModelForm):
             ]
 
     def __init__(self, *args, **kwargs):
-        super(SceneItemForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_class = 'blueForms'
@@ -123,6 +123,8 @@ def scene(request, sceneitem_id, new_type='?', new_order=0):
         if selected_sceneitem.type == 'N':
             formItem.helper[2:3].update_attributes(style="max-width:100%; min-width:100%; background-color:palegoldenrod;")
             formItem.fields['text'].label = "Note"
+
+    formItem.fields['role'].queryset = Role.objects.filter(project=env.project)
 
     ### conglomerate queries
     query = Q()

@@ -153,6 +153,8 @@ def sfx(request, sfx_id):
                         selected_note.delete()
                     selected_note = None
                 else:
+                    selected_note.project=env.project
+                    selected_note.author=env.user
                     selected_note.save()
 
             selected_sfx.note = selected_note

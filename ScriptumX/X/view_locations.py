@@ -52,7 +52,8 @@ class LocationForm(forms.ModelForm):
             ]
 
     def __init__(self, *args, **kwargs):
-        super(LocationForm, self).__init__(*args, **kwargs)
+        #super(LocationForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         self.helper = FormHelper()
         self.helper.form_class = 'blueForms'
@@ -144,6 +145,8 @@ def location(request, location_id):
                         selected_note.delete()
                     selected_note = None
                 else:
+                    selected_note.project=env.project
+                    selected_note.author=env.user
                     selected_note.save()
 
             selected_location.note = selected_note
@@ -158,7 +161,10 @@ def location(request, location_id):
     else:
         formItem = LocationForm(instance=selected_location)
         formNote = NoteForm(instance=selected_note)
-    
+
+    formItem.fields['persons'].queryset = Person.objects.filter(project=env.project)
+    formItem.fields['gadgets'].queryset = Gadget.objects.filter(project=env.project)
+
     ### conglomerate queries
     query = Q()
     for tag in tag_list:

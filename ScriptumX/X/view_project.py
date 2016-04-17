@@ -214,7 +214,7 @@ def project(request, project_id, script_id=None):
 
     ### conglomerate queries
     
-    projects = Project.objects.filter( Q(owner=env.user) | Q(users=env.user) | Q(guests=env.user) )
+    projects = Project.objects.filter( Q(owner=env.user) | Q(users=env.user) | Q(guests=env.user) ).distinct()
 
     if selected_project:
         scripts = Script.objects.filter( project=selected_project )

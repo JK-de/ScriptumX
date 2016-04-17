@@ -44,7 +44,7 @@ class ImporterBase():
 
         name = name[:50]
         try:
-            role = Role.objects.get(name__iexact=name)
+            role = Role.objects.get(project=self.env.project, name__iexact=name)
         except:
             role = Role()
             role.name = name
@@ -61,7 +61,7 @@ class ImporterBase():
         
         name = name[:50]
         try:
-            location = Location.objects.get(name__iexact=name)
+            location = Location.objects.get(project=self.env.project, name__iexact=name)
         except:
             location = Location()
             location.name = name
@@ -121,7 +121,7 @@ class ImporterBase():
 
         name = name[:50]
         try:
-            script = Script.objects.get(name=name)
+            script = Script.objects.get(project=self.env.project, name=name)
         except:
             script = Script()
             script.name = 'Long Story - Short'
