@@ -26,11 +26,20 @@
             function do_resize () {
                 var $window = $(this), //this = window
                     height = Math.ceil($window.height()),
-                    previousHeight = $window.data('previousHeight');
+                    width = Math.ceil($window.width()),
+                    previousHeight = $window.data('previousHeight'),
+                    previousWidth = $window.data('previousWidth');
 
-                if (height !== previousHeight) {
-                    $("#app_container").css('height', height - 140);
+                if (height !== previousHeight || width !== previousWidth) {
+                    var header = Math.ceil($("#main-header").height()),
+                    footer = Math.ceil($("#main-footer").height());
+                    if (width < 768)
+                        $("#app_container").css('height', 'auto');
+                    else
+                        $("#app_container").css('height', height - header - footer);
+                    $("body").css('padding-top', header);
                     $window.data('previousHeight', height);
+                    $window.data('previousWidth', width);
                 }
             };
 
@@ -75,35 +84,43 @@
 
     {#--NAVBAR--#}
 
-    <div class="navbar navbar-default navbar-fixed-top" style="margin:0;">
+    <div id="main-header" class="navbar navbar-default navbar-fixed-top" style="margin:0; padding:0; min-height: 20px;">
 
         <div style="padding:0; margin:0; background-color:#232628;" class="container-fixed-top">
             <div class="navbar-header" style="">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
+                
+                <button style="margin:0; padding:4px 8px 4px 8px;" type="button" class="navbar-toggle btn-primary" data-toggle="collapse" data-target=".navbar-collapse">
+                    <i class="fa fa-bars" aria-hidden="true"></i>
                 </button>
               
                 <a style="padding:8px;  margin:0px" class="navbar-text" href="/"><img height="24" width="24" src="{% static 'img/ScriptumX48.png' %}" /></a>
+                
+                <div class="visible-xs-inline">
+                    {% block mobile-toolbar %}{% endblock %}
+                </div>
+
             </div>
+
             <div style="padding:0px; " class="navbar-collapse collapse">
+                
                 <ul class="nav nav-tabs" role="tablist" style="padding-bottom:0; margin:0; ">
 
                     {% for tab in tab_list %}
                     {%if tab.id == tab_active_id %} 
                             <li class="active">
-                            <a class="{{tab.class}}" href="{{tab.href}}"><img src="{% static tab.img %}"> {{tab.name}}</a>
+                            <a class="{{tab.class}}" href="{{tab.href}}"><img style="margin-left:-8px;" src="{% static tab.img %}"> {{tab.name}}</a>
                             </li>
                         {% else %}
                             <li> <!--class="visible-md-block visible-lg-block"-->
-                            <a href="{{tab.href}}"><img src="{% static tab.img %}"> <div class="visible-lg-inline">{{tab.name}}</div><small class="visible-md-inline">{{tab.name}}</small></a>
+                            <a href="{{tab.href}}"><img style="margin-left:-8px;" src="{% static tab.img %}"> <div class="visible-lg-inline">{{tab.name}}</div><small class="visible-md-inline">{{tab.name}}</small></a>
                             </li>
                         {% endif %}
                     {% endfor %}
 
                 </ul>
+
             </div><!-- /.nav-collapse -->
+
         </div><!-- /.container -->
 
         {% block toolbar %}{% endblock %}
@@ -124,8 +141,8 @@
 
     {#--FOOTER--#}
 
-    <div class="navbar-fixed-bottom" style="height:24px; min-height: 24px; margin:0; padding:0; background-color:#232628">
-        <div class="pull-right" style="margin:2px; padding:0;">
+    <div id="main-footer" class="navbar-fixed-bottom hidden-xs" style="margin:0; padding:0; background-color:#232628">
+        <div class="pull-right hidden-xs" style="min-height:0; margin:2px; padding:0;">
             <small>&copy; ScriptumX &emsp; <i class="fa fa-user"></i> {{env.user}} &emsp; <i class="fa fa-film"></i> {{env.project}} &emsp; <i class="fa fa-book"></i> {{env.script}} &emsp; <i class="fa fa-calendar-o"></i> {% now "Y-m-d" %} &ensp; <i class="fa fa-clock-o"></i> {% now "H:i" %}</small>
         </div>
     </div>

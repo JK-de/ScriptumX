@@ -55,6 +55,7 @@ class GadgetForm(forms.ModelForm):
             'name',
             'description',
             'progress',
+            'pervasive',
             ]
 
     def __init__(self, *args, **kwargs):
@@ -90,7 +91,9 @@ class GadgetForm(forms.ModelForm):
             ),
             #Fieldset(
                 #'first arg is the legend of the fieldset',
-                Field('name', style="width:30em; min-width:30em; max-width:100%; "),
+            Field('name', style="width:30em; min-width:10em; max-width:100%; "),
+
+            Field('pervasive'),
 
                 #Field('progress', template="./templates/X/tmpl_slider_progress.html"),
                 #Field('progress', template="D:/X/ScriptumX/X/templates/X/tmpl_slider_progress.html"),

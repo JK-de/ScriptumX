@@ -40,7 +40,7 @@
     <div id="abc" class="row" style="height:100%;">
 
         {#--left side list--#}
-        <div class="col-xs-6 col-md-6" style="height:100%;" >
+        <div class="col-xs-12 col-sm-6 col-md-6" style="height:100%;" >
             <div class="list-group" style="height:100%; overflow-y:auto">
 
                 {% for sceneitem in sceneitems %}
@@ -124,7 +124,7 @@
         </div>
 
         {#--right side details--#}
-        <div class="col-xs-6 col-md-6" style="height:100%; overflow-y:auto; padding:0">
+        <div class="col-xs-12 col-sm-6 col-md-6" style="height:100%; overflow-y:auto; padding:0">
             <div class="x-sceneitem x-item-form">
 
                 {% if selected_sceneitem %}
@@ -209,6 +209,8 @@
 {% block toolbar %}
 {% load staticfiles %}
 
+<div style="padding:0px; " class="navbar-collapse collapse">
+
 <div class="nav container-fixed-top x-sceneitem x-toolbar" style="margin-top:0">
 
     <div class="nav navbar-header">
@@ -217,14 +219,14 @@
         </a>
     </div>
 
-    <select id="sceneselect" class="chosen-select" data-placeholder="Select Your Options">
+    <select id="sceneselect" style="min-width:200px; max-width:20%;" class="chosen-select" data-placeholder="Select Scene">
     {% for scene in scenes %}
         <option value="{{scene.pk}}" {% if scene == env.scene %}selected{% endif %}>{{scene.name}}</option>
     {% endfor %}
     </select>
 
 
-    <div class="btn-group-vertical" role="group" style="margin-left:16px">
+    <div class="btn-group-vertical" role="group" style="margin-left:1%">
         <a href="/scene/tag/all" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/tab/common/selectall.png' %}" /></a>
         <a href="/scene/tag/none" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/tab/common/selectnone.png' %}" /></a>
     </div>
@@ -251,7 +253,7 @@
 	</div>
 
     {#--button new--#}
-    <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
+    <div class="btn-group btn-group-xs" role="group" style="margin-left:2%">
         <div class="btn-group btn-group-xs" role="group" >
 		    <button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_sceneitem %}disabled{% endif %}>
 			    <img height="32" width="32" src="{% static 'img/s/ins_b.png' %}" /><br />
@@ -285,7 +287,7 @@
     </div>
 
     {#--button move--#}
-    <div class="btn-group btn-group-xs" role="group" style="margin-left:8px">
+    <div class="btn-group btn-group-xs" role="group" style="margin-left:1%">
 		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_sceneitem %}disabled{% endif %}>
 			<img height="32" width="32" src="{% static 'img/s/move.png' %}" /><br />
 			<small>Move</small>
@@ -324,7 +326,7 @@
 
 
     {#--button Tool--#}
-    <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
+    <div class="btn-group btn-group-xs" role="group" style="margin-left:2%">
 		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
 			<img height="32" width="32" src="{% static 'img/tool.png' %}" /><br />
 			<small>Tool</small>
@@ -347,7 +349,7 @@
 		</ul>
     </div>
 
-	<div class="navbar-right" role="group" style="margin-right:16px;">
+	<div class="navbar-right" role="group" style="margin-right:8px;">
 
 		<div class="btn-group btn-group-xs" role="group" style="">
 			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
@@ -404,6 +406,17 @@
 
 
 </div>
+</div>
 {% endblock %}
 
+{############################################################################}
+
+{% block mobile-toolbar %}
+    
+    <a style="padding:8px; margin:0px" class="navbar-text" href="/scene"><img src="{% static 'img/tab/scene-24.png' %}" /></a>
+
+    <a href="/scene/0" role="button" class="btn btn-default navbar-btn btn-xs" style="margin:0; padding:4px;"><small>New</small></a>
+
+{% endblock %}
+                
 {############################################################################}

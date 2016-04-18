@@ -55,6 +55,7 @@ class PersonForm(forms.ModelForm):
             'description',
             'contact',
             'email',
+            'pervasive',
             ]
 
     def __init__(self, *args, **kwargs):
@@ -85,6 +86,7 @@ class PersonForm(forms.ModelForm):
 
             Field('name', style="width:30em; min-width:30em; max-width:100%; "),
 
+            Field('pervasive'),
             #Field('progress', template="X/tmpl_slider_progress.html"),
 
             Field('description', style="max-width:100%; min-width:100%;", rows=10),
