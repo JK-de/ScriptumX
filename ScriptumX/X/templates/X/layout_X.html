@@ -30,17 +30,18 @@
                     previousHeight = $window.data('previousHeight'),
                     previousWidth = $window.data('previousWidth');
 
-                if (height !== previousHeight || width !== previousWidth) {
+                //if (height !== previousHeight || width !== previousWidth) {
                     var header = Math.ceil($("#main-header").height()),
                     footer = Math.ceil($("#main-footer").height());
                     if (width < 768)
                         $("#app_container").css('height', 'auto');
                     else
                         $("#app_container").css('height', height - header - footer);
+                    $("#app_container").css('top', header);
                     $("body").css('padding-top', header);
                     $window.data('previousHeight', height);
                     $window.data('previousWidth', width);
-                }
+                //}
             };
 
             do_resize();
@@ -80,11 +81,11 @@
 </head>
      
 
-<body style="overflow:auto; padding-top:120px">
+<body style="overflow:auto; padding-top:100px">
 
-    {#--NAVBAR--#}
+{#--NAVBAR--#}
 
-    <div id="main-header" class="navbar navbar-default navbar-fixed-top" style="margin:0; padding:0; min-height: 20px;">
+    <div id="main-header" class="navbar navbar-default navbar-fixed-top" style="margin:0; padding:0; min-height: 24px;">
 
         <div style="padding:0; margin:0; background-color:#232628;" class="container-fixed-top">
             <div class="navbar-header" style="">
@@ -127,26 +128,28 @@
 
     </div>
 
-    {#--CONTENT--#}
+{#--CONTENT--#}
 
-    <div id="app_container" style="margin:0; padding:0;" class="container-fluid body-content">
+    <div id="app_container" style="margin:0; padding:0; position:fixed; width:100%;" class="container-fixed-top body-content">
 
         {% if error_message %}
             <p class="text-danger">aaa{{error_message}}</p>
         {% endif %}
 
         {% block content %}{% endblock %}
-    
+
     </div>
 
-    {#--FOOTER--#}
+{#--FOOTER--#}
 
     <div id="main-footer" class="navbar-fixed-bottom hidden-xs" style="margin:0; padding:0; background-color:#232628">
-        <div class="pull-right hidden-xs" style="min-height:0; margin:2px; padding:0;">
+        <div class="pull-right hidden-xs" style="min-height:20px; margin:2px; padding:0;">
             <small>&copy; ScriptumX &emsp; <i class="fa fa-user"></i> {{env.user}} &emsp; <i class="fa fa-film"></i> {{env.project}} &emsp; <i class="fa fa-book"></i> {{env.script}} &emsp; <i class="fa fa-calendar-o"></i> {% now "Y-m-d" %} &ensp; <i class="fa fa-clock-o"></i> {% now "H:i" %}</small>
         </div>
     </div>
-    
+
+{#--SCRIPTS--#}
+
     <script src="{% static 'X/scripts/bootstrap.js' %}"></script>
     <script src="{% static 'X/scripts/respond.js' %}"></script>
     <script src="{% static 'chosen/chosen.jquery.js' %}" type="text/javascript"></script>

@@ -31,6 +31,10 @@
 
 /***********************************************/
 
+@media (min-width: 768) {
+
+}
+
 .progress {
 	background-color: #CCC;
 
@@ -77,6 +81,7 @@ input[type="checkbox"] {
     background-color: #666;
     /*color: hsl(30, 15%, 10%);*/
     margin-right: 16px; 
+    margin-left: 16px; 
     padding: 16px; 
     border-radius: 4px;
 }
