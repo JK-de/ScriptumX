@@ -16,13 +16,13 @@
 
 {% block content %}
 
-<div class="container-fluid x-role x-back" style="height:100%; width:100%;">
+<div class="container-fluid x-role x-back">
 
-    <div id="abc" class="row" style="height:100%;">
+    <div class="row full-height">
 
         {#--left side list--#}
-        <div class="col-xs-12 col-sm-6 col-md-4" style="height:100%;" >
-            <div class="list-group" style="height:100%; overflow-y:auto">
+        <div class="col-xs-12 col-sm-6 col-md-4 full-height">
+            <div class="list-group full-height" style="overflow-y:auto">
 
                 {% for role in roles %}
 			
@@ -67,7 +67,8 @@
         </div>
 
         {#--right side details--#}
-        <div class="col-xs-12 col-sm-6 col-md-8" style="height:100%; overflow-y:auto; padding:0">
+        <div class="col-xs-12 col-sm-6 col-md-8 full-height">
+          <div class="full-height" style="overflow-y:auto;">
             <div class="x-role x-item-form">
 
                 {% if selected_role %}
@@ -142,6 +143,7 @@
 
                 {% endif %}
             </div>
+          </div>
         </div>
 
     </div> <!--row-->

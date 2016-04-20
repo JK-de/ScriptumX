@@ -31,9 +31,17 @@
 
 /***********************************************/
 
-@media (min-width: 768) {
+@media (min-width: 768px) {
+    #app_container {
+        position:fixed; 
+    }
 
+    .full-height {
+        height:100%;
+    }
 }
+
+
 
 .progress {
 	background-color: #CCC;
@@ -41,6 +49,8 @@
 }
 
 
+.list-group {
+}
 
 a.list-group-item {
     background-color: #EEE;
@@ -75,13 +85,15 @@ input[type="checkbox"] {
     background-color: hsl(30, 0%, 15%);
     margin: 0;
     padding: 16px;
+    height:100%; 
+    width:100%;
 }
 
 .x-item-form {
     background-color: #666;
     /*color: hsl(30, 15%, 10%);*/
-    margin-right: 16px; 
-    margin-left: 16px; 
+    /*margin-right: 16px; 
+    margin-left: 16px; */
     padding: 16px; 
     border-radius: 4px;
 }
