@@ -221,7 +221,7 @@
         </a>
     </div>
 
-    <select id="sceneselect" style="min-width:200px; max-width:20%;" class="chosen-select" data-placeholder="Select Scene">
+    <select id="sceneselect" style="min-width:200px; max-width:400px; width:200px" class="chosen-select" data-placeholder="Select Scene">
     {% for scene in scenes %}
         <option value="{{scene.pk}}" {% if scene == env.scene %}selected{% endif %}>{{scene.name}}</option>
     {% endfor %}
