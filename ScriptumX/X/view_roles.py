@@ -62,24 +62,28 @@ class RoleForm(forms.ModelForm):
         self.helper.layout = Layout(
 
             Div(
-                Div(FormSymbol(role_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(role_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(role_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                css_class='col-sm-offset-2', style="margin-top:0px;", 
+                Div(FormSymbol(role_tag_list[1]['img']),  Field('tag1'), title=role_tag_list[1]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(role_tag_list[2]['img']),  Field('tag2'), title=role_tag_list[2]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(role_tag_list[3]['img']),  Field('tag3'), title=role_tag_list[3]['name'], css_class='checkbox-inline checkbox-tags'),
+                css_class='col-sm-offset-2 checkbox-tags-group', 
                 ),
-
+             
             #Field('name', style="width:30em; min-width:10em; max-width:100%; "),
             Field('name'),
 
-            Field('actor', css_class='chosen-select-box'),
+            Field('actor', css_class='chosen-select-single'),
 
-            Field('gadgets', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
+            Field('gadgets', css_class='chosen-select-multi'),
 
             Field('color'),
 
-            Field('description', style="max-width:100%; min-width:100%;", rows=10),
+            Field('description', rows=10),
 
             )
+        self.fields['tag1'].label = ''
+        self.fields['tag2'].label = ''
+        self.fields['tag3'].label = ''
+
 
     def clean_name(self):
       name = self.cleaned_data.get('name')

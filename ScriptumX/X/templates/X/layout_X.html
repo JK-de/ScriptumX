@@ -156,13 +156,15 @@
 
     <script type="text/javascript">
         var config = {
-            '.chosen-select'           : {},
-            '.chosen-select-deselect'  : {allow_single_deselect:true},
-            '.chosen-select-no-single' : {disable_search_threshold:10},
-            '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
-            '.chosen-select-width'     : {width:"100%"},
-            '.chosen-select-box': { allow_single_deselect: true, disable_search_threshold: 10, no_results_text: '[EMPTY]' }
-        }
+            '.chosen-select'            : {},
+            '.chosen-select-deselect'   : {allow_single_deselect:true},
+            '.chosen-select-no-single'  : {disable_search_threshold:10},
+            '.chosen-select-no-results' : {no_results_text:'Oops, nothing found!'},
+            '.chosen-select-width'      : {width:"100%"},
+            '.chosen-select-box'        : { allow_single_deselect: true, disable_search_threshold: 10, no_results_text: '[EMPTY]' },
+            '.chosen-select-single'     : { allow_single_deselect: true, disable_search_threshold: 10, no_results_text: '[EMPTY]' },
+            '.chosen-select-multi'      : { no_results_text: '[EMPTY]', width: "100%"},
+            }
         for (var selector in config) {
             $(selector).chosen(config[selector]);
         }

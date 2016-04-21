@@ -57,6 +57,17 @@
     min-height: 48px;
 }
 
+.checkbox-tags {
+    padding: 0; 
+    margin: -8px;
+}
+
+.checkbox-tags-group {
+    margin-top:0px; 
+    padding-left:20px;
+}
+
+
 .progress {
 	background-color: #CCC;
 
