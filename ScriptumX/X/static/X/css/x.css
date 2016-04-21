@@ -41,7 +41,21 @@
     }
 }
 
+.textinput {
+    max-width: 100%;
+    min-width: 10em;
+}
 
+.textarea {
+    max-width: 100%;
+    min-width: 100%;
+}
+
+.chosen-container {
+    max-width: 100%;
+    width: 100%;
+    min-height: 48px;
+}
 
 .progress {
 	background-color: #CCC;

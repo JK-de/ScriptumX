@@ -68,7 +68,8 @@ class RoleForm(forms.ModelForm):
                 css_class='col-sm-offset-2', style="margin-top:0px;", 
                 ),
 
-            Field('name', style="width:30em; min-width:30em; max-width:100%; "),
+            #Field('name', style="width:30em; min-width:10em; max-width:100%; "),
+            Field('name'),
 
             Field('actor', css_class='chosen-select-box'),
 

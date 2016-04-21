@@ -15,17 +15,12 @@
 
     $('#sceneselect').on('change', function (evt, params) {
         // can now use params.selected and params.deselected
-        //alert("evt: " + evt + "\nparams: " + params.selected);
         window.location.href = "/scene/set/" + params.selected;
     });
 
-    //$("#sceneselect").chosen().change(function () {
-    //    alert(+$(this).val());
-    //    console.log('select2 change', event, $(event.target).val());
-    //    //$('#' + $(this).val()).show();
-    //});
+    $("#sceneselect_chosen").css('width', '20%');
+    //$("#sceneselect_chosen").width(200);
 
-    //console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX');
     });
 </script>
 
