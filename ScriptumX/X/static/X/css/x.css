@@ -354,6 +354,46 @@ a.x-person.list-group-item.active:hover {
 
 /***********************************************/
 
+.x-time.x-back,
+.x-time.a.x-back {
+    background-color: hsl(220, 11%, 15%);
+    margin: 0;
+    padding: 16px;
+}
+
+.x-time.nav-tabs > li.active > a {
+    background-color: hsl(220, 30%, 90%) !important;
+    color: hsl(220, 11%, 10%);
+}
+
+a.x-time.list-group-item {
+    background-color: hsl(220, 30%, 90%);
+    color: hsl(220, 11%, 10%);
+    padding: 8px;
+    border: 1px solid #CCC;
+}
+
+a.x-time.list-group-item:hover {
+    background-color: hsl(220, 30%, 95%);
+}
+
+a.x-time.list-group-item.active, 
+.x-time.x-item-form {
+    background-color: hsl(220, 11%, 25%);
+    color: hsl(220, 30%, 90%);
+    border: 1px solid hsl(220, 11%, 5%);
+}
+
+a.x-time.list-group-item.active:hover {
+    background-color: hsl(220, 11%, 30%);
+}
+/*3e444c*/
+.x-time.x-toolbar {
+    background-image: linear-gradient(#3e444c, hsl(220, 11%, 25%));
+}
+
+/***********************************************/
+
 .x-location.x-back,
 .x-location.a.x-back {
     background-color: hsl(90, 11%, 15%);

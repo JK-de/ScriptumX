@@ -9,6 +9,7 @@ from X.view_script import *
 from X.view_scene import *
 from X.view_roles import *
 from X.view_persons import *
+from X.view_times import *
 from X.view_locations import *
 from X.view_gadgets import *
 from X.view_audios import *
@@ -40,6 +41,9 @@ urlpatterns = [
 
     url(r'^person/(?P<person_id>\d+)?$', X.view_persons.person, name='person'),
     url(r'^person/tag/(?P<tag_id>\w+)?$', X.view_persons.personTag, name='personTag'),
+
+    url(r'^time/(?P<time_id>\d+)?$', X.view_times.time, name='time'),
+    url(r'^time/tag/(?P<tag_id>\w+)?$', X.view_times.timeTag, name='timeTag'),
 
     url(r'^location/(?P<location_id>\d+)?$', X.view_locations.location, name='location'),
     url(r'^location/tag/(?P<tag_id>\w+)?$', X.view_locations.locationTag, name='locationTag'),

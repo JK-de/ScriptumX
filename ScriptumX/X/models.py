@@ -67,20 +67,21 @@ class BaseModel(models.Model):
 
     #Props
     name = models.CharField(max_length=50)
+    abstract = models.TextField(blank=True)
     description = models.TextField(blank=True)
 
-    tag1 = models.BooleanField(default=False, verbose_name='a')
-    tag2 = models.BooleanField(default=False, verbose_name='b')
-    tag3 = models.BooleanField(default=False, verbose_name='c')
-    tag4 = models.BooleanField(default=False, verbose_name='d')
-    tag5 = models.BooleanField(default=False, verbose_name='e')
-    tag6 = models.BooleanField(default=False, verbose_name='')
-    tag7 = models.BooleanField(default=False, verbose_name='')
-    tag8 = models.BooleanField(default=False, verbose_name='')
-    tag9 = models.BooleanField(default=False, verbose_name='')
-    tag10 = models.BooleanField(default=False, verbose_name='')
-    tag11 = models.BooleanField(default=False, verbose_name='')
-    tag12 = models.BooleanField(default=False, verbose_name='')
+    tag1 = models.BooleanField(default=False, verbose_name='T1')
+    tag2 = models.BooleanField(default=False, verbose_name='T2')
+    tag3 = models.BooleanField(default=False, verbose_name='T3')
+    tag4 = models.BooleanField(default=False, verbose_name='T4')
+    tag5 = models.BooleanField(default=False, verbose_name='T5')
+    tag6 = models.BooleanField(default=False, verbose_name='T6')
+    tag7 = models.BooleanField(default=False, verbose_name='T7')
+    tag8 = models.BooleanField(default=False, verbose_name='T8')
+    tag9 = models.BooleanField(default=False, verbose_name='T9')
+    tag10 = models.BooleanField(default=False, verbose_name='T10')
+    tag11 = models.BooleanField(default=False, verbose_name='T11')
+    tag12 = models.BooleanField(default=False, verbose_name='T12')
 
     # One to Many
     project = models.ForeignKey(Project)   # for internal relations only
@@ -237,6 +238,18 @@ class Role(BaseModel):
 
 ###############################################################################
 
+class Time(BaseModel):
+    group_id = 'time'
+    #Props
+    hour = models.IntegerField(default=12)
+    weather = models.CharField(max_length=300, blank=True)
+    ambient = models.CharField(max_length=300, blank=True)
+    # Many to Many
+    persons = models.ManyToManyField(Person, blank=True)
+    gadgets = models.ManyToManyField(Gadget, blank=True)
+
+###############################################################################
+
 class Location(BaseModel):
     group_id = 'location'
     #Props
@@ -274,7 +287,7 @@ class Scene(BaseModel):
     #Props
     order = models.PositiveIntegerField(default=0)
     short = models.CharField(max_length=5, blank=True, default='')
-    abstract = models.TextField(blank=True)
+    #abstract = models.TextField(blank=True)
     indentation = models.PositiveIntegerField(default=0)
     color = ColorField(default='#FFFFFF', null=True, blank=True)
     duration = models.DurationField(null=True, blank=True)

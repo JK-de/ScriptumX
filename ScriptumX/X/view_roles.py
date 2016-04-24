@@ -43,6 +43,8 @@ class RoleForm(forms.ModelForm):
             'tag1',
             'tag2',
             'tag3',
+            'tag4',
+            'tag5',
             'name',
             'description',
             'color',
@@ -65,6 +67,8 @@ class RoleForm(forms.ModelForm):
                 Div(FormSymbol(role_tag_list[1]['img']),  Field('tag1'), title=role_tag_list[1]['name'], css_class='checkbox-inline checkbox-tags'),
                 Div(FormSymbol(role_tag_list[2]['img']),  Field('tag2'), title=role_tag_list[2]['name'], css_class='checkbox-inline checkbox-tags'),
                 Div(FormSymbol(role_tag_list[3]['img']),  Field('tag3'), title=role_tag_list[3]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(role_tag_list[4]['img']),  Field('tag4'), title=role_tag_list[4]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(role_tag_list[5]['img']),  Field('tag5'), title=role_tag_list[5]['name'], css_class='checkbox-inline checkbox-tags'),
                 css_class='col-sm-offset-2 checkbox-tags-group', 
                 ),
              
@@ -80,9 +84,14 @@ class RoleForm(forms.ModelForm):
             Field('description', rows=10),
 
             )
-        self.fields['tag1'].label = ''
-        self.fields['tag2'].label = ''
-        self.fields['tag3'].label = ''
+        for field_name in self.fields:
+            if field_name[:3] == 'tag':
+                field = self.fields.get(field_name)
+                #field.widget.attrs['placeholder'] = field.label
+                field.label = ''
+        #self.fields['tag1'].label = ''
+        #self.fields['tag2'].label = ''
+        #self.fields['tag3'].label = ''
 
 
     def clean_name(self):

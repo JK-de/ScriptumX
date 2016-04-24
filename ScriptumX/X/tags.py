@@ -22,6 +22,8 @@ role_tag_list = (
     { 'idx': 1, 'name':'Male',      'img':'img/r/tag/male.png' },
     { 'idx': 2, 'name':'Female',    'img':'img/r/tag/female.png' },
     { 'idx': 3, 'name':'Other',     'img':'img/r/tag/other.png' },
+    { 'idx': 4, 'name':'Star',      'img':'img/r/tag/star.png' },
+    { 'idx': 5, 'name':'Starlet',   'img':'img/r/tag/starlet.png' },
     )
 
 person_tag_list = (
@@ -37,6 +39,21 @@ person_tag_list = (
     { 'idx': 9, 'name':'Press',     'img':'img/f/tag/press.png' },
     { 'idx':10, 'name':'Fan',       'img':'img/f/tag/none.png' },
     { 'idx':11, 'name':'Universal', 'img':'img/f/tag/universal.png' },
+    )
+
+time_tag_list = (
+    { 'idx': 0, 'name':'Note',      'img':'img/note.png' },
+    { 'idx': 1, 'name':'<1>',       'img':'img/favorits.png' },
+    { 'idx': 2, 'name':'<2>',       'img':'img/favorits.png' },
+    { 'idx': 3, 'name':'<3>',       'img':'img/favorits.png' },
+    { 'idx': 4, 'name':'<4>',       'img':'img/favorits.png' },
+    { 'idx': 5, 'name':'<5>',       'img':'img/favorits.png' },
+    { 'idx': 6, 'name':'<6>',       'img':'img/favorits.png' },
+    { 'idx': 7, 'name':'<7>',       'img':'img/favorits.png' },
+    { 'idx': 8, 'name':'<8>',       'img':'img/favorits.png' },
+    { 'idx': 9, 'name':'<9>',       'img':'img/favorits.png' },
+    { 'idx':10, 'name':'<10>',      'img':'img/favorits.png' },
+    { 'idx':11, 'name':'<11>',      'img':'img/favorits.png' },
     )
 
 location_tag_list = (
@@ -113,6 +130,7 @@ all_tag_list['scene']       = scene_tag_list
 all_tag_list['sceneitem']   = sceneitem_tag_list
 all_tag_list['role']        = role_tag_list
 all_tag_list['person']      = person_tag_list
+all_tag_list['time']        = time_tag_list
 all_tag_list['location']    = location_tag_list
 all_tag_list['gadget']      = gadget_tag_list
 all_tag_list['audio']       = audio_tag_list

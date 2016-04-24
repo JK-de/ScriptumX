@@ -20,54 +20,9 @@
 
     <div class="row full-height">
 
-        {#--left side list--#}
-        <div class="col-xs-12 col-sm-6 col-md-4 full-height">
-            <div class="list-group full-height" style="overflow-y:auto">
-
-                {% for sfx in sfxs %}
-			
-                    <a style="padding:8px" href="/sfx/{{sfx.pk}}"
-                        {% if sfx == selected_sfx %} 
-                            class="x-sfx list-group-item active" id="selected_scope"
-                        {% else %} 
-                            class="x-sfx list-group-item"
-                        {% endif %}
-                        >
-
-                        {#--tag images--#}
-                        <div class="pull-right" style="margin-right:14px;">
-                            {% for image in sfx.active_tag_images %}
-                                <img style="margin-right:-14px;" src="{% static image %}" />
-                            {% endfor %}
-                        </div>
-
-                        {#--note--#}
-                        {% if sfx.note %}
-                            <img style="margin-left:-4px; margin-top:-4px; " height="16" width="16" src="{% static 'img/notes.png' %}" />
-                        {% endif %}
-
-                        {#--name--#}
-                        <strong style="margin-right:14px;">{{sfx.name}}</strong>
-                        <br/>
-
-                        {#--description--#}
-                        <small>{% autoescape off %}{{sfx.description|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
-                        {% comment %}
-                        <br/>
-                        <small>{{sfx.description|striptags|truncatewords:42}}</small>
-                        <br/>
-                        <small>{{sfx.description|truncatewords:15}}</small>
-                        {% endcomment %}
-                    </a>
-
-                {% endfor %}
-
-            </div>
-        </div>
-
         {#--right side details--#}
-        <div class="col-xs-12 col-sm-6 col-md-8 full-height">
-          <div class="full-height" style="overflow-y:auto;">
+        <div class="col-xs-12 col-sm-push-6 col-sm-6 col-md-8 col-md-push-4 full-height">
+          <div class="full-height" style="overflow-y:auto; margin-bottom:16px;">
             <div class="x-sfx x-item-form">
 
                 {% if selected_sfx %}
@@ -129,6 +84,7 @@
 
 			            </div>
 
+                        <div class="visible-xs visible-sm"><br/> <br/> <br/></div>
 
                         {#--model form content--#}
                         {% crispy form form.helper %}
@@ -143,6 +99,51 @@
                 {% endif %}
             </div>
           </div>
+        </div>
+
+        {#--left side list--#}
+        <div class="col-xs-12 col-sm-pull-6 col-sm-6 col-md-4 col-md-pull-8 full-height">
+            <div class="list-group full-height" style="overflow-y:auto">
+
+                {% for sfx in sfxs %}
+			
+                    <a style="padding:8px" href="/sfx/{{sfx.pk}}"
+                        {% if sfx == selected_sfx %} 
+                            class="x-sfx list-group-item active" id="selected_scope"
+                        {% else %} 
+                            class="x-sfx list-group-item"
+                        {% endif %}
+                        >
+
+                        {#--tag images--#}
+                        <div class="pull-right" style="margin-right:14px;">
+                            {% for image in sfx.active_tag_images %}
+                                <img style="margin-right:-14px;" src="{% static image %}" />
+                            {% endfor %}
+                        </div>
+
+                        {#--note--#}
+                        {% if sfx.note %}
+                            <img style="margin-left:-4px; margin-top:-4px; " height="16" width="16" src="{% static 'img/note.png' %}" />
+                        {% endif %}
+
+                        {#--name--#}
+                        <strong style="margin-right:14px;">{{sfx.name}}</strong>
+                        <br/>
+
+                        {#--description--#}
+                        <small>{% autoescape off %}{{sfx.description|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
+                        {% comment %}
+                        <br/>
+                        <small>{{sfx.description|striptags|truncatewords:42}}</small>
+                        <br/>
+                        <small>{{sfx.description|truncatewords:15}}</small>
+                        {% endcomment %}
+                    </a>
+
+                {% endfor %}
+
+            </div>
         </div>
 
     </div> <!--row-->
@@ -197,7 +198,7 @@
         <a href="/sfx/0" role="button" 
             class="btn btn-default navbar-btn" style="padding:4px" 
             >
-            <img height="32" width="32" src="{% static 'img/files.png' %}" />
+            <img src="{% static 'img/new.png' %}" />
             <br />
             <small>New</small>
         </a>

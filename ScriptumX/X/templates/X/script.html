@@ -20,8 +20,82 @@
 
     <div class="row full-height">
 
+        {#--right side details--#}
+        <div class="col-xs-12 col-sm-push-6 col-sm-6 full-height">
+          <div class="full-height" style="overflow-y:auto; margin-bottom:16px;">
+            <div class="x-script x-item-form">
+
+                {% if selected_scene %}
+
+                    <form class="form-horizontal" method="post">
+
+                        {% if selected_scene.note %}
+                            <div class="pull-left" style="max-width:12%;">
+                                <img src="{% static 'img/note.png' %}" /><br/>
+                                <small>{{ selected_scene.note.author }}<br/>
+                                {{ selected_scene.note.created|date:"Y-m-d H:i" }}</small>
+                            </div>
+                            {% crispy formNote formNote.helper %}
+                            <hr/>
+                        {% endif %}
+
+                        <div class="pull-left">
+                            <button style="padding:4px;" type="submit" name="btn_save" value="x" class="btn btn-success btn-xs" formmethod="post">
+                                <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
+                            </button  >
+
+                            {% if not selected_scene.note %}
+                                <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
+                                    <img height="32" width="32" src="{% static 'img/note.png' %}" /><br /><small>Note</small>
+                                </button  >
+                            {% endif %}
+                        </div>
+                
+                        <div class="pull-right">
+                            <button style="padding:4px;" type="reset" class="btn btn-default btn-xs" formmethod="post">
+                                <img height="32" width="32" src="{% static 'img/reset.png' %}" /><br /><small>Reset</small>
+                            </button  >
+
+                            <div class="btn-group" role="group">
+                                <button style="padding:4px;" type="button" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown">
+                                    <img height="32" width="32" src="{% static 'img/delete.png' %}" /><br />
+	                                <small>Delete</small>
+	                            <!--<span class="caret"></span>-->
+                                </button>
+                                <ul class="dropdown-menu pull-right" style="margin-left:-100px;">
+	                                <li><center>Sure</center></li>
+	                                <li><center>to</center></li>
+	                                <li><center>delete?</center></li>
+	                                <li role="separator" class="divider"></li>
+	                                <li><center>
+                                        <button style="padding:4px; margin-top:0px;" type="submit" name="btn_delete" value="x" class="btn btn-danger btn-xs" formmethod="post">
+                                        <img height="16" width="16" src="{% static 'img/delete.png' %}" /> Delete!
+                                        </button  >
+                                    </center></li>
+                                </ul>
+                            </div>
+
+                        </div>
+
+                        <div class="visible-xs visible-sm"><br/> <br/> <br/></div>
+
+                        {#--model form content--#}
+                        {% crispy form form.helper %}
+         
+                    </form>
+ 
+                {% else %}
+
+                  Scenes: {{ scenes.count }}
+		          <br />
+
+                {% endif %}
+            </div>
+          </div>
+        </div>
+
         {#--left side list--#}
-        <div class="col-xs-12 col-sm-6 full-height">
+        <div class="col-xs-12 col-sm-pull-6 col-sm-6 full-height">
             <div class="list-group full-height" style="padding:4px; overflow-y:auto; background-color:#333;">
 
                 {% for scene in scenes %}
@@ -113,77 +187,6 @@
 
             </div>
 
-        </div>
-
-        <div class="col-xs-12 col-sm-6 full-height">
-          <div class="full-height" style="overflow-y:auto;">
-            <div class="x-script x-item-form">
-
-                {% if selected_scene %}
-
-                    <form class="form-horizontal" method="post">
-
-                        {% if selected_scene.note %}
-                            <div class="pull-left" style="max-width:12%;">
-                                <img src="{% static 'img/note.png' %}" /><br/>
-                                <small>{{ selected_scene.note.author }}<br/>
-                                {{ selected_scene.note.created|date:"Y-m-d H:i" }}</small>
-                            </div>
-                            {% crispy formNote formNote.helper %}
-                            <hr/>
-                        {% endif %}
-
-                        <div class="pull-left">
-                            <button style="padding:4px;" type="submit" name="btn_save" value="x" class="btn btn-success btn-xs" formmethod="post">
-                                <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
-                            </button  >
-
-                            {% if not selected_scene.note %}
-                                <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
-                                    <img height="32" width="32" src="{% static 'img/note.png' %}" /><br /><small>Note</small>
-                                </button  >
-                            {% endif %}
-                        </div>
-                
-                        <div class="pull-right">
-                            <button style="padding:4px;" type="reset" class="btn btn-default btn-xs" formmethod="post">
-                                <img height="32" width="32" src="{% static 'img/reset.png' %}" /><br /><small>Reset</small>
-                            </button  >
-
-                            <div class="btn-group" role="group">
-                                <button style="padding:4px;" type="button" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    <img height="32" width="32" src="{% static 'img/delete.png' %}" /><br />
-	                                <small>Delete</small>
-	                            <!--<span class="caret"></span>-->
-                                </button>
-                                <ul class="dropdown-menu pull-right" style="margin-left:-100px;">
-	                                <li><center>Sure</center></li>
-	                                <li><center>to</center></li>
-	                                <li><center>delete?</center></li>
-	                                <li role="separator" class="divider"></li>
-	                                <li><center>
-                                        <button style="padding:4px; margin-top:0px;" type="submit" name="btn_delete" value="x" class="btn btn-danger btn-xs" formmethod="post">
-                                        <img height="16" width="16" src="{% static 'img/delete.png' %}" /> Delete!
-                                        </button  >
-                                    </center></li>
-                                </ul>
-                            </div>
-
-                        </div>
-
-
-                        {% crispy form form.helper %}
-         
-                    </form>
- 
-                {% else %}
-
-                  Scenes: {{ scenes.count }}
-		          <br />
-
-                {% endif %}
-            </div>
-          </div>
         </div>
 
     </div> <!--row-->

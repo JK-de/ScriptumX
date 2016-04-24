@@ -1,0 +1,282 @@
+﻿{% extends "X/layout_X.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{############################################################################}
+
+{% block head %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'X/css/bootstrap-slider.css' %}" media="all" />
+<link rel="stylesheet" type="text/css" href="{% static 'X/css/x.css' %}" media="all" />
+<script src="{% static 'X/scripts/bootstrap-slider.js' %}"></script>
+
+{% endblock %}
+
+{############################################################################}
+
+{% block content %}
+
+<div class="container-fluid x-time x-back">
+
+    <div class="row full-height">
+
+        {#--right side details--#}
+        <div class="col-xs-12 col-sm-push-6 col-sm-6 col-md-8 col-md-push-4 full-height">
+          <div class="full-height" style="overflow-y:auto; margin-bottom:16px;">
+            <div class="x-time x-item-form">
+
+                {% if selected_time %}
+
+
+                    <form class="form-horizontal" method="post">
+
+                        {#--note--#}
+                        {% if selected_time.note %}
+                            <div class="pull-left" style="max-width:12%;">
+                                <img src="{% static 'img/note.png' %}" /><br/>
+                                <small>{{ selected_time.note.author }}<br/>
+                                {{ selected_time.note.created|date:"Y-m-d H:i" }}</small>
+                            </div>
+                            {% crispy formNote formNote.helper %}
+                            <hr/>
+                        {% endif %}
+
+                        {#--buttons--#}
+                        <div class="pull-left">
+                        
+                            <button style="padding:4px;" type="submit" name="btn_save" value="x" class="btn btn-success btn-xs" formmethod="post">
+                            <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
+                            </button  >
+
+                            {% if not selected_time.note %}
+                            <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
+                            <img height="32" width="32" src="{% static 'img/note.png' %}" /><br /><small>Note</small>
+                            </button  >
+                            {% endif %}
+
+                        </div>
+                
+                        <div class="pull-right">
+
+                            <button style="padding:4px;" type="reset" class="btn btn-default btn-xs" formmethod="post">
+                            <img height="32" width="32" src="{% static 'img/reset.png' %}" /><br /><small>Reset</small>
+                            </button  >
+
+
+                            <div class="btn-group" role="group">
+                                <button style="padding:4px;" type="button" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown">
+                                <img height="32" width="32" src="{% static 'img/delete.png' %}" /><br />
+	                                <small>Delete</small>
+	                                <!--<span class="caret"></span>-->
+                                </button>
+                                <ul class="dropdown-menu pull-right" style="margin-left:-100px;">
+	                                <li><center>Sure</center></li>
+	                                <li><center>to</center></li>
+	                                <li><center>delete?</center></li>
+	                                <li role="separator" class="divider"></li>
+	                                <li><center>
+                                        <button style="padding:4px; margin-top:0px;" type="submit" name="btn_delete" value="x" class="btn btn-danger btn-xs" formmethod="post">
+                                        <img height="16" width="16" src="{% static 'img/delete.png' %}" /> Delete!
+                                        </button  >
+                                    </center></li>
+                                </ul>
+                            </div>
+
+			            </div>
+
+                        <div class="visible-xs visible-sm"><br/> <br/> <br/></div>
+
+                        {#--model form content--#}
+                        {% crispy form form.helper %}
+         
+                    </form>
+
+                {% else %}
+
+                    Times: {{ times.count }}
+                    <br />
+
+                {% endif %}
+            </div>
+          </div>
+        </div>
+
+        {#--left side list--#}
+        <div class="col-xs-12 col-sm-pull-6 col-sm-6 col-md-4 col-md-pull-8 full-height">
+            <div class="list-group full-height" style="overflow-y:auto">
+
+                {% for time in times %}
+			
+                    <a style="padding:8px" href="/time/{{time.pk}}"
+                        {% if time == selected_time %} 
+                            class="x-time list-group-item active" id="selected_scope"
+                        {% else %} 
+                            class="x-time list-group-item"
+                        {% endif %}
+                        >
+
+                        {#--tag images--#}
+                        <div class="pull-right" style="margin-right:14px;">
+                            {% for image in time.active_tag_images %}
+                                <img style="margin-right:-14px;" src="{% static image %}" />
+                            {% endfor %}
+                        </div>
+
+                        {#--note--#}
+                        {% if time.note %}
+                            <img style="margin-left:-4px; margin-top:-4px; " height="16" width="16" src="{% static 'img/note.png' %}" />
+                        {% endif %}
+
+                        {#--name--#}
+                        <strong style="margin-right:14px;">{{time.name}}</strong>
+                        <br/>
+
+                        {#--description--#}
+                        <small>{% autoescape off %}{{time.description|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
+                        {% comment %}
+                        <br/>
+                        <small>{{time.description|striptags|truncatewords:42}}</small>
+                        <br/>
+                        <small>{{time.description|truncatewords:15}}</small>
+                        {% endcomment %}
+                    </a>
+
+                {% endfor %}
+
+            </div>
+        </div>
+
+
+    </div> <!--row-->
+
+</div>
+
+{% endblock %}
+
+{############################################################################}
+
+{% block toolbar %}
+{% load staticfiles %}
+
+<div style="padding:0px; " class="navbar-collapse collapse">
+
+<div class="nav container-fixed-top x-time x-toolbar" style="margin-top:0">
+
+    <div class="nav navbar-header">
+        <a style="margin:4px; padding:0;" class="navbar-text" href="/time">
+            <img src="{% static 'img/tab/time-64.png' %}" />
+        </a>
+    </div>
+
+    <div class="btn-group-vertical" role="group" style="margin-left:16px">
+        <a href="/time/tag/all" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/tab/common/selectall.png' %}" /></a>
+        <a href="/time/tag/none" style="padding:4px;margin:0" role="button" class="btn btn-default navbar-btn"><img height="16" width="16" src="{% static 'img/tab/common/selectnone.png' %}" /></a>
+    </div>
+
+    <div class="btn-group btn-group-xs" role="group" style="margin-left:4px">
+
+				
+        {% for tag in tag_list %}
+            <a href="/time/tag/{{tag.idx}}" role="button" 
+                   
+                {% if tag.active %}
+                    class="btn btn-primary navbar-btn" style="padding:4px" 
+                {% else %}
+                    class="btn btn-default navbar-btn" style="padding:4px;"
+                {% endif %}
+            >
+            <img src="{% static tag.img %}" />
+            <br />
+            <font size="1">{{tag.name}}</font></a>
+        {% endfor %}
+
+                
+				
+	</div>
+
+    {#--button new--#}
+    <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
+        <a href="/time/0" role="button" 
+            class="btn btn-default navbar-btn" style="padding:4px" 
+            >
+            <img src="{% static 'img/new.png' %}" />
+            <br />
+            <small>New</small>
+        </a>
+    </div>
+
+
+	<div class="navbar-right" role="group" style="margin-right:16px;">
+
+		<div class="btn-group btn-group-xs" role="group" style="">
+			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+				<img height="32" width="32" src="{% static 'img/report.png' %}" /><br />
+				<small>Item</small>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+			</ul>
+		</div>
+
+		<div class="btn-group btn-group-xs" role="group" style="">
+			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+				<img height="32" width="32" src="{% static 'img/report.png' %}" /><br />
+				<small>List</small>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="/report/L/simple_time" target="_blank">Simple List by Tag</a></li>
+				<li><a href="/report/L/grouped_time" target="_blank">Grouped List by Tag</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+			</ul>
+		</div>
+		
+		<div class="btn-group btn-group-xs" role="group" style="">
+			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+				<img height="32" width="32" src="{% static 'img/matrix.png' %}" /><br />
+				<small>Matrix</small>
+				<span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li><a href="/report/M/scene_time" target="_blank">Scene vs Time</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li role="separator" class="divider"></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+				<li><a href="#">*TEST*</a></li>
+			</ul>
+		</div>
+
+	</div>
+
+
+</div>
+</div>
+{% endblock %}
+
+{############################################################################}
+
+{% block mobile-toolbar %}
+    
+    <a style="padding:8px; margin:0px" class="navbar-text" href="/time"><img src="{% static 'img/tab/time-24.png' %}" /></a>
+
+    <a href="/time/0" role="button" class="btn btn-default navbar-btn btn-xs" style="margin:0; padding:4px;"><small>New</small></a>
+
+{% endblock %}
+                
+{############################################################################}
