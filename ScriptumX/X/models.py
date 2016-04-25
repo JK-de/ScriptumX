@@ -197,6 +197,7 @@ class Gadget(BaseModel):
     #Props
     pervasive = models.BooleanField(default=False)
     progress = models.PositiveSmallIntegerField(default=0)
+    costs = models.IntegerField(default=0)
     # Many to Many
 
 ###############################################################################
@@ -205,6 +206,7 @@ class Audio(BaseModel):
     group_id = 'audio'
     #Props
     progress = models.PositiveSmallIntegerField(default=0)
+    costs = models.IntegerField(default=0)
     # Many to Many
 
 ###############################################################################
@@ -213,6 +215,7 @@ class SFX(BaseModel):
     group_id = 'sfx'
     #Props
     progress = models.PositiveSmallIntegerField(default=0)
+    costs = models.IntegerField(default=0)
     # Many to Many
 
 ###############################################################################
@@ -223,6 +226,7 @@ class Person(BaseModel):
     pervasive = models.BooleanField(default=False)
     contact = models.TextField(blank=True)
     email = models.EmailField(blank=True)
+    costs = models.IntegerField(default=0)
     # Many to Many
 
 ###############################################################################
@@ -240,7 +244,12 @@ class Role(BaseModel):
 
 class Time(BaseModel):
     group_id = 'time'
+    class Meta:
+        # model metadata options go here
+        ordering = ['day', 'hour']
+
     #Props
+    day = models.IntegerField(default=1)
     hour = models.IntegerField(default=12)
     weather = models.CharField(max_length=300, blank=True)
     ambient = models.CharField(max_length=300, blank=True)
@@ -253,6 +262,7 @@ class Time(BaseModel):
 class Location(BaseModel):
     group_id = 'location'
     #Props
+    costs = models.IntegerField(default=0)
     # Many to Many
     persons = models.ManyToManyField(Person, blank=True)
     gadgets = models.ManyToManyField(Gadget, blank=True)
@@ -297,17 +307,16 @@ class Scene(BaseModel):
     progress_post = models.PositiveSmallIntegerField(default=0)
     # One to Many
     script = models.ForeignKey(Script)   # for internal relations only
-    set_location = models.ForeignKey(Location, null=True, blank=True)
+    story_location = models.ForeignKey(Location, null=True, blank=True)
+    story_time = models.ForeignKey(Time, null=True, blank=True)
     # Many to Many
-    #roles = models.ManyToManyField(Role, blank=True)
     persons = models.ManyToManyField(Person, blank=True)
     gadgets = models.ManyToManyField(Gadget, blank=True)
     audios = models.ManyToManyField(Audio, blank=True)
     sfxs = models.ManyToManyField(SFX, blank=True)
 
     def __init__(self, *args, **kwargs):
-        #self.project = project
-        self.setAllTags(True)   #JKJKJK
+        #self.setAllTags(True)   #JKJKJK
         super(Scene, self).__init__(*args, **kwargs)
 
 ###############################################################################

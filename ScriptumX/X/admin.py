@@ -37,8 +37,8 @@ class GadgetAdmin(admin.ModelAdmin):
     """Definition of the Gadget editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
-        ('_Prop', {'fields': ['progress', 'pervasive']}),
+        ('_Base', {'fields': ['abstract', 'description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
+        ('_Prop', {'fields': ['progress', 'pervasive', 'costs']}),
     ]
     #inlines = [ChoiceInline]
     list_display = ('name', 'description')
@@ -52,8 +52,8 @@ class AudioAdmin(admin.ModelAdmin):
     """Definition of the Audio editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
-        ('_Prop', {'fields': ['progress']}),
+        ('_Base', {'fields': ['abstract', 'description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
+        ('_Prop', {'fields': ['progress', 'costs']}),
     ]
     #inlines = [ChoiceInline]
     list_display = ('name', 'description')
@@ -67,8 +67,8 @@ class SfxAdmin(admin.ModelAdmin):
     """Definition of the SFX editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
-        ('_Prop', {'fields': ['progress']}),
+        ('_Base', {'fields': ['abstract', 'description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
+        ('_Prop', {'fields': ['progress', 'costs']}),
     ]
     #inlines = [ChoiceInline]
     list_display = ('name', 'description')
@@ -82,8 +82,8 @@ class PersonAdmin(admin.ModelAdmin):
     """Definition of the Person editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
-        ('_Prop', {'fields': ['contact', 'email', 'pervasive']}),
+        ('_Base', {'fields': ['abstract', 'description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
+        ('_Prop', {'fields': ['contact', 'email', 'pervasive', 'costs']}),
     ]
     #inlines = [ChoiceInline]
     list_display = ('name', 'description')
@@ -97,7 +97,7 @@ class RoleAdmin(admin.ModelAdmin):
     """Definition of the Role editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
+        ('_Base', {'fields': ['abstract', 'description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
         ('_Prop', {'fields': ['color']}),
         ('_12M', {'fields': ['actor']}),
         ('_M2M', {'fields': ['gadgets']}),
@@ -110,12 +110,27 @@ class RoleAdmin(admin.ModelAdmin):
 
 admin.site.register(Role, RoleAdmin)
 
+class TimeAdmin(admin.ModelAdmin):
+    """Definition of the Time editor."""
+    fieldsets = [
+        (None, {'fields': ['name']}),
+        ('_Base', {'fields': ['abstract', 'description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
+        ('_M2M', {'fields': ['persons', 'gadgets']}),
+    ]
+    #inlines = [ChoiceInline]
+    list_display = ('name', 'description')
+    list_filter = ['project']
+    search_fields = ['name']
+    #date_hierarchy = 'pub_date'
+
+admin.site.register(Time, TimeAdmin)
+
 class LocationAdmin(admin.ModelAdmin):
     """Definition of the Location editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
-        ('_M2M', {'fields': ['persons', 'gadgets']}),
+        ('_Base', {'fields': ['abstract', 'description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
+        ('_M2M', {'fields': ['persons', 'gadgets', 'costs']}),
     ]
     #inlines = [ChoiceInline]
     list_display = ('name', 'description')
@@ -145,9 +160,9 @@ class SceneAdmin(admin.ModelAdmin):
     """Definition of the Scene editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
-        ('_Prop', {'fields': ['order', 'short', 'abstract', 'indentation', 'color', 'duration', 'progress_script', 'progress_pre', 'progress_shot', 'progress_post']}),
-        ('_12M', {'fields': ['script', 'set_location']}),
+        ('_Base', {'fields': ['abstract', 'description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
+        ('_Prop', {'fields': ['order', 'short', 'indentation', 'color', 'duration', 'progress_script', 'progress_pre', 'progress_shot', 'progress_post']}),
+        ('_12M', {'fields': ['script', 'story_location', 'story_time']}),
         ('_M2M', {'fields': ['persons', 'gadgets', 'audios', 'sfxs']}),
     ]
     #inlines = [ChoiceInline]
@@ -179,7 +194,7 @@ class AppointmentAdmin(admin.ModelAdmin):
     """Definition of the Appointment editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Base', {'fields': ['description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
+        ('_Base', {'fields': ['abstract', 'description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
         ('_Prop', {'fields': ['time_all', 'duration_all']}),
         ('_12M', {'fields': ['meeting_point']}),
         ('_M2M', {'fields': ['persons', 'gadgets']}),

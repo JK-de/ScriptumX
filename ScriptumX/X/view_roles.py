@@ -46,6 +46,7 @@ class RoleForm(forms.ModelForm):
             'tag4',
             'tag5',
             'name',
+            'abstract',
             'description',
             'color',
             'actor',
@@ -72,8 +73,8 @@ class RoleForm(forms.ModelForm):
                 css_class='col-sm-offset-2 checkbox-tags-group', 
                 ),
              
-            #Field('name', style="width:30em; min-width:10em; max-width:100%; "),
             Field('name'),
+            Field('abstract', rows=1),
 
             Field('actor', css_class='chosen-select-single'),
 
@@ -81,17 +82,14 @@ class RoleForm(forms.ModelForm):
 
             Field('color'),
 
-            Field('description', rows=10),
-
+            Field('description', rows=12),
             )
+
         for field_name in self.fields:
             if field_name[:3] == 'tag':
                 field = self.fields.get(field_name)
                 #field.widget.attrs['placeholder'] = field.label
                 field.label = ''
-        #self.fields['tag1'].label = ''
-        #self.fields['tag2'].label = ''
-        #self.fields['tag3'].label = ''
 
 
     def clean_name(self):

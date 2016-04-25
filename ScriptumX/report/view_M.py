@@ -136,8 +136,8 @@ class M_ScenePersonView(M_BaseView):
                         if col:
                             m.cells[row][col].text = "&#x26AA;"
 
-            # search for linked persons over scene -> set_location.persons
-            linked_location = scene.set_location
+            # search for linked persons over scene -> story_location.persons
+            linked_location = scene.story_location
             if linked_location:
                 linked_persons = linked_location.persons.all()
                 for item in linked_persons:
@@ -193,8 +193,8 @@ class M_SceneGadgetView(M_BaseView):
                         if col:
                             m.cells[row][col].text = "&#x26AA;"
 
-            # search for linked gadgets over scene -> set_location.gadgets
-            linked_location = scene.set_location
+            # search for linked gadgets over scene -> story_location.gadgets
+            linked_location = scene.story_location
             if linked_location:
                 linked_gadgets = linked_location.gadgets.all()
                 for item in linked_gadgets:
@@ -314,7 +314,7 @@ class M_SceneLocationView(M_BaseView):
         for scene in scenes:
             row = m.getRowIndex(scene)
 
-            linked_location = scene.set_location
+            linked_location = scene.story_location
             if linked_location:
                 col = m.getColIndex(linked_location)
                 if col:

@@ -53,9 +53,11 @@ class GadgetForm(forms.ModelForm):
             'tag10',
             'tag11',
             'name',
+            'abstract',
             'description',
             'progress',
             'pervasive',
+            'costs',
             ]
 
     def __init__(self, *args, **kwargs):
@@ -76,70 +78,38 @@ class GadgetForm(forms.ModelForm):
                 #Submit('delete', 'Del', css_class='btn btn-danger'),
             #),
             Div(
-                Div(FormSymbol(gadget_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(gadget_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(gadget_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(gadget_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(gadget_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(gadget_tag_list[6]['img']),  Field('tag6'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(gadget_tag_list[7]['img']),  Field('tag7'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(gadget_tag_list[8]['img']),  Field('tag8'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(gadget_tag_list[9]['img']),  Field('tag9'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(gadget_tag_list[10]['img']), Field('tag10'), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(gadget_tag_list[11]['img']), Field('tag11'), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                css_class='col-sm-offset-2', style="margin-top:0px;", 
+                Div(FormSymbol(gadget_tag_list[1]['img']),  Field('tag1'),  title=gadget_tag_list[1]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(gadget_tag_list[2]['img']),  Field('tag2'),  title=gadget_tag_list[2]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(gadget_tag_list[3]['img']),  Field('tag3'),  title=gadget_tag_list[3]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(gadget_tag_list[4]['img']),  Field('tag4'),  title=gadget_tag_list[4]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(gadget_tag_list[5]['img']),  Field('tag5'),  title=gadget_tag_list[5]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(gadget_tag_list[6]['img']),  Field('tag6'),  title=gadget_tag_list[6]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(gadget_tag_list[7]['img']),  Field('tag7'),  title=gadget_tag_list[7]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(gadget_tag_list[8]['img']),  Field('tag8'),  title=gadget_tag_list[8]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(gadget_tag_list[9]['img']),  Field('tag9'),  title=gadget_tag_list[9]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(gadget_tag_list[10]['img']), Field('tag10'), title=gadget_tag_list[10]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(gadget_tag_list[11]['img']), Field('tag11'), title=gadget_tag_list[11]['name'], css_class='checkbox-inline checkbox-tags'),
+                css_class='col-sm-offset-2 checkbox-tags-group', 
             ),
-            #Fieldset(
-                #'first arg is the legend of the fieldset',
-            Field('name', style="width:30em; min-width:10em; max-width:100%; "),
+
+            Field('name'),
+            Field('abstract', rows=1),
 
             Field('pervasive'),
 
-                #Field('progress', template="./templates/X/tmpl_slider_progress.html"),
-                #Field('progress', template="D:/X/ScriptumX/X/templates/X/tmpl_slider_progress.html"),
+            #TODO : https://github.com/seiyria/bootstrap-slider
             Field('progress', template="X/tmpl_slider_progress.html"),
 
-            Field('description', style="max-width:100%; min-width:100%;", rows=10),
+            Field('description', rows=12),
 
-#Div(  data-provide="slider", data-slider-min="0", data-slider-max="100", data-slider-step="1"
-#                Field('progress',  data-provide="slider", data-slider-min="0", data-slider-max="100", data-slider-step="1" ),
-#),
-                ###Field('progress'),
-
-                ###Field('progress',  css_class='jk' ),
-
-#                HTML(
-#'<div class="form-group">'
-#'	<label for="inputName" class="col-sm-2 control-label">My-Progress</label>                                                          '
-#'	<div class="col-sm-10">                                                                                                              '
-#'		<input type="number" class="form-control" id="inputName" name="progress" placeholder="Lorem" value="{{form.progress.value}}"     '
-#'            data-provide="slider"                                                                                                       '
-#'            data-slider-min="1"                                                                                                         '
-#'            data-slider-max="100"                                                                                                       '
-#'            data-slider-step="1"                                                                                                        '
-#'            data-slider-value="{{form.progress.value}}"                                                                                 '
-#'            data-slider-tooltip="hide"                                                                                                  '
-#'            >                                                                                                                           '
-#'	</div>                                                                                                                               '
-#'</div>                                                                                                                                  '
-#                ),
-
-                #Field('progress'),
-
-
-                #Div(
-                #    'progress',
-                #    template="./templates/X/tmpl_slider_progress.html"
-                #),
-
-                #TODO : http://django-floppyforms.readthedocs.org/en/latest/examples.html#a-slider
-                #TODO : https://github.com/seiyria/bootstrap-slider
-            #),
-            
-            #InlineCheckboxes('tag0','tag1',),
-            #StrictButton('Sign in', css_class='btn-default'),
+            Field('costs'),
         )
-        #self.helper[1:3].wrap_together(Div, inline=True, css_class="checkbox-inline")
+
+        for field_name in self.fields:
+            if field_name[:3] == 'tag':
+                field = self.fields.get(field_name)
+                field.label = ''
+
 
     def clean_name(self):
       name = self.cleaned_data.get('name')

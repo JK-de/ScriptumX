@@ -46,8 +46,8 @@ class SceneForm(forms.ModelForm):
             'tag4',
             'tag5',
             'name',
-            'short',
             'abstract',
+            'short',
             'description',
             'indentation',
             'color',
@@ -56,7 +56,8 @@ class SceneForm(forms.ModelForm):
             'progress_pre',
             'progress_shot',
             'progress_post',
-            'set_location',
+            'story_location',
+            'story_time',
             'persons',
             'gadgets',
             'audios',
@@ -66,11 +67,6 @@ class SceneForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
-        #self.fields['persons'].queryset = Person.objects.filter(project=env.project)
-        #self.fields['gadgets'].queryset = Gadget.objects.filter(project=env.project)
-        #self.fields['audios'].queryset = Audio.objects.filter(project=env.project)
-        #self.fields['sfxs'].queryset = SFX.objects.filter(project=env.project)
 
         self.helper = FormHelper()
         self.helper.form_class = 'blueForms'
@@ -82,52 +78,27 @@ class SceneForm(forms.ModelForm):
         self.helper.layout = Layout(
 
             Div(
-                Div(FormSymbol(scene_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(scene_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(scene_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(scene_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(scene_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                css_class='col-sm-offset-2', style="margin-top:0px;", 
+                Div(FormSymbol(scene_tag_list[1]['img']),  Field('tag1'),  title=scene_tag_list[1]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(scene_tag_list[2]['img']),  Field('tag2'),  title=scene_tag_list[2]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(scene_tag_list[3]['img']),  Field('tag3'),  title=scene_tag_list[3]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(scene_tag_list[4]['img']),  Field('tag4'),  title=scene_tag_list[4]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(scene_tag_list[5]['img']),  Field('tag5'),  title=scene_tag_list[5]['name'], css_class='checkbox-inline checkbox-tags'),
+                css_class='col-sm-offset-2 checkbox-tags-group', 
             ),
-#                MultiField( 'TEXT1', 
-#                    #Field('name', field_class='col-sm-4', style="max-width:30%; min-width:3%;", ), 
-#                    #Field('short', field_class='col-sm-1',style="max-width:10%; min-width:1%;", ),
-#                    Field('name', field_class='col-sm-4', ), 
-#                    Field('short', field_class='col-sm-3',),
-#                    #css_class='row',
-#                    ),
-##field_class = ‘’
-#Layout(
-#    Column(
-#        'name',
-#        'short',
-        
-#    )
-#),
-#Layout(
-#    Column(
-#                    Field('name', css_class='col-sm-4', ), 
-#                    Field('short', css_class='col-sm-1', ),
-                  
-#    )
-#),
-#    Column(
-#                    Field('name', css_class='col-sm-4', ), 
-#                    Field('short', css_class='col-sm-1', ),
-             
-#    ),
-            Field('name', style="max-width:30em; min-width:30em;" ), 
+
+            Field('name'),
+            Field('abstract', rows=1),
+
             Field('short', style="max-width:5em; min-width:5em;", ),
             Field('duration', style="max-width:10em; min-width:10em;", ),
 
-            Field('abstract', style="max-width:100%; min-width:100%;", rows=2),
+            Field('story_time', css_class='chosen-select-single'),
+            Field('story_location', css_class='chosen-select-single'),
 
-            Field('set_location', css_class='chosen-select'),
-
-            Field('persons', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
-            Field('gadgets', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
-            Field('audios', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
-            Field('sfxs', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
+            Field('persons', css_class='chosen-select-multi'),
+            Field('gadgets', css_class='chosen-select-multi'),
+            Field('audios', css_class='chosen-select-multi'),
+            Field('sfxs', css_class='chosen-select-multi'),
 
             Field('indentation', template="X/tmpl_slider_indentation.html"),
 
@@ -139,9 +110,16 @@ class SceneForm(forms.ModelForm):
             # http://jscolor.com/examples/
             Field('color', style="width:10%;", css_class="jscolor {width:243, height:150, position:'right', borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}"),
 
-            Field('description', style="max-width:100%; min-width:100%;", rows=10),
-
+            Field('description', rows=12),
         )
+
+        #self.fields['story_location'].label = 'Set'
+        #self.fields['story_time'].label = 'Time'
+        for field_name in self.fields:
+            if field_name[:3] == 'tag':
+                field = self.fields.get(field_name)
+                field.label = ''
+
 
     def clean_name(self):
       name = self.cleaned_data.get('name')
@@ -223,7 +201,8 @@ def script(request, scene_id, new_order=0):
         formItem = SceneForm(instance=selected_scene)
         formNote = NoteForm(instance=selected_note)
 
-    formItem.fields['set_location'].queryset = Location.objects.filter(project=env.project)
+    formItem.fields['story_location'].queryset = Location.objects.filter(project=env.project)
+    formItem.fields['story_time'].queryset = Time.objects.filter(project=env.project)
     formItem.fields['persons'].queryset = Person.objects.filter(project=env.project)
     formItem.fields['gadgets'].queryset = Gadget.objects.filter(project=env.project)
     formItem.fields['audios'].queryset = Audio.objects.filter(project=env.project)

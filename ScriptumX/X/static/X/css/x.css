@@ -44,6 +44,7 @@
 .textinput {
     max-width: 100%;
     min-width: 10em;
+    width: 20em;
 }
 
 .textarea {
@@ -59,7 +60,7 @@
 
 .checkbox-tags {
     padding: 0; 
-    margin: -8px;
+    margin: -12px;
 }
 
 .checkbox-tags-group {

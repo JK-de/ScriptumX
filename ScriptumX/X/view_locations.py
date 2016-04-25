@@ -46,9 +46,11 @@ class LocationForm(forms.ModelForm):
             'tag4',
             'tag5',
             'name',
+            'abstract',
             'description',
             'persons',
             'gadgets',
+            'costs',
             ]
 
     def __init__(self, *args, **kwargs):
@@ -64,22 +66,30 @@ class LocationForm(forms.ModelForm):
         self.helper.layout = Layout(
 
             Div(
-                Div(FormSymbol(location_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(location_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(location_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(location_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(location_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                css_class='col-sm-offset-2', style="margin-top:0px;", 
+                Div(FormSymbol(location_tag_list[1]['img']),  Field('tag1'),  title=location_tag_list[1]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(location_tag_list[2]['img']),  Field('tag2'),  title=location_tag_list[2]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(location_tag_list[3]['img']),  Field('tag3'),  title=location_tag_list[3]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(location_tag_list[4]['img']),  Field('tag4'),  title=location_tag_list[4]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(location_tag_list[5]['img']),  Field('tag5'),  title=location_tag_list[5]['name'], css_class='checkbox-inline checkbox-tags'),
+                css_class='col-sm-offset-2 checkbox-tags-group', 
                 ),
 
-            Field('name', style="width:30em; min-width:30em; max-width:100%; "),
+            Field('name'),
+            Field('abstract', rows=1),
 
-            Field('persons', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
-            Field('gadgets', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
+            Field('persons', css_class='chosen-select-multi'),
+            Field('gadgets', css_class='chosen-select-multi'),
 
-            Field('description', style="max-width:100%; min-width:100%;", rows=10),
+            Field('description', rows=12),
 
+            Field('costs'),
             )
+
+        for field_name in self.fields:
+            if field_name[:3] == 'tag':
+                field = self.fields.get(field_name)
+                field.label = ''
+
 
     def clean_name(self):
       name = self.cleaned_data.get('name')

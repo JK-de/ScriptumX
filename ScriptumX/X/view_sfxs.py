@@ -52,8 +52,10 @@ class SFXForm(forms.ModelForm):
             'tag10',
             'tag11',
             'name',
+            'abstract',
             'description',
             'progress',
+            'costs',
             ]
 
     def __init__(self, *args, **kwargs):
@@ -68,26 +70,35 @@ class SFXForm(forms.ModelForm):
         self.helper.layout = Layout(
 
             Div(
-                Div(FormSymbol(sfx_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(sfx_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(sfx_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(sfx_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(sfx_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(sfx_tag_list[6]['img']),  Field('tag6'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(sfx_tag_list[7]['img']),  Field('tag7'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(sfx_tag_list[8]['img']),  Field('tag8'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(sfx_tag_list[9]['img']),  Field('tag9'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(sfx_tag_list[10]['img']), Field('tag10'), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(sfx_tag_list[11]['img']), Field('tag11'), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                css_class='col-sm-offset-2', style="margin-top:0px;", 
+                Div(FormSymbol(sfx_tag_list[1]['img']),  Field('tag1'),  title=sfx_tag_list[1]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(sfx_tag_list[2]['img']),  Field('tag2'),  title=sfx_tag_list[2]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(sfx_tag_list[3]['img']),  Field('tag3'),  title=sfx_tag_list[3]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(sfx_tag_list[4]['img']),  Field('tag4'),  title=sfx_tag_list[4]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(sfx_tag_list[5]['img']),  Field('tag5'),  title=sfx_tag_list[5]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(sfx_tag_list[6]['img']),  Field('tag6'),  title=sfx_tag_list[6]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(sfx_tag_list[7]['img']),  Field('tag7'),  title=sfx_tag_list[7]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(sfx_tag_list[8]['img']),  Field('tag8'),  title=sfx_tag_list[8]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(sfx_tag_list[9]['img']),  Field('tag9'),  title=sfx_tag_list[9]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(sfx_tag_list[10]['img']), Field('tag10'), title=sfx_tag_list[10]['name'], css_class='checkbox-inline checkbox-tags'),
+                Div(FormSymbol(sfx_tag_list[11]['img']), Field('tag11'), title=sfx_tag_list[11]['name'], css_class='checkbox-inline checkbox-tags'),
+                css_class='col-sm-offset-2 checkbox-tags-group', 
                 ),
 
-            Field('name', style="width:30em; min-width:30em; max-width:100%; "),
+            Field('name'),
+            Field('abstract', rows=1),
 
             Field('progress', template="X/tmpl_slider_progress.html"),
 
-            Field('description', style="max-width:100%; min-width:100%;", rows=10),
+            Field('description', rows=12),
+
+            Field('costs'),
             )
+
+        for field_name in self.fields:
+            if field_name[:3] == 'tag':
+                field = self.fields.get(field_name)
+                field.label = ''
+
 
     def clean_name(self):
       name = self.cleaned_data.get('name')
