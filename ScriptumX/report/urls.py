@@ -23,6 +23,7 @@ urlpatterns = [
     # simple List
     url(r'^report/L/simple_role$', L_RoleView.as_view(), name='L_Role'),
     url(r'^report/L/simple_person$', L_PersonView.as_view(), name='L_Person'),
+    url(r'^report/L/simple_time$', L_TimeView.as_view(), name='L_Time'),
     url(r'^report/L/simple_location$', L_LocationView.as_view(), name='L_Location'),
     url(r'^report/L/simple_gadget$', L_GadgetView.as_view(), name='L_Gadget'),
     url(r'^report/L/simple_sfx$', L_SFXView.as_view(), name='L_SFX'),
@@ -32,6 +33,7 @@ urlpatterns = [
     # grouped List
     url(r'^report/L/grouped_role$', L_GroupedRoleView.as_view(), name='L_g_Role'),
     url(r'^report/L/grouped_person$', L_GroupedPersonView.as_view(), name='L_g_Person'),
+    url(r'^report/L/grouped_time$', L_GroupedTimeView.as_view(), name='L_g_Time'),
     url(r'^report/L/grouped_location$', L_GroupedLocationView.as_view(), name='L_g_Location'),
     url(r'^report/L/grouped_gadget$', L_GroupedGadgetView.as_view(), name='L_g_Gadget'),
     url(r'^report/L/grouped_sfx$', L_GroupedSFXView.as_view(), name='L_g_SFX'),
@@ -40,6 +42,7 @@ urlpatterns = [
     # Scene vs X Matrix
     url(r'^report/M/scene_role$', M_SceneRoleView.as_view(), name='M_SceneRole'),
     url(r'^report/M/scene_person$', M_ScenePersonView.as_view(), name='M_ScenePerson'),
+    url(r'^report/M/scene_time$', M_SceneTimeView.as_view(), name='M_SceneTime'),
     url(r'^report/M/scene_location$', M_SceneLocationView.as_view(), name='M_SceneLocation'),
     url(r'^report/M/scene_gadget$', M_SceneGadgetView.as_view(), name='M_SceneGadget'),
     url(r'^report/M/scene_sfx$', M_SceneSFXView.as_view(), name='M_SceneSFX'),

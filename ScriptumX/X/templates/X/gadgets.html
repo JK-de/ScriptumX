@@ -135,14 +135,8 @@
                         <strong style="margin-right:14px;">{{gadget.name}}</strong>
                         <br/>
 
-                        {#--description--#}
-                        <small>{% autoescape off %}{{gadget.description|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
-                        {% comment %}
-                        <br/>
-                        <small>{{gadget.description|striptags|truncatewords:42}}</small>
-                        <br/>
-                        <small>{{gadget.description|truncatewords:15}}</small>
-                        {% endcomment %}
+                        {#--abstract--#}
+                        <small>{% autoescape off %}{{gadget.abstract|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
                     </a>
 
                 {% endfor %}

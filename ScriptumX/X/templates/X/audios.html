@@ -131,14 +131,8 @@
                         <strong style="margin-right:14px;">{{audio.name}}</strong>
                         <br/>
 
-                        {#--description--#}
-                        <small>{% autoescape off %}{{audio.description|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
-                        {% comment %}
-                        <br/>
-                        <small>{{audio.description|striptags|truncatewords:42}}</small>
-                        <br/>
-                        <small>{{audio.description|truncatewords:15}}</small>
-                        {% endcomment %}
+                        {#--abstract--#}
+                        <small>{% autoescape off %}{{audio.abstract|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
                     </a>
 
                 {% endfor %}

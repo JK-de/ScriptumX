@@ -30,6 +30,11 @@ from .view_L import *
 
 ###############################################################################
 
+#http://www.fileformat.info/info/unicode/char/search.htm?q=circle&preview=entity
+M_SYMBOL_PERVASIVE = "&#x26ac;"   # MEDIUM SMALL WHITE CIRCLE
+M_SYMBOL_LINKED_INDIRECT = "&#x26AA;"   # MEDIUM WHITE CIRCLE
+M_SYMBOL_LINKED = "&#x26AB;"   # MEDIUM BLACK CIRCLE
+#◯⊙⊚⊛⊗⦿⭕⦾⚪⚫○●⚬•❍✪➲⌼⎊◌◍◖◗⚇⚉❂❶➀⓵⇴     𝒳𝓧𝓍𝔁   𝒮𝒸𝓇𝒾𝓅𝓉𝓊𝓂𝒳   𝒮𝒳   𝓢𝓧   &#x1d4e7;
 
 ###############################################################################
 
@@ -93,7 +98,7 @@ class M_SceneRoleView(M_BaseView):
                 if sceneitem.role:
                     col = m.getColIndex(sceneitem.role)
                     if col:
-                        m.cells[row][col].text = "&#x26AB;"
+                        m.cells[row][col].text = M_SYMBOL_LINKED
 
         return render(request, self.template_name, {
             'title': self.title,
@@ -119,12 +124,18 @@ class M_ScenePersonView(M_BaseView):
 
         m = M(persons, scenes)
 
-        for person in persons:
-            col = m.getColIndex(person)
-            #m.cells[0][col].background_color = person.color
+        #for person in persons:
+        #    col = m.getColIndex(person)
+        #    #m.cells[0][col].background_color = person.color
 
         for scene in scenes:
             row = m.getRowIndex(scene)
+
+            # mark pervasive gadgets
+            for person in persons:
+                if person.pervasive:
+                    col = m.getColIndex(person)
+                    m.cells[row][col].text = M_SYMBOL_PERVASIVE   # MEDIUM SMALL WHITE CIRCLE
 
             # search for linked persons over scene -> sceneitem -> role.actor
             sceneitems = SceneItem.objects.filter( scene=scene )
@@ -134,7 +145,16 @@ class M_ScenePersonView(M_BaseView):
                     if linked_person:
                         col = m.getColIndex(linked_person)
                         if col:
-                            m.cells[row][col].text = "&#x26AA;"
+                            m.cells[row][col].text = M_SYMBOL_LINKED   # MEDIUM WHITE CIRCLE
+
+            # search for linked persons over scene -> story_time.persons
+            linked_time = scene.story_time
+            if linked_time:
+                linked_persons = linked_time.persons.all()
+                for item in linked_persons:
+                    col = m.getColIndex(item)
+                    if col:
+                        m.cells[row][col].text = M_SYMBOL_LINKED
 
             # search for linked persons over scene -> story_location.persons
             linked_location = scene.story_location
@@ -143,14 +163,14 @@ class M_ScenePersonView(M_BaseView):
                 for item in linked_persons:
                     col = m.getColIndex(item)
                     if col:
-                        m.cells[row][col].text = "&#x26AA;"
+                        m.cells[row][col].text = M_SYMBOL_LINKED
 
             # search for linked gadgets
             linked_persons = scene.persons.all()
             for item in linked_persons:
                 col = m.getColIndex(item)
                 if col:
-                    m.cells[row][col].text = "&#x26AB;"
+                    m.cells[row][col].text = M_SYMBOL_LINKED   # MEDIUM BLACK CIRCLE
 
         return render(request, self.template_name, {
             'title': self.title,
@@ -176,12 +196,18 @@ class M_SceneGadgetView(M_BaseView):
 
         m = M(gadgets, scenes)
 
-        for gadget in gadgets:
-            col = m.getColIndex(gadget)
-            #m.cells[0][col].background_color = gadget.color
+        #for gadget in gadgets:
+        #    col = m.getColIndex(gadget)
+        #    #m.cells[0][col].background_color = gadget.color
 
         for scene in scenes:
             row = m.getRowIndex(scene)
+
+            # mark pervasive gadgets
+            for gadget in gadgets:
+                if gadget.pervasive:
+                    col = m.getColIndex(gadget)
+                    m.cells[row][col].text = M_SYMBOL_PERVASIVE
 
             # search for linked gadgets over scene -> sceneitem -> role
             sceneitems = SceneItem.objects.filter( scene=scene )
@@ -191,7 +217,16 @@ class M_SceneGadgetView(M_BaseView):
                     for item in linked_gadgets:
                         col = m.getColIndex(item)
                         if col:
-                            m.cells[row][col].text = "&#x26AA;"
+                            m.cells[row][col].text = M_SYMBOL_LINKED   # MEDIUM WHITE CIRCLE
+
+            # search for linked gadgets over scene -> story_time.gadgets
+            linked_time = scene.story_location
+            if linked_time:
+                linked_gadgets = linked_time.gadgets.all()
+                for item in linked_gadgets:
+                    col = m.getColIndex(item)
+                    if col:
+                        m.cells[row][col].text = M_SYMBOL_LINKED
 
             # search for linked gadgets over scene -> story_location.gadgets
             linked_location = scene.story_location
@@ -200,14 +235,14 @@ class M_SceneGadgetView(M_BaseView):
                 for item in linked_gadgets:
                     col = m.getColIndex(item)
                     if col:
-                        m.cells[row][col].text = "&#x26AA;"
+                        m.cells[row][col].text = M_SYMBOL_LINKED
 
             # search for linked gadgets
             linked_gadgets = scene.gadgets.all()
             for item in linked_gadgets:
                 col = m.getColIndex(item)
                 if col:
-                    m.cells[row][col].text = "&#x26AB;"
+                    m.cells[row][col].text = M_SYMBOL_LINKED   # MEDIUM BLACK CIRCLE
 
         return render(request, self.template_name, {
             'title': self.title,
@@ -244,7 +279,7 @@ class M_SceneSFXView(M_BaseView):
             for item in linked_sfxs:
                 col = m.getColIndex(item)
                 if col:
-                    m.cells[row][col].text = "&#x26AB;"
+                    m.cells[row][col].text = M_SYMBOL_LINKED
 
         return render(request, self.template_name, {
             'title': self.title,
@@ -281,7 +316,44 @@ class M_SceneAudioView(M_BaseView):
             for item in linked_audios:
                 col = m.getColIndex(item)
                 if col:
-                    m.cells[row][col].text = "&#x26AB;"
+                    m.cells[row][col].text = M_SYMBOL_LINKED
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'M': m,
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+
+class M_SceneTimeView(M_BaseView):
+    form_class = TimeFilterForm
+    x_group = 'time'
+    initial = {'show_notes': True}
+    title = 'Scene vs Time Matrix'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        query = getTagQuery(tag_list)
+        times = Time.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+        scenes = Scene.objects.filter( project=env.project_id, script=env.script_id ).order_by('order')
+
+        m = M(times, scenes)
+
+        for time in times:
+            col = m.getColIndex(time)
+            #m.cells[0][col].background_color = time.color
+
+        for scene in scenes:
+            row = m.getRowIndex(scene)
+
+            linked_time = scene.story_time
+            if linked_time:
+                col = m.getColIndex(linked_time)
+                if col:
+                    m.cells[row][col].text = M_SYMBOL_LINKED
 
         return render(request, self.template_name, {
             'title': self.title,
@@ -318,7 +390,7 @@ class M_SceneLocationView(M_BaseView):
             if linked_location:
                 col = m.getColIndex(linked_location)
                 if col:
-                    m.cells[row][col].text = "&#x26AB;"
+                    m.cells[row][col].text = M_SYMBOL_LINKED
 
         return render(request, self.template_name, {
             'title': self.title,

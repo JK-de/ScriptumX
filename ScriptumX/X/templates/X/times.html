@@ -128,17 +128,14 @@
                         {% endif %}
 
                         {#--name--#}
-                        <strong style="margin-right:14px;">{{time.name}}</strong>
+                        <strong style="margin-right:14px;">[{{time.day}}. {{time.hour}}h] {{time.name}}</strong>
                         <br/>
 
-                        {#--description--#}
-                        <small>{% autoescape off %}{{time.description|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
-                        {% comment %}
-                        <br/>
-                        <small>{{time.description|striptags|truncatewords:42}}</small>
-                        <br/>
-                        <small>{{time.description|truncatewords:15}}</small>
-                        {% endcomment %}
+                        {#--day-hour--#}
+                        {#<strong style="margin-right:14px;">d{{time.day}} h{{time.hour}}</strong>#}
+
+                        {#--abstract--#}
+                        <small>{% autoescape off %}{{time.abstract|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
                     </a>
 
                 {% endfor %}

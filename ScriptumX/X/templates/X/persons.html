@@ -131,14 +131,8 @@
                         <strong style="margin-right:14px;">{{person.name}}</strong>
                         <br/>
 
-                        {#--description--#}
-                        <small>{% autoescape off %}{{person.description|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
-                        {% comment %}
-                        <br/>
-                        <small>{{person.description|striptags|truncatewords:42}}</small>
-                        <br/>
-                        <small>{{person.description|truncatewords:15}}</small>
-                        {% endcomment %}
+                        {#--abstract--#}
+                        <small>{% autoescape off %}{{person.abstract|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
                     </a>
 
                 {% endfor %}

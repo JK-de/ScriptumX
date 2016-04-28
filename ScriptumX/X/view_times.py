@@ -50,6 +50,8 @@ class TimeForm(forms.ModelForm):
             'description',
             'persons',
             'gadgets',
+            'day',
+            'hour'
             ]
 
     def __init__(self, *args, **kwargs):
@@ -75,6 +77,9 @@ class TimeForm(forms.ModelForm):
 
             Field('name'),
             Field('abstract', rows=1),
+
+            Field('day'),
+            Field('hour'),
 
             Field('persons', css_class='chosen-select-multi'),
             Field('gadgets', css_class='chosen-select-multi'),
@@ -185,7 +190,7 @@ def time(request, time_id):
     elif len(query)==0:
         query = g_tag_query_none
     
-    times = Time.objects.filter( project=env.project_id ).filter( query ).order_by(Lower('name'))
+    times = Time.objects.filter( project=env.project_id ).filter( query ).order_by('day', 'hour')
 
     return render(request, 'X/times.html', {
         'title': 'Time',

@@ -182,6 +182,48 @@ class PersonFilterForm(forms.Form):
 
 ###############################################################################
 
+class TimeFilterForm(forms.Form):
+
+    tag0  = forms.BooleanField( label = "", required = False, )
+    tag1  = forms.BooleanField( label = "", required = False, )
+    tag2  = forms.BooleanField( label = "", required = False, )
+    tag3  = forms.BooleanField( label = "", required = False, )
+    tag4  = forms.BooleanField( label = "", required = False, )
+    tag5  = forms.BooleanField( label = "", required = False, )
+    tag6  = forms.BooleanField( label = "", required = False, )
+    tag7  = forms.BooleanField( label = "", required = False, )
+    tag8  = forms.BooleanField( label = "", required = False, )
+    tag9  = forms.BooleanField( label = "", required = False, )
+    tag10 = forms.BooleanField( label = "", required = False, )
+    tag11 = forms.BooleanField( label = "", required = False, )
+
+    show_notes = forms.BooleanField( label = "Show Notes", required = False, )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelperX()
+        self.helper.layout = Layout(
+            Div(
+                Div(FormSymbol(time_tag_list[0]['img']),  Field('tag0'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(time_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(time_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(time_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(time_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(time_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(time_tag_list[6]['img']),  Field('tag6'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(time_tag_list[7]['img']),  Field('tag7'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(time_tag_list[8]['img']),  Field('tag8'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(time_tag_list[9]['img']),  Field('tag9'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(time_tag_list[10]['img']), Field('tag10'), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(time_tag_list[11]['img']), Field('tag11'), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                css_class='col-sm-offset-2', style="margin-top:0px;", 
+                ),
+
+            Field('show_notes'), 
+            )
+
+###############################################################################
+
 class LocationFilterForm(forms.Form):
 
     tag0  = forms.BooleanField( label = "", required = False, )
@@ -194,7 +236,7 @@ class LocationFilterForm(forms.Form):
     show_notes = forms.BooleanField( label = "Show Notes", required = False, )
 
     def __init__(self, *args, **kwargs):
-        super(LocationFilterForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = FormHelperX()
         self.helper.layout = Layout(
             Div(
@@ -481,6 +523,27 @@ class L_PersonView(L_BaseView):
 
 ###############################################################################
 
+class L_TimeView(L_BaseView):
+    form_class = TimeFilterForm
+    x_group = 'time'
+    initial = {'show_notes': True}
+    title = 'Time List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        query = getTagQuery(tag_list)
+        list = Time.objects.filter( project=env.project_id ).filter(query).order_by('day', 'hour')
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'lists': [(None,list)],
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+
 class L_LocationView(L_BaseView):
     form_class = LocationFilterForm
     x_group = 'location'
@@ -629,6 +692,33 @@ class L_GroupedPersonView(L_BaseView):
             if tag['active']:
                 query = g_tag_queries[tag['idx']]
                 list = Person.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
+                if len(list):
+                    list_t = (tag['name'], list)
+                    lists.append( list_t )
+
+        return render(request, self.template_name, {
+            'title': self.title,
+            'env': env,
+            'tag_list': tag_list,
+            'lists': lists,
+            'show_notes': form.cleaned_data['show_notes'],
+        })
+
+###############################################################################
+
+class L_GroupedTimeView(L_BaseView):
+    form_class = TimeFilterForm
+    x_group = 'time'
+    initial = {'show_notes': True}
+    title = 'Grouped Time List'
+
+    def render_list(self, request, form, tag_list):
+        env = Env(request)
+        lists = []
+        for tag in tag_list:
+            if tag['active']:
+                query = g_tag_queries[tag['idx']]
+                list = Time.objects.filter( project=env.project_id ).filter(query).order_by('day', 'hour')
                 if len(list):
                     list_t = (tag['name'], list)
                     lists.append( list_t )

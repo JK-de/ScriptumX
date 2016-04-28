@@ -178,7 +178,8 @@
                                 </div>
                             {% endif %}
 
-                            <small>{{scene.abstract}}</small>
+                            {#--abstract--#}
+                            <small>{% autoescape off %}{{scene.abstract|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
                         </div>
                         
                     </a>

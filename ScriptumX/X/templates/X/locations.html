@@ -131,14 +131,8 @@
                         <strong style="margin-right:14px;">{{location.name}}</strong>
                         <br/>
 
-                        {#--description--#}
-                        <small>{% autoescape off %}{{location.description|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
-                        {% comment %}
-                        <br/>
-                        <small>{{location.description|striptags|truncatewords:42}}</small>
-                        <br/>
-                        <small>{{location.description|truncatewords:15}}</small>
-                        {% endcomment %}
+                        {#--abstract--#}
+                        <small>{% autoescape off %}{{location.abstract|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
                     </a>
 
                 {% endfor %}

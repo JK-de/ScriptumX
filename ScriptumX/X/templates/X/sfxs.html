@@ -131,14 +131,8 @@
                         <strong style="margin-right:14px;">{{sfx.name}}</strong>
                         <br/>
 
-                        {#--description--#}
-                        <small>{% autoescape off %}{{sfx.description|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
-                        {% comment %}
-                        <br/>
-                        <small>{{sfx.description|striptags|truncatewords:42}}</small>
-                        <br/>
-                        <small>{{sfx.description|truncatewords:15}}</small>
-                        {% endcomment %}
+                        {#--abstract--#}
+                        <small>{% autoescape off %}{{sfx.abstract|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
                     </a>
 
                 {% endfor %}
