@@ -120,6 +120,8 @@ class RoleFilterForm(forms.Form):
     tag1  = forms.BooleanField( label = "", required = False, )
     tag2  = forms.BooleanField( label = "", required = False, )
     tag3  = forms.BooleanField( label = "", required = False, )
+    tag4  = forms.BooleanField( label = "", required = False, )
+    tag5  = forms.BooleanField( label = "", required = False, )
 
     show_notes = forms.BooleanField( label = "Show Notes", required = False, )
 
@@ -132,6 +134,8 @@ class RoleFilterForm(forms.Form):
                 Div(FormSymbol(role_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(role_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 Div(FormSymbol(role_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(role_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(role_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
                 css_class='col-sm-offset-2', style="margin-top:0px;", 
                 ),
 
