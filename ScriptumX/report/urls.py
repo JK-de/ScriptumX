@@ -5,11 +5,14 @@ import report
 from report.views import *
 from report.view_L import *
 from report.view_M import *
+from report.view_script import *
 #from wkhtmltopdf.views import PDFTemplateView
 
 from django.conf.urls import patterns, url
 
 urlpatterns = [
+
+    url(r'^test$', report.view_script.script, name='export_script'),
 
     url(r'^test1$', report.views.test1, name='test1'),
     url(r'^test2$', report.views.test2, name='test2'),

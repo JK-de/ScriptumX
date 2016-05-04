@@ -52,6 +52,7 @@
     <Compile Include="report\view_L.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="report\view_script.py" />
     <Compile Include="report\__init__.py" />
     <Compile Include="ScriptumX\wsgi.py" />
     <Compile Include="web\admin.py" />
@@ -156,6 +157,7 @@
     <Content Include="report\templates\report\layout_M.html" />
     <Content Include="report\templates\report\layout_L.html" />
     <Content Include="report\templates\report\layout2.html" />
+    <Content Include="report\templates\report\script.html" />
     <Content Include="report\templates\report\L_X_simple_scene.html" />
     <Content Include="report\templates\report\L_X_simple.html" />
     <Content Include="report\templates\report\M_X.html" />
