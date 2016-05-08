@@ -53,7 +53,7 @@ class NoteForm(forms.ModelForm):
             #),
             Div(
                 #FormSymbol('img/note.png'),
-                Field('text', style="max-width:100%; min-width:100%; background-color:palegoldenrod;", autocomplete='on', rows=2),
+                Field('text', style="max-width:100%; min-width:100%; background-color:#FFFFA5;", autocomplete='on', rows=2),
                 css_class='col-sm-offset-2', style="", 
             ),
         )

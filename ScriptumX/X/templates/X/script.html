@@ -327,6 +327,22 @@
     </div>
 
 
+    {#--button Read--#}
+    <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
+		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
+			<img height="32" width="32" src="{% static 'img/script.png' %}" /><br />
+			<small>Read</small>
+			<span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu">
+			<li><a href="/report/S/read" target="_blank">Read Script</a></li>
+            {% if selected_sceneitem %}
+			<li><a href="/report/S/read/{{selected_sceneitem.id}}" target="_blank">Read selected Scene</a></li>
+            {% endif %}
+		</ul>
+    </div>
+
+
 	<div class="navbar-right" role="group" style="margin-right:16px;">
 
 		<div class="btn-group btn-group-xs" role="group" style="">

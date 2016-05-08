@@ -84,6 +84,9 @@ def scene(request, sceneitem_id, new_type='?', new_order=0):
     except ObjectDoesNotExist:
         selected_sceneitem = None
 
+    if selected_sceneitem and selected_sceneitem.scene != env.scene:
+        env.setScene(selected_sceneitem.scene)
+
     ### create new sceneitem object on request '/scene/0'
     if sceneitem_id == '0':
         selected_sceneitem = SceneItem(scene=env.scene);
@@ -121,7 +124,7 @@ def scene(request, sceneitem_id, new_type='?', new_order=0):
         if selected_sceneitem.type == 'A' or selected_sceneitem.type == 'N' or selected_sceneitem.type == 'T':
             formItem.helper[0:2].update_attributes(type="hidden")
         if selected_sceneitem.type == 'N':
-            formItem.helper[2:3].update_attributes(style="max-width:100%; min-width:100%; background-color:palegoldenrod;")
+            formItem.helper[2:3].update_attributes(style="max-width:100%; min-width:100%; background-color:#FFFFA5;")
             formItem.fields['text'].label = "Note"
 
     formItem.fields['role'].queryset = Role.objects.filter(project=env.project)

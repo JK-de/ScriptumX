@@ -13,6 +13,7 @@ from django.conf.urls import patterns, url
 urlpatterns = [
 
     url(r'^test$', report.view_script.script, name='export_script'),
+    url(r'^s/(?P<selected_scene_id>\d+)?$', ScriptView.as_view(), name='s'),
 
     url(r'^test1$', report.views.test1, name='test1'),
     url(r'^test2$', report.views.test2, name='test2'),
@@ -50,6 +51,8 @@ urlpatterns = [
     url(r'^report/M/scene_gadget$', M_SceneGadgetView.as_view(), name='M_SceneGadget'),
     url(r'^report/M/scene_sfx$', M_SceneSFXView.as_view(), name='M_SceneSFX'),
     url(r'^report/M/scene_audio$', M_SceneAudioView.as_view(), name='M_SceneAudio'),
+
+    url(r'^report/S/read/(?P<selected_scene_id>\d+)?$', ScriptView.as_view(), name='S_read'),
 
     #url(r'^pdf2/$', MyPDF.as_view(), name='pdf2'),
     #url(r'^pdf1/$', PDFTemplateView.as_view(template_name='report/test2.html', filename='my_pdf.pdf'), name='pdf1'),

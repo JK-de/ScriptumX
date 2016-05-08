@@ -1,0 +1,25 @@
+{% extends "report/layout_S.html" %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+
+    <br/><br/>
+
+    <div class="container" style="max-width:7.5in;">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h3>{{title}}</h3>
+        
+                <h5>Select filter tags for script</h5>
+            </div>
+            <div class="panel-body">
+    
+                {% crispy form form.helper %}
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

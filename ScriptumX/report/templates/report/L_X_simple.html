@@ -67,7 +67,7 @@
 
                 <td style="hyphens: auto;">
                     {% if show_notes and item.note %}
-                        <span style="color:darkgoldenrod;"><i>Note: {% autoescape off %}{{item.note.text|removetags:"a span"}}{% endautoescape %}</i></span><br/>
+                        <span style="color:#FFFF8F;"><i>Note: {% autoescape off %}{{item.note.text|removetags:"a span"}}{% endautoescape %}</i></span><br/>
                         <hr style="margin:4px;"/>
                     {% endif %}
                     {% autoescape off %}{{item.description|removetags:"a span"}}{% endautoescape %}

@@ -18,24 +18,20 @@
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
 
-    <!-- freezeheader JavaScript -->
-    <link rel="stylesheet" href="{% static 'freezeheader/style.css' %}">
-    <script src="{% static 'freezeheader/jquery.freezeheader.js' %}"></script>
-
     <style>
         @media print
-{    
-    .no-print, .no-print *
-    {
-        display: none !important;
-    }
-}
+        {    
+            .no-print, .no-print *
+            {
+                display: none !important;
+            }
+        }
     </style>
     {% block head %}{% endblock %}
 
 </head>
 
-<body style="overflow-x:hidden; overflow-y:auto;" {#onload="window.print()"#}>
+<body style="overflow-x:hidden; overflow-y:auto; background-color:#CCC;">
 
     {% block content %}{% endblock %}
 
@@ -44,8 +40,6 @@
 
     <script type="text/javascript">
         $(document).ready(function(){
-            $('table').freezeHeader({ offset: '0px', top: true, left: true });
-
             $('#printbutton').click(function (event) {
                 event.preventDefault();
                 window.print();
