@@ -46,8 +46,8 @@
         margin-left:0;
         margin-bottom:14.4pt;
         font-weight:600;
-        background-color:#000;
-        color:#FFF;
+        background-color:#000 !important;
+        color:#FFF !important;
         padding:5pt;
         /*filter: invert(100%);*/
     }
@@ -57,7 +57,7 @@
         margin-bottom:14.4pt;
         font-weight:200;
         font-style: italic;
-        background-color:#FFFFA5;
+        background-color:#FFFFA5 !important;
         padding:0.1in;
     }
 </style>
@@ -76,7 +76,7 @@
 
     {% for item in scriptitems %}
 
-        <p class="{{item.class}}" {% if item.color %}style="background-color:{{item.color}}"{% endif %}>
+        <p class="{{item.class}}" {% if item.color %}style="background-color:{{item.color}} !important;"{% endif %}>
             {% autoescape off %}{{item.text|removetags:"a span"}}{% endautoescape %}
             {% if item.href %}
                 <a class="no-print" href="{{item.href}}" target="_parent">

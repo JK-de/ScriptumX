@@ -80,7 +80,7 @@
 
     {% for item in scriptitems %}
 
-        <p class="{{item.class}}" {% if item.color %}style="background-color:{{item.color}}"{% endif %}>
+        <p class="{{item.class}}" {% if item.color %}style="background-color:{{item.color}} !important;"{% endif %}>
             {% autoescape off %}{{item.text|removetags:"a span"}}{% endautoescape %}
             {% if item.href %}
                 <a class="no-print" href="{{item.href}}" target="_parent">
