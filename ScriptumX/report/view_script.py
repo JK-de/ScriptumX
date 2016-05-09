@@ -164,10 +164,13 @@ class ScriptFilterForm(forms.Form):
     layout = forms.TypedChoiceField(
         label = "Script Layout",
         choices = (
-            ('legacy', "Legacy (Typewriter Style)"), 
-            ('modern', "Modern (Sans Serif)"),
-            #('3', "xxxxxxxxxxxxx"), 
-            #('4', "xxxxxxxxxxxxxxx"),
+            ('legacy|"Courier New", Courier, monospace', 'Legacy Courier (Typewriter Style)'), 
+            ('modern|Arial, Helvetica, sans-serif', 'Modern Helvetica (Sans Serif)'),
+            ('modern|"Lucida Sans Unicode", "Lucida Grande", sans-serif', 'Modern Lucida (Sans Serif)'),
+            ('modern|Verdana, Geneva, sans-serif', 'Modern Verdana (Sans Serif)'),
+            ('modern|"Times New Roman", Times, serif', 'Modern Times (Serif)'),
+            ('modern|"Palatino Linotype", "Book Antiqua", Palatino, serif', 'Modern Palatino (Serif)'),
+            ('modern|"Lucida Console", Monaco, monospace', 'Modern Console (Monospace)'),
             ),
         widget = forms.RadioSelect,
         initial = 'legacy',
@@ -271,10 +274,13 @@ class ScriptView(View):
             collect_sceneheader(list, scene, options)
             collect_sceneitems(list, scene, sceneitems, options)
 
-        self.template_name = "report/script_" + form.cleaned_data['layout'] + ".html"
+        template, font = form.cleaned_data['layout'].split('|', 1)
+
+        self.template_name = "report/script_" + template + ".html"
 
         return render(request, self.template_name, {
             'title': 'Script: ' + env.script.name,
+            'font': font,
             'env': env,
             'scenes': scenes,
             'sceneitems': sceneitems,
