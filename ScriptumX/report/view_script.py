@@ -36,6 +36,20 @@ from X.common import *
 
 from X.tags import FormSymbol, sceneitem_tag_list, handleTagRequest, getTagRequestList
 
+# pip install xhtml2pdf==0.1a3
+# https://pypi.python.org/pypi/xhtml2pdf/0.1a3
+from django import http
+from django.shortcuts import render_to_response
+from django.template.loader import get_template
+from django.template import Context
+import xhtml2pdf.pisa as pisa
+try:
+    import StringIO
+    StringIO = StringIO.StringIO
+except Exception:
+    from io import StringIO
+import cgi
+
 ###############################################################################
 
 def collect_sceneheader(list, scene, options):

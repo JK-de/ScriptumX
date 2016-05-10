@@ -160,17 +160,18 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:
     'django.contrib.admindocs',
+    
     #my apps
     'ScriptumX',
     'X',
     'web',
     'authentication',
     'report',
+    
     #third party apps
     'crispy_forms',
-    'colorful',
     'colorfield',
-    #'easy_pdf',
+    'xhtml2pdf',
     #'debug_toolbar',
 )
 
