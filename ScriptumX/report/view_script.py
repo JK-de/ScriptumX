@@ -50,6 +50,8 @@ except Exception:
     from io import StringIO
 import cgi
 
+from django_xhtml2pdf.utils import render_to_pdf_response
+
 ###############################################################################
 
 def collect_sceneheader(list, scene, options):
@@ -221,7 +223,8 @@ class ScriptFilterForm(forms.Form):
         self.helper.label_class = 'col-sm-2'
         self.helper.field_class = 'col-sm-7'
 
-        self.helper.add_input(Submit('submit', 'Show Script'))
+        self.helper.add_input(Submit('show', 'Show Script'))
+        self.helper.add_input(Submit('pdf', 'Download PDF'))
 
         self.helper.layout = Layout(
             Div(#Div(FormSymbol(scene_tag_list[0]['img']), Field('tag0'), style="padding:0; margin:0;", css_class='checkbox-inline'),
@@ -260,7 +263,9 @@ class ScriptView(View):
 
         template_name = "report/script_form.html"
 
-        return render(request, self.template_name, {
+        return render(
+            request, 
+            self.template_name, {
             'title': self.title,
             'form': form,
             })
@@ -275,6 +280,7 @@ class ScriptView(View):
         options['show_links'] = form.cleaned_data['show_links']
         options['colorize_roles'] = form.cleaned_data['roles']
         options['layout'] = form.cleaned_data['layout']
+        pdf = request.POST.get('pdf')
 
         if self.selected_scene_id:
             pass
@@ -291,15 +297,25 @@ class ScriptView(View):
         template, font = form.cleaned_data['layout'].split('|', 1)
 
         self.template_name = "report/script_" + template + ".html"
-
-        return render(request, self.template_name, {
+        self.context = {
             'title': 'Script: ' + env.script.name,
             'font': font,
             'env': env,
             'scenes': scenes,
             'sceneitems': sceneitems,
             'scriptitems': list,
-        })
+            'PDF': pdf
+            }
+
+        if pdf:
+            return render_to_pdf_response(
+                self.template_name, 
+                self.context )
+        else:
+            return render(
+                request, 
+                self.template_name, 
+                self.context )
 
     def get(self, request, *args, **kwargs):
         tag_list = getTagRequestList(request, self.x_group)

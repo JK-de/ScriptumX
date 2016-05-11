@@ -172,6 +172,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'colorfield',
     'xhtml2pdf',
+    #'django_xhtml2pdf',
     #'debug_toolbar',
 )
 

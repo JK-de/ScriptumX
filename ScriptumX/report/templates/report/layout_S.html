@@ -8,6 +8,7 @@
     
     <title>{{ title }} - Scriptum&#x1d4e7;</title>
     {% load staticfiles %}
+    {% if not PDF %}
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     
     <!-- Latest compiled and minified CSS -->
@@ -17,6 +18,28 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
 
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
+    {% endif %}
+
+    {% if PDF %}
+<style>
+    @page {
+        size: A4 portrait;
+        top: 0.5in;
+        left: 1.5in;
+        right: 1in;
+        bottom: 0.5in;
+        -pdf-frame-border: 1;   /* for debugging the layout */
+        /*@frame content_frame {
+            left: 1.5in;
+            width: 6in;
+            top: 1in;
+            height: 10in;
+            -pdf-frame-border: 1;  */  /* for debugging the layout */
+        /*}*/
+    }
+</style>
+
+    {% else %}
 
     <style>
         @media print
@@ -27,17 +50,25 @@
             }
         }
     </style>
+
+    {% endif %}
+
     {% block head %}{% endblock %}
 
 </head>
 
+{% if PDF %}
+<body>
+{% else %}
 <body style="overflow-x:hidden; overflow-y:auto; background-color:#CCC;">
+{% endif %}
 
     {% block content %}{% endblock %}
 
 
     {% block scripts %}{% endblock %}
 
+    {% if not PDF %}
     <script type="text/javascript">
         $(document).ready(function(){
             $('#printbutton').click(function (event) {
@@ -46,6 +77,7 @@
             });
         });
     </script>
+    {% endif %}
 
 </body>
 </html>
