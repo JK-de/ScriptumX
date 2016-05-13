@@ -50,7 +50,8 @@ except Exception:
     from io import StringIO
 import cgi
 
-from django_xhtml2pdf.utils import render_to_pdf_response
+#from django_xhtml2pdf.utils import render_to_pdf_response
+from .pdf_utils import render_to_pdf_response
 
 ###############################################################################
 
@@ -177,19 +178,55 @@ class ScriptFilterForm(forms.Form):
         required = False,
         )
     
+    choices = (
+        ('legacy|"Courier New", Courier, monospace|',                       
+            'Legacy Courier (Typewriter Style)'), 
+        ('modern|Arial, Helvetica, sans-serif|',                            
+            'Modern Helvetica (Sans Serif)'),
+        ('modern|"Lucida Sans Unicode", "Lucida Grande", sans-serif|',      
+            'Modern Lucida (Sans Serif)'),
+        ('modern|Verdana, Geneva, sans-serif|',                             
+            'Modern Verdana (Sans Serif)'),
+        ('modern|"Times New Roman", Times, serif|',                         
+            'Modern Times (Serif)'),
+        ('modern|"Palatino Linotype", "Book Antiqua", Palatino, serif|',    
+            'Modern Palatino (Serif)'),
+        ('modern|"Lucida Console", Monaco, monospace|',                     
+            'Modern Console (Monospace)'),
+
+        ('modern|Amiri, serif|Amiri:400,700,400italic,700italic',                     
+            'G Amiri (Sans Serif)'),
+        ('modern|Lato, serif|Lato:400,700,400italic,700italic',                     
+            'G Lato (Sans Serif)'),
+        ('modern|"Open Sans", sans-serif|Open+Sans:400,700,400italic,700italic',
+            'G Open Sans (Sans Serif)'),
+        ('modern|"Source Sans Pro", sans-serif|Source+Sans+Pro:400,700,400italic,700italic',
+            'G Source Sans Pro (Sans Serif)'),
+        ('modern|"PT Serif", serif|PT+Serif:400,700,400italic,700italic',
+            'G PT Serif (Serif)'),
+        ('modern|"PT Sans", sans-serif|PT+Sans:400,700,700italic,400italic',
+            'G PT Sans (Sans Serif)'),
+        ('modern|"Source Serif Pro", serif|Source+Serif+Pro:400,700',
+            'G Source Serif Pro (Sans Serif)'),
+        ('modern|"Source Code Pro"|Source+Code+Pro:400,700',
+            'G Source Code Pro (Monospace)'),
+        ('modern|"PT Mono"|PT+Mono',
+            'G PT Mono (Monospace)'),
+        ('modern|"Cutive Mono"|Cutive+Mono',
+            'G Cutive Mono (Monospace)'),
+        ('modern|"Alegreya Sans", sans-serif|Alegreya+Sans:400,700,400italic,700italic',
+            'G Alegreya Sans (Sans Serif)'),
+        ('modern|"Droid Sans Mono"|Droid+Sans+Mono',
+            'G Droid Sans Mono (Monospace)'),
+        ('modern|Rambla, sans-serif|Rambla:400,400italic,700,700italic',
+            'G Rambla (Sans Serif)'),
+        )
+    #https://www.google.com/fonts
     layout = forms.TypedChoiceField(
-        label = "Script Layout",
-        choices = (
-            ('legacy|"Courier New", Courier, monospace', 'Legacy Courier (Typewriter Style)'), 
-            ('modern|Arial, Helvetica, sans-serif', 'Modern Helvetica (Sans Serif)'),
-            ('modern|"Lucida Sans Unicode", "Lucida Grande", sans-serif', 'Modern Lucida (Sans Serif)'),
-            ('modern|Verdana, Geneva, sans-serif', 'Modern Verdana (Sans Serif)'),
-            ('modern|"Times New Roman", Times, serif', 'Modern Times (Serif)'),
-            ('modern|"Palatino Linotype", "Book Antiqua", Palatino, serif', 'Modern Palatino (Serif)'),
-            ('modern|"Lucida Console", Monaco, monospace', 'Modern Console (Monospace)'),
-            ),
-        widget = forms.RadioSelect,
-        initial = 'legacy',
+        label = "Layout",
+        choices = choices,
+        #widget = forms.RadioSelect,
+        initial = choices[0][0],
         required = False,
         )
 
@@ -294,12 +331,13 @@ class ScriptView(View):
             collect_sceneheader(list, scene, options)
             collect_sceneitems(list, scene, sceneitems, options)
 
-        template, font = form.cleaned_data['layout'].split('|', 1)
+        template, font, google_link = form.cleaned_data['layout'].split('|', 2)
 
         self.template_name = "report/script_" + template + ".html"
         self.context = {
             'title': 'Script: ' + env.script.name,
             'font': font,
+            'google_link': google_link,
             'env': env,
             'scenes': scenes,
             'sceneitems': sceneitems,

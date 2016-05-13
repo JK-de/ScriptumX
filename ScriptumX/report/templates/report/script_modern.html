@@ -61,6 +61,11 @@ p {
 }
 </style>
 
+{% if google_link %}
+    <!--<link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Open+Sans:400,700,400italic,700italic|Source+Sans+Pro:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic|Amiri:400,700,400italic,700italic|PT+Sans:400,700,700italic,400italic|PT+Mono|Source+Serif+Pro:400,700|Source+Code+Pro:400,700|Cutive+Mono' rel='stylesheet' type='text/css'>-->
+    <link href='https://fonts.googleapis.com/css?family={{google_link}}' rel='stylesheet' type='text/css'>
+{% endif %}
+
 {% endblock %}
 
 {% block content %}
@@ -74,6 +79,7 @@ p {
 
     {% endif %}
 
+        Font: {{font}} {{google_link}}
     <h3>{{title}}</h3>
 
     {% for item in scriptitems %}

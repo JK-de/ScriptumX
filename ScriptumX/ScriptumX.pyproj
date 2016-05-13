@@ -45,6 +45,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="report\models.py" />
+    <Compile Include="report\pdf_utils.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="report\tests.py" />
     <Compile Include="report\urls.py" />
     <Compile Include="report\views.py" />
