@@ -79,14 +79,16 @@
 
     {% for item in scriptitems %}
 
-        <p class="{{item.class}}" {% if item.color %}style="background-color:{{item.color}} !important;"{% endif %}>
-            {{item.text|removetags:"a span"}}
+        <div class="{{item.class}}" {% if item.color %}style="background-color:{{item.color}};"{% endif %}>
+        <p>
+            {% autoescape off %}{{item.text|removetags:"a span"}}{% endautoescape %}
             {% if item.href %}
                 <a class="no-print" href="{{item.href}}" target="_parent">
                 <i class="fa fa-caret-right" aria-hidden="true"></i>
                 </a>
             {% endif %}
         </p>
+        </div>
 
     {% endfor %}
     </div>

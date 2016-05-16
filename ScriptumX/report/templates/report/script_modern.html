@@ -3,9 +3,28 @@
 
 {% block head %}
 
+{% if google_link %}
+    <link href='https://fonts.googleapis.com/css?family={{google_link}}' rel='stylesheet' type='text/css'>
+{% endif %}
+
+
 {#Style based on: https://www.writersstore.com/how-to-write-a-screenplay-a-guide-to-scriptwriting/#}
 
 <style>
+
+    @font-face {
+      font-family: "Bitstream Vera Serif";
+      src: url("http://developer.mozilla.org/@api/deki/files/2934/=Vera.ttf");
+    }
+
+    @font-face {
+      font-family: "Bitstream Vera Serif";
+      src: url("http://developer.mozilla.org/@api/deki/files/2934/=VeraSeBd.ttf");
+      font-weight: bold;
+    }
+    
+    body { font-family: "Bitstream Vera Serif", serif }
+
 p {
     margin-top:0;
     margin-bottom:0;
@@ -26,14 +45,18 @@ p {
 .character {
     margin-left:1.5in;
     font-weight:600;
+    page-break-after:avoid;
+    
 }
 .parenthetical {
     margin-left:1.5in;
+    page-break-before:avoid;
 }
 .dialog {
     margin-left:0.75in;
     margin-right:0.75in;
     margin-bottom:14.4pt;
+    page-break-before:avoid;
 }
 .transition {
     text-align:right;
@@ -59,12 +82,8 @@ p {
     background-color:#FFFFA5 !important;
     padding:0.1in;
 }
-</style>
 
-{% if google_link %}
-    <!--<link href='https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic|Open+Sans:400,700,400italic,700italic|Source+Sans+Pro:400,700,400italic,700italic|PT+Serif:400,700,400italic,700italic|Amiri:400,700,400italic,700italic|PT+Sans:400,700,700italic,400italic|PT+Mono|Source+Serif+Pro:400,700|Source+Code+Pro:400,700|Cutive+Mono' rel='stylesheet' type='text/css'>-->
-    <link href='https://fonts.googleapis.com/css?family={{google_link}}' rel='stylesheet' type='text/css'>
-{% endif %}
+</style>
 
 {% endblock %}
 
@@ -79,7 +98,8 @@ p {
 
     {% endif %}
 
-        Font: {{font}} {{google_link}}
+        <small>{{font}} {{google_link}}</small>
+
     <h3>{{title}}</h3>
 
     {% for item in scriptitems %}

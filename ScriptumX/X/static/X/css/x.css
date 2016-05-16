@@ -10,6 +10,16 @@
 
 /***********************************************/
 
+body {
+	/*font-family: Roboto, sans-serif;*/
+    font-family: 'Source Sans Pro', sans-serif;
+    /*font-family: 'Magra', sans-serif;*/
+    /*font-family: 'Fira Sans', sans-serif;*/
+    /*text-shadow: none;*/
+}
+
+/***********************************************/
+
 #slider_indentation .slider-selection {
 	background: #BABABA;
 }

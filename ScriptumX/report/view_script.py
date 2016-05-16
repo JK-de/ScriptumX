@@ -193,6 +193,8 @@ class ScriptFilterForm(forms.Form):
             'Modern Palatino (Serif)'),
         ('modern|"Lucida Console", Monaco, monospace|',                     
             'Modern Console (Monospace)'),
+        ('modern|"Trebuchet MS", Helvetica, sans-serif|',                     
+            'Modern Trebuchet MS (Sans Serif)'),
 
         ('modern|Amiri, serif|Amiri:400,700,400italic,700italic',                     
             'G Amiri (Sans Serif)'),
