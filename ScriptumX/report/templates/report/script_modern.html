@@ -11,7 +11,7 @@
 {#Style based on: https://www.writersstore.com/how-to-write-a-screenplay-a-guide-to-scriptwriting/#}
 
 <style>
-
+{% comment %}
     @font-face {
       font-family: "Bitstream Vera Serif";
       src: url("http://developer.mozilla.org/@api/deki/files/2934/=Vera.ttf");
@@ -24,6 +24,7 @@
     }
     
     body { font-family: "Bitstream Vera Serif", serif }
+{% endcomment %}
 
 p {
     margin-top:0;
@@ -98,7 +99,7 @@ p {
 
     {% endif %}
 
-        <small>{{font}} {{google_link}}</small>
+        <small>Font: {{font}} - {{google_link}}</small>
 
     <h3>{{title}}</h3>
 
