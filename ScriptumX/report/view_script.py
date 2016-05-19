@@ -180,7 +180,9 @@ class ScriptFilterForm(forms.Form):
     
     choices = (
         ('legacy|"Courier New", Courier, monospace|',                       
-            'Legacy Courier (Typewriter Style)'), 
+            'Legacy - Courier (Typewriter Style)'), 
+        ('legacy|"Times New Roman", Times, serif|',                       
+            'Legacy - Times (Serif)'), 
         ('modern|Arial, Helvetica, sans-serif|',                            
             'Modern Helvetica (Sans Serif)'),
         ('modern|"Lucida Sans Unicode", "Lucida Grande", sans-serif|',      
@@ -222,6 +224,9 @@ class ScriptFilterForm(forms.Form):
             'G Droid Sans Mono (Monospace)'),
         ('modern|Rambla, sans-serif|Rambla:400,400italic,700,700italic',
             'G Rambla (Sans Serif)'),
+
+        ('test|"Courier New", Courier, monospace|',                       
+            'TEST'), 
         )
     #https://www.google.com/fonts
     layout = forms.TypedChoiceField(

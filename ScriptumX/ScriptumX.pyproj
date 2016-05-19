@@ -162,6 +162,7 @@
     <Content Include="report\templates\report\layout_L.html" />
     <Content Include="report\templates\report\layout2.html" />
     <Content Include="report\templates\report\script_form.html" />
+    <Content Include="report\templates\report\script_test.html" />
     <Content Include="report\templates\report\script_modern.html" />
     <Content Include="report\templates\report\script_legacy.html" />
     <Content Include="report\templates\report\L_X_simple_scene.html" />
