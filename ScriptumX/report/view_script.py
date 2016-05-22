@@ -380,3 +380,32 @@ class ScriptView(View):
         return self.render_form(request, form)
 
 ###############################################################################
+
+@login_required
+def cards(request, scene_id=None):
+    """Handles page requests for SceneItems"""
+
+    env = Env(request)
+
+    ### conglomerate queries
+    #query = Q()
+    #for tag in tag_list:
+    #    if tag['active']:
+    #        if len(query)==0:
+    #            query = Q(type=tag['type'])
+    #        else:
+    #            query |= Q(type=tag['type'])
+
+    #if len(query)==len(tag_list):
+    #    query = Q()
+
+    scenes = Scene.objects.filter(project=env.project_id, script=env.script_id).order_by('order')
+
+    return render(request, 'report/cards.html', {
+        'title': 'Script',
+        'env': env,
+        'scenes': scenes,
+        #'error_message': "Please make a selection.",
+    })
+
+###############################################################################

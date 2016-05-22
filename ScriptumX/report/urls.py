@@ -12,7 +12,7 @@ from django.conf.urls import patterns, url
 
 urlpatterns = [
 
-    url(r'^test$', report.view_script.script, name='export_script'),
+    url(r'^test$', report.view_script.cards, name='export_cards'),
     url(r'^s/(?P<selected_scene_id>\d+)?$', ScriptView.as_view(), name='s'),
 
     url(r'^test1$', report.views.test1, name='test1'),

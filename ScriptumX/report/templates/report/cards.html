@@ -1,0 +1,161 @@
+{% extends "report/layout_C.html" %}
+{% load staticfiles %}
+
+{% block head %}
+{% endblock %}
+
+{% block content %}
+    
+    <div style="" class="container-fluid">
+
+    {% if not PDF %}
+    <a id="printbutton" class="btn btn-default pull-right hidden-print" role="button" style="padding:4px;"><i class="fa fa-print fa-2x" aria-hidden="true"></i></a>
+
+    <small style="color:#CCC;" class="pull-right"><i>Scriptum</i>&#x1d4e7; &emsp; <i class="fa fa-user"></i> {{env.user}} &emsp; <i class="fa fa-film"></i> {{env.project}} &emsp; <i class="fa fa-book"></i> {{env.script}} &emsp; <i class="fa fa-calendar-o"></i> {% now "Y-m-d" %} &ensp; <i class="fa fa-clock-o"></i> {% now "H:i" %} &ensp;</small>
+
+    {% endif %}
+
+    <h3>{{title}}</h3>
+
+
+
+    <table style="width:100%"> 
+        <colgroup>
+            <col style="width:25%;">
+            <col style="width:25%;">
+            <col style="width:25%;">
+            <col style="width:25%;">
+        </colgroup>
+        <tr>
+    
+    {% for scene in scenes %}
+
+      {% if forloop.counter0|divisibleby:"4" %}
+        </tr><tr>
+      {% endif %}
+
+      <td valign="top" style="padding:8px; border:0px solid red">
+
+                    <a href="/script/{{scene.pk}}" style="padding:8px; margin:0; width:100%; height:100%;"
+                        class="x-script list-group-item panel panel-default"
+                    >
+
+                        {#---color---#}
+                        {% if not scene.color == "#FFFFFF" %}
+                            <div class="pull-left" style="width:24px; height:24px; margin-left:-9px; margin-right:4px; margin-top:-9px; border:0.5px solid #333; border-top-left-radius: 3px; border-top-right-radius: 0px; border-bottom-right-radius: 24px; border-bottom-left-radius: 0px; background-color:{{scene.color}}; box-sizing: border-box"></div>
+                        {% endif %}
+
+
+                        <div style="margin:0; padding:4px" class="x-script panel-heading">
+                            {% if scene.note %}
+                                <img style="margin-top:-2px; margin-bottom:-2px;" height="24" width="24" src="{% static 'img/note.png' %}" />
+                            {% endif %}
+
+                            {#--tag images (tag overlay)--#}
+                            {% if scene.tag1 == True and scene.tag2 == True and scene.tag3 == True and scene.tag4 == True and scene.tag5 == True %}
+                            {# no output #}
+                            {% elif scene.tag1 == True or scene.tag2 == True or scene.tag3 == True or scene.tag4 == True or scene.tag5 == True %}
+                                <div class="pull-right" style="margin-right:32px;">
+                                    {% for image in scene.active_tag_images %}
+                                        <img style="margin:0; margin-right:-36px; margin-top:-5px;" src="{% static image %}" />
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <div class="pull-right" style="margin-right:32px;">
+                                    <img style="margin:0; margin-right:-36px; margin-top:-5px;" src="{% static 'img/variant/v0.png' %}" />
+                                </div>
+                            {% endif %}
+
+                            {#--tag badges--#}
+                            {% if scene.tag1 == True and scene.tag2 == True and scene.tag3 == True and scene.tag4 == True and scene.tag5 == True %}
+                            {# no output #}
+                            {% elif scene.tag1 == True or scene.tag2 == True or scene.tag3 == True or scene.tag4 == True or scene.tag5 == True %}
+                                <div class="pull-right"><span class="badge">
+                                    {% if scene.tag1 == True %}1{% endif %}
+                                    {% if scene.tag2 == True %}2{% endif %}
+                                    {% if scene.tag3 == True %}3{% endif %}
+                                    {% if scene.tag4 == True %}4{% endif %}
+                                    {% if scene.tag5 == True %}5{% endif %}
+                                </span></div>
+                            {% else %}
+                                <div class="pull-right"><span class="badge">&#x2717;</span></div>
+                            {% endif %}
+
+                            {% if scene.duration %}
+                                <div style="color:#888; margin-right:4px;" class="pull-right">{{scene.duration}}</div>
+                            {% endif %}
+
+                            {% if scene.short %}
+                                <strong>[{{scene.short}}]</strong>
+                            {% endif %}
+
+                            <strong>{{scene.name}}</strong>
+                        </div>
+
+                        <div style="margin:0; padding:4px" class="x-script panel-body">
+                            {% if scene.progress_script > 0 or scene.progress_pre > 0 or scene.progress_shot > 0 or scene.progress_post > 0 %}
+                                <div class="pull-right">
+                                    <div style="width:48px; height:8px; margin-bottom: 4px;" class="progress">
+                                        <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:{{scene.progress_script}}%"></div>
+                                    </div>
+                                    <div style="width:48px; height:8px; margin-bottom: 4px;" class="progress">
+                                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:{{scene.progress_pre}}%"></div>
+                                    </div>
+                                    <div style="width:48px; height:8px; margin-bottom: 4px;" class="progress">
+                                        <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:{{scene.progress_shot}}%"></div>
+                                    </div>
+                                    <div style="width:48px; height:8px; margin-bottom: 4px;" class="progress">
+                                        <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:{{scene.progress_post}}%"></div>
+                                    </div>
+                                </div>
+                            {% endif %}
+
+                            {#--abstract--#}
+                            <small>{% autoescape off %}{{scene.abstract|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
+                        </div>
+                        
+                    </a>
+
+      </td>
+
+    {% endfor %}
+    
+    
+    
+    
+    </tr> </table>
+
+
+
+{#<div class="card-deck-wrapper">#}
+  <div class="card-deck">
+
+    {% for item in scenes %}
+
+        <div class="card" style="width: 22%; min-width: 22%; max-width: 22%;">
+          <div class="card-header">
+            {{item.name}}
+          </div>
+          <div class="card-block">
+            <p class="card-text">
+              {% autoescape off %}{{item.abstract|removetags:"a span"}}{% endautoescape %}
+            </p>
+          </div>
+        </div>
+
+      {% if forloop.counter|divisibleby:"4" %}
+        </div>
+
+  <div class="card-deck" style="margin-top:2rem;">
+        {% endif %}
+
+    {% endfor %}
+
+  </div>
+
+
+
+
+</div>
+
+{% endblock %}

@@ -157,11 +157,13 @@
     <Content Include="report\static\fixedheadertable\jquery.mousewheel.js" />
     <Content Include="report\static\fixedheadertable\lib\jquery.mousewheel.js" />
     <Content Include="report\static\tfh\jquery.michiweber.table-head-fixed.js" />
+    <Content Include="report\templates\report\layout_C.html" />
     <Content Include="report\templates\report\layout_S.html" />
     <Content Include="report\templates\report\layout_M.html" />
     <Content Include="report\templates\report\layout_L.html" />
     <Content Include="report\templates\report\layout2.html" />
     <Content Include="report\templates\report\script_form.html" />
+    <Content Include="report\templates\report\cards.html" />
     <Content Include="report\templates\report\script_test.html" />
     <Content Include="report\templates\report\script_modern.html" />
     <Content Include="report\templates\report\script_legacy.html" />
