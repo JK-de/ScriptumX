@@ -124,13 +124,11 @@
                             {# no output #}
                             {% elif scene.tag1 == True or scene.tag2 == True or scene.tag3 == True or scene.tag4 == True or scene.tag5 == True %}
                                 <div class="pull-right" style="margin-right:32px;">
-                                    {% for image in scene.active_tag_images %}
-                                        <img style="margin:0; margin-right:-36px; margin-top:-5px;" src="{% static image %}" />
-                                    {% endfor %}
+                                    {% for image in scene.active_tag_images %}<img style="margin:0; margin-right:-32px; margin-top:-5px;" src="{% static image %}" />{% endfor %}
                                 </div>
                             {% else %}
                                 <div class="pull-right" style="margin-right:32px;">
-                                    <img style="margin:0; margin-right:-36px; margin-top:-5px;" src="{% static 'img/variant/v0.png' %}" />
+                                    <img style="margin:0; margin-right:-32px; margin-top:-5px;" width="32" src="{% static 'img/variant/v0.png' %}" />
                                 </div>
                             {% endif %}
 
@@ -179,7 +177,7 @@
                             {% endif %}
 
                             {#--abstract--#}
-                            <small>{% autoescape off %}{{scene.abstract|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
+                            <small>{% autoescape off %}{{scene.abstract|removetags:"a span"}}{% endautoescape %}</small>
                         </div>
                         
                     </a>

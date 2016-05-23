@@ -2,6 +2,40 @@
 {% load staticfiles %}
 
 {% block head %}
+
+<style>
+
+    body {
+	    /*font-family: Roboto, sans-serif;*/
+        font-family: 'Source Sans Pro', sans-serif;
+        /*font-family: 'Magra', sans-serif;*/
+        /*font-family: 'Fira Sans', sans-serif;*/
+        /*text-shadow: none;*/
+    }
+
+    a.x-script.list-group-item {
+        background-color: hsl(0, 0%, 95%);
+        color: hsl(0, 0%, 30%);
+        padding: 8px;
+        border: 1px solid #888;
+    }
+    a.x-script.list-group-item:hover {
+        background-color: #FFF;
+        color: hsl(0, 0%, 35%);
+        border: 1px solid #F80;
+    }
+
+    .panel-default > .x-script.panel-heading {
+        background-color: hsl(0, 0%, 90%);
+        color: hsl(0, 0%, 10%);
+    }
+    .panel-default:hover > .x-script.panel-heading {
+        background-color: hsl(0, 0%, 95%);
+        color: hsl(0, 0%, 15%);
+    }
+
+</style>
+
 {% endblock %}
 
 {% block content %}
@@ -18,51 +52,54 @@
     <h3>{{title}}</h3>
 
 
+    {% with ''|center:columns as col_range %}
+    {% widthratio 1 columns 100 as col_width %}
 
     <table style="width:100%"> 
         <colgroup>
-            <col style="width:25%;">
-            <col style="width:25%;">
-            <col style="width:25%;">
-            <col style="width:25%;">
+            {% for col in col_range %}
+                <col style="width:{{col_width}}%;">
+            {% endfor %}
         </colgroup>
         <tr>
     
+    {% endwith %}
+
     {% for scene in scenes %}
 
-      {% if forloop.counter0|divisibleby:"4" %}
+      {% if forloop.counter0|divisibleby:columns %}
         </tr><tr>
       {% endif %}
 
-      <td valign="top" style="padding:8px; border:0px solid red">
+      <td valign="top" style="padding:8px; padding-bottom:32px;">
 
-                    <a href="/script/{{scene.pk}}" style="padding:8px; margin:0; width:100%; height:100%;"
+                    <a href="/script/{{scene.pk}}" style="padding:2px; margin:0; width:100%; height:100%;"
                         class="x-script list-group-item panel panel-default"
                     >
 
                         {#---color---#}
                         {% if not scene.color == "#FFFFFF" %}
-                            <div class="pull-left" style="width:24px; height:24px; margin-left:-9px; margin-right:4px; margin-top:-9px; border:0.5px solid #333; border-top-left-radius: 3px; border-top-right-radius: 0px; border-bottom-right-radius: 24px; border-bottom-left-radius: 0px; background-color:{{scene.color}}; box-sizing: border-box"></div>
+                            <div class="pull-left" style="width:24px; height:24px; margin-left:-3px; margin-right:4px; margin-top:-3px; border:0.5px solid #333; border-top-left-radius: 3px; border-top-right-radius: 0px; border-bottom-right-radius: 24px; border-bottom-left-radius: 0px; background-color:{{scene.color}}; box-sizing: border-box"></div>
                         {% endif %}
 
 
                         <div style="margin:0; padding:4px" class="x-script panel-heading">
+                            {% comment %}
                             {% if scene.note %}
                                 <img style="margin-top:-2px; margin-bottom:-2px;" height="24" width="24" src="{% static 'img/note.png' %}" />
                             {% endif %}
+                            {% endcomment %}
 
                             {#--tag images (tag overlay)--#}
                             {% if scene.tag1 == True and scene.tag2 == True and scene.tag3 == True and scene.tag4 == True and scene.tag5 == True %}
                             {# no output #}
                             {% elif scene.tag1 == True or scene.tag2 == True or scene.tag3 == True or scene.tag4 == True or scene.tag5 == True %}
                                 <div class="pull-right" style="margin-right:32px;">
-                                    {% for image in scene.active_tag_images %}
-                                        <img style="margin:0; margin-right:-36px; margin-top:-5px;" src="{% static image %}" />
-                                    {% endfor %}
+                                    {% for image in scene.active_tag_images %}<img style="margin:0; margin-right:-32px; margin-top:-5px;" width="32" src="{% static image %}" />{% endfor %}
                                 </div>
                             {% else %}
                                 <div class="pull-right" style="margin-right:32px;">
-                                    <img style="margin:0; margin-right:-36px; margin-top:-5px;" src="{% static 'img/variant/v0.png' %}" />
+                                    <img style="margin:0; margin-right:-32px; margin-top:-5px;" src="{% static 'img/variant/v0.png' %}" />
                                 </div>
                             {% endif %}
 
@@ -111,9 +148,16 @@
                             {% endif %}
 
                             {#--abstract--#}
-                            <small>{% autoescape off %}{{scene.abstract|removetags:"a span"|truncatewords:42}}{% endautoescape %}</small>
+                            <small>{% autoescape off %}{{scene.abstract|removetags:"a span"}}{% endautoescape %}</small>
                         </div>
                         
+                        {% if scene.note %}
+                            <div style="margin:0; padding:4px; background-color:#FFFFA5" class="x-script panel-body">
+                                <img style="margin-top:-2px; margin-bottom:-2px;" height="24" width="24" src="{% static 'img/note.png' %}" />
+                                <small>{{scene.note}}</small>
+                            </div>
+                        {% endif %}
+
                     </a>
 
       </td>
@@ -126,7 +170,7 @@
     </tr> </table>
 
 
-
+{% comment %}
 {#<div class="card-deck-wrapper">#}
   <div class="card-deck">
 
@@ -157,5 +201,6 @@
 
 
 </div>
+{% endcomment %}
 
 {% endblock %}

@@ -29,13 +29,13 @@
             $(window).on('resize', do_resize );
 
             function do_resize () {
-                var $window = $(this), //this = window
-                    height = Math.ceil($window.height()),
-                    width = Math.ceil($window.width()),
+                var $window = $(this),
+                    height = Math.ceil($window.innerHeight()),
+                    width = Math.ceil($window.innerWidth()),
                     previousHeight = $window.data('previousHeight'),
                     previousWidth = $window.data('previousWidth');
 
-                //if (height !== previousHeight || width !== previousWidth) {
+                if (height !== previousHeight || width !== previousWidth) {
                     var header = Math.ceil($("#main-header").height()),
                     footer = Math.ceil($("#main-footer").height());
                     if (width < 768)
@@ -46,44 +46,14 @@
                     $("body").css('padding-top', header);
                     $window.data('previousHeight', height);
                     $window.data('previousWidth', width);
-                //}
+                }
             };
 
             do_resize();
             document.getElementById("selected_scope").scrollIntoView();
         });
     </script>
- <!--
-    <style>
-        .navbar .nav li {
-            white-space: nowrap; 
-        }
-        .navbar-header {
-        float: none;
-    }
-    .navbar-toggle {
-        display: block;
-    }
-    .navbar-collapse {
-        border-top: 1px solid transparent;
-        box-shadow: inset 0 1px 0 rgba(255,255,255,0.1);
-    }
-    .navbar-collapse.collapse {
-        display: none!important;
-    }
-    .navbar-nav {
-        float: none!important;
-        margin: 7.5px -15px;
-    }
-    .navbar-nav>li {
-        float: none;
-    }
-    .navbar-nav>li>a {
-        padding-top: 10px;
-        padding-bottom: 10px;
-    }
-    </style>-->
-</head>
+ </head>
      
 
 <body style="overflow:auto; padding-top:118px">

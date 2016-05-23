@@ -405,6 +405,7 @@ def cards(request, scene_id=None):
         'title': 'Script',
         'env': env,
         'scenes': scenes,
+        'columns': 5,
         #'error_message': "Please make a selection.",
     })
 
