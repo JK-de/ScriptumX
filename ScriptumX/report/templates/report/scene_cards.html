@@ -52,8 +52,8 @@
     <h3>{{title}}</h3>
 
 
-    {% with ''|center:columns as col_range %}
-    {% widthratio 1 columns 100 as col_width %}
+    {% with ''|center:options.columns as col_range %}
+    {% widthratio 1 options.columns 100 as col_width %}
 
     <table style="width:100%"> 
         <colgroup>
@@ -67,7 +67,7 @@
 
     {% for scene in scenes %}
 
-      {% if forloop.counter0|divisibleby:columns %}
+      {% if forloop.counter0|divisibleby:options.columns %}
         </tr><tr>
       {% endif %}
 
@@ -77,9 +77,11 @@
                         class="x-script list-group-item panel panel-default"
                     >
 
+                        {% if options.show_details %}
                         {#---color---#}
                         {% if not scene.color == "#FFFFFF" %}
                             <div class="pull-left" style="width:24px; height:24px; margin-left:-3px; margin-right:4px; margin-top:-3px; border:0.5px solid #333; border-top-left-radius: 3px; border-top-right-radius: 0px; border-bottom-right-radius: 24px; border-bottom-left-radius: 0px; background-color:{{scene.color}}; box-sizing: border-box"></div>
+                        {% endif %}
                         {% endif %}
 
 
@@ -89,6 +91,8 @@
                                 <img style="margin-top:-2px; margin-bottom:-2px;" height="24" width="24" src="{% static 'img/note.png' %}" />
                             {% endif %}
                             {% endcomment %}
+
+                            {% if options.show_details %}
 
                             {#--tag images (tag overlay)--#}
                             {% if scene.tag1 == True and scene.tag2 == True and scene.tag3 == True and scene.tag4 == True and scene.tag5 == True %}
@@ -122,14 +126,19 @@
                                 <div style="color:#888; margin-right:4px;" class="pull-right">{{scene.duration}}</div>
                             {% endif %}
 
+                            {% endif %}
+
                             {% if scene.short %}
                                 <strong>[{{scene.short}}]</strong>
                             {% endif %}
 
                             <strong>{{scene.name}}</strong>
+
                         </div>
 
                         <div style="margin:0; padding:4px" class="x-script panel-body">
+                            {% if options.show_details %}
+
                             {% if scene.progress_script > 0 or scene.progress_pre > 0 or scene.progress_shot > 0 or scene.progress_post > 0 %}
                                 <div class="pull-right">
                                     <div style="width:48px; height:8px; margin-bottom: 4px;" class="progress">
@@ -146,12 +155,13 @@
                                     </div>
                                 </div>
                             {% endif %}
+                            {% endif %}
 
                             {#--abstract--#}
                             <small>{% autoescape off %}{{scene.abstract|removetags:"a span"}}{% endautoescape %}</small>
                         </div>
                         
-                        {% if scene.note %}
+                        {% if scene.note and options.show_notes %}
                             <div style="margin:0; padding:4px; background-color:#FFFFA5" class="x-script panel-body">
                                 <img style="margin-top:-2px; margin-bottom:-2px;" height="24" width="24" src="{% static 'img/note.png' %}" />
                                 <small>{{scene.note}}</small>

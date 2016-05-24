@@ -54,6 +54,8 @@ urlpatterns = [
 
     url(r'^report/S/read/(?P<selected_scene_id>\d+)?$', ScriptView.as_view(), name='S_read'),
 
+    url(r'^report/S/cards$', SceneCardsView.as_view(), name='S_SceneCards'),
+
     #url(r'^pdf2/$', MyPDF.as_view(), name='pdf2'),
     #url(r'^pdf1/$', PDFTemplateView.as_view(template_name='report/test2.html', filename='my_pdf.pdf'), name='pdf1'),
     ]
