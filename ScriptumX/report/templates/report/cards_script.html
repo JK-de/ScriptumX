@@ -14,24 +14,22 @@
     }
 
     a.x-script.list-group-item {
-        background-color: hsl(0, 0%, 95%);
-        color: hsl(0, 0%, 30%);
+        background-color: #FFF;
+        color: #444;
         padding: 8px;
         border: 1px solid #888;
     }
     a.x-script.list-group-item:hover {
-        background-color: #FFF;
-        color: hsl(0, 0%, 35%);
+        color: #111;
         border: 1px solid #F80;
     }
 
     .panel-default > .x-script.panel-heading {
-        background-color: hsl(0, 0%, 90%);
-        color: hsl(0, 0%, 10%);
+        background-color: #EEE;
+        color: #333;
     }
     .panel-default:hover > .x-script.panel-heading {
-        background-color: hsl(0, 0%, 95%);
-        color: hsl(0, 0%, 15%);
+        color: #000;
     }
 
 </style>
@@ -45,7 +43,7 @@
     {% if not PDF %}
     <a id="printbutton" class="btn btn-default pull-right hidden-print" role="button" style="padding:4px;"><i class="fa fa-print fa-2x" aria-hidden="true"></i></a>
 
-    <small style="color:#CCC;" class="pull-right"><i>Scriptum</i>&#x1d4e7; &emsp; <i class="fa fa-user"></i> {{env.user}} &emsp; <i class="fa fa-film"></i> {{env.project}} &emsp; <i class="fa fa-book"></i> {{env.script}} &emsp; <i class="fa fa-calendar-o"></i> {% now "Y-m-d" %} &ensp; <i class="fa fa-clock-o"></i> {% now "H:i" %} &ensp;</small>
+    <small style="color:#888;" class="pull-right"><i>Scriptum</i>&#x1d4e7; &emsp; <i class="fa fa-user"></i> {{env.user}} &emsp; <i class="fa fa-film"></i> {{env.project}} &emsp; <i class="fa fa-book"></i> {{env.script}} &emsp; <i class="fa fa-calendar-o"></i> {% now "Y-m-d" %} &ensp; <i class="fa fa-clock-o"></i> {% now "H:i" %} &ensp;</small>
 
     {% endif %}
 

@@ -5,14 +5,15 @@ import report
 from report.views import *
 from report.view_L import *
 from report.view_M import *
-from report.view_script import *
+from report.view_S import *
+from report.view_C import *
 #from wkhtmltopdf.views import PDFTemplateView
 
 from django.conf.urls import patterns, url
 
 urlpatterns = [
 
-    url(r'^test$', report.view_script.cards, name='export_cards'),
+    url(r'^test$', report.view_C.cards, name='export_cards'),
     url(r'^s/(?P<selected_scene_id>\d+)?$', ScriptView.as_view(), name='s'),
 
     url(r'^test1$', report.views.test1, name='test1'),
@@ -52,9 +53,11 @@ urlpatterns = [
     url(r'^report/M/scene_sfx$', M_SceneSFXView.as_view(), name='M_SceneSFX'),
     url(r'^report/M/scene_audio$', M_SceneAudioView.as_view(), name='M_SceneAudio'),
 
+    # Scripts
     url(r'^report/S/read/(?P<selected_scene_id>\d+)?$', ScriptView.as_view(), name='S_read'),
 
-    url(r'^report/S/cards$', SceneCardsView.as_view(), name='S_SceneCards'),
+    # Cards
+    url(r'^report/C/script$', CardsView.as_view(), name='C_Script'),
 
     #url(r'^pdf2/$', MyPDF.as_view(), name='pdf2'),
     #url(r'^pdf1/$', PDFTemplateView.as_view(template_name='report/test2.html', filename='my_pdf.pdf'), name='pdf1'),

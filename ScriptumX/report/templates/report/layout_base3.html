@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta name="description" content="{{ title }}" />
+    <meta name="keywords" content="ScriptumX, movie, script, {{ title }}" />
+    
+    <title>{{ title }} - Scriptum&#x1d4e7;</title>
+    {% load staticfiles %}
+
+    {% if not PDF %}
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
+
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+
+    {% endif %}
+
+    <style>
+        @media print
+        {    
+            .no-print, .no-print * {
+                display: none !important;
+            }
+        }
+        body {
+            /*overflow-x:hidden;*/ 
+            /*overflow-y:auto;*/ 
+            background-color:#CCC;
+            /*font-family: Roboto, sans-serif;*/
+            font-family: 'Source Sans Pro', sans-serif;
+            /*font-family: 'Magra', sans-serif;*/
+            /*font-family: 'Fira Sans', sans-serif;*/
+            text-shadow: none;
+        }
+    </style>
+
+    {% block base_head %}{% endblock %}
+
+</head>
+
+<body>
+
+    {% block base_body %}{% endblock %}
+
+    {% if not PDF %}
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#printbutton').click(function (event) {
+                event.preventDefault();
+                window.print();
+            });
+        });
+    </script>
+
+    {% endif %}
+
+</body>
+</html>

@@ -27,7 +27,7 @@
 
     <a id="printbutton" class="btn btn-default pull-right hidden-print" role="button" style="padding:4px;"><i class="fa fa-print fa-2x" aria-hidden="true"></i></a>
 
-    <small style="color:#CCC;" class="pull-right"><i>Scriptum</i>&#x1d4e7; &emsp; <i class="fa fa-user"></i> {{env.user}} &emsp; <i class="fa fa-film"></i> {{env.project}} &emsp; <i class="fa fa-book"></i> {{env.script}} &emsp; <i class="fa fa-calendar-o"></i> {% now "Y-m-d" %} &ensp; <i class="fa fa-clock-o"></i> {% now "H:i" %} &ensp;</small>
+    <small style="color:#888;" class="pull-right"><i>Scriptum</i>&#x1d4e7; &emsp; <i class="fa fa-user"></i> {{env.user}} &emsp; <i class="fa fa-film"></i> {{env.project}} &emsp; <i class="fa fa-book"></i> {{env.script}} &emsp; <i class="fa fa-calendar-o"></i> {% now "Y-m-d" %} &ensp; <i class="fa fa-clock-o"></i> {% now "H:i" %} &ensp;</small>
 
     <h3>{{title}}</h3>
 
@@ -42,7 +42,7 @@
         <thead>
             <tr BGCOLOR="#DDDDDD">
                 <th style="min-width:80px;">Tags</th>
-                <th>Name</th>
+                <th>Name / Abstract</th>
                 <th>
                     Description
                     {% if show_notes %}
@@ -58,23 +58,26 @@
             <tr>
                 <td>
                     {% if item.tag1 == True or item.tag2 == True or item.tag3 == True or item.tag4 == True or item.tag5 == True %}
-                        {% for image in item.active_tag_images %}
-                            <img style="margin-right:-36px;" src="{% static image %}" />
-                        {% endfor %}
+                        {% for image in item.active_tag_images %}<img style="margin-right:-32px;" src="{% static image %}" />{% endfor %}
                     {% else %}
-                        <img style="margin-right:-36px;" src="{% static 'img/variant/v0.png' %}" />
+                        <img style="margin-right:-32px;" src="{% static 'img/variant/v0.png' %}" />
                     {% endif %}
                 </td>
 
-                <!--<td style="max-width:25%; white-space:nowrap; overflow:hidden; text-overflow: ellipsis;"><strong>{{item.name}}</strong></td>-->
-                <td style=""><strong>{{item.name}}</strong></td>
+                <td style="">
+                    <strong>{{item.name}}</strong>
+                    {% if item.abstract %}
+                        <br/>
+                        {% autoescape off %}{{item.abstract|removetags:"a span"}}{% endautoescape %}<br/>
+                    {% endif %}
+                </td>
 
                 <td style="hyphens: auto;">
-                    {% if show_notes and item.note %}
-                        <span style="color:#FFFF8F;"><i>Note: {% autoescape off %}{{item.note.text|removetags:"a span"}}{% endautoescape %}</i></span><br/>
-                        <hr style="margin:4px;"/>
-                    {% endif %}
                     {% autoescape off %}{{item.description|removetags:"a span"}}{% endautoescape %}
+                    {% if show_notes and item.note %}
+                        <hr style="margin:4px;"/>
+                        <span style="color:#CC9900;"><i>Note: {% autoescape off %}{{item.note.text|removetags:"a span"}}{% endautoescape %}</i></span><br/>
+                    {% endif %}
                 </td>
             </tr>
 

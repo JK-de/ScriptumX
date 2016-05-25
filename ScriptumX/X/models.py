@@ -315,6 +315,10 @@ class Scene(BaseModel):
     audios = models.ManyToManyField(Audio, blank=True)
     sfxs = models.ManyToManyField(SFX, blank=True)
 
+    @property
+    def indentation_view(self):
+        return int(self.indentation / 2)
+
     def __init__(self, *args, **kwargs):
         #self.setAllTags(True)   #JKJKJK
         super(Scene, self).__init__(*args, **kwargs)

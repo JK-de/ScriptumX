@@ -48,6 +48,9 @@
     <Compile Include="report\pdf_utils.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="report\templates\report\layout_L.html">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="report\tests.py" />
     <Compile Include="report\urls.py" />
     <Compile Include="report\views.py" />
@@ -55,7 +58,8 @@
     <Compile Include="report\view_L.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="report\view_script.py" />
+    <Compile Include="report\view_C.py" />
+    <Compile Include="report\view_S.py" />
     <Compile Include="report\__init__.py" />
     <Compile Include="ScriptumX\wsgi.py" />
     <Compile Include="web\admin.py" />
@@ -124,9 +128,7 @@
     <Folder Include="authentication\templates\authentication\" />
     <Folder Include="report\" />
     <Folder Include="report\static\" />
-    <Folder Include="report\static\fixedheadertable\" />
-    <Folder Include="report\static\fixedheadertable\lib\" />
-    <Folder Include="report\static\tfh\" />
+    <Folder Include="report\static\freezeheader\" />
     <Folder Include="report\templates\" />
     <Folder Include="report\templates\report\" />
     <Folder Include="ScriptumX\static\" />
@@ -151,19 +153,24 @@
     <Folder Include="ScriptumX\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="report\static\fixedheadertable\fixedheadertable.css" />
-    <Content Include="report\static\fixedheadertable\jquery.fixedheadertable.js" />
-    <Content Include="report\static\fixedheadertable\jquery.fixedheadertable.min.js" />
-    <Content Include="report\static\fixedheadertable\jquery.mousewheel.js" />
-    <Content Include="report\static\fixedheadertable\lib\jquery.mousewheel.js" />
-    <Content Include="report\static\tfh\jquery.michiweber.table-head-fixed.js" />
+    <Content Include="report\static\freezeheader\jquery-1.9.1.js" />
+    <Content Include="report\static\freezeheader\jquery.freezeheader.js" />
+    <Content Include="report\static\freezeheader\loadData.js" />
+    <Content Include="report\static\freezeheader\main.js" />
+    <Content Include="report\static\freezeheader\print.css" />
+    <Content Include="report\static\freezeheader\pygment_trac.css" />
+    <Content Include="report\static\freezeheader\scale.fix.js" />
+    <Content Include="report\static\freezeheader\style.css" />
+    <Content Include="report\static\freezeheader\styles.css" />
+    <Content Include="report\static\freezeheader\stylesheet.css" />
     <Content Include="report\templates\report\layout_C.html" />
+    <Content Include="report\templates\report\layout_base3.html" />
     <Content Include="report\templates\report\layout_S.html" />
     <Content Include="report\templates\report\layout_M.html" />
-    <Content Include="report\templates\report\layout_L.html" />
+    <Content Include="report\templates\report\layout_L_.html" />
     <Content Include="report\templates\report\layout2.html" />
-    <Content Include="report\templates\report\script_form.html" />
-    <Content Include="report\templates\report\scene_cards.html" />
+    <Content Include="report\templates\report\common_form.html" />
+    <Content Include="report\templates\report\cards_script.html" />
     <Content Include="report\templates\report\script_test.html" />
     <Content Include="report\templates\report\script_modern.html" />
     <Content Include="report\templates\report\script_legacy.html" />

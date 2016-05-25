@@ -99,8 +99,8 @@
             <div class="list-group full-height" style="padding:4px; overflow-y:auto; background-color:#333;">
 
                 {% for scene in scenes %}
-			    
-                    <a href="/script/{{scene.pk}}" style="padding:0; margin-bottom:8px; margin-left:{{scene.indentation}}%; width:60%;"
+
+                    <a href="/script/{{scene.pk}}" style="padding:0; margin-bottom:8px; margin-left:{{scene.indentation_view}}%; width:50%;"
                     {% if scene == selected_scene %} 
                         class="x-script list-group-item panel panel-default active" id="selected_scope"
                     {% else %}
@@ -372,7 +372,7 @@
 				<li><a href="#">*TEST*</a></li>
 				<li><a href="#">*TEST*</a></li>
 				<li role="separator" class="divider"></li>
-				<li><a href="/report/S/cards">Scene Cards</a></li>
+				<li><a href="/report/C/script" target="_blank">Scene Cards</a></li>
 				<li><a href="#">*TEST*</a></li>
 				<li><a href="#">*TEST*</a></li>
 			</ul>

@@ -289,81 +289,11 @@ class ScriptFilterForm(forms.Form):
 
 ###############################################################################
 
-###############################################################################
-
-class SceneCardsFilterForm(forms.Form):
-
-    tag0 = forms.BooleanField(label = "", required = False,)
-    tag1 = forms.BooleanField(label = "", required = False,)
-    tag2 = forms.BooleanField(label = "", required = False,)
-    tag3 = forms.BooleanField(label = "", required = False,)
-    tag4 = forms.BooleanField(label = "", required = False,)
-    tag5 = forms.BooleanField(label = "", required = False,)
-
-    show_notes = forms.BooleanField(
-        label = "Show Notes", 
-        required = False,
-        )
-    
-    show_details = forms.BooleanField(
-        label = "Show Details", 
-        required = False,
-        )
-    
-    columns = forms.IntegerField(
-        label = "Columns", 
-        required = False,
-        min_value = 1,
-        max_value = 10,
-        )
-
-    #checkboxes = forms.MultipleChoiceField(
-    #    label = "Test", 
-    #    choices = (('option_one', "Option one is this and that be sure to include why it's great"), 
-    #        ('option_two', 'Option two can also be checked and included in form results'),
-    #        ('option_three', 'Option three can yes, you guessed it also be checked and included in form results')),
-    #    initial = 'option_one',
-    #    widget = forms.CheckboxSelectMultiple,
-    #    help_text = "<strong>Note:</strong> Labels surround all the options for much larger click areas and a more usable form.",
-    #    required = False,
-    #    )
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_id = 'id-FilterForm'
-        self.helper.form_method = 'post'
-        self.helper.form_class = 'form-horizontal'
-        self.helper.label_class = 'col-sm-2'
-        self.helper.field_class = 'col-sm-7'
-
-        self.helper.add_input(Submit('show', 'Show Scene Cards'))
-
-        self.helper.layout = Layout(
-            Div(#Div(FormSymbol(scene_tag_list[0]['img']), Field('tag0'), style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(scene_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(scene_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(scene_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(scene_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                Div(FormSymbol(scene_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
-                css_class='col-sm-offset-2', style="margin-top:0px;",
-                ),
-
-            Field('show_notes'), 
-            Field('show_details'), 
-            Field('columns'), 
-        )
-
-###############################################################################
-
-
-###############################################################################
-
 class ScriptView(View):
     form_class = ScriptFilterForm
     x_group = 'scene'
     initial = {'show_notes': True}
-    template_name = "report/script_form.html"
+    template_name = "report/common_form.html"
     title = 'Script'
     selected_scene_id = None
 
@@ -371,8 +301,6 @@ class ScriptView(View):
         env = Env(request)
 
         form.fields['roles'].queryset = Role.objects.filter(project=env.project)
-
-        self.template_name = "report/script_form.html"
 
         return render(
             request, 
@@ -448,102 +376,4 @@ class ScriptView(View):
         return self.render_form(request, form)
 
 ###############################################################################
-
-class SceneCardsView(View):
-    form_class = SceneCardsFilterForm
-    x_group = 'scene'
-    initial = {'show_notes': True, 'show_details': True, 'columns':4}
-    template_name = "report/script_form.html"
-    title = 'Scene Cards'
-    selected_scene_id = None
-
-    def render_form(self, request, form):
-        env = Env(request)
-
-        self.template_name = "report/script_form.html"
-
-        return render(
-            request, 
-            self.template_name, {
-            'title': self.title,
-            'form': form,
-            })
-
-    def render_list(self, request, form, tag_list):
-        env = Env(request)
-
-        options = {}
-
-        options['show_notes'] = form.cleaned_data['show_notes']
-        options['show_details'] = form.cleaned_data['show_details']
-        #options['show_links'] = form.cleaned_data['show_links']
-        #options['colorize_roles'] = form.cleaned_data['roles']
-        #options['layout'] = form.cleaned_data['layout']
-        #pdf = request.POST.get('pdf')
-        options['columns'] = form.cleaned_data['columns']
-
-        query = getTagQuery(tag_list)
-        scenes = Scene.objects.filter(project=env.project_id, script=env.script_id).filter(query).order_by('order')
-
-        self.template_name = "report/scene_cards.html"
-        self.context = {
-            'title': 'Script: ' + env.script.name,
-            'env': env,
-            'scenes': scenes,
-            'options': options,
-            }
-
-        return render(
-            request, 
-            self.template_name, 
-            self.context )
-
-    def get(self, request, *args, **kwargs):
-        tag_list = getTagRequestList(request, self.x_group)
-        for tag in tag_list:
-            self.initial['tag' + str(tag['idx'])] = tag['active']
-        form = self.form_class(initial=self.initial)
-        return self.render_form(request, form)
-
-    def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            tag_list = getTagRequestList(request, self.x_group)
-            for tag in tag_list:
-                tag['active'] = form.cleaned_data['tag' + str(tag['idx'])]
-            return self.render_list(request, form, tag_list)
-
-        return self.render_form(request, form)
-
-###############################################################################
-###############################################################################
-
-@login_required
-def cards(request, scene_id=None):
-    """Handles page requests for SceneItems"""
-
-    env = Env(request)
-
-    ### conglomerate queries
-    #query = Q()
-    #for tag in tag_list:
-    #    if tag['active']:
-    #        if len(query)==0:
-    #            query = Q(type=tag['type'])
-    #        else:
-    #            query |= Q(type=tag['type'])
-
-    #if len(query)==len(tag_list):
-    #    query = Q()
-
-    scenes = Scene.objects.filter(project=env.project_id, script=env.script_id).order_by('order')
-
-    return render(request, 'report/scene_cards.html', {
-        'title': 'Script',
-        'env': env,
-        'scenes': scenes,
-        'columns': 5,
-        #'error_message': "Please make a selection.",
-    })
-
 ###############################################################################
