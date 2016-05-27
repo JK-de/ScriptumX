@@ -135,6 +135,10 @@ STATICFILES_FINDERS = (
 SECRET_KEY = 'n(bd1f1c%e8=_xad02x5qtfn%wgwpi492e$8_erx+d)!tpeoim'
 
 MIDDLEWARE_CLASSES = (
+    # other middleware classes
+    'htmlmin.middleware.HtmlMinifyMiddleware',
+    'htmlmin.middleware.MarkRequestMiddleware',
+
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -143,9 +147,6 @@ MIDDLEWARE_CLASSES = (
     # Uncomment the next line for simple clickjacking protection:
     # 'django.middleware.clickjacking.XFrameOptionsMiddleware',
     
-    # other middleware classes
-    'htmlmin.middleware.HtmlMinifyMiddleware',
-    'htmlmin.middleware.MarkRequestMiddleware',
 )
 
 ROOT_URLCONF = 'ScriptumX.urls'
@@ -175,8 +176,7 @@ INSTALLED_APPS = (
     #third party apps
     'crispy_forms',
     'colorfield',
-    'xhtml2pdf',
-    #'django_xhtml2pdf',
+    #'xhtml2pdf',
     #'debug_toolbar',
 )
 
@@ -214,9 +214,4 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-HTML_MINIFY = False
-
-#try:
-#    execfile(os.path.join(os.path.dirname(__file__), "local_settings.py"))
-#except IOError:
-#    pass
+HTML_MINIFY = True
