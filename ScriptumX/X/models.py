@@ -346,6 +346,25 @@ class SceneItem(models.Model):
 
 ###############################################################################
 
+class Shot(models.Model):
+    #Props
+    name = models.CharField(max_length=50)
+    column = models.PositiveIntegerField(default=0)
+    length = models.PositiveIntegerField(default=1)
+    cam_field_size = models.CharField(max_length=5)
+    cam_angle = models.CharField(max_length=5)
+    description = models.TextField(blank=True)
+    # One to Many
+    sceneitem = models.ForeignKey(SceneItem)   # for internal relations only
+    scene = models.ForeignKey(Scene, null=True, blank=True)   # for internal relations only
+    # Many to Many
+
+    def __str__(self):
+        """Returns a string representation of a Shot."""
+        return self.name
+
+###############################################################################
+
 class Appointment(BaseModel):
     group_id = 'appointment'
     class Meta:
