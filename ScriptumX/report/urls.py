@@ -55,6 +55,7 @@ urlpatterns = [
 
     # Scripts
     url(r'^report/S/read/(?P<selected_scene_id>\d+)?$', ScriptView.as_view(), name='S_read'),
+    url(r'^report/S/readpdf/(?P<selected_scene_id>\d+)?$', ScriptPDFView.as_view(), name='S_readpdf'),
 
     # Cards
     url(r'^report/C/script$', CardsView.as_view(), name='C_Script'),

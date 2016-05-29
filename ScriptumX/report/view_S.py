@@ -289,6 +289,75 @@ class ScriptFilterForm(forms.Form):
 
 ###############################################################################
 
+class ScriptPDFFilterForm(forms.Form):
+
+    tag0 = forms.BooleanField(label = "", required = False,)
+    tag1 = forms.BooleanField(label = "", required = False,)
+    tag2 = forms.BooleanField(label = "", required = False,)
+    tag3 = forms.BooleanField(label = "", required = False,)
+    tag4 = forms.BooleanField(label = "", required = False,)
+    tag5 = forms.BooleanField(label = "", required = False,)
+
+    show_notes = forms.BooleanField(
+        label = "Show Notes", 
+        required = False,
+        )
+    
+    choices = (
+        ('legacy|"Courier New", Courier, monospace|',                       
+            'Legacy - Courier (Typewriter Style)'), 
+        ('legacy|"Times New Roman", Times, serif|',                       
+            'Legacy - Times (Serif)'), 
+        ('modern|Arial, Helvetica, sans-serif|',                            
+            'Modern Helvetica (Sans Serif)'),
+        ('modern|"Times New Roman", Times, serif|',                         
+            'Modern Times (Serif)'),
+        )
+    #https://www.google.com/fonts
+    layout = forms.TypedChoiceField(
+        label = "Layout",
+        choices = choices,
+        #widget = forms.RadioSelect,
+        initial = choices[0][0],
+        required = False,
+        )
+
+    roles_queryset = Role.objects.all()
+    roles = forms.ModelMultipleChoiceField(
+        label = "Colorize Roles", 
+        queryset=roles_queryset, 
+        widget=forms.CheckboxSelectMultiple(),
+        required = False,
+        )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_id = 'id-FilterForm'
+        self.helper.form_method = 'post'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-sm-2'
+        self.helper.field_class = 'col-sm-7'
+
+        self.helper.add_input(Submit('pdf', 'Download PDF'))
+
+        self.helper.layout = Layout(
+            Div(#Div(FormSymbol(scene_tag_list[0]['img']), Field('tag0'), style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(scene_tag_list[1]['img']),  Field('tag1'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(scene_tag_list[2]['img']),  Field('tag2'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(scene_tag_list[3]['img']),  Field('tag3'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(scene_tag_list[4]['img']),  Field('tag4'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                Div(FormSymbol(scene_tag_list[5]['img']),  Field('tag5'),  style="padding:0; margin:0;", css_class='checkbox-inline'),
+                css_class='col-sm-offset-2', style="margin-top:0px;",
+                ),
+
+            Field('show_notes'), 
+            Field('layout'), 
+            Field('roles'),
+        )
+
+###############################################################################
+
 class ScriptView(View):
     form_class = ScriptFilterForm
     x_group = 'scene'
@@ -316,7 +385,10 @@ class ScriptView(View):
         options = {}
 
         options['show_notes'] = form.cleaned_data['show_notes']
-        options['show_links'] = form.cleaned_data['show_links']
+        try:
+            options['show_links'] = form.cleaned_data['show_links']
+        except:
+            options['show_links'] = False
         options['colorize_roles'] = form.cleaned_data['roles']
         options['layout'] = form.cleaned_data['layout']
         pdf = request.POST.get('pdf')
@@ -376,4 +448,8 @@ class ScriptView(View):
         return self.render_form(request, form)
 
 ###############################################################################
+
+class ScriptPDFView(ScriptView):
+    form_class = ScriptPDFFilterForm
+
 ###############################################################################
