@@ -59,11 +59,11 @@ class ProjectForm(forms.ModelForm):
 
             Field('name', style="width:30em; min-width:30em; max-width:100%; "),
 
-            Field('users', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
+            Field('users', css_class='chosen-select-multi', style="max-width:100%; min-width:100%; min-height:48px;"),
 
-            Field('guests', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
+            Field('guests', css_class='chosen-select-multi', style="max-width:100%; min-width:100%; min-height:48px;"),
 
-            Field('owner', css_class='chosen-select-box'),
+            Field('owner', css_class='chosen-select-single'),
             )
 
     def clean_name(self):
@@ -101,7 +101,7 @@ class ScriptForm(forms.ModelForm):
 
             Field('abstract', style="max-width:100%; min-width:100%;", rows=2),
 
-            Field('persons', css_class='chosen-select', style="max-width:100%; min-width:100%; min-height:48px;"),
+            Field('persons', css_class='chosen-select-multi', style="max-width:100%; min-width:100%; min-height:48px;"),
 
             Field('author', style="max-width:100%; min-width:100%;"),
             Field('version', style="max-width:100%; min-width:100%;"),

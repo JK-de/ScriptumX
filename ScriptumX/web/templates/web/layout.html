@@ -13,14 +13,31 @@
     
     <title>{{ title }} - Scriptum&#x1d4e7;</title>
     {% load staticfiles %}
+    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="{% static 'X/content/bootstrap.min.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static 'X/content/site.css' %}" />
-    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
-    <script src="{% static 'X/scripts/modernizr-2.6.2.js' %}"></script>
+    {#<link rel="stylesheet" type="text/css" href="{% static 'X/content/site.css' %}" />#}
+    {#<script src="{% static 'X/scripts/modernizr-2.6.2.js' %}"></script>#}
+
+    <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400italic,700,700italic' rel='stylesheet' type='text/css'>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
+
+    <style>
+        body, h1, h2, h3, h4, h5, h6 {
+	        /*font-family: Roboto, sans-serif;*/
+            font-family: 'Source Sans Pro', sans-serif;
+            /*font-family: 'Magra', sans-serif;*/
+            /*font-family: 'Fira Sans', sans-serif;*/
+            /*text-shadow: none;*/
+        }
+
+    </style>
 </head>
 
-<body style="overflow:auto; padding-top:100px">
+<body style="font-family: 'Source Sans Pro', sans-serif; padding-top:100px;">
 
     <nav id="main-header" class="navbar navbar-default navbar-fixed-top" style="margin:0; padding:0; min-height: 24px;">
 
@@ -67,9 +84,6 @@
         
     </div>
 
-    <script src="{% static 'X/scripts/jquery-1.10.2.js' %}"></script>
-    <script src="{% static 'X/scripts/bootstrap.js' %}"></script>
-    <script src="{% static 'X/scripts/respond.js' %}"></script>
 {% block scripts %}{% endblock %}
 
 </body>

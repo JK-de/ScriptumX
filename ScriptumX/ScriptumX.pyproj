@@ -91,6 +91,7 @@
     <Compile Include="X\view_gadgets.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="X\view_shot.py" />
     <Compile Include="X\view_times.py" />
     <Compile Include="X\view_locations.py">
       <SubType>Code</SubType>
@@ -199,6 +200,7 @@
     <Content Include="X\templates\X\gadgets.html" />
     <Content Include="web\templates\web\home.html" />
     <Content Include="X\templates\X\layout_X.html" />
+    <Content Include="X\templates\X\shot.html" />
     <Content Include="X\templates\X\times.html" />
     <Content Include="X\templates\X\locations.html" />
     <Content Include="X\templates\X\persons.html" />

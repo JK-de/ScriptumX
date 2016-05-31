@@ -34,8 +34,8 @@ from .tags import FormSymbol, sceneitem_tag_list, handleTagRequest, getTagReques
 
 ###############################################################################
 
-class SceneItemForm(forms.ModelForm):
-    """Edit form for SceneItem model"""
+class ShotItemForm(forms.ModelForm):
+    """Edit form for ShotItem model"""
     class Meta:
         model = SceneItem
         fields = [
@@ -69,7 +69,7 @@ class SceneItemForm(forms.ModelForm):
 ###############################################################################
 
 @login_required
-def scene(request, sceneitem_id, new_type='?', new_order=0):
+def shot(request, sceneitem_id, new_type='?', new_order=0):
     """Handles page requests for SceneItems"""
 
     env = Env(request)
@@ -99,7 +99,7 @@ def scene(request, sceneitem_id, new_type='?', new_order=0):
             raise AssertionError 
 
         # generate forms and/or get data out of the edited forms
-        formItem = SceneItemForm(request.POST or None, instance=selected_sceneitem)
+        formItem = ShotItemForm(request.POST or None, instance=selected_sceneitem)
         if formItem.is_valid():
             selected_sceneitem = formItem.instance
 
@@ -118,7 +118,7 @@ def scene(request, sceneitem_id, new_type='?', new_order=0):
             if sceneitem_id == '0':   # previously new item
                 return HttpResponseRedirect('/scene/' + str(selected_sceneitem.id))
     else:
-        formItem = SceneItemForm(instance=selected_sceneitem)
+        formItem = ShotItemForm(instance=selected_sceneitem)
     
     if selected_sceneitem:
         if selected_sceneitem.type == 'A' or selected_sceneitem.type == 'N' or selected_sceneitem.type == 'T':
@@ -148,11 +148,11 @@ def scene(request, sceneitem_id, new_type='?', new_order=0):
     
     sceneitems = SceneItem.objects.filter(scene=env.scene).filter( query ).order_by('order')
 
-    return render(request, 'X/scene.html', {
-        'title': 'SceneItem',
+    return render(request, 'X/shot.html', {
+        'title': 'Shot',
         'env': env,
         'tab_list': g_tab_list,
-        'tab_active_id': 'S',
+        'tab_active_id': 'H',
         'tag_list': tag_list,
         'scenes': scenes,
         'selected_scene': env.scene,
@@ -165,16 +165,16 @@ def scene(request, sceneitem_id, new_type='?', new_order=0):
 ###############################################################################
 
 @login_required
-def sceneTag(request, tag_id):
+def shotTag(request, tag_id):
 
     handleTagRequest(request, tag_id, 'sceneitem')
 
-    return scene(request, None)
+    return shot(request, None)
 
 ###############################################################################
 
 @login_required
-def sceneSet(request, scene_id):
+def shotSet(request, scene_id):
 
     env = Env(request)
 
@@ -184,12 +184,12 @@ def sceneSet(request, scene_id):
     except:
         pass
 
-    return scene(request, None)
+    return shot(request, None)
 
 ###############################################################################
 
 @login_required
-def sceneMove(request, sceneitem_id, offset):
+def shotMove(request, sceneitem_id, offset):
 
     env = Env(request)
 
@@ -210,13 +210,13 @@ def sceneMove(request, sceneitem_id, offset):
     except:
         pass
 
-    url ='/scene/' + sceneitem_id
+    url ='/shot/' + sceneitem_id
     return HttpResponseRedirect(url)
     #return scene(request, sceneitem_id)
 
 ###############################################################################
 
-def sceneNew(request, sceneitem_id, sceneitem_type, offset):
+def shotNew(request, sceneitem_id, sceneitem_type, offset):
 
     env = Env(request)
 
@@ -227,6 +227,6 @@ def sceneNew(request, sceneitem_id, sceneitem_type, offset):
     except:
         newOrder = 0
 
-    url ='/scene/0/' + sceneitem_type + '/' + str(newOrder)
+    url ='/shot/0/' + sceneitem_type + '/' + str(newOrder)
     return HttpResponseRedirect(url)
     #return scene(request, 0, sceneitem_type, newOrder)

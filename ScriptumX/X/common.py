@@ -8,6 +8,7 @@ g_tab_list = (
     { 'id':'P', 'name':'Project',   'href':'/project',  'class':'x-project',  'img':'img/tab/project-24.png' },
     { 'id':'C', 'name':'Script',    'href':'/script',   'class':'x-script',   'img':'img/tab/script-24.png' },
     { 'id':'S', 'name':'Scene',     'href':'/scene',    'class':'x-scene',    'img':'img/tab/scene-24.png' },
+    { 'id':'H', 'name':'Shot',      'href':'/shot',     'class':'x-scene',    'img':'img/tab/shot-24.png' },
     { 'id':'R', 'name':'Role',      'href':'/role',     'class':'x-role',     'img':'img/tab/role-24.png' },
     { 'id':'L', 'name':'Location',  'href':'/location', 'class':'x-location', 'img':'img/tab/location-24.png' },
     { 'id':'T', 'name':'Time',      'href':'/time',     'class':'x-time',     'img':'img/tab/time-24.png' },

@@ -7,6 +7,7 @@ from X.views import *
 from X.view_project import *
 from X.view_script import *
 from X.view_scene import *
+from X.view_shot import *
 from X.view_roles import *
 from X.view_persons import *
 from X.view_times import *
@@ -35,6 +36,9 @@ urlpatterns = [
     url(r'^scene/(?P<sceneitem_id>\d+)?$', X.view_scene.scene, name='scene'),
     url(r'^scene/tag/(?P<tag_id>\w+)$', X.view_scene.sceneTag, name='sceneTag'),
     url(r'^scene/set/(?P<scene_id>\w+)$', X.view_scene.sceneSet, name='sceneSet'),
+
+    url(r'^shot/(?P<sceneitem_id>\d+)?$', X.view_shot.shot, name='shot'),
+    url(r'^shot/set/(?P<scene_id>\w+)$', X.view_shot.shotSet, name='shotSet'),
 
     url(r'^role/(?P<role_id>\d+)?$', X.view_roles.role, name='role'),
     url(r'^role/tag/(?P<tag_id>\w+)?$', X.view_roles.roleTag, name='roleTag'),

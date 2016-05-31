@@ -11,7 +11,7 @@
 
     $('#sceneselect').on('change', function (evt, params) {
         // can now use params.selected and params.deselected
-        window.location.href = "/scene/set/" + params.selected;
+        window.location.href = "/shot/set/" + params.selected;
     });
 
     $("#sceneselect_chosen").css('width', '20%');
@@ -209,7 +209,7 @@
 
     <div class="nav navbar-header">
         <a style="margin:4px; padding:0;" class="navbar-text" href="/scene">
-            <img src="{% static 'img/tab/scene-64.png' %}" />
+            <img src="{% static 'img/tab/shot-64.png' %}" />
         </a>
     </div>
 
@@ -408,7 +408,7 @@
 
 {% block mobile-toolbar %}
     
-    <a style="padding:8px; margin:0px" class="navbar-text" href="/scene"><img src="{% static 'img/tab/scene-24.png' %}" /></a>
+    <a style="padding:8px; margin:0px" class="navbar-text" href="/scene"><img src="{% static 'img/tab/shot-24.png' %}" /></a>
 
     <a href="/scene/0" role="button" class="btn btn-default navbar-btn btn-xs" style="margin:0; padding:4px;"><small>New</small></a>
 
