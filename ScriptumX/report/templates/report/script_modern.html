@@ -26,7 +26,7 @@
     body { font-family: "Bitstream Vera Serif", serif }
 {% endcomment %}
 
-p {
+.abase {
     margin-top:0;
     margin-bottom:0;
     padding:0;
@@ -97,25 +97,26 @@ p {
 
     <small style="color:#CCC;" class="pull-right"><i>Scriptum</i>&#x1d4e7; &emsp; <i class="fa fa-user"></i> {{env.user}} &emsp; <i class="fa fa-film"></i> {{env.project}} &emsp; <i class="fa fa-book"></i> {{env.script}} &emsp; <i class="fa fa-calendar-o"></i> {% now "Y-m-d" %} &ensp; <i class="fa fa-clock-o"></i> {% now "H:i" %} &ensp;</small>
 
+    <small>Font: {{font}} - {{google_link}}</small>
+
     {% endif %}
 
-        <small>Font: {{font}} - {{google_link}}</small>
 
-    <h3>{{title}}</h3>
+    <div class="abase" style="font-size: 22pt; text-align:center; padding-top:4in;">{{title}}</div>
+    <div><pdf:nextpage/></div>
+    
 
     {% for item in scriptitems %}
-        <div class="{{item.class}}" {% if item.color %}style="background-color:{{item.color}};"{% endif %}>
-        <p>
+
+        <div class="abase {{item.class}}" {% if item.color %}style="background-color:{{item.color}};"{% endif %}>
             {% autoescape off %}{{item.text|removetags:"a span"}}{% endautoescape %}
             {% if item.href %}
-                <a class="no-print" href="{{item.href}}" target="_parent">
-                <i class="fa fa-caret-right" aria-hidden="true"></i>
-                </a>
+                <a class="no-print" href="{{item.href}}" target="_blank">&#10149;</a>
             {% endif %}
-        </p>
         </div>
 
     {% endfor %}
+
     </div>
 
 {% endblock %}

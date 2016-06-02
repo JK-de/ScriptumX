@@ -7,18 +7,21 @@
     <style>
         @page {
             size: A4 portrait;
-            top: 0.5in;
-            left: 1.5in;
-            right: 1in;
-            bottom: 0.5in;
             /*-pdf-frame-border: 1;    for debugging the layout */
-            /*@frame content_frame {
+            @frame content_frame {
+                top: 0.5in;
                 left: 1.5in;
-                width: 6in;
-                top: 1in;
-                height: 10in;
-                -pdf-frame-border: 1;  */  /* for debugging the layout */
-            /*}*/
+                right: 1in;
+                bottom: 0.75in;
+            }
+            @frame footer_frame { /* static Frame */
+                -pdf-frame-content: footer_content;
+                left: 1.5in;
+                right: 1in;
+                bottom: 0.25in;
+                height: 20pt;
+                /*-pdf-frame-border: 1;  for debugging the layout */
+            }
         }
         body {
             background-color:#FFF;
@@ -38,5 +41,10 @@
 
 
     {% block scripts %}{% endblock %}
+
+    {% if PDF %}
+    <!-- Content for Static Frame 'footer_frame' -->
+    <div id="footer_content" class="abase" style="text-align:center">- <pdf:pagenumber> / <pdf:pagecount> -</div>
+    {% endif %}
 
 {% endblock %}
