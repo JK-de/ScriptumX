@@ -118,10 +118,15 @@ class CardsView(View):
     template_name = "report/common_form.html"
     title = 'Scene Cards'
     selected_scene_id = None
+    report_url_name = 'C_Script'
+
+    def get_report_url_name(self):
+        return self.report_url_name
 
     def render_form(self, request, form):
-        env = Env(request)
-
+        from report.collab import attach_collab_fields
+        if 'preset_name' not in form.fields:
+            attach_collab_fields(form, request, self.x_group, self.get_report_url_name())
         return render(
             request, 
             self.template_name, {
@@ -130,27 +135,27 @@ class CardsView(View):
             })
 
     def render_list(self, request, form, tag_list):
+        from report.collab import apply_advanced_scene_filters, filter_payload_from_request_form
         env = Env(request)
 
         options = {}
 
         options['show_notes'] = form.cleaned_data['show_notes']
-        options['show_details'] = form.cleaned_data['show_details']
-        #options['show_links'] = form.cleaned_data['show_links']
-        #options['colorize_roles'] = form.cleaned_data['roles']
-        #options['layout'] = form.cleaned_data['layout']
-        #pdf = request.POST.get('pdf')
-        options['columns'] = form.cleaned_data['columns']
+        options['show_details'] = form.cleaned_data.get('show_details', False)
+        options['columns'] = form.cleaned_data.get('columns', 4)
 
         query = getTagQuery(tag_list)
         scenes = Scene.objects.filter(project=env.project_id, script=env.script_id).filter(query).order_by('order')
+        payload = filter_payload_from_request_form(request, form, self.x_group)
+        scenes = apply_advanced_scene_filters(scenes, payload)
 
         self.template_name = "report/cards_script.html"
         self.context = {
-            'title': 'Script: ' + env.script.name,
+            'title': 'Script: ' + (env.script.name if env.script else 'Script'),
             'env': env,
             'scenes': scenes,
             'options': options,
+            'shared_read_only': bool(getattr(request, '_share_context', None)),
             }
 
         return render(
@@ -159,16 +164,22 @@ class CardsView(View):
             self.context )
 
     def get(self, request, *args, **kwargs):
+        from report.collab import prepare_filter_form
         tag_list = getTagRequestList(request, self.x_group)
+        initial = dict(self.initial)
         for tag in tag_list:
-            self.initial['tag' + str(tag['idx'])] = tag['active']
-        form = self.form_class(initial=self.initial)
+            initial['tag' + str(tag['idx'])] = tag['active']
+        form = prepare_filter_form(self, request, initial=initial)
         return self.render_form(request, form)
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST)
+        from report.collab import handle_collab_post, prepare_filter_form
+        form = prepare_filter_form(self, request, data=request.POST)
+        tag_list = getTagRequestList(request, self.x_group)
+        handled = handle_collab_post(self, request, form, tag_list, self.get_report_url_name())
+        if handled is not None:
+            return handled
         if form.is_valid():
-            tag_list = getTagRequestList(request, self.x_group)
             for tag in tag_list:
                 tag['active'] = form.cleaned_data['tag' + str(tag['idx'])]
             return self.render_list(request, form, tag_list)

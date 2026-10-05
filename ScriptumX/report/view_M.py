@@ -45,8 +45,26 @@ class M_BaseView(View):
     initial = {}
     template_name = "report/M_X.html"
     title = '??? List'
+    report_url_name = None
+
+    def get_report_url_name(self):
+        if self.report_url_name:
+            return self.report_url_name
+        mapping = {
+            'M_SceneRoleView': 'M_SceneRole',
+            'M_ScenePersonView': 'M_ScenePerson',
+            'M_SceneTimeView': 'M_SceneTime',
+            'M_SceneLocationView': 'M_SceneLocation',
+            'M_SceneGadgetView': 'M_SceneGadget',
+            'M_SceneSFXView': 'M_SceneSFX',
+            'M_SceneAudioView': 'M_SceneAudio',
+        }
+        return mapping.get(self.__class__.__name__, self.__class__.__name__)
 
     def render_form(self, request, form):
+        from report.collab import attach_collab_fields
+        if 'preset_name' not in form.fields:
+            attach_collab_fields(form, request, self.x_group, self.get_report_url_name())
         return render(request, self.template_name, {
             'title': self.title,
             'form': form,
@@ -64,18 +82,24 @@ class M_BaseView(View):
         )
 
     def get(self, request, *args, **kwargs):
+        from report.collab import prepare_filter_form
         bind_scope_to_request(request, **kwargs)
         tag_list = getTagRequestList(request, self.x_group)
+        initial = dict(self.initial)
         for tag in tag_list:
-            self.initial['tag'+str(tag['idx'])] = tag['active']
-        form = self.form_class(initial=self.initial)
+            initial['tag'+str(tag['idx'])] = tag['active']
+        form = prepare_filter_form(self, request, initial=initial)
         return self.render_form(request, form)
 
     def post(self, request, *args, **kwargs):
+        from report.collab import handle_collab_post, prepare_filter_form
         bind_scope_to_request(request, **kwargs)
-        form = self.form_class(request.POST)
+        form = prepare_filter_form(self, request, data=request.POST)
+        tag_list = getTagRequestList(request, self.x_group)
+        handled = handle_collab_post(self, request, form, tag_list, self.get_report_url_name())
+        if handled is not None:
+            return handled
         if form.is_valid():
-            tag_list = getTagRequestList(request, self.x_group)
             for tag in tag_list:
                 tag['active'] = form.cleaned_data['tag'+str(tag['idx'])]
             return self.render_list(request, form, tag_list)
