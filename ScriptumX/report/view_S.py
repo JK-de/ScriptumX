@@ -380,54 +380,54 @@ class ScriptView(View):
 
         list = []
         options = {}
+        sceneitems = []
 
         options['show_notes'] = form.cleaned_data['show_notes']
         try:
             options['show_links'] = form.cleaned_data['show_links']
-        except:
+        except Exception:
             options['show_links'] = False
-        options['colorize_roles'] = form.cleaned_data['roles']
+        options['colorize_roles'] = form.cleaned_data.get('roles') or []
         options['layout'] = form.cleaned_data['layout']
         pdf = request.POST.get('pdf')
 
-        if self.selected_scene_id:
-            pass
-
         query = getTagQuery(tag_list)
         scenes = Scene.objects.filter(project=env.project_id, script=env.script_id).filter(query).order_by('order')
+        if self.selected_scene_id:
+            scenes = scenes.filter(pk=self.selected_scene_id)
 
-        for scene in scenes:    
+        for scene in scenes:
             sceneitems = SceneItem.objects.filter(scene=scene).order_by('order').select_related()
-
             collect_sceneheader(list, scene, options)
             collect_sceneitems(list, scene, sceneitems, options)
 
-        template, font, google_link = form.cleaned_data['layout'].split('|', 2)
+        layout_value = form.cleaned_data.get('layout') or 'legacy|"Courier New", Courier, monospace|'
+        template, font, google_link = (layout_value.split('|', 2) + ['', ''])[:3]
 
         self.template_name = "report/script_" + template + ".html"
+        script_name = env.script.name if env.script else 'Script'
         self.context = {
-            'title': 'Script: ' + env.script.name,
+            'title': 'Script: ' + script_name,
             'font': font,
             'google_link': google_link,
             'env': env,
             'scenes': scenes,
             'sceneitems': sceneitems,
             'scriptitems': list,
-            'PDF': pdf,
+            'PDF': bool(pdf),
             'options': options,
-            }
+        }
 
         if pdf:
             return render_to_pdf_response(
-                self.template_name, 
-                self.context )
-        else:
-            return render(
-                request, 
-                self.template_name, 
-                self.context )
+                self.template_name,
+                self.context,
+                pdfname='%s.pdf' % script_name.replace(' ', '_'),
+            )
+        return render(request, self.template_name, self.context)
 
     def get(self, request, *args, **kwargs):
+        self.selected_scene_id = kwargs.get('selected_scene_id')
         tag_list = getTagRequestList(request, self.x_group)
         for tag in tag_list:
             self.initial['tag' + str(tag['idx'])] = tag['active']
@@ -435,6 +435,7 @@ class ScriptView(View):
         return self.render_form(request, form)
 
     def post(self, request, *args, **kwargs):
+        self.selected_scene_id = kwargs.get('selected_scene_id')
         form = self.form_class(request.POST)
         if form.is_valid():
             tag_list = getTagRequestList(request, self.x_group)
