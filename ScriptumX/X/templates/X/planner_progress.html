@@ -1,0 +1,141 @@
+{% extends "X/layout_X.html" %}
+{% load static %}
+
+{% block head %}
+<style>
+.planner-subnav { margin-bottom: 12px; }
+.planner-subnav .btn { margin: 0 4px 4px 0; }
+.planner-subnav .btn.active { font-weight: bold; }
+.prog-panel {
+    background: hsl(210, 10%, 18%);
+    border: 1px solid hsl(210, 8%, 10%);
+    padding: 16px;
+    margin-bottom: 16px;
+    color: #eee;
+}
+.prog-panel h3, .prog-panel h4 { margin-top: 0; color: hsl(200, 60%, 75%); }
+.prog-label { width: 72px; display: inline-block; font-size: 12px; }
+.prog-row { margin-bottom: 8px; }
+.prog-row .progress { margin-bottom: 0; height: 18px; background: #111; }
+.prog-overall { font-size: 32px; font-weight: bold; }
+.scene-prog td { font-size: 12px; vertical-align: middle !important; }
+.scene-prog .progress { height: 10px; margin: 0; background: #111; }
+</style>
+{% endblock %}
+
+{% block toolbar %}
+<div class="x-planner x-toolbar" style="padding:8px 16px;">
+    <strong>Progress dashboard</strong>
+    {% if project %} — {{ project.name }}{% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid x-planner x-back">
+    {% include "X/planner_nav.html" %}
+
+    {% if not project %}
+        <div class="alert alert-warning">Select a project first.</div>
+    {% else %}
+
+    <div class="prog-panel">
+        <h3>Project rollup <small>{{ project_totals.scene_count }} scenes</small></h3>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="prog-overall">{{ project_totals.overall }}%</div>
+                <div>overall average</div>
+            </div>
+            <div class="col-sm-9">
+                <div class="prog-row">
+                    <span class="prog-label">Script</span>
+                    <div class="progress" style="display:inline-block; width:70%; vertical-align:middle;">
+                        <div class="progress-bar progress-bar-warning" style="width:{{ project_totals.progress_script }}%">{{ project_totals.progress_script }}%</div>
+                    </div>
+                </div>
+                <div class="prog-row">
+                    <span class="prog-label">Pre</span>
+                    <div class="progress" style="display:inline-block; width:70%; vertical-align:middle;">
+                        <div class="progress-bar progress-bar-success" style="width:{{ project_totals.progress_pre }}%">{{ project_totals.progress_pre }}%</div>
+                    </div>
+                </div>
+                <div class="prog-row">
+                    <span class="prog-label">Shot</span>
+                    <div class="progress" style="display:inline-block; width:70%; vertical-align:middle;">
+                        <div class="progress-bar progress-bar-danger" style="width:{{ project_totals.progress_shot }}%">{{ project_totals.progress_shot }}%</div>
+                    </div>
+                </div>
+                <div class="prog-row">
+                    <span class="prog-label">Post</span>
+                    <div class="progress" style="display:inline-block; width:70%; vertical-align:middle;">
+                        <div class="progress-bar progress-bar-info" style="width:{{ project_totals.progress_post }}%">{{ project_totals.progress_post }}%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% for row in scripts %}
+    <div class="prog-panel">
+        <h4>
+            <i class="fa fa-book"></i> {{ row.script.name }}
+            <small>{{ row.scene_count }} scenes · overall {{ row.overall }}%</small>
+        </h4>
+        <div class="prog-row">
+            <span class="prog-label">Script</span>
+            <div class="progress" style="display:inline-block; width:70%; vertical-align:middle;">
+                <div class="progress-bar progress-bar-warning" style="width:{{ row.progress_script }}%">{{ row.progress_script }}%</div>
+            </div>
+        </div>
+        <div class="prog-row">
+            <span class="prog-label">Pre</span>
+            <div class="progress" style="display:inline-block; width:70%; vertical-align:middle;">
+                <div class="progress-bar progress-bar-success" style="width:{{ row.progress_pre }}%">{{ row.progress_pre }}%</div>
+            </div>
+        </div>
+        <div class="prog-row">
+            <span class="prog-label">Shot</span>
+            <div class="progress" style="display:inline-block; width:70%; vertical-align:middle;">
+                <div class="progress-bar progress-bar-danger" style="width:{{ row.progress_shot }}%">{{ row.progress_shot }}%</div>
+            </div>
+        </div>
+        <div class="prog-row">
+            <span class="prog-label">Post</span>
+            <div class="progress" style="display:inline-block; width:70%; vertical-align:middle;">
+                <div class="progress-bar progress-bar-info" style="width:{{ row.progress_post }}%">{{ row.progress_post }}%</div>
+            </div>
+        </div>
+
+        {% if row.scenes %}
+        <table class="table table-condensed scene-prog" style="margin-top:12px; background:transparent; color:#ddd;">
+            <thead>
+                <tr>
+                    <th style="width:60px;">#</th>
+                    <th>Scene</th>
+                    <th style="width:18%;">Script</th>
+                    <th style="width:18%;">Pre</th>
+                    <th style="width:18%;">Shot</th>
+                    <th style="width:18%;">Post</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for s in row.scenes %}
+                <tr>
+                    <td>{{ s.short }}</td>
+                    <td>{{ s.scene.name|truncatechars:48 }}</td>
+                    <td><div class="progress"><div class="progress-bar progress-bar-warning" style="width:{{ s.progress_script }}%"></div></div></td>
+                    <td><div class="progress"><div class="progress-bar progress-bar-success" style="width:{{ s.progress_pre }}%"></div></div></td>
+                    <td><div class="progress"><div class="progress-bar progress-bar-danger" style="width:{{ s.progress_shot }}%"></div></div></td>
+                    <td><div class="progress"><div class="progress-bar progress-bar-info" style="width:{{ s.progress_post }}%"></div></div></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+    {% empty %}
+        <div class="alert alert-info">No scripts in this project.</div>
+    {% endfor %}
+
+    {% endif %}
+</div>
+{% endblock %}

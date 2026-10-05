@@ -16,6 +16,7 @@ from X import view_audios
 from X import view_sfxs
 from X import view_scheduler
 from X import data_safety
+from X import view_planner
 
 app_name = 'X'
 
@@ -73,6 +74,13 @@ urlpatterns = [
     re_path(r'^scheduler/(?P<appointment_id>\d+)?$', view_scheduler.scheduler, name='scheduler'),
     re_path(r'^scheduler/tag/(?P<tag_id>\w+)?$', view_scheduler.schedulerTag, name='schedulerTag'),
 
+    re_path(r'^planner/?$', view_planner.planner, name='planner'),
+    re_path(r'^planner/stripboard/?$', view_planner.planner_stripboard, name='plannerStripboard'),
+    re_path(r'^planner/dood/?$', view_planner.planner_dood, name='plannerDood'),
+    re_path(r'^planner/cast/?$', view_planner.planner_cast, name='plannerCast'),
+    re_path(r'^planner/locations/?$', view_planner.planner_locations, name='plannerLocations'),
+    re_path(r'^planner/progress/?$', view_planner.planner_progress, name='plannerProgress'),
+
     # --- Scoped deep links: /p/<project_id>/s/<script_id>/… ---
     re_path(_SCOPE + r'script/(?P<scene_id>\d+)?$', view_script.script, name='script_scoped'),
     re_path(_SCOPE + r'scene/(?P<sceneitem_id>\d+)?$', view_scene.scene, name='scene_scoped'),
@@ -85,4 +93,10 @@ urlpatterns = [
     re_path(_SCOPE + r'audio/(?P<audio_id>\d+)?$', view_audios.audio, name='audio_scoped'),
     re_path(_SCOPE + r'sfx/(?P<sfx_id>\d+)?$', view_sfxs.sfx, name='sfx_scoped'),
     re_path(_SCOPE + r'scheduler/(?P<appointment_id>\d+)?$', view_scheduler.scheduler, name='scheduler_scoped'),
+    re_path(_SCOPE + r'planner/?$', view_planner.planner, name='planner_scoped'),
+    re_path(_SCOPE + r'planner/stripboard/?$', view_planner.planner_stripboard, name='plannerStripboard_scoped'),
+    re_path(_SCOPE + r'planner/dood/?$', view_planner.planner_dood, name='plannerDood_scoped'),
+    re_path(_SCOPE + r'planner/cast/?$', view_planner.planner_cast, name='plannerCast_scoped'),
+    re_path(_SCOPE + r'planner/locations/?$', view_planner.planner_locations, name='plannerLocations_scoped'),
+    re_path(_SCOPE + r'planner/progress/?$', view_planner.planner_progress, name='plannerProgress_scoped'),
 ]

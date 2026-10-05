@@ -1,0 +1,112 @@
+{% extends "X/layout_X.html" %}
+{% load static %}
+
+{% block head %}
+<style>
+.planner-subnav { margin-bottom: 12px; }
+.planner-subnav .btn { margin: 0 4px 4px 0; }
+.planner-subnav .btn.active { font-weight: bold; }
+.cast-day {
+    background: hsl(210, 10%, 18%);
+    border: 1px solid hsl(210, 8%, 10%);
+    padding: 12px 16px;
+    margin-bottom: 12px;
+    color: #eee;
+}
+.cast-day h4 { margin-top: 0; color: hsl(45, 80%, 75%); }
+.cast-ok { border-left: 4px solid #5cb85c; }
+.cast-bad { border-left: 4px solid #d9534f; }
+.cast-list { margin: 0 0 8px 18px; padding: 0; }
+.cast-list li { margin: 2px 0; }
+.label-missing { background: #d9534f; }
+.label-extra { background: #f0ad4e; color: #222; }
+.label-overlap { background: #c9302c; }
+.label-uncast { background: #777; }
+</style>
+{% endblock %}
+
+{% block toolbar %}
+<div class="x-planner x-toolbar" style="padding:8px 16px;">
+    <strong>Cast availability vs scene roles</strong>
+    {% if script %} — {{ script.name }}{% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid x-planner x-back">
+    {% include "X/planner_nav.html" %}
+
+    {% if not project %}
+        <div class="alert alert-warning">Select a project first.</div>
+    {% else %}
+
+    <p style="color:#ccc;">
+        Compares <em>Role.actor</em> (and scene persons) required by linked scenes against
+        <em>Appointment.persons</em> on each shoot day. Overlaps flag the same person on two appointments that share a calendar date.
+    </p>
+
+    {% for report in reports %}
+    <div class="cast-day {% if report.ok %}cast-ok{% else %}cast-bad{% endif %}">
+        <h4>
+            {% if report.ok %}<i class="fa fa-check-circle text-success"></i>{% else %}<i class="fa fa-exclamation-triangle text-danger"></i>{% endif %}
+            {{ report.day.date_label }} — {{ report.day.appointment.name }}
+            <small class="pull-right">{{ report.day.scenes|length }} scene{{ report.day.scenes|length|pluralize }}</small>
+        </h4>
+
+        <div class="row">
+            <div class="col-sm-4">
+                <strong>Roles on call</strong>
+                <ul class="cast-list">
+                    {% for role in report.needed_roles %}
+                    <li>{{ role.name }}{% if role.actor %} → {{ role.actor.name }}{% else %} <span class="label label-uncast">uncast</span>{% endif %}</li>
+                    {% empty %}
+                    <li class="text-muted">No roles on linked scenes</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-sm-4">
+                <strong>Appointment call sheet</strong>
+                <ul class="cast-list">
+                    {% for person in report.call_persons %}
+                    <li>{{ person.name }}</li>
+                    {% empty %}
+                    <li class="text-muted">No persons on appointment</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-sm-4">
+                <strong>Issues</strong>
+                {% if report.ok %}
+                    <p class="text-success">No conflicts.</p>
+                {% else %}
+                    <ul class="cast-list">
+                        {% for miss in report.missing %}
+                        <li><span class="label label-missing">needed</span>
+                            {{ miss.person.name }}
+                            {% for r in miss.roles %} ({{ r.name }}){% endfor %}
+                            not on call sheet
+                        </li>
+                        {% endfor %}
+                        {% for role in report.uncast_roles %}
+                        <li><span class="label label-uncast">uncast</span> {{ role.name }} has no actor</li>
+                        {% endfor %}
+                        {% for extra in report.extras %}
+                        <li><span class="label label-extra">extra</span> {{ extra.name }} on call but not required</li>
+                        {% endfor %}
+                        {% for ov in report.overlaps %}
+                        <li><span class="label label-overlap">overlap</span>
+                            {{ ov.person.name }} also on “{{ ov.other.name }}”
+                        </li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% empty %}
+        <div class="alert alert-info">No appointments. Create them under <a href="/scheduler/">Scheduler</a>.</div>
+    {% endfor %}
+
+    {% endif %}
+</div>
+{% endblock %}

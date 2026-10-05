@@ -17,7 +17,7 @@ _TAB_DEFS = (
     {'id': 'G', 'name': 'Gadget', 'path': '/gadget', 'class': 'x-gadget', 'img': 'img/tab/gadget-24.png'},
     {'id': 'X', 'name': 'SFX', 'path': '/sfx', 'class': 'x-sfx', 'img': 'img/tab/sfx-24.png'},
     {'id': 'A', 'name': 'Audio', 'path': '/audio', 'class': 'x-audio', 'img': 'img/tab/audio-24.png'},
-    {'id': 'T', 'name': '', 'path': '/scheduler', 'class': 'x-scheduler', 'img': 'img/tab/scheduler-24.png'},
+    {'id': 'B', 'name': 'Plan', 'path': '/planner', 'class': 'x-planner', 'img': 'img/tab/scheduler-24.png'},
 )
 
 

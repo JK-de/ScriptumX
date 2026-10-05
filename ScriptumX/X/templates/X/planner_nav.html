@@ -1,0 +1,6 @@
+<div class="planner-subnav">
+    {% for item in planner_nav %}
+        <a class="btn btn-xs {% if item.id == planner_nav_id %}btn-primary active{% else %}btn-default{% endif %}"
+           href="{{ item.href }}">{{ item.name }}</a>
+    {% endfor %}
+</div>

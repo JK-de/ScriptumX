@@ -566,3 +566,22 @@ a.x-audio.list-group-item.active:hover {
     background-image: linear-gradient(#3e444c, hsl(300, 8%, 25%));
 }
 
+/***********************************************/
+
+.x-planner.x-back,
+.x-planner.a.x-back {
+    background-color: hsl(210, 12%, 14%);
+    margin: 0;
+    padding: 16px;
+}
+
+.x-planner.nav-tabs > li.active > a {
+    background-color: hsl(210, 25%, 88%) !important;
+    color: hsl(210, 12%, 12%);
+}
+
+.x-planner.x-toolbar {
+    background-image: linear-gradient(#3e444c, hsl(210, 12%, 22%));
+    color: hsl(210, 20%, 90%);
+}
+
