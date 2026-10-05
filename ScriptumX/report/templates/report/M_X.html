@@ -28,6 +28,13 @@ th {
     <br/><br/>
 
     <div class="container">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-danger{% endif %}" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3>{{title}}</h3>
@@ -44,9 +51,13 @@ th {
 
 {% else %}
 
+    {% if not PDF %}
     <a id="printbutton" class="btn btn-default pull-right hidden-print" role="button" style="padding:4px;"><i class="fa fa-print fa-2x" aria-hidden="true"></i></a>
 
     <small style="color:#888;" class="pull-right"><i>Scriptum</i>&#x1d4e7; &emsp; <i class="fa fa-user"></i> {{env.user}} &emsp; <i class="fa fa-film"></i> {{env.project}} &emsp; <i class="fa fa-book"></i> {{env.script}} &emsp; <i class="fa fa-calendar-o"></i> {% now "Y-m-d" %} &ensp; <i class="fa fa-clock-o"></i> {% now "H:i" %} &ensp;</small>
+    {% else %}
+    <small style="color:#555;">{{ brand_name|default:"ScriptumX" }} · {{env.project}} · {{env.script}} · {% now "Y-m-d" %}</small>
+    {% endif %}
 
     <h3>{{title}}</h3>
 
