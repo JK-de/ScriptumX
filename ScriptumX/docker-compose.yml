@@ -1,0 +1,20 @@
+services:
+  web:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DJANGO_DEBUG: "1"
+      DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1,0.0.0.0,web"
+      DJANGO_SECRET_KEY: "docker-dev-secret-change-me"
+      DJANGO_DB_PATH: /data/db.sqlite3
+      DJANGO_SUPERUSER_USERNAME: admin
+      DJANGO_SUPERUSER_EMAIL: admin@example.com
+      DJANGO_SUPERUSER_PASSWORD: admin
+    volumes:
+      - scriptumx-data:/data
+    # For live code reload during development, uncomment:
+    # - .:/app
+
+volumes:
+  scriptumx-data:

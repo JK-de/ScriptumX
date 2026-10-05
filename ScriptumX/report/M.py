@@ -15,7 +15,7 @@ class CycleListNode(Node):
             # First time the node is rendered in template
             context.render_context[self] = itertools_cycle(context[self.list_variable])
         cycle_iter = context.render_context[self]
-        value = cycle_iter.next()
+        value = next(cycle_iter)
         if self.template_variable:
             context[self.template_variable] = value
         return ''

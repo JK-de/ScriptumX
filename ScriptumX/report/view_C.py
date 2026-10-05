@@ -7,17 +7,16 @@ from datetime import datetime
 import random
 
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, get_list_or_404, render
-from django.template import RequestContext
 from django.utils import timezone
 from django.views.generic import View, ListView, DetailView
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.db.models.functions import Lower
 from django.views.generic.base import TemplateView
 from django import forms
@@ -39,7 +38,6 @@ from X.tags import FormSymbol, sceneitem_tag_list, handleTagRequest, getTagReque
 # pip install xhtml2pdf==0.1a3
 # https://pypi.python.org/pypi/xhtml2pdf/0.1a3
 from django import http
-from django.shortcuts import render_to_response
 from django.template.loader import get_template
 from django.template import Context
 import xhtml2pdf.pisa as pisa
@@ -48,7 +46,6 @@ try:
     StringIO = StringIO.StringIO
 except Exception:
     from io import StringIO
-import cgi
 
 #from django_xhtml2pdf.utils import render_to_pdf_response
 from .pdf_utils import render_to_pdf_response

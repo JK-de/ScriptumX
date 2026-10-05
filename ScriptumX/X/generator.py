@@ -138,7 +138,7 @@ class Generator(object):
     __generated_paragraph_sigma = 0
 
     def __init__(self, sample=None, dictionary=None):
-        self.sample = unicode(sample or _SAMPLE)
+        self.sample = str(sample or _SAMPLE)
         self.dictionary = dictionary or _DICTIONARY
 
     def __get_sentence_mean(self):
@@ -325,7 +325,7 @@ class Generator(object):
         self.__words = list()
         for word in words:
             try:
-                word = unicode(word)
+                word = str(word)
             except TypeError:
                 continue
             else:

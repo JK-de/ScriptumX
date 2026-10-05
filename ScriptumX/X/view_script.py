@@ -7,17 +7,16 @@ from datetime import datetime
 import random
 
 from django.contrib.auth.decorators import login_required
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.http import HttpRequest, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, get_list_or_404, render
-from django.template import RequestContext
 from django.utils import timezone
 from django.views.generic import ListView, DetailView
 from django.core.exceptions import ObjectDoesNotExist
 from django.db.models import Q
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHolder, Div, Field, MultiField, HTML, Row, Column
@@ -128,7 +127,7 @@ class SceneForm(forms.ModelForm):
 ###############################################################################
 
 @login_required
-def script(request, scene_id, new_order=0):
+def script(request, scene_id=None, new_order=0):
     """Handles page requests for Script"""
     
     env = Env(request)
