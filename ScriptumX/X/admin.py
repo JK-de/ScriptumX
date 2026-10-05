@@ -101,7 +101,7 @@ class RoleAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['name']}),
         ('_Base', {'fields': ['abstract', 'description', 'tag1', 'tag2', 'tag3', 'tag4', 'tag5', 'tag6', 'tag7', 'tag8', 'tag9',  'tag10',  'tag11', 'tag12', 'project', 'note']}),
-        ('_Prop', {'fields': ['color']}),
+        ('_Prop', {'fields': ['color', 'wardrobe', 'arc_notes']}),
         ('_12M', {'fields': ['actor']}),
         ('_M2M', {'fields': ['gadgets']}),
     ]
@@ -147,17 +147,25 @@ class ScriptAdmin(admin.ModelAdmin):
     """Definition of the Script editor."""
     fieldsets = [
         (None, {'fields': ['name']}),
-        ('_Prop', {'fields': ['abstract', 'description', 'author', 'version', 'copyright',]}),
+        ('_Prop', {'fields': ['abstract', 'description', 'author', 'version', 'copyright', 'revision_label', 'revision_color']}),
         ('_12M', {'fields': ['project']}),
         ('_M2M', {'fields': ['persons']}),
     ]
     #inlines = [ChoiceInline]
-    list_display = ('name', 'abstract', 'description')
+    list_display = ('name', 'revision_label', 'abstract', 'description')
     list_filter = ['project']
     search_fields = ['name']
     #date_hierarchy = 'pub_date'
 
 admin.site.register(Script, ScriptAdmin)
+
+
+class ScriptRevisionAdmin(admin.ModelAdmin):
+    list_display = ('label', 'script', 'color', 'created', 'created_by')
+    list_filter = ['script']
+    search_fields = ['label', 'notes']
+
+admin.site.register(ScriptRevision, ScriptRevisionAdmin)
 
 class SceneAdmin(admin.ModelAdmin):
     """Definition of the Scene editor."""
@@ -180,9 +188,9 @@ class SceneItemAdmin(admin.ModelAdmin):
     """Definition of the SceneItem editor."""
     fieldsets = [
         ('_Prop', {'fields': ['order', 'type', 'parenthetical', 'text']}),
-        ('_12M', {'fields': ['role', 'scene']}),
+        ('_12M', {'fields': ['role', 'gadget', 'sfx', 'scene']}),
     ]
-    list_display = ('order', 'type', 'role', 'parenthetical', 'text')
+    list_display = ('order', 'type', 'role', 'gadget', 'sfx', 'parenthetical', 'text')
     list_filter = ['scene']
     search_fields = ['text']
     #date_hierarchy = 'order'

@@ -27,12 +27,15 @@ from crispy_forms.utils import render_crispy_form
 from django.contrib import messages
 from django.http import HttpResponse
 
-from X.models import Project, Script
+from X.models import Project, Script, Scene, ScriptRevision, REVISION_COLOR_CHOICES
 from X.forms import NoteForm
 from X.common import Env, get_tab_list
 from X import backup as project_backup
+from X.importer import ImporterBase
 
 from .tags import FormSymbol, handleTagRequest, getTagRequestList
+
+REVISION_PRESETS = REVISION_COLOR_CHOICES
 
 ###############################################################################
 
@@ -84,6 +87,8 @@ class ScriptForm(forms.ModelForm):
             'author',
             'version',
             'copyright',
+            'revision_label',
+            'revision_color',
             'persons',
             ]
 
@@ -108,12 +113,44 @@ class ScriptForm(forms.ModelForm):
             Field('version', style="max-width:100%; min-width:100%;"),
             Field('copyright', style="max-width:100%; min-width:100%;"),
 
+            Field('revision_label', style="max-width:100%; min-width:100%;"),
+            Field('revision_color', style="width:10%;", css_class="jscolor {width:243, height:150, position:'right', borderColor:'#FFF', insetColor:'#FFF', backgroundColor:'#666'}"),
+
             Field('description', style="max-width:100%; min-width:100%;", rows=10),
             )
 
     def clean_name(self):
       name = self.cleaned_data.get('name')
       return name
+
+
+IMPORT_FORMAT_CHOICES = (
+    ('auto', 'Auto-detect'),
+    ('fountain', 'Fountain (.fountain)'),
+    ('fdx', 'Final Draft (.fdx)'),
+    ('plain', 'Plain text (.txt)'),
+    ('celtx', 'Celtx (.celtx)'),
+)
+
+
+class ScriptImportForm(forms.Form):
+    """Upload a screenplay file into the current project."""
+    script_file = forms.FileField(label='Script file')
+    format = forms.ChoiceField(choices=IMPORT_FORMAT_CHOICES, initial='auto', required=False)
+    script_name = forms.CharField(max_length=50, required=False, label='Script name (optional)')
+
+    def __init__(self, *args, **kwargs):
+        super(ScriptImportForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-sm-3'
+        self.helper.field_class = 'col-sm-9'
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Field('script_file'),
+            Field('format'),
+            Field('script_name'),
+        )
 
 ###############################################################################
 
@@ -178,6 +215,38 @@ def project(request, project_id=None, script_id=None):
                     env.setScript(selected_script)
                     return HttpResponseRedirect('/project/' + str(selected_project.id) + '/' + str(selected_script.id))
 
+            # Stamp current revision as a named production draft
+            if request.POST.get('btn_stamp_revision'):
+                if formItemScript.is_valid():
+                    formItemScript.save()
+                ScriptRevision.objects.create(
+                    script=selected_script,
+                    label=selected_script.revision_label or 'White',
+                    color=selected_script.revision_color or '#FFFFFF',
+                    notes=request.POST.get('revision_notes', ''),
+                    created_by=env.user,
+                )
+                messages.success(
+                    request,
+                    'Stamped revision "%s".' % (selected_script.revision_label or 'White'),
+                )
+                return HttpResponseRedirect(
+                    '/project/' + str(selected_project.id) + '/' + str(selected_script.id)
+                )
+
+            # Apply a production color preset (pink/blue pages)
+            if request.POST.get('btn_revision_preset'):
+                preset = request.POST.get('btn_revision_preset')
+                for color, label in REVISION_PRESETS:
+                    if color == preset or label.lower() == preset.lower():
+                        selected_script.revision_label = label
+                        selected_script.revision_color = color
+                        selected_script.save()
+                        break
+                return HttpResponseRedirect(
+                    '/project/' + str(selected_project.id) + '/' + str(selected_script.id)
+                )
+
             # 'Activate'-Button
             if request.POST.get('btn_activate'):
                 env.setProject(selected_project)
@@ -224,6 +293,9 @@ def project(request, project_id=None, script_id=None):
         scripts = Script.objects.filter( project=env.project )
         scenes_project_id = env.project_id
 
+    revisions = []
+    if selected_script and selected_script.pk:
+        revisions = ScriptRevision.objects.filter(script=selected_script)[:20]
 
     return render(request, 'X/project.html', {
         'title': 'Project',
@@ -237,15 +309,67 @@ def project(request, project_id=None, script_id=None):
         'formScript': formItemScript,
         'formProject': formItemProject,
         'scenes_project_id': scenes_project_id,
+        'revisions': revisions,
+        'revision_presets': REVISION_PRESETS,
         #'error_message': "Please make a selection.",
     })
 
 ###############################################################################
 
 @login_required
-def project_import(request):
-    """Legacy stub — redirect to project restore UI."""
-    return HttpResponseRedirect('/project/restore')
+def project_import(request, project_id=None):
+    """Upload Fountain / Final Draft / plain text / Celtx into a project."""
+
+    env = Env(request)
+
+    if project_id:
+        try:
+            project = Project.objects.get(pk=project_id)
+            env.setProject(project)
+        except ObjectDoesNotExist:
+            messages.error(request, 'Project not found.')
+            return HttpResponseRedirect('/project/')
+
+    if not env.project:
+        messages.error(request, 'Select a project before importing a script.')
+        return HttpResponseRedirect('/project/')
+
+    form = ScriptImportForm(request.POST or None, request.FILES or None)
+
+    if request.method == 'POST' and form.is_valid():
+        upload = form.cleaned_data['script_file']
+        data = upload.read()
+        fmt = form.cleaned_data.get('format') or 'auto'
+        filename = upload.name or 'upload.txt'
+
+        try:
+            imp = ImporterBase(env)
+            imported_script = imp.doImport(filename, data=data, fmt=fmt)
+            custom_name = (form.cleaned_data.get('script_name') or '').strip()
+            if custom_name and imported_script:
+                imported_script.name = custom_name[:50]
+                imported_script.save()
+            messages.success(
+                request,
+                'Imported "%s" (%d scenes).' % (
+                    imported_script.name,
+                    Scene.objects.filter(script=imported_script).count(),
+                ),
+            )
+            return HttpResponseRedirect(
+                '/project/%s/%s' % (env.project.id, imported_script.id)
+            )
+        except Exception as exc:
+            messages.error(request, 'Import failed: %s' % exc)
+
+    return render(request, 'X/import_script.html', {
+        'title': 'Import Script',
+        'env': env,
+        'tab_list': get_tab_list(env),
+        'tab_active_id': 'P',
+        'form': form,
+        'selected_project': env.project,
+    })
 
 
 ###############################################################################

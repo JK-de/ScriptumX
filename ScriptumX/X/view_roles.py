@@ -47,6 +47,8 @@ class RoleForm(forms.ModelForm):
             'description',
             'color',
             'actor',
+            'wardrobe',
+            'arc_notes',
             'gadgets',
             ]
 
@@ -74,6 +76,9 @@ class RoleForm(forms.ModelForm):
             Field('abstract', rows=1),
 
             Field('actor', css_class='chosen-select-single'),
+
+            Field('wardrobe', rows=3),
+            Field('arc_notes', rows=4),
 
             Field('gadgets', css_class='chosen-select-multi'),
 
@@ -210,5 +215,28 @@ def roleTag(request, tag_id):
     handleTagRequest(request, tag_id, 'role')
 
     return role(request, None)
+
+###############################################################################
+
+@login_required
+def role_bible(request):
+    """Character / role bible: Roles joined with Person, wardrobe, arc notes."""
+
+    env = Env(request)
+
+    roles = (
+        Role.objects.filter(project=env.project_id)
+        .select_related('actor', 'note')
+        .prefetch_related('gadgets')
+        .order_by(Lower('name'))
+    )
+
+    return render(request, 'X/role_bible.html', {
+        'title': 'Character Bible',
+        'env': env,
+        'tab_list': get_tab_list(env),
+        'tab_active_id': 'R',
+        'roles': roles,
+    })
 
 ###############################################################################
