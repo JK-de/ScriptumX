@@ -1,15 +1,38 @@
-beautifulsoup4==4.4.1
-Django==1.9.6
-django-colorfield==0.1.10
-django-crispy-forms==1.6.0
-django-debug-toolbar==1.4
-django-htmlmin==0.9.1
-django-xhtml2pdf==0.0.3
-html5lib==0.9999999
-httplib2==0.9.2
-js.bootstrap-slider==4.8.1
-Pillow==3.2.0
-PyPDF2==1.26.0
-reportlab==3.3.0
-six==1.10.0
+# ScriptumX Python dependencies
+#
+# Target runtime: Python 3.5 (see ScriptumX.pyproj InterpreterVersion=3.5).
+# These pins are the newest versions still compatible with this Django 1.9-era
+# codebase WITHOUT requiring application code changes.
+#
+# Modern Django (2.x–6.x), crispy-forms 2.x, xhtml2pdf 0.2+, Pillow 6+, and
+# PyPDF2 2+/3+ need migrations documented in the dependency audit — do not
+# bump those here until the code is updated.
+
+# --- Core framework ---
+Django==1.9.13
+
+# --- Django apps used at runtime ---
+django-crispy-forms==1.6.1
+django-colorfield==0.1.15
+django-htmlmin==0.11.0
+
+# --- PDF export stack (xhtml2pdf.pisa used by report/) ---
+# xhtml2pdf 0.1a4 pulls these in; pins kept explicit for reproducible installs.
 xhtml2pdf==0.1a4
+reportlab==3.5.59
+Pillow==5.4.1
+PyPDF2==1.28.6
+html5lib==0.999999999
+httplib2==0.14.0
+six==1.16.0
+
+# --- HTML minify stack (django-htmlmin) ---
+beautifulsoup4==4.9.3
+
+# --- Optional / not enabled in settings (uncomment to use) ---
+# django-debug-toolbar==1.9.1
+# django-xhtml2pdf==0.0.4
+
+# --- Removed as unused by this tree ---
+# js.bootstrap-slider was a Fanstatic package; bootstrap-slider assets are
+# already vendored under X/static/ (templates load those static files).
