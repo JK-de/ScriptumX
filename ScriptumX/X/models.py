@@ -23,7 +23,7 @@ class Project(models.Model):
     #Props
     name = models.CharField(max_length=50)
     # One to Many
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="project_owned",)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="project_owned", on_delete=models.CASCADE)
     # Many to Many
     users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="project_user", blank=True)
     guests = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="project_guest", blank=True)
@@ -39,14 +39,14 @@ class Note(models.Model):
     text = models.TextField(blank=True)
     created = models.DateTimeField(auto_now_add=True)
     # One to Many
-    author = models.ForeignKey(User, null=True)
+    author = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     #source = models.ForeignKey(BaseModel, 
-    #    on_delete=models.CASCADE,
+    #    on_delete=models.SET_NULL,
     #    related_name="notes",
     #    related_query_name="note",
     #    null=True, 
     #    blank=False)
-    project = models.ForeignKey(Project)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)
 
     def __init__(self, *args, **kwargs):
         super(Note, self).__init__(*args, **kwargs)
@@ -84,8 +84,8 @@ class BaseModel(models.Model):
     tag12 = models.BooleanField(default=False, verbose_name='T12')
 
     # One to Many
-    project = models.ForeignKey(Project)   # for internal relations only
-    note = models.ForeignKey(Note, on_delete=models.CASCADE, null=True, blank=True)
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)   # for internal relations only
+    note = models.ForeignKey(Note, on_delete=models.SET_NULL, null=True, blank=True)
 
 
     def __str__(self):
@@ -236,7 +236,7 @@ class Role(BaseModel):
     #Props
     color = ColorField(default='#FFFFFF')
     # One to Many
-    actor = models.ForeignKey(Person, null=True, blank=True)
+    actor = models.ForeignKey(Person, null=True, blank=True, on_delete=models.SET_NULL)
     # Many to Many
     gadgets = models.ManyToManyField(Gadget, blank=True)
 
@@ -278,7 +278,7 @@ class Script(models.Model):
     version = models.CharField(max_length=50, blank=True)
     copyright = models.CharField(max_length=300, blank=True)
     # One to Many
-    project = models.ForeignKey(Project)   # for internal relations only
+    project = models.ForeignKey(Project, on_delete=models.CASCADE)   # for internal relations only
     # Many to Many
     persons = models.ManyToManyField(Person, blank=True)
 
@@ -306,9 +306,9 @@ class Scene(BaseModel):
     progress_shot = models.PositiveSmallIntegerField(default=0)
     progress_post = models.PositiveSmallIntegerField(default=0)
     # One to Many
-    script = models.ForeignKey(Script)   # for internal relations only
-    story_location = models.ForeignKey(Location, null=True, blank=True)
-    story_time = models.ForeignKey(Time, null=True, blank=True)
+    script = models.ForeignKey(Script, on_delete=models.CASCADE)   # for internal relations only
+    story_location = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL)
+    story_time = models.ForeignKey(Time, null=True, blank=True, on_delete=models.SET_NULL)
     # Many to Many
     persons = models.ManyToManyField(Person, blank=True)
     gadgets = models.ManyToManyField(Gadget, blank=True)
@@ -337,8 +337,8 @@ class SceneItem(models.Model):
     text = models.TextField(blank=True)
 
     # Many to Many
-    role = models.ForeignKey(Role, null=True, blank=True)
-    scene = models.ForeignKey(Scene, null=True, blank=True)   # for internal relations only
+    role = models.ForeignKey(Role, null=True, blank=True, on_delete=models.SET_NULL)
+    scene = models.ForeignKey(Scene, null=True, blank=True, on_delete=models.SET_NULL)   # for internal relations only
     
     def __str__(self):
         """Returns a string representation of a DialogItem."""
@@ -355,8 +355,8 @@ class Shot(models.Model):
     cam_angle = models.CharField(max_length=5)
     description = models.TextField(blank=True)
     # One to Many
-    sceneitem = models.ForeignKey(SceneItem)   # for internal relations only
-    scene = models.ForeignKey(Scene, null=True, blank=True)   # for internal relations only
+    sceneitem = models.ForeignKey(SceneItem, on_delete=models.CASCADE)   # for internal relations only
+    scene = models.ForeignKey(Scene, null=True, blank=True, on_delete=models.SET_NULL)   # for internal relations only
     # Many to Many
 
     def __str__(self):
@@ -375,7 +375,7 @@ class Appointment(BaseModel):
     time_all = models.DateTimeField(null=True, blank=True)
     duration_all = models.DurationField(blank=True, null=True)
     # One to Many
-    meeting_point = models.ForeignKey(Location, null=True, blank=True)
+    meeting_point = models.ForeignKey(Location, null=True, blank=True, on_delete=models.SET_NULL)
     # Many to Many
     scenes = models.ManyToManyField(Scene,
         through='Appointment2Scene',
@@ -388,7 +388,7 @@ class Appointment(BaseModel):
 
 class Appointment2Scene(models.Model):   # for internal relations only
     appointment = models.ForeignKey(Appointment, on_delete=models.CASCADE)
-    scene = models.ForeignKey(Scene)
+    scene = models.ForeignKey(Scene, on_delete=models.CASCADE)
     #Props
     time = models.TimeField(null=True, blank=True)
     duration = models.DurationField(null=True, blank=True)

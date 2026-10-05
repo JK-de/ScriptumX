@@ -1,18 +1,15 @@
 """
-Definition of urls for polls viewing and voting.
+Web app URL routes.
 """
-import web
-from web.views import *
+from django.urls import re_path
 
-from django.conf.urls import patterns, url
+from . import views
+
+app_name = 'web'
 
 urlpatterns = [
-
-    url(r'^$', web.views.home, name='home'),
-
-    url(r'^contact$', web.views.contact, name='contact'),
-
-    url(r'^about', web.views.about, name='about'),
-
-    url(r'^impressum', web.views.impressum, name='impressum'),
-    ]
+    re_path(r'^$', views.home, name='home'),
+    re_path(r'^contact/?$', views.contact, name='contact'),
+    re_path(r'^about/?$', views.about, name='about'),
+    re_path(r'^impressum/?$', views.impressum, name='impressum'),
+]

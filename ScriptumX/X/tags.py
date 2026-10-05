@@ -139,7 +139,7 @@ all_tag_list['appointment'] = appointment_tag_list
 
 
 def FormSymbol(imageName):
-    htmlLine = '{% load staticfiles %}<img src="{% static "'
+    htmlLine = '{% load static %}<img src="{% static "'
     htmlLine += imageName
     htmlLine += '" %}" />'
     return HTML(htmlLine)

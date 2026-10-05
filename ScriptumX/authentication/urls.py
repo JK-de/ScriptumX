@@ -1,48 +1,31 @@
 """
-Definition of urls for polls viewing and voting.
+Authentication URL routes.
 """
 from datetime import datetime
-from django.conf.urls import patterns, include, url
-from django.conf.urls.static import static
-from django.contrib import admin
-import  django.contrib.auth.views, django.contrib.auth.urls
-#from . import settings
-from django.contrib.staticfiles.storage import staticfiles_storage
-from django.views.generic.base import RedirectView
 
-import authentication
-from authentication.views import *
+from django.contrib.auth import views as auth_views
+from django.urls import re_path
+
 from .forms import BootstrapAuthenticationForm
 
-
-from django.conf.urls import patterns, url
+app_name = 'authentication'
 
 urlpatterns = [
-
-    url(r'^login/',
-        django.contrib.auth.views.login,
-        {
-            'template_name': 'authentication/login.html',
-            'authentication_form': BootstrapAuthenticationForm,
-            'extra_context':
-            {
-                'title':'Log in',
-                'datetime':datetime.now(),
-            }
-        },
-        name='login'),
-
-    url(r'^logout$',
-        django.contrib.auth.views.logout,
-        {
-            'next_page': '/',
-        },
-        name='logout'),
-
-    
-
-    #url(r'^$', web.views.home, name='home'),
-
-    #url(r'^contact$', web.views.contact, name='contact'),
-    #url(r'^about', web.views.about, name='about'),
-    ]
+    re_path(
+        r'^login/?$',
+        auth_views.LoginView.as_view(
+            template_name='authentication/login.html',
+            authentication_form=BootstrapAuthenticationForm,
+            extra_context={
+                'title': 'Log in',
+                'datetime': datetime.now(),
+            },
+        ),
+        name='login',
+    ),
+    re_path(
+        r'^logout/?$',
+        auth_views.LogoutView.as_view(next_page='/'),
+        name='logout',
+    ),
+]

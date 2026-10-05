@@ -2,41 +2,36 @@
 Definition of urls for ScriptumX.
 """
 
-from datetime import datetime
-from django.conf.urls import patterns, include, url
+from django.urls import include, re_path
 from django.conf.urls.static import static
 from django.contrib import admin
-import  django.contrib.auth.views, django.contrib.auth.urls
-from . import settings
 from django.contrib.staticfiles.storage import staticfiles_storage
 from django.views.generic.base import RedirectView
 
-import X
-import web
-import report
-import authentication
+from . import settings
+from X import views as x_views
 
 admin.autodiscover()
 
 urlpatterns = [
-    url(r'', include('X.urls', namespace="X")),
-    url(r'', include('web.urls', namespace="web")),
-    url(r'', include('report.urls', namespace="report")),
-    url(r'', include('authentication.urls', namespace="authentication")),
+    re_path(r'', include(('X.urls', 'X'), namespace='X')),
+    re_path(r'', include(('web.urls', 'web'), namespace='web')),
+    re_path(r'', include(('report.urls', 'report'), namespace='report')),
+    re_path(r'', include(('authentication.urls', 'authentication'), namespace='authentication')),
 
-    url('^', include('django.contrib.auth.urls')),
+    re_path(r'^', include('django.contrib.auth.urls')),
 
-    url(r'^seed', X.views.seed, name='seed'),
-    url(r'^importceltx', X.views.importceltx, name='importceltx'),
+    re_path(r'^seed/?$', x_views.seed, name='seed'),
+    re_path(r'^importceltx/?$', x_views.importceltx, name='importceltx'),
 
-    url(r'^admin/', include(admin.site.urls)),
+    re_path(r'^admin/', admin.site.urls),
 
-    url(r'^favicon.ico$',
+    re_path(
+        r'^favicon\.ico$',
         RedirectView.as_view(
             url=staticfiles_storage.url('favicon.ico'),
-            permanent=False),
-        name="favicon"
+            permanent=False,
         ),
-
-    ] + static('static', document_root=settings.STATIC_ROOT)
-    #+ static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+        name='favicon',
+    ),
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
