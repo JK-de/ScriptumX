@@ -10,27 +10,13 @@
     
     <title>{{ title }} - Scriptum&#x1d4e7;</title>
     {% load static %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
     
-    <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <!-- Optional theme -->
-{#    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">#}
-    <!-- Latest compiled and minified JavaScript -->
+    <link rel="stylesheet" type="text/css" href="{% static 'X/content/bootstrap.min.css' %}" />
 
-    {#<script src="{% static 'X/scripts/modernizr-2.6.2.js' %}"></script>#}
-
-    {#<script src="{% static 'X/scripts/jquery-1.10.2.js' %}"></script>#}
-    <script src="//code.jquery.com/jquery-1.12.0.min.js"></script>
-    {#<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>#}
-
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
-
-    <!-- fixedheadertable JavaScript --- http://jsfiddle.net/ANVNY/209/
-    <link rel="stylesheet" href="{% static 'fixedheadertable/fixedheadertable.css' %}">
-    <script src="{% static 'fixedheadertable/jquery.fixedheadertable.min.js' %}"></script>
-    <link rel="stylesheet" href="http://www.fixedheadertable.com/css/defaultTheme.css" media="screen" />-->
-        
+    <script src="{% static 'vendor/jquery/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'X/scripts/bootstrap.min.js' %}"></script>
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
 
     <!-- freezeheader JavaScript -->
     <link rel="stylesheet" href="{% static 'freezeheader/style.css' %}">

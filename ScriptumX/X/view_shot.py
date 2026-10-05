@@ -24,10 +24,8 @@ from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHo
 from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.utils import render_crispy_form
 
-from X.models import *
-from X.views import g_tab_list
-from X.views import Q
-from X.common import *
+from X.models import Role, Scene, SceneItem
+from X.common import Env, get_tab_list, getOrderNumber
 
 from .tags import FormSymbol, sceneitem_tag_list, handleTagRequest, getTagRequestList
 
@@ -68,10 +66,10 @@ class ShotItemForm(forms.ModelForm):
 ###############################################################################
 
 @login_required
-def shot(request, sceneitem_id=None, new_type='?', new_order=0):
+def shot(request, sceneitem_id=None, new_type='?', new_order=0, project_id=None, script_id=None):
     """Handles page requests for SceneItems"""
 
-    env = Env(request)
+    env = Env(request, project_id=project_id, script_id=script_id)
 
 
     tag_list = getTagRequestList(request, 'sceneitem')
@@ -150,7 +148,7 @@ def shot(request, sceneitem_id=None, new_type='?', new_order=0):
     return render(request, 'X/shot.html', {
         'title': 'Shot',
         'env': env,
-        'tab_list': g_tab_list,
+        'tab_list': get_tab_list(env),
         'tab_active_id': 'H',
         'tag_list': tag_list,
         'scenes': scenes,

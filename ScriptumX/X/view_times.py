@@ -24,11 +24,9 @@ from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHo
 from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.utils import render_crispy_form
 
-from X.models import *
+from X.models import Gadget, Note, Person, Time
 from X.forms import NoteForm
-from X.views import g_tab_list
-from X.views import Q
-from X.common import *
+from X.common import Env, get_tab_list, g_tag_queries, g_tag_query_none
 
 from .tags import FormSymbol, time_tag_list, handleTagRequest, getTagRequestList
 
@@ -98,10 +96,10 @@ class TimeForm(forms.ModelForm):
 ###############################################################################
 
 @login_required
-def time(request, time_id=None):
+def time(request, time_id=None, project_id=None, script_id=None):
     """Handles page requests for Times"""
 
-    env = Env(request)
+    env = Env(request, project_id=project_id, script_id=script_id)
 
 
     tag_list = getTagRequestList(request, 'time')
@@ -194,7 +192,7 @@ def time(request, time_id=None):
     return render(request, 'X/times.html', {
         'title': 'Time',
         'env': env,
-        'tab_list': g_tab_list,
+        'tab_list': get_tab_list(env),
         'tab_active_id': 'T',
         'tag_list': tag_list,
         'times': times,

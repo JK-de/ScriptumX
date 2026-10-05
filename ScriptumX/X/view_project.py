@@ -24,11 +24,9 @@ from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHo
 from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.utils import render_crispy_form
 
-from X.models import *
+from X.models import Project, Script
 from X.forms import NoteForm
-from X.views import g_tab_list
-from X.views import Q
-from X.common import *
+from X.common import Env, get_tab_list
 
 from .tags import FormSymbol, handleTagRequest, getTagRequestList
 
@@ -119,7 +117,7 @@ class ScriptForm(forms.ModelForm):
 def project(request, project_id=None, script_id=None):
     """Handles page requests for Projects"""
 
-    env = Env(request)
+    env = Env(request, project_id=project_id, script_id=script_id)
 
     selected_project = None
     selected_script = None
@@ -226,7 +224,7 @@ def project(request, project_id=None, script_id=None):
     return render(request, 'X/project.html', {
         'title': 'Project',
         'env': env,
-        'tab_list': g_tab_list,
+        'tab_list': get_tab_list(env),
         'tab_active_id': 'P',
         'projects': projects,
         'scripts': scripts,

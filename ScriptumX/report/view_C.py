@@ -27,16 +27,11 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.utils import render_crispy_form
 
-#from report.models import *
-from X.models import *
-from X.views import g_tab_list
-from X.views import Q
-from X.common import *
+from X.models import Scene
+from X.common import Env, getTagQuery, bind_scope_to_request
 
-from X.tags import FormSymbol, sceneitem_tag_list, handleTagRequest, getTagRequestList
+from X.tags import FormSymbol, scene_tag_list, handleTagRequest, getTagRequestList
 
-# pip install xhtml2pdf==0.1a3
-# https://pypi.python.org/pypi/xhtml2pdf/0.1a3
 from django import http
 from django.template.loader import get_template
 from django.template import Context
@@ -47,7 +42,6 @@ try:
 except Exception:
     from io import StringIO
 
-#from django_xhtml2pdf.utils import render_to_pdf_response
 from .pdf_utils import render_to_pdf_response
 
 ###############################################################################

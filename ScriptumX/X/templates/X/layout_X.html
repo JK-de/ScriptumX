@@ -8,7 +8,7 @@
 
     <title>{{ title }} - Scriptum&#x1d4e7;</title>
     <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'X/content/bootstrap.min.css' %}" />
     {#<link rel="stylesheet" type="text/css" href="{% static 'X/content/site.css' %}" />#}
     <link rel="stylesheet" type="text/css" href="{% static 'X/css/bootstrap-slider.css' %}" media="all" />
@@ -22,13 +22,10 @@
     {#<link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,400italic,700,700italic' rel='stylesheet' type='text/css'>#}
     {#<link href='https://fonts.googleapis.com/css?family=Fira+Sans:400,400italic,500italic,500' rel='stylesheet' type='text/css'>#}
 
-    {#<script src="{% static 'X/scripts/modernizr-2.6.2.js' %}"></script>#}
-    {#<script src="{% static 'X/scripts/jquery-1.10.2.js' %}"></script>#}
-    {#<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>#}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="{% static 'vendor/jquery/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'X/scripts/bootstrap.min.js' %}"></script>
+    <link rel="shortcut icon" href="{% static 'favicon.ico' %}">
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>    <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
-    
     <script src="{% static 'X/scripts/bootstrap-slider.js' %}"></script>
 
     {% block head %}{% endblock %}
