@@ -1,0 +1,287 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-05 22:48+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+#: X/common.py:9
+msgid "Project"
+msgstr ""
+
+#: X/common.py:10
+msgid "Script"
+msgstr ""
+
+#: X/common.py:11
+msgid "Scene"
+msgstr ""
+
+#: X/common.py:12
+msgid "Shot"
+msgstr ""
+
+#: X/common.py:13
+msgid "Role"
+msgstr ""
+
+#: X/common.py:14
+msgid "Location"
+msgstr ""
+
+#: X/common.py:15
+msgid "Time"
+msgstr ""
+
+#: X/common.py:16
+msgid "Person"
+msgstr ""
+
+#: X/common.py:17
+msgid "Gadget"
+msgstr ""
+
+#: X/common.py:18
+msgid "SFX"
+msgstr ""
+
+#: X/common.py:19
+msgid "Audio"
+msgstr ""
+
+#: X/forms.py:25 authentication/forms.py:23
+msgid "Password"
+msgstr ""
+
+#: X/templates/X/layout_X.html:114 X/templates/X/layout_X.html:117
+msgid "Dark stage"
+msgstr ""
+
+#: X/templates/X/layout_X.html:115 X/templates/X/layout_X.html:117
+msgid "Light stage"
+msgstr ""
+
+#: X/templates/X/scene.html:61 X/templates/X/script.html:42
+#: X/templates/X/shot.html:61
+msgid "Save"
+msgstr ""
+
+#: X/templates/X/scene.html:69 X/templates/X/script.html:54
+#: X/templates/X/shot.html:69
+msgid "Reset"
+msgstr ""
+
+#: X/templates/X/scene.html:76 X/templates/X/script.html:60
+#: X/templates/X/shot.html:76
+msgid "Delete"
+msgstr ""
+
+#: X/templates/X/scene.html:80 X/templates/X/script.html:64
+#: X/templates/X/shot.html:80
+msgid "Sure"
+msgstr ""
+
+#: X/templates/X/scene.html:81 X/templates/X/script.html:65
+#: X/templates/X/shot.html:81
+msgid "to"
+msgstr ""
+
+#: X/templates/X/scene.html:82 X/templates/X/script.html:66
+#: X/templates/X/shot.html:82
+msgid "delete?"
+msgstr ""
+
+#: X/templates/X/scene.html:86 X/templates/X/script.html:70
+#: X/templates/X/shot.html:86
+msgid "Delete!"
+msgstr ""
+
+#: X/templates/X/scene.html:105 X/templates/X/shot.html:105
+#, python-format
+msgid "Scene Items: %(count)s"
+msgstr ""
+
+#: X/templates/X/scene.html:220 X/templates/X/shot.html:224
+msgid "Select Scene"
+msgstr ""
+
+#: X/templates/X/scene.html:259 X/templates/X/scene.html:273
+#: X/templates/X/scene.html:417 X/templates/X/script.html:246
+#: X/templates/X/script.html:258 X/templates/X/script.html:409
+#: X/templates/X/shot.html:263 X/templates/X/shot.html:277
+msgid "New"
+msgstr ""
+
+#: X/templates/X/scene.html:262 X/templates/X/shot.html:266
+msgid "Insert before selected:"
+msgstr ""
+
+#: X/templates/X/scene.html:263 X/templates/X/scene.html:278
+#: X/templates/X/script.html:47 X/templates/X/shot.html:267
+#: X/templates/X/shot.html:282
+msgid "Note"
+msgstr ""
+
+#: X/templates/X/scene.html:264 X/templates/X/scene.html:279
+#: X/templates/X/shot.html:268 X/templates/X/shot.html:283
+msgid "Action"
+msgstr ""
+
+#: X/templates/X/scene.html:265 X/templates/X/scene.html:280
+#: X/templates/X/shot.html:269 X/templates/X/shot.html:284
+msgid "Dialog"
+msgstr ""
+
+#: X/templates/X/scene.html:266 X/templates/X/scene.html:281
+#: X/templates/X/shot.html:270 X/templates/X/shot.html:285
+msgid "Trans"
+msgstr ""
+
+#: X/templates/X/scene.html:267 X/templates/X/scene.html:282
+#: X/templates/X/shot.html:271 X/templates/X/shot.html:286
+msgid "Non-Speaking Role"
+msgstr ""
+
+#: X/templates/X/scene.html:277 X/templates/X/shot.html:281
+msgid "Insert after selected:"
+msgstr ""
+
+#: X/templates/X/scene.html:291 X/templates/X/script.html:266
+#: X/templates/X/shot.html:295
+msgid "Move"
+msgstr ""
+
+#: X/templates/X/scene.html:295 X/templates/X/script.html:270
+msgid "Before selected:"
+msgstr ""
+
+#: X/templates/X/scene.html:296 X/templates/X/script.html:271
+msgid "First"
+msgstr ""
+
+#: X/templates/X/scene.html:309 X/templates/X/script.html:284
+msgid "After selected:"
+msgstr ""
+
+#: X/templates/X/scene.html:321 X/templates/X/script.html:296
+msgid "Last"
+msgstr ""
+
+#: X/templates/X/scene.html:330 X/templates/X/script.html:305
+#: X/templates/X/shot.html:334
+msgid "Tool"
+msgstr ""
+
+#: X/templates/X/scene.html:335 X/templates/X/script.html:310
+msgid "Selected Item:"
+msgstr ""
+
+#: X/templates/X/scene.html:342 X/templates/X/script.html:317
+msgid "All Items:"
+msgstr ""
+
+#: X/templates/X/scene.html:355 X/templates/X/script.html:348
+#: X/templates/X/shot.html:359
+msgid "Item"
+msgstr ""
+
+#: X/templates/X/scene.html:372 X/templates/X/script.html:365
+#: X/templates/X/shot.html:376
+msgid "List"
+msgstr ""
+
+#: X/templates/X/scene.html:376
+msgid "Script TEST"
+msgstr ""
+
+#: X/templates/X/scene.html:390 X/templates/X/script.html:383
+#: X/templates/X/shot.html:394
+msgid "Matrix"
+msgstr ""
+
+#: X/templates/X/script.html:87
+#, python-format
+msgid "Scenes: %(count)s"
+msgstr ""
+
+#: X/templates/X/script.html:330
+msgid "Read"
+msgstr ""
+
+#: X/templates/X/script.html:334
+msgid "Read Script on Screen"
+msgstr ""
+
+#: X/templates/X/script.html:335
+msgid "Read Script in PDF"
+msgstr ""
+
+#: X/templates/X/script.html:337
+msgid "Read selected Scene"
+msgstr ""
+
+#: X/templates/X/script.html:369
+msgid "Simple List by Tag"
+msgstr ""
+
+#: X/templates/X/script.html:374
+msgid "Scene Cards"
+msgstr ""
+
+#: X/templates/X/shot.html:220 X/templates/X/shot_checklist.html:13
+#: X/view_ux.py:131
+msgid "Shot checklist"
+msgstr ""
+
+#: X/templates/X/shot.html:221 X/templates/X/shot.html:421
+#: X/templates/X/shot_checklist.html:66
+msgid "Checklist"
+msgstr ""
+
+#: X/templates/X/shot_checklist.html:14
+msgid ""
+"Tap a scene to cycle shot progress (0 → 50 → 100). Built for phones on set."
+msgstr ""
+
+#: X/templates/X/shot_checklist.html:51
+msgid "No scenes in this script yet."
+msgstr ""
+
+#: X/templates/X/shot_checklist.html:69 X/templates/X/shot_checklist.html:77
+msgid "Editor"
+msgstr ""
+
+#: X/ux.py:67
+#, python-format
+msgid "editing Scene %(short)s"
+msgstr ""
+
+#: X/ux.py:69
+#, python-format
+msgid "editing %(name)s"
+msgstr ""
+
+#: X/ux.py:70
+msgid "editing a scene"
+msgstr ""
+
+#: X/ux.py:72
+#, python-format
+msgid "viewing %(tab)s"
+msgstr ""
+
+#: X/ux.py:73
+msgid "online"
+msgstr ""

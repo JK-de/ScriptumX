@@ -1,0 +1,78 @@
+{% extends "X/layout_X.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'X/css/ux-checklist.css' %}" />
+<script src="{% static 'X/scripts/ux-checklist.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="ux-checklist-page" data-ux-page="shot-checklist">
+    {% csrf_token %}
+    <h1>{% trans "Shot checklist" %}</h1>
+    <p class="ux-check-sub">{% trans "Tap a scene to cycle shot progress (0 → 50 → 100). Built for phones on set." %}</p>
+
+    {% if scenes %}
+    <div id="ux-shot-checklist">
+        {% for scene in scenes %}
+        <button type="button"
+            class="ux-check-row{% if scene.progress_shot >= 100 %} is-done{% elif scene.progress_shot > 0 %} is-partial{% endif %}"
+            data-progress="{{ scene.progress_shot }}"
+            data-progress-url="/shot/checklist/{{ scene.pk }}/progress"
+            {% if forloop.first %}id="selected_scope"{% endif %}>
+            <div class="ux-check-row-top">
+                <span class="ux-check-mark" aria-hidden="true">
+                    {% if scene.progress_shot >= 100 %}
+                        <i class="fa fa-check-square-o"></i>
+                    {% elif scene.progress_shot > 0 %}
+                        <i class="fa fa-minus-square-o"></i>
+                    {% else %}
+                        <i class="fa fa-square-o"></i>
+                    {% endif %}
+                </span>
+                <div class="ux-check-meta">
+                    <div class="ux-check-title">
+                        {% if scene.short %}<strong>[{{ scene.short }}]</strong> {% endif %}{{ scene.name }}
+                    </div>
+                    {% if scene.abstract %}
+                    <p class="ux-check-abstract">{{ scene.abstract|striptags|truncatewords:24 }}</p>
+                    {% endif %}
+                    <span class="ux-check-pct">{{ scene.progress_shot }}%</span>
+                    <div class="ux-check-bar" aria-hidden="true">
+                        <div class="ux-check-bar-fill" style="width:{{ scene.progress_shot }}%"></div>
+                    </div>
+                </div>
+            </div>
+        </button>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p class="ux-checklist-empty">{% trans "No scenes in this script yet." %}</p>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block toolbar %}
+{% load static %}
+<div style="padding:0px;" class="navbar-collapse collapse">
+<div class="nav container-fixed-top x-sceneitem x-toolbar" style="margin-top:0">
+    <div class="nav navbar-header">
+        <a style="margin:4px; padding:0;" class="navbar-text" href="/shot">
+            <img src="{% static 'img/tab/shot-64.png' %}" alt="" />
+        </a>
+    </div>
+    <a href="/shot/checklist" class="btn btn-primary navbar-btn btn-xs" style="margin:8px; padding:8px 12px;">
+        {% trans "Checklist" %}
+    </a>
+    <a href="/shot" class="btn btn-default navbar-btn btn-xs" style="margin:8px; padding:8px 12px;">
+        {% trans "Editor" %}
+    </a>
+</div>
+</div>
+{% endblock %}
+
+{% block mobile-toolbar %}
+    <a style="padding:8px; margin:0px" class="navbar-text" href="/shot/checklist"><img src="{% static 'img/tab/shot-24.png' %}" alt="" /></a>
+    <a href="/shot" role="button" class="btn btn-default navbar-btn btn-xs" style="margin:0; padding:4px;"><small>{% trans "Editor" %}</small></a>
+{% endblock %}

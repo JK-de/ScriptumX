@@ -1,8 +1,11 @@
 {% extends "X/layout_X.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 
 {############################################################################}
+
+{% block ux_page %}shot{% endblock %}
 
 {% block head %}
 
@@ -55,7 +58,7 @@
                         <div class="pull-left">
                         
                             <button style="padding:4px;" type="submit" name="btn_save" value="x" class="btn btn-success btn-xs" formmethod="post">
-                            <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
+                            <img height="32" width="32" src="{% static 'img/save.png' %}" alt="" /><br />{% trans "Save" %}
                             </button  >
 
                         </div>
@@ -63,24 +66,24 @@
                         <div class="pull-right">
 
                             <button style="padding:4px;" type="reset" class="btn btn-default btn-xs" formmethod="post">
-                            <img height="32" width="32" src="{% static 'img/reset.png' %}" /><br /><small>Reset</small>
+                            <img height="32" width="32" src="{% static 'img/reset.png' %}" alt="" /><br /><small>{% trans "Reset" %}</small>
                             </button  >
 
 
                             <div class="btn-group" role="group">
                                 <button style="padding:4px;" type="button" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown">
-                                <img height="32" width="32" src="{% static 'img/delete.png' %}" /><br />
-	                                <small>Delete</small>
+                                <img height="32" width="32" src="{% static 'img/delete.png' %}" alt="" /><br />
+	                                <small>{% trans "Delete" %}</small>
 	                                <!--<span class="caret"></span>-->
                                 </button>
                                 <ul class="dropdown-menu pull-right" style="margin-left:-100px;">
-	                                <li><center>Sure</center></li>
-	                                <li><center>to</center></li>
-	                                <li><center>delete?</center></li>
+	                                <li><center>{% trans "Sure" %}</center></li>
+	                                <li><center>{% trans "to" %}</center></li>
+	                                <li><center>{% trans "delete?" %}</center></li>
 	                                <li role="separator" class="divider"></li>
 	                                <li><center>
                                         <button style="padding:4px; margin-top:0px;" type="submit" name="btn_delete" value="x" class="btn btn-danger btn-xs" formmethod="post">
-                                        <img height="16" width="16" src="{% static 'img/delete.png' %}" /> Delete!
+                                        <img height="16" width="16" src="{% static 'img/delete.png' %}" alt="" /> {% trans "Delete!" %}
                                         </button  >
                                     </center></li>
                                 </ul>
@@ -99,7 +102,7 @@
 
                 {% else %}
 
-                    Scene Items: {{ sceneitems.count }}
+                    {% blocktrans with count=sceneitems.count %}Scene Items: {{ count }}{% endblocktrans %}
                     <br />
 
                 {% endif %}
@@ -208,12 +211,16 @@
 <div class="nav container-fixed-top x-sceneitem x-toolbar" style="margin-top:0">
 
     <div class="nav navbar-header">
-        <a style="margin:4px; padding:0;" class="navbar-text" href="/scene">
-            <img src="{% static 'img/tab/shot-64.png' %}" />
+        <a style="margin:4px; padding:0;" class="navbar-text" href="/shot">
+            <img src="{% static 'img/tab/shot-64.png' %}" alt="" />
         </a>
     </div>
 
-    <select id="sceneselect" style="min-width:200px; max-width:400px; width:200px" class="chosen-select-single" data-placeholder="Select Scene">
+    <a href="/shot/checklist" class="btn btn-primary navbar-btn btn-xs" style="margin:8px 4px; padding:8px 10px;" title="{% trans 'Shot checklist' %}">
+        <i class="fa fa-check-square-o"></i> {% trans "Checklist" %}
+    </a>
+
+    <select id="sceneselect" style="min-width:200px; max-width:400px; width:200px" class="chosen-select-single" data-placeholder="{% trans 'Select Scene' %}">
     {% for scene in scenes %}
         <option value="{{scene.pk}}" {% if scene == env.scene %}selected{% endif %}>{{scene.name}}</option>
     {% endfor %}
@@ -252,30 +259,30 @@
 		    <button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_sceneitem %}disabled{% endif %}>
 			    <img height="32" width="32" src="{% static 'img/s/ins_b.png' %}" /><br />
 			    <span class="caret"></span>
-			    <small>New</small>
+			    <small>{% trans "New" %}</small>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-                <li class="dropdown-header">Inser befor selected:</li>
-			    <li><a href="/scene/new/N/{{selected_sceneitem.pk}}/-1">Note</a></li>
-			    <li><a href="/scene/new/A/{{selected_sceneitem.pk}}/-1">Action</a></li>
-			    <li><a href="/scene/new/D/{{selected_sceneitem.pk}}/-1">Dialog</a></li>
-			    <li><a href="/scene/new/T/{{selected_sceneitem.pk}}/-1">Trans</a></li>
-			    <li><a href="/scene/new/R/{{selected_sceneitem.pk}}/-1">Non-Speaking Role</a></li>
+                <li class="dropdown-header">{% trans "Insert before selected:" %}</li>
+			    <li><a href="/scene/new/N/{{selected_sceneitem.pk}}/-1">{% trans "Note" %}</a></li>
+			    <li><a href="/scene/new/A/{{selected_sceneitem.pk}}/-1">{% trans "Action" %}</a></li>
+			    <li><a href="/scene/new/D/{{selected_sceneitem.pk}}/-1">{% trans "Dialog" %}</a></li>
+			    <li><a href="/scene/new/T/{{selected_sceneitem.pk}}/-1">{% trans "Trans" %}</a></li>
+			    <li><a href="/scene/new/R/{{selected_sceneitem.pk}}/-1">{% trans "Non-Speaking Role" %}</a></li>
 		    </ul>
         </div>
         <div class="btn-group btn-group-xs" role="group" >
 		    <button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_sceneitem %}disabled{% endif %}>
-			    <img height="32" width="32" src="{% static 'img/s/ins_a.png' %}" /><br />
-			    <small>New</small>
+			    <img height="32" width="32" src="{% static 'img/s/ins_a.png' %}" alt="" /><br />
+			    <small>{% trans "New" %}</small>
 			    <span class="caret"></span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-                <li class="dropdown-header">Inser after selected:</li>
-			    <li><a href="/scene/new/N/{{selected_sceneitem.pk}}/1">Note</a></li>
-			    <li><a href="/scene/new/A/{{selected_sceneitem.pk}}/1">Action</a></li>
-			    <li><a href="/scene/new/D/{{selected_sceneitem.pk}}/1">Dialog</a></li>
-			    <li><a href="/scene/new/T/{{selected_sceneitem.pk}}/1">Trans</a></li>
-			    <li><a href="/scene/new/R/{{selected_sceneitem.pk}}/1">Non-Speaking Role</a></li>
+                <li class="dropdown-header">{% trans "Insert after selected:" %}</li>
+			    <li><a href="/scene/new/N/{{selected_sceneitem.pk}}/1">{% trans "Note" %}</a></li>
+			    <li><a href="/scene/new/A/{{selected_sceneitem.pk}}/1">{% trans "Action" %}</a></li>
+			    <li><a href="/scene/new/D/{{selected_sceneitem.pk}}/1">{% trans "Dialog" %}</a></li>
+			    <li><a href="/scene/new/T/{{selected_sceneitem.pk}}/1">{% trans "Trans" %}</a></li>
+			    <li><a href="/scene/new/R/{{selected_sceneitem.pk}}/1">{% trans "Non-Speaking Role" %}</a></li>
 		    </ul>
         </div>
     </div>
@@ -283,8 +290,8 @@
     {#--button move--#}
     <div class="btn-group btn-group-xs" role="group" style="margin-left:1%">
 		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_sceneitem %}disabled{% endif %}>
-			<img height="32" width="32" src="{% static 'img/s/move.png' %}" /><br />
-			<small>Move</small>
+			<img height="32" width="32" src="{% static 'img/s/move.png' %}" alt="" /><br />
+			<small>{% trans "Move" %}</small>
 			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
@@ -323,7 +330,7 @@
     <div class="btn-group btn-group-xs" role="group" style="margin-left:2%">
 		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
 			<img height="32" width="32" src="{% static 'img/tool.png' %}" /><br />
-			<small>Tool</small>
+			<small>{% trans "Tool" %}</small>
 			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
@@ -348,7 +355,7 @@
 		<div class="btn-group btn-group-xs" role="group" style="">
 			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
 				<img height="32" width="32" src="{% static 'img/report.png' %}" /><br />
-				<small>Item</small>
+				<small>{% trans "Item" %}</small>
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
@@ -365,7 +372,7 @@
 		<div class="btn-group btn-group-xs" role="group" style="">
 			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
 				<img height="32" width="32" src="{% static 'img/report.png' %}" /><br />
-				<small>List</small>
+				<small>{% trans "List" %}</small>
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
@@ -383,7 +390,7 @@
 		<div class="btn-group btn-group-xs" role="group" style="">
 			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
 				<img height="32" width="32" src="{% static 'img/matrix.png' %}" /><br />
-				<small>Matrix</small>
+				<small>{% trans "Matrix" %}</small>
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
@@ -408,9 +415,9 @@
 
 {% block mobile-toolbar %}
     
-    <a style="padding:8px; margin:0px" class="navbar-text" href="/scene"><img src="{% static 'img/tab/shot-24.png' %}" /></a>
+    <a style="padding:8px; margin:0px" class="navbar-text" href="/shot/checklist"><img src="{% static 'img/tab/shot-24.png' %}" alt="" /></a>
 
-    <a href="/scene/0" role="button" class="btn btn-default navbar-btn btn-xs" style="margin:0; padding:4px;"><small>New</small></a>
+    <a href="/shot/checklist" role="button" class="btn btn-primary navbar-btn btn-xs" style="margin:0; padding:4px;"><small>{% trans "Checklist" %}</small></a>
 
 {% endblock %}
                 

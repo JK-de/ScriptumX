@@ -1,8 +1,11 @@
 {% extends "X/layout_X.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load i18n %}
 
 {############################################################################}
+
+{% block ux_page %}script{% endblock %}
 
 {% block head %}
 <script src="{% static 'X/scripts/editor-safety.js' %}"></script>
@@ -64,7 +67,7 @@ function confirmScriptMove(offset) {
 
                         <div class="pull-left">
                             <button style="padding:4px;" type="submit" name="btn_save" value="x" class="btn btn-success btn-xs" formmethod="post">
-                                <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
+                                <img height="32" width="32" src="{% static 'img/save.png' %}" alt="" /><br />{% trans "Save" %}
                             </button  >
 
                             <label class="checkbox-inline" style="margin-left:8px; font-size:11px;">
@@ -73,30 +76,30 @@ function confirmScriptMove(offset) {
 
                             {% if not selected_scene.note %}
                                 <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
-                                    <img height="32" width="32" src="{% static 'img/note.png' %}" /><br /><small>Note</small>
+                                    <img height="32" width="32" src="{% static 'img/note.png' %}" alt="" /><br /><small>{% trans "Note" %}</small>
                                 </button  >
                             {% endif %}
                         </div>
                 
                         <div class="pull-right">
                             <button style="padding:4px;" type="reset" class="btn btn-default btn-xs" formmethod="post">
-                                <img height="32" width="32" src="{% static 'img/reset.png' %}" /><br /><small>Reset</small>
+                                <img height="32" width="32" src="{% static 'img/reset.png' %}" alt="" /><br /><small>{% trans "Reset" %}</small>
                             </button  >
 
                             <div class="btn-group" role="group">
                                 <button style="padding:4px;" type="button" class="btn btn-danger btn-xs dropdown-toggle" data-toggle="dropdown">
-                                    <img height="32" width="32" src="{% static 'img/delete.png' %}" /><br />
-	                                <small>Delete</small>
+                                    <img height="32" width="32" src="{% static 'img/delete.png' %}" alt="" /><br />
+	                                <small>{% trans "Delete" %}</small>
 	                            <!--<span class="caret"></span>-->
                                 </button>
                                 <ul class="dropdown-menu pull-right" style="margin-left:-100px;">
-	                                <li><center>Sure</center></li>
-	                                <li><center>to</center></li>
-	                                <li><center>delete?</center></li>
+	                                <li><center>{% trans "Sure" %}</center></li>
+	                                <li><center>{% trans "to" %}</center></li>
+	                                <li><center>{% trans "delete?" %}</center></li>
 	                                <li role="separator" class="divider"></li>
 	                                <li><center>
                                         <button style="padding:4px; margin-top:0px;" type="submit" name="btn_delete" value="x" class="btn btn-danger btn-xs" formmethod="post">
-                                        <img height="16" width="16" src="{% static 'img/delete.png' %}" /> Delete!
+                                        <img height="16" width="16" src="{% static 'img/delete.png' %}" alt="" /> {% trans "Delete!" %}
                                         </button  >
                                     </center></li>
                                 </ul>
@@ -113,7 +116,7 @@ function confirmScriptMove(offset) {
  
                 {% else %}
 
-                  Scenes: {{ scenes.count }}
+                  {% blocktrans with count=scenes.count %}Scenes: {{ count }}{% endblocktrans %}
 		          <br />
 
                 {% endif %}
@@ -272,7 +275,7 @@ function confirmScriptMove(offset) {
             >
         <img height="32" width="32" src="{% static 'img/s/ins_b.png' %}" />
         <br />
-        <small>New</small></a>
+        <small>{% trans "New" %}</small></a>
 
         <a href="/script/new/{{selected_scene.pk}}/1" 
             role="button" style="padding:4px" 
@@ -282,9 +285,9 @@ function confirmScriptMove(offset) {
             class="btn btn-default navbar-btn"
             {% endif %}
             >
-        <img height="32" width="32" src="{% static 'img/s/ins_a.png' %}" />
+        <img height="32" width="32" src="{% static 'img/s/ins_a.png' %}" alt="" />
         <br />
-        <small>New</small></a>
+        <small>{% trans "New" %}</small></a>
 
     </div>
 
@@ -292,14 +295,14 @@ function confirmScriptMove(offset) {
     <form id="script-move-form" method="post" action="" style="display:none;">{% csrf_token %}</form>
     <div class="btn-group btn-group-xs" role="group" style="margin-left:8px">
 		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_scene %}disabled{% endif %}>
-			<img height="32" width="32" src="{% static 'img/s/move.png' %}" /><br />
-			<small>Move</small>
+			<img height="32" width="32" src="{% static 'img/s/move.png' %}" alt="" /><br />
+			<small>{% trans "Move" %}</small>
 			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
-            <li class="dropdown-header">Confirm before move</li>
-            <li class="dropdown-header">Befor selected:</li>
-			<li><a href="#" onclick="return confirmScriptMove(-99999);">First</a></li>
+            <li class="dropdown-header">{% trans "Confirm before move" %}</li>
+            <li class="dropdown-header">{% trans "Before selected:" %}</li>
+			<li><a href="#" onclick="return confirmScriptMove(-99999);">{% trans "First" %}</a></li>
 			<li><a href="#" onclick="return confirmScriptMove(-20);">-20</a></li>
 			<li><a href="#" onclick="return confirmScriptMove(-10);">-10</a></li>
 			<li><a href="#" onclick="return confirmScriptMove(-9);">-9</a></li>
@@ -312,7 +315,7 @@ function confirmScriptMove(offset) {
 			<li><a href="#" onclick="return confirmScriptMove(-2);">-2</a></li>
 			<li><a href="#" onclick="return confirmScriptMove(-1);">-1</a></li>
             <li role="separator" class="divider"></li>
-            <li class="dropdown-header">After selected:</li>
+            <li class="dropdown-header">{% trans "After selected:" %}</li>
 			<li><a href="#" onclick="return confirmScriptMove(1);">1</a></li>
 			<li><a href="#" onclick="return confirmScriptMove(2);">2</a></li>
 			<li><a href="#" onclick="return confirmScriptMove(3);">3</a></li>
@@ -324,7 +327,7 @@ function confirmScriptMove(offset) {
 			<li><a href="#" onclick="return confirmScriptMove(9);">9</a></li>
 			<li><a href="#" onclick="return confirmScriptMove(10);">10</a></li>
 			<li><a href="#" onclick="return confirmScriptMove(20);">20</a></li>
-			<li><a href="#" onclick="return confirmScriptMove(99999);">last</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(99999);">{% trans "last" %}</a></li>
 		</ul>
     </div>
 
@@ -344,20 +347,20 @@ function confirmScriptMove(offset) {
     {#--button Tool--#}
     <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
 		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
-			<img height="32" width="32" src="{% static 'img/tool.png' %}" /><br />
-			<small>Tool</small>
+			<img height="32" width="32" src="{% static 'img/tool.png' %}" alt="" /><br />
+			<small>{% trans "Tool" %}</small>
 			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
             {% if selected_sceneitem %}
-            <li class="dropdown-header">Selected Item:</li>
+            <li class="dropdown-header">{% trans "Selected Item:" %}</li>
 			<li><a href="#">BlaBla</a></li>
 			<li><a href="#">BlaBla</a></li>
 			<li><a href="#">BlaBla</a></li>
 			<li><a href="#">BlaBla</a></li>
             <li role="separator" class="divider"></li>
             {% endif %}
-            <li class="dropdown-header">All Items:</li>
+            <li class="dropdown-header">{% trans "All Items:" %}</li>
 			<li><a href="#">BlaBla</a></li>
 			<li><a href="#">BlaBla</a></li>
 			<li><a href="#">BlaBla</a></li>
@@ -369,15 +372,15 @@ function confirmScriptMove(offset) {
     {#--button Read--#}
     <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
 		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
-			<img height="32" width="32" src="{% static 'img/script.png' %}" /><br />
-			<small>Read</small>
+			<img height="32" width="32" src="{% static 'img/script.png' %}" alt="" /><br />
+			<small>{% trans "Read" %}</small>
 			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
-			<li><a href="/report/S/read" target="_blank">Read Script on Screen</a></li>
-			<li><a href="/report/S/readpdf" target="_blank">Read Script in PDF</a></li>
+			<li><a href="/report/S/read" target="_blank">{% trans "Read Script on Screen" %}</a></li>
+			<li><a href="/report/S/readpdf" target="_blank">{% trans "Read Script in PDF" %}</a></li>
             {% if selected_sceneitem %}
-			<li><a href="/report/S/read/{{selected_sceneitem.id}}" target="_blank">Read selected Scene</a></li>
+			<li><a href="/report/S/read/{{selected_sceneitem.id}}" target="_blank">{% trans "Read selected Scene" %}</a></li>
             {% endif %}
 		</ul>
     </div>
@@ -387,8 +390,8 @@ function confirmScriptMove(offset) {
 
 		<div class="btn-group btn-group-xs" role="group" style="">
 			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
-				<img height="32" width="32" src="{% static 'img/report.png' %}" /><br />
-				<small>Item</small>
+				<img height="32" width="32" src="{% static 'img/report.png' %}" alt="" /><br />
+				<small>{% trans "Item" %}</small>
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
@@ -404,17 +407,17 @@ function confirmScriptMove(offset) {
 
 		<div class="btn-group btn-group-xs" role="group" style="">
 			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
-				<img height="32" width="32" src="{% static 'img/report.png' %}" /><br />
-				<small>List</small>
+				<img height="32" width="32" src="{% static 'img/report.png' %}" alt="" /><br />
+				<small>{% trans "List" %}</small>
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
-				<li><a href="/report/L/simple_scene" target="_blank">Simple List by Tag</a></li>
+				<li><a href="/report/L/simple_scene" target="_blank">{% trans "Simple List by Tag" %}</a></li>
 				<li><a href="#">*TEST*</a></li>
 				<li><a href="#">*TEST*</a></li>
 				<li><a href="#">*TEST*</a></li>
 				<li role="separator" class="divider"></li>
-				<li><a href="/report/C/script" target="_blank">Scene Cards</a></li>
+				<li><a href="/report/C/script" target="_blank">{% trans "Scene Cards" %}</a></li>
 				<li><a href="#">*TEST*</a></li>
 				<li><a href="#">*TEST*</a></li>
 			</ul>
@@ -422,8 +425,8 @@ function confirmScriptMove(offset) {
 		
 		<div class="btn-group btn-group-xs" role="group" style="">
 			<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
-				<img height="32" width="32" src="{% static 'img/matrix.png' %}" /><br />
-				<small>Matrix</small>
+				<img height="32" width="32" src="{% static 'img/matrix.png' %}" alt="" /><br />
+				<small>{% trans "Matrix" %}</small>
 				<span class="caret"></span>
 			</button>
 			<ul class="dropdown-menu" role="menu">
@@ -449,7 +452,7 @@ function confirmScriptMove(offset) {
     
     <a style="padding:8px; margin:0px" class="navbar-text" href="/script"><img src="{% static 'img/tab/script-24.png' %}" /></a>
 
-    <a href="/script/0" role="button" class="btn btn-default navbar-btn btn-xs" style="margin:0; padding:4px;"><small>New</small></a>
+    <a href="/script/0" role="button" class="btn btn-default navbar-btn btn-xs" style="margin:0; padding:4px;"><small>{% trans "New" %}</small></a>
 
 {% endblock %}
                 
