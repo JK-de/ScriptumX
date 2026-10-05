@@ -294,16 +294,34 @@
             <small>New Script</small>
         </a>
    
-        <a href="/project/{{selected_project.id}}/import" role="button" style="padding:4px" 
+        <a href="/project/{{selected_project.id}}/export.json" role="button" style="padding:4px"
              {% if not selected_project %}
                 disabled
-                class="btn btn-default navbar-btn disabled" 
+                class="btn btn-default navbar-btn disabled"
              {% else %}
-                class="btn btn-default navbar-btn" 
+                class="btn btn-default navbar-btn"
              {% endif %}>
+            <img height="32" width="32" src="{% static 'img/save.png' %}" />
+            <br />
+            <small>Export JSON</small>
+        </a>
+
+        <a href="/project/{{selected_project.id}}/export.zip" role="button" style="padding:4px"
+             {% if not selected_project %}
+                disabled
+                class="btn btn-default navbar-btn disabled"
+             {% else %}
+                class="btn btn-default navbar-btn"
+             {% endif %}>
+            <img height="32" width="32" src="{% static 'img/save.png' %}" />
+            <br />
+            <small>Export ZIP</small>
+        </a>
+
+        <a href="/project/restore" role="button" style="padding:4px" class="btn btn-default navbar-btn">
             <img height="32" width="32" src="{% static 'img/new.png' %}" />
             <br />
-            <small>Import Script</small>
+            <small>Restore Backup</small>
         </a>
     </div>
 

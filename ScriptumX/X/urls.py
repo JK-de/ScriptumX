@@ -15,6 +15,7 @@ from X import view_gadgets
 from X import view_audios
 from X import view_sfxs
 from X import view_scheduler
+from X import data_safety
 
 app_name = 'X'
 
@@ -23,17 +24,23 @@ _SCOPE = r'^p/(?P<project_id>\d+)/s/(?P<script_id>\d+)/'
 
 urlpatterns = [
     re_path(r'^project/import$', view_project.project_import, name='projectImport'),
+    re_path(r'^project/restore$', view_project.project_restore, name='projectRestore'),
+    re_path(r'^project/(?P<project_id>\d+)/export(?:\.(?P<fmt>json|zip))?$', view_project.project_export, name='projectExport'),
     re_path(r'^project/(?P<project_id>\d+)/(?P<script_id>\d+)?$', view_project.project, name='project'),
     re_path(r'^project/(?P<project_id>\d+)?$', view_project.project, name='project'),
 
     re_path(r'^script/new/(?P<scene_id>\d+)/(?P<offset>[-]?\d+)$', view_script.scriptNew, name='scriptNew'),
     re_path(r'^script/move/(?P<scene_id>\d+)/(?P<offset>[-]?\d+)$', view_script.scriptMove, name='scriptMove'),
+    re_path(r'^script/undo-move$', view_script.scriptUndoMove, name='scriptUndoMove'),
+    re_path(r'^script/autosave/(?P<scene_id>\d+)$', data_safety.script_autosave, name='scriptAutosave'),
     re_path(r'^script/(?P<scene_id>[0])/(?P<new_order>\d+)$', view_script.script, name='script'),
     re_path(r'^script/(?P<scene_id>\d+)?$', view_script.script, name='script'),
     re_path(r'^script/tag/(?P<tag_id>\w+)$', view_script.scriptTag, name='scriptTag'),
 
     re_path(r'^scene/new/(?P<sceneitem_type>[NADTR])/(?P<sceneitem_id>\d+)/(?P<offset>[-]?\d+)$', view_scene.sceneNew, name='sceneNew'),
     re_path(r'^scene/move/(?P<sceneitem_id>\d+)/(?P<offset>[-]?\d+)$', view_scene.sceneMove, name='sceneMove'),
+    re_path(r'^scene/undo-move$', view_scene.sceneUndoMove, name='sceneUndoMove'),
+    re_path(r'^scene/autosave/(?P<sceneitem_id>\d+)$', data_safety.scene_autosave, name='sceneAutosave'),
     re_path(r'^scene/(?P<sceneitem_id>[0])/(?P<new_type>[NADTR])/(?P<new_order>\d+)$', view_scene.scene, name='scene'),
     re_path(r'^scene/(?P<sceneitem_id>\d+)?$', view_scene.scene, name='scene'),
     re_path(r'^scene/tag/(?P<tag_id>\w+)$', view_scene.sceneTag, name='sceneTag'),

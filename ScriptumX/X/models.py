@@ -296,6 +296,7 @@ class Scene(BaseModel):
 
     #Props
     order = models.PositiveIntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     short = models.CharField(max_length=5, blank=True, default='')
     #abstract = models.TextField(blank=True)
     indentation = models.PositiveIntegerField(default=0)
@@ -335,6 +336,7 @@ class SceneItem(models.Model):
     type = models.CharField(max_length=1, blank=True, default='')
     parenthetical = models.CharField(max_length=100, blank=True, default='')
     text = models.TextField(blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     # Many to Many
     role = models.ForeignKey(Role, null=True, blank=True, on_delete=models.SET_NULL)
