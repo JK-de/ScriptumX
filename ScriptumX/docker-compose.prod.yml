@@ -1,0 +1,22 @@
+# Production overlay — use with:
+#   cp .env.prod.example .env.prod   # then edit secrets
+#   docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.prod up --build -d
+#
+# Does NOT set DJANGO_SUPERUSER_* — create an admin with:
+#   docker compose … exec web python manage.py createsuperuser
+services:
+  web:
+    environment:
+      DJANGO_DEBUG: "0"
+      DJANGO_HTML_MINIFY: "0"
+      DJANGO_BEHIND_PROXY: "${DJANGO_BEHIND_PROXY:-1}"
+      DJANGO_ALLOWED_HOSTS: "${DJANGO_ALLOWED_HOSTS:?set DJANGO_ALLOWED_HOSTS}"
+      DJANGO_SECRET_KEY: "${DJANGO_SECRET_KEY:?set a strong DJANGO_SECRET_KEY}"
+      DJANGO_CSRF_TRUSTED_ORIGINS: "${DJANGO_CSRF_TRUSTED_ORIGINS:-}"
+      DJANGO_DB_PATH: /data/db.sqlite3
+      # Explicitly clear bootstrap credentials from the base compose file
+      DJANGO_SUPERUSER_USERNAME: ""
+      DJANGO_SUPERUSER_EMAIL: ""
+      DJANGO_SUPERUSER_PASSWORD: ""
+      DJANGO_ALLOW_BOOTSTRAP_SUPERUSER: "0"
+    restart: unless-stopped

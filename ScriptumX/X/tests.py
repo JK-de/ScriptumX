@@ -1,34 +1,32 @@
-"""
-This file demonstrates writing tests using the unittest module. These will pass
-when you run "manage.py test".
-"""
+"""App smoke tests: login, seed, project list."""
+from django.contrib.auth import get_user_model
+from django.test import Client, TestCase, override_settings
 
-import django
-from django.test import TestCase
 
-# TODO: Configure your database in settings.py and sync before running tests.
+@override_settings(ALLOWED_HOSTS=['*'], HTML_MINIFY=False)
+class SmokeTests(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        self.user = User.objects.create_superuser('smokeadmin', 'smoke@example.com', 'smokeadmin')
+        self.client = Client()
 
-class ViewTest(TestCase):
-    """Tests for the application views."""
+    def test_login_page(self):
+        response = self.client.get('/login/')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Log in')
 
-    if django.VERSION[:2] >= (1, 7):
-        # Django 1.7 requires an explicit setup() when running tests in PTVS
-        @classmethod
-        def setUpClass(cls):
-            super(ViewTest, cls).setUpClass()
-            django.setup()
-
-    def test_home(self):
-        """Tests the home page."""
+    def test_login_succeeds(self):
+        logged_in = self.client.login(username='smokeadmin', password='smokeadmin')
+        self.assertTrue(logged_in)
         response = self.client.get('/')
-        self.assertContains(response, 'Polls.', 1, 200)
+        self.assertEqual(response.status_code, 200)
 
-    def test_contact(self):
-        """Tests the contact page."""
-        response = self.client.get('/contact')
-        self.assertContains(response, 'Contact', 3, 200)
+    def test_seed_and_project_list(self):
+        assert self.client.login(username='smokeadmin', password='smokeadmin')
+        response = self.client.get('/seed', follow=True)
+        self.assertEqual(response.status_code, 200)
 
-    def test_about(self):
-        """Tests the about page."""
-        response = self.client.get('/about')
-        self.assertContains(response, 'About', 3, 200)
+        response = self.client.get('/project/')
+        self.assertEqual(response.status_code, 200)
+        # Seeded sample project is named "Movie"
+        self.assertContains(response, 'Movie')
