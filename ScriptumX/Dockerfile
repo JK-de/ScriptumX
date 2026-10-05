@@ -12,6 +12,7 @@ WORKDIR /app
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         build-essential \
+        gettext \
         libjpeg62-turbo-dev \
         zlib1g-dev \
         libfreetype6-dev \
@@ -26,6 +27,7 @@ COPY . /app
 
 RUN mkdir -p /data /app/static \
     && chmod +x /app/docker/entrypoint.sh \
+    && python manage.py compilemessages \
     && chown -R app:app /app /data
 
 USER app
