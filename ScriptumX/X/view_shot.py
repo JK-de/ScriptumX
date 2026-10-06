@@ -199,7 +199,7 @@ def shotMove(request, sceneitem_id, offset):
         if offset > 0:
             offset += 1
         newOrder = getOrderNumber(sceneitems, sceneitem_id, offset)
-        if newOrder:
+        if newOrder is not None:
             selected_sceneitem = SceneItem.objects.get( scene=env.scene, id=sceneitem_id )
             selected_sceneitem.order = newOrder
             selected_sceneitem.save()
