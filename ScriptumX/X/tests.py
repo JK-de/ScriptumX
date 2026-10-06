@@ -31,6 +31,28 @@ class SmokeTests(TestCase):
         # Seeded sample project is named "Movie"
         self.assertContains(response, 'Movie')
 
+    def test_new_project_form_loads(self):
+        """GET /project/0 must not 500 on unsaved Project related filters."""
+        assert self.client.login(username='smokeadmin', password='smokeadmin')
+        response = self.client.get('/project/0')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'btn_save')
+
+    def test_new_project_can_save(self):
+        assert self.client.login(username='smokeadmin', password='smokeadmin')
+        response = self.client.post('/project/0', {
+            'name': 'Fresh Project',
+            'owner': self.user.id,
+            'users': [],
+            'guests': [],
+            'btn_save': 'x',
+        })
+        self.assertEqual(response.status_code, 302)
+        from X.models import Project
+        project = Project.objects.get(name='Fresh Project')
+        self.assertEqual(project.owner_id, self.user.id)
+        self.assertEqual(response['Location'], '/project/%s' % project.id)
+
 """
 Tests for writer import (F4), breakdown (F5), role bible (F6), revisions (F7).
 """
