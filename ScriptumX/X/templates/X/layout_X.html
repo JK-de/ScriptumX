@@ -84,6 +84,16 @@
 
     <div id="app_container" style="margin:0; padding:0; width:100%; top:118px;" class="xxxcontainer-fluid xxxbody-content">
 
+        {% if messages %}
+            <div class="container-fluid" style="padding-top:8px;">
+            {% for message in messages %}
+                <div class="alert {% if message.tags == 'error' %}alert-danger{% elif message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}" role="alert" style="margin-bottom:8px;">
+                    {{ message }}
+                </div>
+            {% endfor %}
+            </div>
+        {% endif %}
+
         {% if error_message %}
             <p class="text-danger">aaa{{error_message}}</p>
         {% endif %}

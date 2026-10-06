@@ -24,9 +24,13 @@ from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHo
 from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.utils import render_crispy_form
 
+from django.contrib import messages
+from django.http import HttpResponse
+
 from X.models import Project, Script
 from X.forms import NoteForm
 from X.common import Env, get_tab_list
+from X import backup as project_backup
 
 from .tags import FormSymbol, handleTagRequest, getTagRequestList
 
@@ -240,13 +244,78 @@ def project(request, project_id=None, script_id=None):
 
 @login_required
 def project_import(request):
-    """Handles import page"""
-    
-    return render(request, 'X/home.html', {
-        'title': 'Home',
-    })
+    """Legacy stub — redirect to project restore UI."""
+    return HttpResponseRedirect('/project/restore')
+
 
 ###############################################################################
+
+def _user_can_access_project(env, project):
+    if not project or not env.user:
+        return False
+    if env.user.is_superuser or env.user.is_staff:
+        return True
+    if project.owner_id == env.user.id:
+        return True
+    if project.users.filter(pk=env.user.id).exists():
+        return True
+    if project.guests.filter(pk=env.user.id).exists():
+        return True
+    return False
+
+
+@login_required
+def project_export(request, project_id, fmt='json'):
+    """Download a project backup as JSON or ZIP."""
+    env = Env(request)
+    project = get_object_or_404(Project, pk=project_id)
+    if not _user_can_access_project(env, project):
+        messages.error(request, 'You do not have access to this project.')
+        return HttpResponseRedirect('/project/')
+
+    safe_name = ''.join(c if c.isalnum() or c in '-_' else '_' for c in project.name) or 'project'
+    if fmt == 'zip':
+        content = project_backup.zip_project(project)
+        response = HttpResponse(content, content_type='application/zip')
+        response['Content-Disposition'] = f'attachment; filename="{safe_name}-backup.zip"'
+        return response
+
+    content = project_backup.dumps_project(project)
+    response = HttpResponse(content, content_type='application/json')
+    response['Content-Disposition'] = f'attachment; filename="{safe_name}-backup.json"'
+    return response
+
+
+@login_required
+def project_restore(request):
+    """Upload a JSON/ZIP backup and create a restored project copy."""
+    env = Env(request)
+
+    if request.method == 'POST':
+        upload = request.FILES.get('backup_file')
+        if not upload:
+            messages.error(request, 'Choose a backup JSON or ZIP file to restore.')
+            return HttpResponseRedirect('/project/restore')
+        try:
+            data = project_backup.load_backup_bytes(upload.read(), filename=upload.name)
+            project = project_backup.restore_project(data, owner=env.user)
+        except Exception as exc:
+            messages.error(request, f'Restore failed: {exc}')
+            return HttpResponseRedirect('/project/restore')
+
+        env.setProject(project)
+        first_script = Script.objects.filter(project=project).first()
+        if first_script:
+            env.setScript(first_script)
+        messages.success(request, f'Restored project "{project.name}".')
+        return HttpResponseRedirect('/project/' + str(project.id))
+
+    return render(request, 'X/project_restore.html', {
+        'title': 'Restore Backup',
+        'env': env,
+        'tab_list': get_tab_list(env),
+        'tab_active_id': 'P',
+    })
 
 
 ###############################################################################

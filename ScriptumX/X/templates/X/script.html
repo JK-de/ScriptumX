@@ -5,6 +5,27 @@
 {############################################################################}
 
 {% block head %}
+<script src="{% static 'X/scripts/editor-safety.js' %}"></script>
+<script type="text/javascript">
+$(document).ready(function () {
+    ScriptumXEditorSafety.init({
+        formSelector: '#script-editor-form',
+        statusSelector: '#editor-save-status',
+        conflictSelector: '#editor-conflict-warning',
+        autosaveUrl: '{{ autosave_url|escapejs }}',
+        delayMs: 1500
+    });
+});
+function confirmScriptMove(offset) {
+    if (!confirm('Move this scene? You can undo afterwards.')) {
+        return false;
+    }
+    var form = document.getElementById('script-move-form');
+    form.action = '/script/move/{{ selected_scene.pk }}/' + offset;
+    form.submit();
+    return false;
+}
+</script>
 {% endblock %}
 
 {############################################################################}
@@ -22,7 +43,14 @@
 
                 {% if selected_scene %}
 
-                    <form class="form-horizontal" method="post">
+                    <form id="script-editor-form" class="form-horizontal" method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="expected_updated_at" value="{{ expected_updated_at }}" />
+
+                        <div id="editor-conflict-warning" class="alert alert-danger" style="{% if conflict_message %}{% else %}display:none;{% endif %}margin-bottom:8px;">
+                            {% if conflict_message %}{{ conflict_message }}{% endif %}
+                        </div>
+                        <p id="editor-save-status" class="text-muted" style="margin:0 0 8px 0;"><small>Ready</small></p>
 
                         {% if selected_scene.note %}
                             <div class="pull-left" style="max-width:12%;">
@@ -38,6 +66,10 @@
                             <button style="padding:4px;" type="submit" name="btn_save" value="x" class="btn btn-success btn-xs" formmethod="post">
                                 <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
                             </button  >
+
+                            <label class="checkbox-inline" style="margin-left:8px; font-size:11px;">
+                                <input type="checkbox" name="force_save" value="1" /> Force overwrite
+                            </label>
 
                             {% if not selected_scene.note %}
                                 <button style="padding:4px;" type="submit" name="btn_note" value="x" class="btn btn-default btn-xs" formmethod="post">
@@ -257,6 +289,7 @@
     </div>
 
     {#--button move--#}
+    <form id="script-move-form" method="post" action="" style="display:none;">{% csrf_token %}</form>
     <div class="btn-group btn-group-xs" role="group" style="margin-left:8px">
 		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_scene %}disabled{% endif %}>
 			<img height="32" width="32" src="{% static 'img/s/move.png' %}" /><br />
@@ -264,35 +297,48 @@
 			<span class="caret"></span>
 		</button>
 		<ul class="dropdown-menu" role="menu">
+            <li class="dropdown-header">Confirm before move</li>
             <li class="dropdown-header">Befor selected:</li>
-			<li><a href="/script/move/{{selected_scene.pk}}/-99999">First</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/-20">-20</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/-10">-10</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/-9">-9</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/-8">-8</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/-7">-7</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/-6">-6</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/-5">-5</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/-4">-4</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/-3">-3</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/-2">-2</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/-1">-1</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(-99999);">First</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(-20);">-20</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(-10);">-10</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(-9);">-9</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(-8);">-8</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(-7);">-7</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(-6);">-6</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(-5);">-5</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(-4);">-4</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(-3);">-3</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(-2);">-2</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(-1);">-1</a></li>
             <li role="separator" class="divider"></li>
             <li class="dropdown-header">After selected:</li>
-			<li><a href="/script/move/{{selected_scene.pk}}/1">1</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/2">2</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/3">3</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/4">4</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/5">5</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/6">6</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/7">7</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/8">8</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/9">9</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/10">10</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/20">20</a></li>
-			<li><a href="/script/move/{{selected_scene.pk}}/99999">last</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(1);">1</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(2);">2</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(3);">3</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(4);">4</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(5);">5</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(6);">6</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(7);">7</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(8);">8</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(9);">9</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(10);">10</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(20);">20</a></li>
+			<li><a href="#" onclick="return confirmScriptMove(99999);">last</a></li>
 		</ul>
     </div>
+
+    {% if can_undo_move %}
+    <div class="btn-group btn-group-xs" role="group" style="margin-left:4px">
+        <form method="post" action="/script/undo-move" style="display:inline;">
+            {% csrf_token %}
+            <button style="padding:4px;" type="submit" class="btn btn-warning navbar-btn">
+                <img height="32" width="32" src="{% static 'img/reset.png' %}" /><br />
+                <small>Undo Move</small>
+            </button>
+        </form>
+    </div>
+    {% endif %}
 
 
     {#--button Tool--#}

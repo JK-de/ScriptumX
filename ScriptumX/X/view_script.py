@@ -17,6 +17,7 @@ from django.db.models import Q
 from django import forms
 from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import gettext_lazy as _
+from django.views.decorators.http import require_http_methods
 
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHolder, Div, Field, MultiField, HTML, Row, Column
@@ -26,6 +27,8 @@ from crispy_forms.utils import render_crispy_form
 from X.models import Audio, Gadget, Location, Note, Person, SFX, Scene, Time
 from X.forms import NoteForm
 from X.common import Env, get_tab_list, g_tag_queries, g_tag_query_none, getOrderNumber
+from X import data_safety
+from X.conflict import token_for
 
 from .tags import FormSymbol, scene_tag_list, handleTagRequest, getTagRequestList
 #from X.generator import get_sentences, get_paragraph
@@ -131,6 +134,7 @@ def script(request, scene_id=None, new_order=0, project_id=None, script_id=None)
     env = Env(request, project_id=project_id, script_id=script_id)
 
     tag_list = getTagRequestList(request, 'scene')
+    conflict_message = None
     
     try:
         selected_scene = Scene.objects.get(pk = scene_id)
@@ -175,25 +179,30 @@ def script(request, scene_id=None, new_order=0, project_id=None, script_id=None)
 
         # 'Save'-Button
         if request.POST.get('btn_save'):
-            if selected_note:
-                if selected_note.text=='':
-                    if selected_note.id:
-                        selected_note.delete()
-                    selected_note = None
-                else:
-                    selected_note.project=env.project
-                    selected_note.author=env.user
-                    selected_note.save()
+            blocked, conflict_message = data_safety.check_save_conflict(request, selected_scene)
+            if blocked and selected_scene and selected_scene.pk:
+                from django.contrib import messages
+                messages.error(request, conflict_message)
+            else:
+                if selected_note:
+                    if selected_note.text=='':
+                        if selected_note.id:
+                            selected_note.delete()
+                        selected_note = None
+                    else:
+                        selected_note.project=env.project
+                        selected_note.author=env.user
+                        selected_note.save()
 
-            selected_scene.note = selected_note
+                selected_scene.note = selected_note
 
-            if selected_scene:
-                if formItem.is_valid():
-                    formItem.save()
-                #selected_scene.save()
+                if selected_scene:
+                    if formItem.is_valid():
+                        formItem.save()
+                        selected_scene.refresh_from_db()
 
-            if scene_id == '0':   # previously new item
-                return HttpResponseRedirect('/script/' + str(selected_scene.id))
+                if scene_id == '0':   # previously new item
+                    return HttpResponseRedirect('/script/' + str(selected_scene.id))
     else:
         formItem = SceneForm(instance=selected_scene)
         formNote = NoteForm(instance=selected_note)
@@ -231,7 +240,10 @@ def script(request, scene_id=None, new_order=0, project_id=None, script_id=None)
         'selected_scene': selected_scene,
         'form': formItem,
         'formNote': formNote,
-        #'error_message': "Please make a selection.",
+        'can_undo_move': data_safety.can_undo(request, 'scene'),
+        'conflict_message': conflict_message,
+        'autosave_url': ('/script/autosave/' + str(selected_scene.id)) if selected_scene and selected_scene.pk else '',
+        'expected_updated_at': token_for(selected_scene) if selected_scene and selected_scene.pk else '',
     })
 
 ###############################################################################
@@ -247,28 +259,23 @@ def scriptTag(request, tag_id):
 
 @login_required
 def scriptMove(request, scene_id, offset):
-
-    env = Env(request)
+    """Reorder a scene. Requires POST after UI confirm; GET is a no-op redirect."""
+    if request.method != 'POST':
+        return HttpResponseRedirect('/script/' + str(scene_id))
 
     try:
-        scene = Scene.objects.filter( project=env.project_id, script=env.script_id )
-        
-        offset = int(offset)
-        if offset < 0:
-            offset -= 1
-        if offset > 0:
-            offset += 1
-        newOrder = getOrderNumber(scene, scene_id, offset)
-        if newOrder:
-            selected_scene = Scene.objects.get( project=env.project_id, script=env.script_id, id=scene_id )
-            selected_scene.order = newOrder
-            selected_scene.save()
-            
-    except:
-        pass
+        url = data_safety.perform_scene_move(request, scene_id, offset)
+    except Exception:
+        url = '/script/' + str(scene_id)
 
-    url ='/script/' + scene_id
     return HttpResponseRedirect(url)
+
+###############################################################################
+
+@login_required
+@require_http_methods(['POST'])
+def scriptUndoMove(request):
+    return data_safety.undo_scene_move(request)
 
 ###############################################################################
 
