@@ -67,6 +67,9 @@ class SmokeTests(TestCase):
         response = self.client.get('/script/0/0')
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'btn_save')
+        # Unsaved new-scene form must not emit /script/new/None/…
+        self.assertNotContains(response, '/script/new/None/')
+        self.assertContains(response, 'href="/script/0/0"')
 
         # New relative to first scene must not redirect to /script/0/None
         from X.models import Scene

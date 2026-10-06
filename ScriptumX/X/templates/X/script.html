@@ -265,7 +265,7 @@ function confirmScriptMove(offset) {
 
     <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
 
-        <a href="{% if selected_scene %}/script/new/{{selected_scene.pk}}/-1{% else %}/script/0/0{% endif %}"
+        <a href="{% if selected_scene.pk %}/script/new/{{selected_scene.pk}}/-1{% else %}/script/0/0{% endif %}"
             role="button" style="padding:4px"
             class="btn btn-default navbar-btn"
             >
@@ -273,7 +273,7 @@ function confirmScriptMove(offset) {
         <br />
         <small>{% trans "New" %}</small></a>
 
-        <a href="{% if selected_scene %}/script/new/{{selected_scene.pk}}/1{% else %}/script/0/0{% endif %}"
+        <a href="{% if selected_scene.pk %}/script/new/{{selected_scene.pk}}/1{% else %}/script/0/0{% endif %}"
             role="button" style="padding:4px"
             class="btn btn-default navbar-btn"
             >
