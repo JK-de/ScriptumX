@@ -13,6 +13,12 @@
 
 <div class="container-fluid x-back x-project">
 
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert {% if message.tags %}alert-{{ message.tags }}{% else %}alert-info{% endif %}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
     <h3><i class="fa fa-film"></i> Projects</h3>
 
     {#--PROJECT--#}
@@ -146,6 +152,11 @@
                             {% if script == env.script %}<i class="fa fa-check-square"></i>{% endif %}
                             {{script.name}}
                         </strong>
+                        {% if script.revision_label %}
+                            <span class="badge" style="background:{{ script.revision_color|default:'#eee' }}; color:#333; border:1px solid #999;">
+                                {{ script.revision_label }}
+                            </span>
+                        {% endif %}
                         <br/>
 
                         {#--abstract--#}
@@ -165,6 +176,7 @@
                 {% if selected_script and selected_project.owner == env.user %}
 
                     <form class="form-horizontal" method="post">
+                        {% csrf_token %}
 
                         {#--buttons--#}
                         <div class="pull-left">
@@ -178,6 +190,12 @@
                             <button style="padding:4px;" type="submit" name="btn_save" value="x" class="btn btn-success btn-xs" formmethod="post">
                             <img height="32" width="32" src="{% static 'img/save.png' %}" /><br />Save
                             </button>
+
+                            {% if selected_script.id %}
+                            <button style="padding:4px;" type="submit" name="btn_stamp_revision" value="x" class="btn btn-default btn-xs" formmethod="post" title="Stamp current revision label">
+                            <i class="fa fa-bookmark" style="font-size:24px;"></i><br /><small>Stamp</small>
+                            </button>
+                            {% endif %}
 
                         </div>
                 
@@ -211,8 +229,43 @@
 
                         &emsp;<br/>&emsp;<br/>&emsp;<br/>&emsp;<br/>
 
+                        {#--revision presets (pink/blue pages)--#}
+                        {% if selected_script.id %}
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Revision pages</label>
+                            <div class="col-sm-10">
+                                {% for color, label in revision_presets %}
+                                    <button type="submit" name="btn_revision_preset" value="{{ color }}"
+                                            class="btn btn-xs" style="margin:2px; background:{{ color }}; border:1px solid #999;"
+                                            title="{{ label }}">{{ label }}</button>
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-sm-2">Stamp notes</label>
+                            <div class="col-sm-10">
+                                <input type="text" name="revision_notes" class="form-control" placeholder="Optional note when stamping" />
+                            </div>
+                        </div>
+                        {% endif %}
+
                         {#--model form content--#}
                         {% crispy formScript formScript.helper %}
+
+                        {% if revisions %}
+                        <hr/>
+                        <h4>Revision history</h4>
+                        <ul class="list-unstyled">
+                            {% for rev in revisions %}
+                                <li style="margin-bottom:6px;">
+                                    <span style="display:inline-block;width:1.2em;height:1.2em;background:{{ rev.color }};border:1px solid #999;vertical-align:middle;"></span>
+                                    <strong>{{ rev.label }}</strong>
+                                    <small class="text-muted">{{ rev.created|date:"Y-m-d H:i" }}{% if rev.created_by %} · {{ rev.created_by }}{% endif %}</small>
+                                    {% if rev.notes %}<br/><small>{{ rev.notes }}</small>{% endif %}
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        {% endif %}
          
                     </form>
 

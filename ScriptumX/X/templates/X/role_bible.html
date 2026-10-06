@@ -1,0 +1,94 @@
+{% extends "X/layout_X.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container-fluid x-role x-back">
+
+    <h3><i class="fa fa-users"></i> Character / Role Bible</h3>
+    <p>Joined view of Roles, cast (Person), wardrobe, arc notes, and tied props.</p>
+
+    <p>
+        <a class="btn btn-default btn-sm" href="/role"><i class="fa fa-arrow-left"></i> Back to Roles</a>
+    </p>
+
+    {% if not roles %}
+        <p class="text-muted">No roles in this project yet.</p>
+    {% endif %}
+
+    {% for role in roles %}
+        <div class="panel panel-default" style="border-left: 8px solid {{ role.color|default:'#ccc' }};">
+            <div class="panel-heading">
+                <strong>
+                    <a href="/role/{{ role.pk }}">{{ role.name }}</a>
+                </strong>
+                {% if role.actor %}
+                    <span class="text-muted">— played by</span>
+                    <a href="/person/{{ role.actor.pk }}">{{ role.actor.name }}</a>
+                {% else %}
+                    <span class="text-muted">— no cast assigned</span>
+                {% endif %}
+            </div>
+            <div class="panel-body">
+                {% if role.abstract %}
+                    <p><em>{{ role.abstract }}</em></p>
+                {% endif %}
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h5>Arc notes</h5>
+                        {% if role.arc_notes %}
+                            <p style="white-space:pre-wrap;">{{ role.arc_notes }}</p>
+                        {% else %}
+                            <p class="text-muted">—</p>
+                        {% endif %}
+                    </div>
+                    <div class="col-sm-6">
+                        <h5>Wardrobe</h5>
+                        {% if role.wardrobe %}
+                            <p style="white-space:pre-wrap;">{{ role.wardrobe }}</p>
+                        {% else %}
+                            <p class="text-muted">—</p>
+                        {% endif %}
+                        {% if role.actor and role.actor.contact %}
+                            <h5>Actor contact</h5>
+                            <p style="white-space:pre-wrap;">{{ role.actor.contact }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+                {% if role.gadgets.all %}
+                    <h5>Props / gadgets</h5>
+                    <ul>
+                        {% for g in role.gadgets.all %}
+                            <li><a href="/gadget/{{ g.pk }}">{{ g.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
+                {% if role.description %}
+                    <h5>Description</h5>
+                    <p style="white-space:pre-wrap;">{{ role.description }}</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+
+</div>
+
+{% endblock %}
+
+{% block toolbar %}
+{% load static %}
+<div style="padding:0px; " class="navbar-collapse collapse">
+<div class="nav container-fixed-top x-role x-toolbar" style="margin-top:0">
+    <div class="nav navbar-header">
+        <a style="margin:4px; padding:0;" class="navbar-text" href="/role">
+            <img src="{% static 'img/tab/role-64.png' %}" />
+        </a>
+    </div>
+    <div class="btn-group btn-group-xs" role="group" style="margin-left:16px">
+        <a href="/role/bible" role="button" class="btn btn-primary navbar-btn" style="padding:4px">
+            <img src="{% static 'img/tab/role-24.png' %}" /><br /><small>Bible</small>
+        </a>
+    </div>
+</div>
+</div>
+{% endblock %}

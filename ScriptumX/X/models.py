@@ -235,6 +235,8 @@ class Role(BaseModel):
     group_id = 'role'
     #Props
     color = ColorField(default='#FFFFFF')
+    wardrobe = models.TextField(blank=True)
+    arc_notes = models.TextField(blank=True)
     # One to Many
     actor = models.ForeignKey(Person, null=True, blank=True, on_delete=models.SET_NULL)
     # Many to Many
@@ -269,6 +271,20 @@ class Location(BaseModel):
 
 ###############################################################################
 
+REVISION_COLOR_CHOICES = (
+    ('#FFFFFF', 'White'),
+    ('#ADD8E6', 'Blue'),
+    ('#FFC0CB', 'Pink'),
+    ('#FFFF99', 'Yellow'),
+    ('#90EE90', 'Green'),
+    ('#DAA520', 'Goldenrod'),
+    ('#F5DEB3', 'Buff'),
+    ('#FA8072', 'Salmon'),
+    ('#DE3163', 'Cherry'),
+    ('#D2B48C', 'Tan'),
+)
+
+
 class Script(models.Model):
     #Props
     name = models.CharField(max_length=50)
@@ -277,6 +293,8 @@ class Script(models.Model):
     author = models.CharField(max_length=300, blank=True)
     version = models.CharField(max_length=50, blank=True)
     copyright = models.CharField(max_length=300, blank=True)
+    revision_label = models.CharField(max_length=50, blank=True, default='White')
+    revision_color = ColorField(default='#FFFFFF')
     # One to Many
     project = models.ForeignKey(Project, on_delete=models.CASCADE)   # for internal relations only
     # Many to Many
@@ -285,6 +303,24 @@ class Script(models.Model):
     def __str__(self):
         """Returns a string representation of a Script."""
         return self.name
+
+
+class ScriptRevision(models.Model):
+    """Named production revision stamp (pink/blue pages style)."""
+    class Meta:
+        ordering = ['-created']
+
+    label = models.CharField(max_length=50)
+    color = ColorField(default='#FFFFFF')
+    notes = models.TextField(blank=True)
+    created = models.DateTimeField(auto_now_add=True)
+    script = models.ForeignKey(Script, related_name='revisions', on_delete=models.CASCADE)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL
+    )
+
+    def __str__(self):
+        return '%s (%s)' % (self.label, self.script.name)
 
 ###############################################################################
 
@@ -338,8 +374,10 @@ class SceneItem(models.Model):
     text = models.TextField(blank=True)
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
-    # Many to Many
+    # One to Many (breakdown links)
     role = models.ForeignKey(Role, null=True, blank=True, on_delete=models.SET_NULL)
+    gadget = models.ForeignKey(Gadget, null=True, blank=True, on_delete=models.SET_NULL)
+    sfx = models.ForeignKey(SFX, null=True, blank=True, on_delete=models.SET_NULL)
     scene = models.ForeignKey(Scene, null=True, blank=True, on_delete=models.SET_NULL)   # for internal relations only
     
     def __str__(self):

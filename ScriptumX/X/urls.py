@@ -24,7 +24,8 @@ app_name = 'X'
 _SCOPE = r'^p/(?P<project_id>\d+)/s/(?P<script_id>\d+)/'
 
 urlpatterns = [
-    re_path(r'^project/import$', view_project.project_import, name='projectImport'),
+    re_path(r'^project/(?P<project_id>\d+)/import$', view_project.project_import, name='projectImport'),
+    re_path(r'^project/import$', view_project.project_import, name='projectImportLegacy'),
     re_path(r'^project/restore$', view_project.project_restore, name='projectRestore'),
     re_path(r'^project/(?P<project_id>\d+)/export(?:\.(?P<fmt>json|zip))?$', view_project.project_export, name='projectExport'),
     re_path(r'^project/(?P<project_id>\d+)/(?P<script_id>\d+)?$', view_project.project, name='project'),
@@ -50,6 +51,7 @@ urlpatterns = [
     re_path(r'^shot/(?P<sceneitem_id>\d+)?$', view_shot.shot, name='shot'),
     re_path(r'^shot/set/(?P<scene_id>\w+)$', view_shot.shotSet, name='shotSet'),
 
+    re_path(r'^role/bible/?$', view_roles.role_bible, name='roleBible'),
     re_path(r'^role/(?P<role_id>\d+)?$', view_roles.role, name='role'),
     re_path(r'^role/tag/(?P<tag_id>\w+)?$', view_roles.roleTag, name='roleTag'),
 

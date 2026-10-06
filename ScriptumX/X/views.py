@@ -293,21 +293,17 @@ def seed(request):
 
 @login_required
 def importceltx(request):
-    """Seeds the database with samples."""
-   
-
+    """Legacy demo: import bundled test.celtx into the active project."""
 
     env = Env(request)
+    if not env.project:
+        return HttpResponseRedirect('/project/')
 
-
-    #try:
     imp = ImporterBase(env)
     filename = path.join(PROJECT_ROOT, 'test.celtx')
-    imp.doImport(filename)
-    #except:
-    #    pass   
+    imp.doImport(filename, fmt='celtx')
 
-    return HttpResponseRedirect('/')
+    return HttpResponseRedirect('/project/%s/%s' % (env.project.id, env.script.id))
 
 ###############################################################################
 #def get_or_none(classmodel, **kwargs):

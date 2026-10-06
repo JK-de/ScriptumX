@@ -40,6 +40,8 @@ class SceneItemForm(forms.ModelForm):
         model = SceneItem
         fields = [
             'role',
+            'gadget',
+            'sfx',
             'parenthetical',
             'text',
             ]
@@ -57,6 +59,10 @@ class SceneItemForm(forms.ModelForm):
 
             Field('role', css_class='chosen-select-single'),
 
+            Field('gadget', css_class='chosen-select-single'),
+
+            Field('sfx', css_class='chosen-select-single'),
+
             Field('parenthetical', style="max-width:100%; min-width:100%;"),
 
             Field('text', style="max-width:100%; min-width:100%;", rows=10),
@@ -65,6 +71,72 @@ class SceneItemForm(forms.ModelForm):
     def clean_name(self):
       name = self.cleaned_data.get('name')
       return name
+
+
+def _breakdown_name(sceneitem):
+    """Derive a short entity name from a scene item."""
+    import re
+    import html as html_mod
+    text = sceneitem.text or ''
+    text = re.sub(r'<[^>]+>', '', text)
+    text = html_mod.unescape(text)
+    text = re.sub(r'\s+', ' ', text).strip()
+    if sceneitem.role and sceneitem.role.name:
+        return sceneitem.role.name[:50]
+    if not text:
+        return 'Item'
+    # Prefer quoted prop/sfx names when present
+    quoted = re.search(r'[\"“](.+?)[\"”]', text)
+    if quoted:
+        return quoted.group(1)[:50]
+    return text[:50]
+
+
+def apply_breakdown(env, sceneitem, kind):
+    """One-click mark SceneItem as Role / Prop (Gadget) / SFX and link scene."""
+    name = _breakdown_name(sceneitem)
+    scene = sceneitem.scene
+
+    if kind == 'role':
+        if sceneitem.role:
+            role = sceneitem.role
+        else:
+            try:
+                role = Role.objects.get(project=env.project, name__iexact=name)
+            except Role.DoesNotExist:
+                role = Role(name=name, project=env.project)
+                role.save()
+            sceneitem.role = role
+            if sceneitem.type in ('', 'A', 'N'):
+                sceneitem.type = 'R'
+        sceneitem.save()
+        return role
+
+    if kind == 'prop':
+        try:
+            gadget = Gadget.objects.get(project=env.project, name__iexact=name)
+        except Gadget.DoesNotExist:
+            gadget = Gadget(name=name, project=env.project)
+            gadget.save()
+        sceneitem.gadget = gadget
+        sceneitem.save()
+        if scene is not None:
+            scene.gadgets.add(gadget)
+        return gadget
+
+    if kind == 'sfx':
+        try:
+            sfx = SFX.objects.get(project=env.project, name__iexact=name)
+        except SFX.DoesNotExist:
+            sfx = SFX(name=name, project=env.project)
+            sfx.save()
+        sceneitem.sfx = sfx
+        sceneitem.save()
+        if scene is not None:
+            scene.sfxs.add(sfx)
+        return sfx
+
+    raise ValueError('Unknown breakdown kind: %s' % kind)
 
 ###############################################################################
 
@@ -106,6 +178,15 @@ def scene(request, sceneitem_id=None, new_type='?', new_order=0, project_id=None
             selected_sceneitem.delete()
             return HttpResponseRedirect('/scene/')
 
+        # One-click breakdown buttons
+        for kind, btn in (('role', 'btn_break_role'), ('prop', 'btn_break_prop'), ('sfx', 'btn_break_sfx')):
+            if request.POST.get(btn):
+                if formItem.is_valid():
+                    formItem.save()
+                    selected_sceneitem = formItem.instance
+                apply_breakdown(env, selected_sceneitem, kind)
+                return HttpResponseRedirect('/scene/' + str(selected_sceneitem.id))
+
         # 'Save'-Button
         if request.POST.get('btn_save'):
             blocked, conflict_message = data_safety.check_save_conflict(request, selected_sceneitem)
@@ -125,12 +206,15 @@ def scene(request, sceneitem_id=None, new_type='?', new_order=0, project_id=None
     
     if selected_sceneitem:
         if selected_sceneitem.type == 'A' or selected_sceneitem.type == 'N' or selected_sceneitem.type == 'T':
-            formItem.helper[0:2].update_attributes(type="hidden")
+            formItem.helper[0:1].update_attributes(type="hidden")
+            formItem.helper[3:4].update_attributes(type="hidden")
         if selected_sceneitem.type == 'N':
-            formItem.helper[2:3].update_attributes(style="max-width:100%; min-width:100%; background-color:#FFFFA5;")
+            formItem.helper[4:5].update_attributes(style="max-width:100%; min-width:100%; background-color:#FFFFA5;")
             formItem.fields['text'].label = "Note"
 
     formItem.fields['role'].queryset = Role.objects.filter(project=env.project)
+    formItem.fields['gadget'].queryset = Gadget.objects.filter(project=env.project)
+    formItem.fields['sfx'].queryset = SFX.objects.filter(project=env.project)
 
     ### conglomerate queries
     query = Q()
