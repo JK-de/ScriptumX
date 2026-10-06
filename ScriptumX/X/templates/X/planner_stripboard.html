@@ -1,0 +1,127 @@
+{% extends "X/layout_X.html" %}
+{% load static %}
+
+{% block head %}
+<style>
+.planner-subnav { margin-bottom: 12px; }
+.planner-subnav .btn { margin: 0 4px 4px 0; }
+.planner-subnav .btn.active { font-weight: bold; }
+.strip-day {
+    margin-bottom: 20px;
+    background: hsl(210, 10%, 18%);
+    border: 1px solid hsl(210, 8%, 10%);
+    padding: 8px;
+}
+.strip-day-header {
+    color: hsl(45, 80%, 75%);
+    margin: 0 0 8px 0;
+    padding-bottom: 6px;
+    border-bottom: 1px solid hsl(210, 8%, 28%);
+}
+.strip {
+    display: flex;
+    align-items: stretch;
+    margin: 3px 0;
+    min-height: 36px;
+    border: 1px solid #222;
+    font-size: 13px;
+}
+.strip-num {
+    flex: 0 0 48px;
+    text-align: center;
+    font-weight: bold;
+    padding: 8px 4px;
+    background: rgba(0,0,0,0.15);
+}
+.strip-body {
+    flex: 1;
+    padding: 6px 10px;
+}
+.strip-meta { opacity: 0.75; font-size: 12px; }
+.strip.int-day { background: #f5f0e1; color: #222; }
+.strip.int-night { background: #6b8cae; color: #111; }
+.strip.ext-day { background: #c9d96c; color: #222; }
+.strip.ext-night { background: #3d6b4f; color: #eee; }
+.strip-roles span {
+    display: inline-block;
+    background: rgba(0,0,0,0.12);
+    padding: 1px 6px;
+    margin: 1px 2px 0 0;
+    border-radius: 2px;
+    font-size: 11px;
+}
+</style>
+{% endblock %}
+
+{% block toolbar %}
+<div class="x-planner x-toolbar" style="padding:8px 16px;">
+    <strong>Stripboard</strong>
+    {% if script %} — {{ script.name }}{% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid x-planner x-back">
+    {% include "X/planner_nav.html" %}
+
+    {% if not project %}
+        <div class="alert alert-warning">Select a project first.</div>
+    {% else %}
+
+    {% for block in days %}
+    <div class="strip-day">
+        <h4 class="strip-day-header">
+            <i class="fa fa-sun-o"></i>
+            {{ block.day.date_label }}
+            — {{ block.day.appointment.name }}
+            {% if block.day.meeting_point %}
+                <small>({{ block.day.meeting_point.name }})</small>
+            {% endif %}
+            <small class="pull-right">{{ block.strips|length }} scene{{ block.strips|length|pluralize }}</small>
+        </h4>
+        {% if not block.strips %}
+            <p class="text-muted" style="color:#aaa;">No scenes linked for this script. Link scenes on the appointment in admin or scheduler.</p>
+        {% endif %}
+        {% for strip in block.strips %}
+        <div class="strip {{ strip.tone }}">
+            <div class="strip-num">{{ strip.short }}</div>
+            <div class="strip-body">
+                <strong>{{ strip.ie }}</strong> {{ strip.location }}
+                — {{ strip.name }}
+                <div class="strip-meta">
+                    {% if strip.time %}Call {{ strip.time|time:"H:i" }}{% endif %}
+                    {% if strip.duration %} · {{ strip.duration }}{% endif %}
+                </div>
+                {% if strip.roles %}
+                <div class="strip-roles">
+                    {% for role in strip.roles %}
+                        <span{% if role.color %} style="border-left:3px solid {{ role.color }}"{% endif %}>{{ role.name }}{% if role.actor %} ({{ role.actor.name }}){% endif %}</span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% empty %}
+        <div class="alert alert-info">No appointments yet. Create appointments under <a href="/scheduler/">Scheduler</a> and link scenes (admin Appointment → scenes).</div>
+    {% endfor %}
+
+    {% if unscheduled %}
+    <div class="strip-day">
+        <h4 class="strip-day-header"><i class="fa fa-question-circle"></i> Unscheduled scenes</h4>
+        {% for strip in unscheduled %}
+        <div class="strip {{ strip.tone }}" style="opacity:0.85;">
+            <div class="strip-num">{{ strip.short }}</div>
+            <div class="strip-body">
+                <strong>{{ strip.ie }}</strong> {{ strip.location }}
+                — {{ strip.name }}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    {% endif %}
+</div>
+{% endblock %}

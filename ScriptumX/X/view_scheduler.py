@@ -184,7 +184,7 @@ def scheduler(request, appointment_id=None, project_id=None, script_id=None):
         'title': 'Appointment',
         'env': env,
         'tab_list': get_tab_list(env),
-        'tab_active_id': 'T',
+        'tab_active_id': 'B',
         'tag_list': tag_list,
         'appointments': appointments,
         'selected_appointment': selected_appointment,

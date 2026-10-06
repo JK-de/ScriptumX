@@ -1,0 +1,85 @@
+{% extends "X/layout_X.html" %}
+{% load static %}
+
+{% block head %}
+<style>
+.planner-subnav { margin-bottom: 16px; }
+.planner-subnav .btn { margin: 0 4px 4px 0; }
+.planner-subnav .btn.active { font-weight: bold; }
+.planner-card {
+    background: hsl(200, 12%, 22%);
+    color: hsl(200, 20%, 92%);
+    border: 1px solid hsl(200, 10%, 12%);
+    padding: 16px;
+    margin-bottom: 12px;
+}
+.planner-card h4 { margin-top: 0; }
+.planner-card a { color: hsl(190, 60%, 70%); }
+.planner-stat { font-size: 28px; font-weight: bold; }
+</style>
+{% endblock %}
+
+{% block toolbar %}
+<div class="x-planner x-toolbar" style="padding:8px 16px;">
+    <strong><i class="fa fa-calendar"></i> Production planner</strong>
+    {% if script %} — {{ script.name }}{% endif %}
+</div>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid x-planner x-back">
+
+    {% include "X/planner_nav.html" %}
+
+    {% if not project %}
+        <div class="alert alert-warning">Select a project first.</div>
+    {% else %}
+
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="planner-card">
+                <h4>Shoot days</h4>
+                <div class="planner-stat">{{ day_count }}</div>
+                <p>Appointments with linked scenes on the stripboard.</p>
+                <a class="btn btn-primary btn-sm" href="/planner/stripboard/">Open stripboard</a>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="planner-card">
+                <h4>Unscheduled scenes</h4>
+                <div class="planner-stat">{{ unscheduled_count }}</div>
+                <p>Scenes not yet linked to an appointment.</p>
+                <a class="btn btn-default btn-sm" href="/scheduler/">Edit appointments</a>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="planner-card">
+                <h4>Overall progress</h4>
+                <div class="planner-stat">{{ overall_progress }}%</div>
+                <p>Average of script / pre / shot / post sliders.</p>
+                <a class="btn btn-info btn-sm" href="/planner/progress/">Progress dashboard</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="margin-top:8px;">
+        <div class="col-sm-6">
+            <div class="planner-card">
+                <h4>Cast &amp; DOOD</h4>
+                <p>Day-out-of-days matrix and call-sheet conflicts from Roles ↔ Persons ↔ Appointments.</p>
+                <a class="btn btn-default btn-sm" href="/planner/dood/">Day out of days</a>
+                <a class="btn btn-default btn-sm" href="/planner/cast/">Cast conflicts</a>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="planner-card">
+                <h4>Location days</h4>
+                <p>Group scenes by INT/EXT + story location and suggest contiguous shoot-day clusters.</p>
+                <a class="btn btn-default btn-sm" href="/planner/locations/">Location grouping</a>
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+</div>
+{% endblock %}
