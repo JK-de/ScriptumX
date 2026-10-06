@@ -25,7 +25,7 @@ from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.utils import render_crispy_form
 
 from X.models import Role, Scene, SceneItem
-from X.common import Env, get_tab_list, getOrderNumber
+from X.common import ORDER_STEP, Env, get_tab_list, getOrderNumber
 
 from .tags import FormSymbol, sceneitem_tag_list, handleTagRequest, getTagRequestList
 
@@ -218,12 +218,14 @@ def shotNew(request, sceneitem_id, sceneitem_type, offset):
     env = Env(request)
 
     try:
-        sceneitems = SceneItem.objects.filter( scene=env.scene )
-        
+        sceneitems = SceneItem.objects.filter(scene=env.scene).order_by('order')
         newOrder = getOrderNumber(sceneitems, sceneitem_id, offset)
-    except:
-        newOrder = 0
+    except Exception:
+        newOrder = None
 
-    url ='/shot/0/' + sceneitem_type + '/' + str(newOrder)
+    if newOrder is None:
+        newOrder = ORDER_STEP
+
+    url = '/shot/0/' + sceneitem_type + '/' + str(newOrder)
     return HttpResponseRedirect(url)
     #return scene(request, 0, sceneitem_type, newOrder)

@@ -256,33 +256,33 @@
     {#--button new--#}
     <div class="btn-group btn-group-xs" role="group" style="margin-left:2%">
         <div class="btn-group btn-group-xs" role="group" >
-		    <button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_sceneitem %}disabled{% endif %}>
+		    <button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
 			    <img height="32" width="32" src="{% static 'img/s/ins_b.png' %}" /><br />
 			    <span class="caret"></span>
 			    <small>{% trans "New" %}</small>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-                <li class="dropdown-header">{% trans "Insert before selected:" %}</li>
-			    <li><a href="/scene/new/N/{{selected_sceneitem.pk}}/-1">{% trans "Note" %}</a></li>
-			    <li><a href="/scene/new/A/{{selected_sceneitem.pk}}/-1">{% trans "Action" %}</a></li>
-			    <li><a href="/scene/new/D/{{selected_sceneitem.pk}}/-1">{% trans "Dialog" %}</a></li>
-			    <li><a href="/scene/new/T/{{selected_sceneitem.pk}}/-1">{% trans "Trans" %}</a></li>
-			    <li><a href="/scene/new/R/{{selected_sceneitem.pk}}/-1">{% trans "Non-Speaking Role" %}</a></li>
+                <li class="dropdown-header">{% if selected_sceneitem %}{% trans "Insert before selected:" %}{% else %}{% trans "Add first item:" %}{% endif %}</li>
+			    <li><a href="{% if selected_sceneitem %}/scene/new/N/{{selected_sceneitem.pk}}/-1{% else %}/scene/0/N/0{% endif %}">{% trans "Note" %}</a></li>
+			    <li><a href="{% if selected_sceneitem %}/scene/new/A/{{selected_sceneitem.pk}}/-1{% else %}/scene/0/A/0{% endif %}">{% trans "Action" %}</a></li>
+			    <li><a href="{% if selected_sceneitem %}/scene/new/D/{{selected_sceneitem.pk}}/-1{% else %}/scene/0/D/0{% endif %}">{% trans "Dialog" %}</a></li>
+			    <li><a href="{% if selected_sceneitem %}/scene/new/T/{{selected_sceneitem.pk}}/-1{% else %}/scene/0/T/0{% endif %}">{% trans "Trans" %}</a></li>
+			    <li><a href="{% if selected_sceneitem %}/scene/new/R/{{selected_sceneitem.pk}}/-1{% else %}/scene/0/R/0{% endif %}">{% trans "Non-Speaking Role" %}</a></li>
 		    </ul>
         </div>
         <div class="btn-group btn-group-xs" role="group" >
-		    <button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_sceneitem %}disabled{% endif %}>
+		    <button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown">
 			    <img height="32" width="32" src="{% static 'img/s/ins_a.png' %}" alt="" /><br />
 			    <small>{% trans "New" %}</small>
 			    <span class="caret"></span>
 		    </button>
 		    <ul class="dropdown-menu" role="menu">
-                <li class="dropdown-header">{% trans "Insert after selected:" %}</li>
-			    <li><a href="/scene/new/N/{{selected_sceneitem.pk}}/1">{% trans "Note" %}</a></li>
-			    <li><a href="/scene/new/A/{{selected_sceneitem.pk}}/1">{% trans "Action" %}</a></li>
-			    <li><a href="/scene/new/D/{{selected_sceneitem.pk}}/1">{% trans "Dialog" %}</a></li>
-			    <li><a href="/scene/new/T/{{selected_sceneitem.pk}}/1">{% trans "Trans" %}</a></li>
-			    <li><a href="/scene/new/R/{{selected_sceneitem.pk}}/1">{% trans "Non-Speaking Role" %}</a></li>
+                <li class="dropdown-header">{% if selected_sceneitem %}{% trans "Insert after selected:" %}{% else %}{% trans "Add first item:" %}{% endif %}</li>
+			    <li><a href="{% if selected_sceneitem %}/scene/new/N/{{selected_sceneitem.pk}}/1{% else %}/scene/0/N/0{% endif %}">{% trans "Note" %}</a></li>
+			    <li><a href="{% if selected_sceneitem %}/scene/new/A/{{selected_sceneitem.pk}}/1{% else %}/scene/0/A/0{% endif %}">{% trans "Action" %}</a></li>
+			    <li><a href="{% if selected_sceneitem %}/scene/new/D/{{selected_sceneitem.pk}}/1{% else %}/scene/0/D/0{% endif %}">{% trans "Dialog" %}</a></li>
+			    <li><a href="{% if selected_sceneitem %}/scene/new/T/{{selected_sceneitem.pk}}/1{% else %}/scene/0/T/0{% endif %}">{% trans "Trans" %}</a></li>
+			    <li><a href="{% if selected_sceneitem %}/scene/new/R/{{selected_sceneitem.pk}}/1{% else %}/scene/0/R/0{% endif %}">{% trans "Non-Speaking Role" %}</a></li>
 		    </ul>
         </div>
     </div>

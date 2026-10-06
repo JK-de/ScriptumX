@@ -26,7 +26,7 @@ from crispy_forms.utils import render_crispy_form
 
 from X.models import Audio, Gadget, Location, Note, Person, SFX, Scene, Time
 from X.forms import NoteForm
-from X.common import Env, get_tab_list, g_tag_queries, g_tag_query_none, getOrderNumber
+from X.common import ORDER_STEP, Env, get_tab_list, g_tag_queries, g_tag_query_none, getOrderNumber
 from X import data_safety
 from X.conflict import token_for
 
@@ -284,13 +284,17 @@ def scriptNew(request, scene_id, offset):
     env = Env(request)
 
     try:
-        scene = Scene.objects.filter( project=env.project_id, script=env.script_id )
-        
-        newOrder = getOrderNumber(scene, scene_id, offset)
-    except:
-        newOrder = 0
+        scenes = Scene.objects.filter(
+            project=env.project_id, script=env.script_id
+        ).order_by('order')
+        newOrder = getOrderNumber(scenes, scene_id, offset)
+    except Exception:
+        newOrder = None
 
-    url ='/script/0/' + str(newOrder)
+    if newOrder is None:
+        newOrder = ORDER_STEP
+
+    url = '/script/0/' + str(newOrder)
     return HttpResponseRedirect(url)
 
 ###############################################################################

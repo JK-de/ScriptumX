@@ -53,6 +53,34 @@ class SmokeTests(TestCase):
         self.assertEqual(project.owner_id, self.user.id)
         self.assertEqual(response['Location'], '/project/%s' % project.id)
 
+    def test_empty_script_new_scene_form(self):
+        """GET /script/0/0 must render the new-scene form (not 404 on /script/0/None)."""
+        from X.models import Project, Script
+        assert self.client.login(username='smokeadmin', password='smokeadmin')
+        project = Project.objects.create(name='Empty Script Proj', owner=self.user)
+        script = Script.objects.create(name='Empty Script', project=project)
+        session = self.client.session
+        session['ProjectID'] = project.id
+        session['ScriptID'] = script.id
+        session.save()
+
+        response = self.client.get('/script/0/0')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'btn_save')
+
+        # New relative to first scene must not redirect to /script/0/None
+        from X.models import Scene
+        from X.common import ORDER_STEP, getOrderNumber
+        scene = Scene.objects.create(
+            name='INT. FIRST - DAY', project=project, script=script, order=ORDER_STEP
+        )
+        self.assertIsNotNone(getOrderNumber([scene], scene.id, 1))
+        self.assertNotEqual(str(getOrderNumber([scene], scene.id, 1)), 'None')
+        response = self.client.get('/script/new/%s/1' % scene.id)
+        self.assertEqual(response.status_code, 302)
+        self.assertRegex(response['Location'], r'^/script/0/\d+$')
+        self.assertNotIn('None', response['Location'])
+
 """
 Tests for writer import (F4), breakdown (F5), role bible (F6), revisions (F7).
 """
