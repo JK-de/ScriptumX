@@ -25,7 +25,7 @@ from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHo
 from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.utils import render_crispy_form
 
-from X.models import Role, Scene, SceneItem
+from X.models import Gadget, Role, Scene, SceneItem, SFX
 from X.common import Env, get_tab_list, getOrderNumber
 from X import data_safety
 from X.conflict import token_for
