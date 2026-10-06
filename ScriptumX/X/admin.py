@@ -5,7 +5,7 @@ Customizations for the Django administration interface.
 from django.contrib import admin
 from X.models import (
     Appointment, Appointment2Scene, Audio, Gadget, Location, Note,
-    Person, Project, Role, SFX, Scene, SceneItem, Script, Time,
+    Person, Project, Role, SFX, Scene, SceneItem, Script, ScriptRevision, Time,
 )
 
 
