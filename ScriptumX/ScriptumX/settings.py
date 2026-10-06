@@ -52,6 +52,7 @@ TEMPLATES = [
                 'django.template.context_processors.static',
                 'django.template.context_processors.tz',
                 'django.contrib.messages.context_processors.messages',
+                'X.context_processors.ux_chrome',
             ],
         },
     },
@@ -62,7 +63,14 @@ LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 
 TIME_ZONE = 'Europe/Berlin'
-LANGUAGE_CODE = 'de-de'
+LANGUAGE_CODE = 'de'
+LANGUAGES = (
+    ('de', 'Deutsch'),
+    ('en', 'English'),
+)
+LOCALE_PATHS = (
+    path.join(PROJECT_ROOT, 'locale'),
+)
 SITE_ID = 1
 USE_I18N = True
 USE_TZ = True
@@ -108,6 +116,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

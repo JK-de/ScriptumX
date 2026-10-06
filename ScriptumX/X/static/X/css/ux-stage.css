@@ -1,0 +1,147 @@
+/* Optional dark “stage” theme for long writing sessions */
+html.ux-stage-dark,
+body.ux-stage-dark {
+  background: #121417;
+  color: #d8dde3;
+}
+
+body.ux-stage-dark .x-back {
+  background-color: #1a1e23 !important;
+}
+
+body.ux-stage-dark .x-item-form,
+body.ux-stage-dark .panel,
+body.ux-stage-dark .panel-body,
+body.ux-stage-dark .panel-heading {
+  background-color: #22272e !important;
+  color: #d8dde3;
+  border-color: #3a424c !important;
+}
+
+body.ux-stage-dark a.list-group-item {
+  background-color: #1e242b;
+  color: #d0d6dd;
+  border-color: #3a424c;
+}
+
+body.ux-stage-dark a.list-group-item:hover {
+  background-color: #2a323c;
+  color: #fff;
+}
+
+body.ux-stage-dark a.list-group-item.active,
+body.ux-stage-dark a.x-script.list-group-item.active,
+body.ux-stage-dark a.x-sceneitem.list-group-item.active {
+  background-color: #2f3a46 !important;
+  color: #fff !important;
+  border-color: #5a6a7a !important;
+}
+
+body.ux-stage-dark .form-control,
+body.ux-stage-dark textarea,
+body.ux-stage-dark input[type="text"],
+body.ux-stage-dark input[type="number"],
+body.ux-stage-dark select {
+  background-color: #161a1f;
+  color: #e6ebf0;
+  border-color: #3a424c;
+}
+
+body.ux-stage-dark .chosen-container .chosen-single,
+body.ux-stage-dark .chosen-container .chosen-choices,
+body.ux-stage-dark .chosen-container .chosen-drop {
+  background-color: #161a1f !important;
+  color: #e6ebf0 !important;
+  border-color: #3a424c !important;
+}
+
+body.ux-stage-dark .chosen-container .chosen-results li {
+  color: #d8dde3;
+}
+
+body.ux-stage-dark .x-toolbar {
+  background-color: #1a1e23 !important;
+}
+
+body.ux-stage-dark .btn-default {
+  background-color: #2a323c;
+  border-color: #3a424c;
+  color: #d8dde3;
+}
+
+body.ux-stage-dark .progress {
+  background-color: #3a424c;
+}
+
+body.ux-stage-dark .ux-kb-hint {
+  background: #22272e;
+  color: #d8dde3;
+  border-color: #4a5562;
+}
+
+body.ux-stage-dark #ux-presence .ux-presence-pill {
+  background: #2a323c;
+  color: #c5ccd4;
+}
+
+/* Keyboard hint + chrome widgets (shared) */
+.ux-kb-hint {
+  position: fixed;
+  right: 12px;
+  bottom: 36px;
+  z-index: 1050;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  background: #f7f7f7;
+  font-size: 12px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+}
+
+.ux-kb-hint kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  border: 1px solid #999;
+  border-radius: 3px;
+  background: #fff;
+  font-family: monospace;
+  font-size: 11px;
+}
+
+.ux-chrome-controls {
+  display: inline-block;
+  margin-right: 8px;
+  vertical-align: middle;
+}
+
+.ux-chrome-controls form {
+  display: inline;
+  margin: 0;
+}
+
+.ux-chrome-controls .btn {
+  margin: 0 2px;
+  padding: 2px 6px;
+  line-height: 1.2;
+}
+
+#ux-presence {
+  display: inline-block;
+  margin-right: 10px;
+  vertical-align: middle;
+}
+
+#ux-presence .ux-presence-pill {
+  display: inline-block;
+  margin: 0 4px 0 0;
+  padding: 1px 8px;
+  border-radius: 3px;
+  background: #3a424c;
+  color: #eee;
+  font-size: 11px;
+}
+
+#ux-presence .ux-presence-pill .fa-circle {
+  color: #5cb85c;
+  font-size: 8px;
+  vertical-align: middle;
+}

@@ -17,6 +17,7 @@ from X import view_sfxs
 from X import view_scheduler
 from X import data_safety
 from X import view_planner
+from X import view_ux
 
 app_name = 'X'
 
@@ -24,6 +25,12 @@ app_name = 'X'
 _SCOPE = r'^p/(?P<project_id>\d+)/s/(?P<script_id>\d+)/'
 
 urlpatterns = [
+    re_path(r'^ux/language$', view_ux.set_language, name='uxSetLanguage'),
+    re_path(r'^ux/theme$', view_ux.set_theme, name='uxSetTheme'),
+    re_path(r'^ux/presence$', view_ux.presence, name='uxPresence'),
+    re_path(r'^shot/checklist/(?P<scene_id>\d+)/progress$', view_ux.shot_checklist_progress, name='shotChecklistProgress'),
+    re_path(r'^shot/checklist/?$', view_ux.shot_checklist, name='shotChecklist'),
+
     re_path(r'^project/(?P<project_id>\d+)/import$', view_project.project_import, name='projectImport'),
     re_path(r'^project/import$', view_project.project_import, name='projectImportLegacy'),
     re_path(r'^project/restore$', view_project.project_restore, name='projectRestore'),

@@ -1,0 +1,146 @@
+/* Mobile-first on-set shot checklist */
+.ux-checklist-page {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 12px 12px 72px;
+}
+
+.ux-checklist-page h1 {
+  margin: 8px 0 4px;
+  font-size: 22px;
+}
+
+.ux-checklist-page .ux-check-sub {
+  margin-bottom: 16px;
+  color: #666;
+  font-size: 14px;
+}
+
+body.ux-stage-dark .ux-checklist-page .ux-check-sub {
+  color: #9aa3ad;
+}
+
+.ux-check-row {
+  display: block;
+  width: 100%;
+  margin: 0 0 10px;
+  padding: 14px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background: #f5f5f5;
+  text-align: left;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.ux-check-row:active,
+.ux-check-row.is-busy {
+  opacity: 0.75;
+}
+
+.ux-check-row.is-partial {
+  border-color: #ee5f5b;
+  background: #fff5f4;
+}
+
+.ux-check-row.is-done {
+  border-color: #62c462;
+  background: #f3fff3;
+}
+
+body.ux-stage-dark .ux-check-row {
+  background: #1e242b;
+  border-color: #3a424c;
+  color: #d8dde3;
+}
+
+body.ux-stage-dark .ux-check-row.is-partial {
+  background: #2a2222;
+  border-color: #ee5f5b;
+}
+
+body.ux-stage-dark .ux-check-row.is-done {
+  background: #1f2a22;
+  border-color: #62c462;
+}
+
+.ux-check-row-top {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.ux-check-mark {
+  font-size: 28px;
+  line-height: 1;
+  min-width: 32px;
+  color: #555;
+}
+
+.ux-check-row.is-done .ux-check-mark {
+  color: #3c763d;
+}
+
+.ux-check-meta {
+  flex: 1;
+  min-width: 0;
+}
+
+.ux-check-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin: 0 0 4px;
+  word-wrap: break-word;
+}
+
+.ux-check-abstract {
+  font-size: 13px;
+  color: #666;
+  margin: 0;
+}
+
+body.ux-stage-dark .ux-check-abstract {
+  color: #9aa3ad;
+}
+
+.ux-check-bar {
+  margin-top: 10px;
+  height: 8px;
+  background: #ddd;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+body.ux-stage-dark .ux-check-bar {
+  background: #3a424c;
+}
+
+.ux-check-bar-fill {
+  height: 100%;
+  background: #ee5f5b;
+  width: 0;
+  transition: width 0.15s ease;
+}
+
+.ux-check-row.is-done .ux-check-bar-fill {
+  background: #62c462;
+}
+
+.ux-check-pct {
+  float: right;
+  font-size: 12px;
+  color: #888;
+  margin-top: 6px;
+}
+
+.ux-checklist-empty {
+  padding: 24px 8px;
+  text-align: center;
+  color: #888;
+}
+
+@media (min-width: 768px) {
+  .ux-checklist-page {
+    padding-top: 20px;
+  }
+}

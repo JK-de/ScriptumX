@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.utils.translation import gettext_lazy as _
 
 from X.models import Project, Script, Scene
 
@@ -6,18 +7,18 @@ from X.models import Project, Script, Scene
 
 # Base tab definitions. Use get_tab_list(env) for hrefs that embed project/script.
 _TAB_DEFS = (
-    {'id': 'P', 'name': 'Project', 'path': '/project', 'class': 'x-project', 'img': 'img/tab/project-24.png'},
-    {'id': 'C', 'name': 'Script', 'path': '/script', 'class': 'x-script', 'img': 'img/tab/script-24.png'},
-    {'id': 'S', 'name': 'Scene', 'path': '/scene', 'class': 'x-scene', 'img': 'img/tab/scene-24.png'},
-    {'id': 'H', 'name': 'Shot', 'path': '/shot', 'class': 'x-scene', 'img': 'img/tab/shot-24.png'},
-    {'id': 'R', 'name': 'Role', 'path': '/role', 'class': 'x-role', 'img': 'img/tab/role-24.png'},
-    {'id': 'L', 'name': 'Location', 'path': '/location', 'class': 'x-location', 'img': 'img/tab/location-24.png'},
-    {'id': 'T', 'name': 'Time', 'path': '/time', 'class': 'x-time', 'img': 'img/tab/time-24.png'},
-    {'id': 'F', 'name': 'Person', 'path': '/person', 'class': 'x-person', 'img': 'img/tab/person-24.png'},
-    {'id': 'G', 'name': 'Gadget', 'path': '/gadget', 'class': 'x-gadget', 'img': 'img/tab/gadget-24.png'},
-    {'id': 'X', 'name': 'SFX', 'path': '/sfx', 'class': 'x-sfx', 'img': 'img/tab/sfx-24.png'},
-    {'id': 'A', 'name': 'Audio', 'path': '/audio', 'class': 'x-audio', 'img': 'img/tab/audio-24.png'},
-    {'id': 'B', 'name': 'Plan', 'path': '/planner', 'class': 'x-planner', 'img': 'img/tab/scheduler-24.png'},
+    {'id': 'P', 'name': _('Project'), 'path': '/project', 'class': 'x-project', 'img': 'img/tab/project-24.png'},
+    {'id': 'C', 'name': _('Script'), 'path': '/script', 'class': 'x-script', 'img': 'img/tab/script-24.png'},
+    {'id': 'S', 'name': _('Scene'), 'path': '/scene', 'class': 'x-scene', 'img': 'img/tab/scene-24.png'},
+    {'id': 'H', 'name': _('Shot'), 'path': '/shot', 'class': 'x-scene', 'img': 'img/tab/shot-24.png'},
+    {'id': 'R', 'name': _('Role'), 'path': '/role', 'class': 'x-role', 'img': 'img/tab/role-24.png'},
+    {'id': 'L', 'name': _('Location'), 'path': '/location', 'class': 'x-location', 'img': 'img/tab/location-24.png'},
+    {'id': 'T', 'name': _('Time'), 'path': '/time', 'class': 'x-time', 'img': 'img/tab/time-24.png'},
+    {'id': 'F', 'name': _('Person'), 'path': '/person', 'class': 'x-person', 'img': 'img/tab/person-24.png'},
+    {'id': 'G', 'name': _('Gadget'), 'path': '/gadget', 'class': 'x-gadget', 'img': 'img/tab/gadget-24.png'},
+    {'id': 'X', 'name': _('SFX'), 'path': '/sfx', 'class': 'x-sfx', 'img': 'img/tab/sfx-24.png'},
+    {'id': 'A', 'name': _('Audio'), 'path': '/audio', 'class': 'x-audio', 'img': 'img/tab/audio-24.png'},
+    {'id': 'B', 'name': _('Plan'), 'path': '/planner', 'class': 'x-planner', 'img': 'img/tab/scheduler-24.png'},
 )
 
 
