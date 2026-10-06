@@ -191,30 +191,23 @@ class CardsView(View):
 
 @login_required
 def cards(request, scene_id=None):
-    """Handles page requests for SceneItems"""
+    """Legacy quick scene-cards dump (nav used to link /test here).
 
+    Prefer CardsView at /report/C/script. Kept so /test does not 500.
+    """
     env = Env(request)
-
-    ### conglomerate queries
-    #query = Q()
-    #for tag in tag_list:
-    #    if tag['active']:
-    #        if len(query)==0:
-    #            query = Q(type=tag['type'])
-    #        else:
-    #            query |= Q(type=tag['type'])
-
-    #if len(query)==len(tag_list):
-    #    query = Q()
-
-    scenes = Scene.objects.filter(project=env.project_id, script=env.script_id).order_by('order')
-
-    return render(request, 'report/scene_cards.html', {
-        'title': 'Script',
+    scenes = Scene.objects.filter(
+        project=env.project_id, script=env.script_id
+    ).order_by('order')
+    return render(request, 'report/cards_script.html', {
+        'title': 'Script: ' + (env.script.name if env.script else 'Script'),
         'env': env,
         'scenes': scenes,
-        'columns': 5,
-        #'error_message': "Please make a selection.",
+        'options': {
+            'show_notes': True,
+            'show_details': True,
+            'columns': 4,
+        },
     })
 
 ###############################################################################
