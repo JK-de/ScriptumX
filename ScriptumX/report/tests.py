@@ -1,4 +1,4 @@
-"""PDF export smoke tests."""
+"""PDF export and report smoke tests."""
 from django.test import Client, TestCase, override_settings
 from django.contrib.auth import get_user_model
 
@@ -35,3 +35,22 @@ class ScriptPdfExportTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response['Content-Type'], 'application/pdf')
         self.assertTrue(response.content.startswith(b'%PDF'))
+
+
+@override_settings(ALLOWED_HOSTS=['*'], HTML_MINIFY=False)
+class ReportListAndMatrixTests(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        self.user = User.objects.create_superuser('reportadmin', 'report@example.com', 'reportadmin')
+        self.client = Client()
+        assert self.client.login(username='reportadmin', password='reportadmin')
+        response = self.client.get('/seed', follow=True)
+        self.assertEqual(response.status_code, 200)
+
+    def test_l_report_simple_role(self):
+        response = self.client.get('/report/L/simple_role')
+        self.assertEqual(response.status_code, 200)
+
+    def test_m_report_scene_role(self):
+        response = self.client.get('/report/M/scene_role')
+        self.assertEqual(response.status_code, 200)

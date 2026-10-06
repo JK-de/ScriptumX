@@ -1,0 +1,11 @@
+# Direct production dependencies for ScriptumX (Python 3.12+, Django 6.x).
+# Compile lockfile:  pip-compile --output-file=requirements.txt requirements.in
+# Dev extras:        pip-compile --output-file=requirements-dev.txt requirements-dev.in
+Django==6.1.1
+django-crispy-forms==2.7
+crispy-bootstrap3==2024.1
+django-colorfield==0.14.0
+xhtml2pdf==0.2.21
+Pillow==12.3.0
+whitenoise==6.11.0
+gunicorn==25.0.1

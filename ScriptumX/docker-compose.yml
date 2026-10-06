@@ -1,3 +1,5 @@
+# Local development defaults (DEBUG on, demo admin).
+# Production: docker compose -f docker-compose.yml -f docker-compose.prod.yml --env-file .env.prod up --build
 services:
   web:
     build: .
@@ -11,8 +13,21 @@ services:
       DJANGO_SUPERUSER_USERNAME: admin
       DJANGO_SUPERUSER_EMAIL: admin@example.com
       DJANGO_SUPERUSER_PASSWORD: admin
+      DJANGO_HTML_MINIFY: "0"
     volumes:
       - scriptumx-data:/data
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/', timeout=5)",
+        ]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
     # For live code reload during development, uncomment:
     # - .:/app
 

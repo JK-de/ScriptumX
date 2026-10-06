@@ -1,0 +1,7 @@
+# Dev / optional tooling. Includes production pins via -r requirements.in.
+# Compile: pip-compile --output-file=requirements-dev.txt requirements-dev.in
+-r requirements.in
+
+# Unmaintained HTML minifier — gated off by default (DJANGO_HTML_MINIFY=0).
+# Install only when you intentionally enable minify locally.
+django-htmlmin==0.11.0

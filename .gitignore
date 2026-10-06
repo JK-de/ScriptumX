@@ -70,6 +70,12 @@ target/
 #DB
 db.sqlite3
 
+# Local secrets / venv
+.env
+.env.prod
+.venv/
+ScriptumX/.venv/
+
 ScriptumX/.vs/
 ScriptumX/app/migrations/
 Test/

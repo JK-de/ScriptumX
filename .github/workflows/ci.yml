@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+
+defaults:
+  run:
+    working-directory: ScriptumX
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker compose build
+
+      - name: Django system check
+        run: docker compose run --rm --no-deps web python manage.py check
+
+      - name: Run tests
+        env:
+          COMPOSE_DOCKER_CLI_BUILD: 1
+        run: |
+          docker compose run --rm --no-deps \
+            -e DJANGO_DEBUG=1 \
+            -e DJANGO_SECRET_KEY=ci-test-secret \
+            -e DJANGO_ALLOWED_HOSTS=* \
+            -e DJANGO_DB_PATH=/tmp/ci-test.sqlite3 \
+            web \
+            python manage.py test report.tests X.tests authentication.tests --verbosity=2
