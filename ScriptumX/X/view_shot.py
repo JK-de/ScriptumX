@@ -88,6 +88,10 @@ def shot(request, sceneitem_id=None, new_type='?', new_order=0, project_id=None,
     if sceneitem_id == '0':
         selected_sceneitem = SceneItem(scene=env.scene);
         selected_sceneitem.type = new_type
+        try:
+            new_order = int(new_order)
+        except (TypeError, ValueError):
+            new_order = ORDER_STEP
         selected_sceneitem.order = new_order
 
     ### handle buttons
@@ -103,7 +107,7 @@ def shot(request, sceneitem_id=None, new_type='?', new_order=0, project_id=None,
         # 'Delete'-Button
         if request.POST.get('btn_delete'):
             selected_sceneitem.delete()
-            return HttpResponseRedirect('/scene/')
+            return HttpResponseRedirect('/shot/')
 
         # 'Save'-Button
         if request.POST.get('btn_save'):
@@ -113,7 +117,7 @@ def shot(request, sceneitem_id=None, new_type='?', new_order=0, project_id=None,
                 #selected_sceneitem.save()
 
             if sceneitem_id == '0':   # previously new item
-                return HttpResponseRedirect('/scene/' + str(selected_sceneitem.id))
+                return HttpResponseRedirect('/shot/' + str(selected_sceneitem.id))
     else:
         formItem = ShotItemForm(instance=selected_sceneitem)
     

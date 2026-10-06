@@ -135,6 +135,7 @@ def script(request, scene_id=None, new_order=0, project_id=None, script_id=None)
 
     tag_list = getTagRequestList(request, 'scene')
     conflict_message = None
+    is_new_scene = scene_id == '0'
     
     try:
         selected_scene = Scene.objects.get(pk = scene_id)
@@ -144,10 +145,27 @@ def script(request, scene_id=None, new_order=0, project_id=None, script_id=None)
         selected_note = None
 
     ### create new scene object on request '/script/0'
-    if scene_id == '0':
-        selected_scene = Scene(project=env.project, script=env.script);
+    if is_new_scene:
+        if not env.project or not env.script:
+            from django.contrib import messages
+            messages.error(
+                request,
+                _('Select a project and script before creating a scene.'),
+            )
+            return HttpResponseRedirect('/project/')
+        try:
+            new_order = int(new_order)
+        except (TypeError, ValueError):
+            new_order = ORDER_STEP
+        if new_order <= 0:
+            new_order = ORDER_STEP
+        selected_scene = Scene(project=env.project, script=env.script)
         selected_scene.setAllTags(True)
         selected_scene.order = new_order
+        # Prefill so Save works without hunting for the name field.
+        if not selected_scene.name:
+            selected_scene.name = str(_('New Scene'))
+        selected_note = None
 
     ### handle buttons
     if request.method == 'POST':
@@ -200,19 +218,25 @@ def script(request, scene_id=None, new_order=0, project_id=None, script_id=None)
                     if formItem.is_valid():
                         formItem.save()
                         selected_scene.refresh_from_db()
+                        env.setScene(selected_scene)
 
-                if scene_id == '0':   # previously new item
+                if is_new_scene and selected_scene.pk:   # previously new item
                     return HttpResponseRedirect('/script/' + str(selected_scene.id))
-    else:
+            # Invalid form: fall through and re-render with errors
+    elif selected_scene is not None:
         formItem = SceneForm(instance=selected_scene)
         formNote = NoteForm(instance=selected_note)
+    else:
+        formItem = None
+        formNote = None
 
-    formItem.fields['story_location'].queryset = Location.objects.filter(project=env.project)
-    formItem.fields['story_time'].queryset = Time.objects.filter(project=env.project)
-    formItem.fields['persons'].queryset = Person.objects.filter(project=env.project)
-    formItem.fields['gadgets'].queryset = Gadget.objects.filter(project=env.project)
-    formItem.fields['audios'].queryset = Audio.objects.filter(project=env.project)
-    formItem.fields['sfxs'].queryset = SFX.objects.filter(project=env.project)
+    if selected_scene is not None and formItem is not None:
+        formItem.fields['story_location'].queryset = Location.objects.filter(project=env.project)
+        formItem.fields['story_time'].queryset = Time.objects.filter(project=env.project)
+        formItem.fields['persons'].queryset = Person.objects.filter(project=env.project)
+        formItem.fields['gadgets'].queryset = Gadget.objects.filter(project=env.project)
+        formItem.fields['audios'].queryset = Audio.objects.filter(project=env.project)
+        formItem.fields['sfxs'].queryset = SFX.objects.filter(project=env.project)
     
     ### conglomerate queries
     query = Q()
@@ -238,6 +262,7 @@ def script(request, scene_id=None, new_order=0, project_id=None, script_id=None)
         'tag_list': tag_list,
         'scenes': scenes,
         'selected_scene': selected_scene,
+        'is_new_scene': is_new_scene,
         'form': formItem,
         'formNote': formNote,
         'can_undo_move': data_safety.can_undo(request, 'scene'),

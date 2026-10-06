@@ -328,7 +328,7 @@ function confirmSceneMove(offset) {
     {#--button move--#}
     <form id="scene-move-form" method="post" action="" style="display:none;">{% csrf_token %}</form>
     <div class="btn-group btn-group-xs" role="group" style="margin-left:1%">
-		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_sceneitem %}disabled{% endif %}>
+		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_sceneitem.pk %}disabled{% endif %}>
 			<img height="32" width="32" src="{% static 'img/s/move.png' %}" alt="" /><br />
 			<small>{% trans "Move" %}</small>
 			<span class="caret"></span>

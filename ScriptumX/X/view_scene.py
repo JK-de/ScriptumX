@@ -161,6 +161,11 @@ def scene(request, sceneitem_id=None, new_type='?', new_order=0, project_id=None
     if sceneitem_id == '0':
         selected_sceneitem = SceneItem(scene=env.scene);
         selected_sceneitem.type = new_type
+        try:
+            new_order = int(new_order)
+        except (TypeError, ValueError):
+            from X.common import ORDER_STEP
+            new_order = ORDER_STEP
         selected_sceneitem.order = new_order
 
     ### handle buttons
