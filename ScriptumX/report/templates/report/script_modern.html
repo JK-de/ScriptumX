@@ -3,7 +3,7 @@
 
 {% block head %}
 
-{% if google_link %}
+{% if google_link and not PDF %}
     <link href='https://fonts.googleapis.com/css?family={{google_link}}' rel='stylesheet' type='text/css'>
 {% endif %}
 
@@ -30,7 +30,7 @@
     margin-top:0;
     margin-bottom:0;
     padding:0;
-    font-family: {% autoescape off %}{{font}}{% endautoescape %};
+    font-family: {% autoescape off %}{{font}}{% endautoescape %}, "DejaVu Sans", sans-serif;
     font-size: 11pt;
     line-height: 1.4;
     text-shadow: none;
@@ -102,7 +102,7 @@
     {% endif %}
 
 
-    <div class="abase" style="font-size: 22pt; text-align:center; padding-top:4in;">{{title}}</div>
+    <div class="abase" style="font-size: 22pt; text-align:center; padding-top:4in;">{% if PDF %}{{ brand_name|default:"ScriptumX" }} — {% endif %}{{title}}</div>
     <div><pdf:nextpage/></div>
     
 

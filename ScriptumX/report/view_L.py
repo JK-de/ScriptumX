@@ -1,5 +1,6 @@
 from os import path
 from datetime import datetime
+import re
 
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -25,6 +26,7 @@ from X.tags import (
     gadget_tag_list, role_tag_list, person_tag_list, time_tag_list,
     location_tag_list, sfx_tag_list, audio_tag_list, scene_tag_list,
 )
+from .pdf_utils import respond_html_or_pdf
 
 ###############################################################################
 
@@ -111,6 +113,7 @@ class FormHelperX(FormHelper):
         self.field_class = 'col-sm-5'
 
         self.add_input(Submit('submit', 'Show List'))
+        self.add_input(Submit('pdf', 'Download PDF'))
 
 ###############################################################################
 
@@ -448,23 +451,17 @@ class L_BaseView(View):
             'form': form,
         })
 
-    #def render_list(self, request, form, tag_list):
-    #    show_notes = form.cleaned_data['show_notes']
-
-    #    env = Env(request)
-    #    query = getTagQuery(tag_list)
-    #    items = Gadget.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
-
-    #    #item = items[0]
-    #    #l = item.active_tag_images
-
-    #    return render(request, self.template_name, {
-    #        'title': self.title,
-    #        'env': env,
-    #        'tag_list': tag_list,
-    #        'lists': [(None,list)],
-    #        'show_notes': show_notes,
-    #    })
+    def finish(self, request, form, context):
+        """HTML list or PDF download (F13); flash on PDF failure (H10)."""
+        safe = re.sub(r'[^\w\-]+', '_', (self.title or 'list')).strip('_') or 'list'
+        return respond_html_or_pdf(
+            request,
+            form,
+            self.template_name,
+            context,
+            want_pdf=bool(request.POST.get('pdf')),
+            pdfname='%s.pdf' % safe,
+        )
 
     def get(self, request, *args, **kwargs):
         bind_scope_to_request(request, **kwargs)
@@ -498,7 +495,7 @@ class L_RoleView(L_BaseView):
         query = getTagQuery(tag_list)
         list = Role.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -519,7 +516,7 @@ class L_PersonView(L_BaseView):
         query = getTagQuery(tag_list)
         list = Person.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -540,7 +537,7 @@ class L_TimeView(L_BaseView):
         query = getTagQuery(tag_list)
         list = Time.objects.filter( project=env.project_id ).filter(query).order_by('day', 'hour')
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -561,7 +558,7 @@ class L_LocationView(L_BaseView):
         query = getTagQuery(tag_list)
         list = Location.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -582,7 +579,7 @@ class L_GadgetView(L_BaseView):
         query = getTagQuery(tag_list)
         list = Gadget.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -603,7 +600,7 @@ class L_SFXView(L_BaseView):
         query = getTagQuery(tag_list)
         list = SFX.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -624,7 +621,7 @@ class L_AudioView(L_BaseView):
         query = getTagQuery(tag_list)
         list = Audio.objects.filter( project=env.project_id ).filter(query).order_by(Lower('name'))
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -646,7 +643,7 @@ class L_SceneView(L_BaseView):
         query = getTagQuery(tag_list)
         list = Scene.objects.filter( project=env.project_id, script=env.script_id ).filter(query).order_by('order')
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -675,7 +672,7 @@ class L_GroupedRoleView(L_BaseView):
                     list_t = (tag['name'], list)
                     lists.append( list_t )
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -702,7 +699,7 @@ class L_GroupedPersonView(L_BaseView):
                     list_t = (tag['name'], list)
                     lists.append( list_t )
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -729,7 +726,7 @@ class L_GroupedTimeView(L_BaseView):
                     list_t = (tag['name'], list)
                     lists.append( list_t )
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -756,7 +753,7 @@ class L_GroupedLocationView(L_BaseView):
                     list_t = (tag['name'], list)
                     lists.append( list_t )
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -783,7 +780,7 @@ class L_GroupedGadgetView(L_BaseView):
                     list_t = (tag['name'], list)
                     lists.append( list_t )
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -810,7 +807,7 @@ class L_GroupedSFXView(L_BaseView):
                     list_t = (tag['name'], list)
                     lists.append( list_t )
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -837,7 +834,7 @@ class L_GroupedAudioView(L_BaseView):
                     list_t = (tag['name'], list)
                     lists.append( list_t )
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,

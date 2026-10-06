@@ -42,7 +42,8 @@ try:
 except Exception:
     from io import StringIO
 
-from .pdf_utils import render_to_pdf_response
+from django.contrib import messages
+from .pdf_utils import PdfGenerationError, prepare_pdf_context, render_to_pdf_response, PDF_ERROR_MESSAGE
 
 ###############################################################################
 
@@ -303,6 +304,15 @@ class ScriptPDFFilterForm(forms.Form):
             'Modern Helvetica (Sans Serif)'),
         ('modern|"Times New Roman", Times, serif|',                         
             'Modern Times (Serif)'),
+        # Google-named options map to embedded DejaVu families in PDF (H9)
+        ('modern|"Open Sans", sans-serif|Open+Sans:400,700,400italic,700italic',
+            'G Open Sans (Sans Serif)'),
+        ('modern|"Source Sans Pro", sans-serif|Source+Sans+Pro:400,700,400italic,700italic',
+            'G Source Sans Pro (Sans Serif)'),
+        ('modern|"PT Serif", serif|PT+Serif:400,700,400italic,700italic',
+            'G PT Serif (Serif)'),
+        ('modern|"Source Code Pro"|Source+Code+Pro:400,700',
+            'G Source Code Pro (Monospace)'),
         )
     #https://www.google.com/fonts
     layout = forms.TypedChoiceField(
@@ -363,8 +373,9 @@ class ScriptView(View):
         form.fields['roles'].queryset = Role.objects.filter(project=env.project)
 
         return render(
-            request, 
-            self.template_name, {
+            request,
+            "report/common_form.html",
+            {
             'title': self.title,
             'form': form,
             })
@@ -397,9 +408,23 @@ class ScriptView(View):
 
         layout_value = form.cleaned_data.get('layout') or 'legacy|"Courier New", Courier, monospace|'
         template, font, google_link = (layout_value.split('|', 2) + ['', ''])[:3]
+        if template not in ('legacy', 'modern'):
+            template = 'legacy'
 
         self.template_name = "report/script_" + template + ".html"
         script_name = env.script.name if env.script else 'Script'
+        project_name = env.project.name if env.project else ''
+        scene_count = scenes.count() if hasattr(scenes, 'count') else len(scenes)
+        first_scene = scenes.first() if hasattr(scenes, 'first') else (scenes[0] if scenes else None)
+        last_scene = scenes.last() if hasattr(scenes, 'last') else (scenes[scene_count - 1] if scene_count else None)
+        continuity_bits = []
+        if scene_count:
+            continuity_bits.append('%s scene%s' % (scene_count, '' if scene_count == 1 else 's'))
+        if first_scene and getattr(first_scene, 'short', None):
+            end_short = getattr(last_scene, 'short', None) or getattr(last_scene, 'name', '')
+            continuity_bits.append('%s → %s' % (first_scene.short, end_short or '—'))
+        continuity_label = ' · '.join(continuity_bits) if continuity_bits else '—'
+
         self.context = {
             'title': 'Script: ' + script_name,
             'font': font,
@@ -410,14 +435,27 @@ class ScriptView(View):
             'scriptitems': list,
             'PDF': bool(pdf),
             'options': options,
+            'call_sheet': {
+                'project': project_name,
+                'unit': script_name,
+                'continuity': continuity_label,
+            },
+            'brand_name': 'ScriptumX',
         }
 
         if pdf:
-            return render_to_pdf_response(
-                self.template_name,
-                self.context,
-                pdfname='%s.pdf' % script_name.replace(' ', '_'),
+            pdf_context = prepare_pdf_context(
+                self.context, font_stack=font, google_link=google_link
             )
+            try:
+                return render_to_pdf_response(
+                    self.template_name,
+                    pdf_context,
+                    pdfname='%s.pdf' % script_name.replace(' ', '_'),
+                )
+            except PdfGenerationError:
+                messages.error(request, PDF_ERROR_MESSAGE)
+                return self.render_form(request, form)
         return render(request, self.template_name, self.context)
 
     def get(self, request, *args, **kwargs):

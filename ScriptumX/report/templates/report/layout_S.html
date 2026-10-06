@@ -5,11 +5,19 @@
 
     {% if PDF %}
     <style>
+        {{ pdf_font_face_css|safe }}
         @page {
             size: A4 portrait;
             /*-pdf-frame-border: 1;    for debugging the layout */
+            @frame header_frame {
+                -pdf-frame-content: callsheet_header;
+                top: 0.2in;
+                left: 0.75in;
+                right: 0.75in;
+                height: 0.55in;
+            }
             @frame content_frame {
-                top: 0.5in;
+                top: 0.85in;
                 left: 1.5in;
                 right: 1in;
                 bottom: 0.75in;
@@ -26,6 +34,22 @@
         body {
             background-color:#FFF;
             text-shadow: none;
+            font-family: {% autoescape off %}{{font}}{% endautoescape %};
+        }
+        #callsheet_header table {
+            width: 100%;
+            border-collapse: collapse;
+            border-bottom: 1pt solid #333;
+            font-size: 8pt;
+        }
+        #callsheet_header td {
+            padding: 2pt 4pt;
+            vertical-align: top;
+        }
+        #callsheet_header .label {
+            color: #555;
+            font-size: 7pt;
+            text-transform: uppercase;
         }
     </style>
     {% endif %}
@@ -37,6 +61,31 @@
 
 {% block base_body %}
 
+    {% if PDF and call_sheet %}
+    <div id="callsheet_header">
+        <table>
+            <tr>
+                <td width="28%">
+                    <div class="label">Project</div>
+                    <strong>{{ call_sheet.project }}</strong>
+                </td>
+                <td width="28%">
+                    <div class="label">Unit / Script</div>
+                    <strong>{{ call_sheet.unit }}</strong>
+                </td>
+                <td width="18%">
+                    <div class="label">Date</div>
+                    <strong>{% now "Y-m-d" %}</strong>
+                </td>
+                <td width="26%">
+                    <div class="label">Continuity</div>
+                    <strong>{{ call_sheet.continuity }}</strong>
+                </td>
+            </tr>
+        </table>
+    </div>
+    {% endif %}
+
     {% block content %}{% endblock %}
 
 
@@ -44,7 +93,7 @@
 
     {% if PDF %}
     <!-- Content for Static Frame 'footer_frame' -->
-    <div id="footer_content" class="abase" style="text-align:center">- <pdf:pagenumber> / <pdf:pagecount> -</div>
+    <div id="footer_content" class="abase" style="text-align:center">{{ brand_name|default:"ScriptumX" }} — <pdf:pagenumber> / <pdf:pagecount></div>
     {% endif %}
 
 {% endblock %}

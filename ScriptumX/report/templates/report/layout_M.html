@@ -3,9 +3,43 @@
 
 {% block base_head %}
 
+    {% if PDF %}
+    <style>
+        {{ pdf_font_face_css|safe }}
+        @page {
+            size: A4 landscape;
+            @frame content_frame {
+                top: 0.4in;
+                left: 0.4in;
+                right: 0.4in;
+                bottom: 0.5in;
+            }
+            @frame footer_frame {
+                -pdf-frame-content: footer_content;
+                left: 0.4in;
+                right: 0.4in;
+                bottom: 0.15in;
+                height: 16pt;
+            }
+        }
+        body {
+            background-color: #FFF;
+            font-family: "DejaVu Sans", sans-serif;
+            font-size: 8pt;
+        }
+        table {
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid #AAA;
+            padding: 2pt;
+        }
+    </style>
+    {% else %}
     <!-- freezeheader JavaScript -->
     <link rel="stylesheet" href="{% static 'freezeheader/style.css' %}">
     <script src="{% static 'freezeheader/jquery.freezeheader.js' %}"></script>
+    {% endif %}
 
     {% block head %}{% endblock %}
 
@@ -16,13 +50,19 @@
 
     {% block content %}{% endblock %}
 
+    {% if not PDF %}
     <script type="text/javascript">
         $(document).ready(function(){
             $('table').freezeHeader({ offset: '0px', top: true, left: true });
 
         });
     </script>
+    {% endif %}
 
     {% block scripts %}{% endblock %}
+
+    {% if PDF %}
+    <div id="footer_content" style="text-align:center; font-size:8pt;">{{ brand_name|default:"ScriptumX" }} — <pdf:pagenumber> / <pdf:pagecount></div>
+    {% endif %}
 
 {% endblock %}

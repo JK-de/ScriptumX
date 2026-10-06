@@ -6,7 +6,7 @@
     <meta name="description" content="{{ title }}" />
     <meta name="keywords" content="ScriptumX, movie, script, {{ title }}" />
     
-    <title>{{ title }} - Scriptum&#x1d4e7;</title>
+    <title>{{ title }} - {% if PDF %}{{ brand_name|default:"ScriptumX" }}{% else %}Scriptum&#x1d4e7;{% endif %}</title>
     {% load static %}
 
     {% if not PDF %}

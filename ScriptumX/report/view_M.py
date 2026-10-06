@@ -26,6 +26,8 @@ from .view_L import (
     AudioFilterForm, GadgetFilterForm, LocationFilterForm,
     PersonFilterForm, RoleFilterForm, SFXFilterForm, TimeFilterForm,
 )
+from .pdf_utils import respond_html_or_pdf
+import re
 
 ###############################################################################
 
@@ -50,7 +52,16 @@ class M_BaseView(View):
             'form': form,
         })
 
-    #def render_list(self, request, form, tag_list):
+    def finish(self, request, form, context):
+        safe = re.sub(r'[^\w\-]+', '_', (self.title or 'matrix')).strip('_') or 'matrix'
+        return respond_html_or_pdf(
+            request,
+            form,
+            self.template_name,
+            context,
+            want_pdf=bool(request.POST.get('pdf')),
+            pdfname='%s.pdf' % safe,
+        )
 
     def get(self, request, *args, **kwargs):
         bind_scope_to_request(request, **kwargs)
@@ -101,7 +112,7 @@ class M_SceneRoleView(M_BaseView):
                     if col:
                         m.cells[row][col].text = M_SYMBOL_LINKED
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -173,7 +184,7 @@ class M_ScenePersonView(M_BaseView):
                 if col:
                     m.cells[row][col].text = M_SYMBOL_LINKED   # MEDIUM BLACK CIRCLE
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -245,7 +256,7 @@ class M_SceneGadgetView(M_BaseView):
                 if col:
                     m.cells[row][col].text = M_SYMBOL_LINKED   # MEDIUM BLACK CIRCLE
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -282,7 +293,7 @@ class M_SceneSFXView(M_BaseView):
                 if col:
                     m.cells[row][col].text = M_SYMBOL_LINKED
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -319,7 +330,7 @@ class M_SceneAudioView(M_BaseView):
                 if col:
                     m.cells[row][col].text = M_SYMBOL_LINKED
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -356,7 +367,7 @@ class M_SceneTimeView(M_BaseView):
                 if col:
                     m.cells[row][col].text = M_SYMBOL_LINKED
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
@@ -393,7 +404,7 @@ class M_SceneLocationView(M_BaseView):
                 if col:
                     m.cells[row][col].text = M_SYMBOL_LINKED
 
-        return render(request, self.template_name, {
+        return self.finish(request, form, {
             'title': self.title,
             'env': env,
             'tag_list': tag_list,
