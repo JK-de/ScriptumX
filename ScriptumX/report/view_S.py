@@ -366,12 +366,19 @@ class ScriptView(View):
     template_name = "report/common_form.html"
     title = 'Script'
     selected_scene_id = None
+    report_url_name = 'S_read'
+
+    def get_report_url_name(self):
+        return self.report_url_name
 
     def render_form(self, request, form):
+        from report.collab import attach_collab_fields
         env = Env(request)
 
-        form.fields['roles'].queryset = Role.objects.filter(project=env.project)
-
+        if 'roles' in form.fields:
+            form.fields['roles'].queryset = Role.objects.filter(project=env.project)
+        if 'preset_name' not in form.fields:
+            attach_collab_fields(form, request, self.x_group, self.get_report_url_name())
         return render(
             request,
             "report/common_form.html",
@@ -381,6 +388,7 @@ class ScriptView(View):
             })
 
     def render_list(self, request, form, tag_list):
+        from report.collab import apply_advanced_scene_filters, filter_payload_from_request_form
         env = Env(request)
 
         list = []
@@ -393,11 +401,13 @@ class ScriptView(View):
         except Exception:
             options['show_links'] = False
         options['colorize_roles'] = form.cleaned_data.get('roles') or []
-        options['layout'] = form.cleaned_data['layout']
-        pdf = request.POST.get('pdf')
+        options['layout'] = form.cleaned_data.get('layout') or 'legacy|"Courier New", Courier, monospace|'
+        pdf = request.POST.get('pdf') if request.method == 'POST' else None
 
         query = getTagQuery(tag_list)
         scenes = Scene.objects.filter(project=env.project_id, script=env.script_id).filter(query).order_by('order')
+        payload = filter_payload_from_request_form(request, form, self.x_group)
+        scenes = apply_advanced_scene_filters(scenes, payload)
         if self.selected_scene_id:
             scenes = scenes.filter(pk=self.selected_scene_id)
 
@@ -459,20 +469,29 @@ class ScriptView(View):
         return render(request, self.template_name, self.context)
 
     def get(self, request, *args, **kwargs):
+        from report.collab import prepare_filter_form
         bind_scope_to_request(request, **kwargs)
         self.selected_scene_id = kwargs.get('selected_scene_id')
         tag_list = getTagRequestList(request, self.x_group)
+        initial = dict(self.initial)
         for tag in tag_list:
-            self.initial['tag' + str(tag['idx'])] = tag['active']
-        form = self.form_class(initial=self.initial)
+            initial['tag' + str(tag['idx'])] = tag['active']
+        form = prepare_filter_form(self, request, initial=initial)
         return self.render_form(request, form)
 
     def post(self, request, *args, **kwargs):
+        from report.collab import handle_collab_post, prepare_filter_form
         bind_scope_to_request(request, **kwargs)
         self.selected_scene_id = kwargs.get('selected_scene_id')
-        form = self.form_class(request.POST)
+        form = prepare_filter_form(self, request, data=request.POST)
+        if 'roles' in form.fields:
+            env = Env(request)
+            form.fields['roles'].queryset = Role.objects.filter(project=env.project)
+        tag_list = getTagRequestList(request, self.x_group)
+        handled = handle_collab_post(self, request, form, tag_list, self.get_report_url_name())
+        if handled is not None:
+            return handled
         if form.is_valid():
-            tag_list = getTagRequestList(request, self.x_group)
             for tag in tag_list:
                 tag['active'] = form.cleaned_data['tag' + str(tag['idx'])]
             return self.render_list(request, form, tag_list)
@@ -483,5 +502,6 @@ class ScriptView(View):
 
 class ScriptPDFView(ScriptView):
     form_class = ScriptPDFFilterForm
+    report_url_name = 'S_readpdf'
 
 ###############################################################################

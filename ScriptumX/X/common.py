@@ -115,15 +115,31 @@ class Env():
     script = None
     scene_id = 0
     scene = None
+    read_only = False
 
     def __init__(self, request, project_id=None, script_id=None, scene_id=None, *args, **kwargs):
         super(Env, self).__init__(*args, **kwargs)
 
         self.request = request
+        self.read_only = False
+
+        # Tokenized share links hydrate project/script without a login (F14).
+        share = getattr(request, '_share_context', None)
+        if share and share.get('project'):
+            self.user = None
+            self.project = share['project']
+            self.project_id = self.project.id
+            self.script = share.get('script')
+            self.script_id = self.script.id if self.script else 0
+            self.scene = None
+            self.scene_id = 0
+            self.user_level = 5  # read-only share guest
+            self.read_only = True
+            return
 
         # get user
-        self.user = request.user
-        if not self.user.is_active:
+        self.user = getattr(request, 'user', None)
+        if self.user is not None and (not getattr(self.user, 'is_authenticated', False) or not self.user.is_active):
             self.user = None
 
         # Prefer explicit kwargs, then request attrs (from scoped URLs), then session.
@@ -165,7 +181,10 @@ class Env():
             return
 
         if self.project:
-            if self.user.is_superuser:
+            if not self.user:
+                self.user_level = 0
+                self.project = None
+            elif self.user.is_superuser:
                 self.user_level = 42
             elif self.user.is_staff:
                 self.user_level = 40
@@ -182,6 +201,7 @@ class Env():
         if not self.project:
             self.script = None
             self.scene = None
+            self.user_level = 0
             return
 
         # Persist explicit URL project into session for multi-tab/legacy links

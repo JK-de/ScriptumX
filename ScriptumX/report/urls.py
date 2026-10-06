@@ -18,6 +18,7 @@ from report.view_M import (
 from report.view_S import ScriptView, ScriptPDFView
 from report.view_C import CardsView
 from report.views import Test3View, TestM1View, TestM2View
+from report.collab import SharedReportView, revoke_share_link
 
 app_name = 'report'
 
@@ -35,6 +36,10 @@ urlpatterns = [
 
     re_path(r'^L$', L_GroupedGadgetView.as_view(), name='L_'),
     re_path(r'^M$', M_SceneRoleView.as_view(), name='M_'),
+
+    # F14: tokenized read-only share links (no login)
+    re_path(r'^report/share/(?P<token>[-A-Za-z0-9_=]+)/$', SharedReportView.as_view(), name='shared_report'),
+    re_path(r'^report/share/(?P<token>[-A-Za-z0-9_=]+)/revoke/$', revoke_share_link, name='revoke_share'),
 
     re_path(r'^report/L/simple_role$', L_RoleView.as_view(), name='L_Role'),
     re_path(r'^report/L/simple_person$', L_PersonView.as_view(), name='L_Person'),

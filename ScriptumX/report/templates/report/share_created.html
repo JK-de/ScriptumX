@@ -1,0 +1,25 @@
+{% extends "report/layout_L.html" %}
+{% block content %}
+<div class="container" style="max-width:720px; margin-top:40px;">
+  <div class="panel panel-success">
+    <div class="panel-heading">
+      <h3>{{ title }}</h3>
+    </div>
+    <div class="panel-body">
+      <p>Read-only share link for <strong>{{ report_title }}</strong>
+        {% if link.label %}({{ link.label }}){% endif %}.</p>
+      <p>Anyone with this URL can view the report with the frozen filters — no login required.</p>
+      <div class="form-group">
+        <label>Share URL</label>
+        <input class="form-control" type="text" readonly value="{{ share_url }}"
+               onclick="this.select();" id="share-url">
+      </div>
+      <p class="text-muted"><small>Token: <code>{{ link.token }}</code></small></p>
+      <p>
+        <a class="btn btn-primary" href="{{ share_url }}" target="_blank">Open shared report</a>
+        <a class="btn btn-default" href="javascript:history.back()">Back</a>
+      </p>
+    </div>
+  </div>
+</div>
+{% endblock %}

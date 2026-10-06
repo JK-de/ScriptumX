@@ -1,18 +1,19 @@
-"""PDF export tests — fonts, script/L/M PDFs, error UI, optional Playwright."""
+"""PDF export, list/matrix, and collaboration (F14/F15) tests."""
 from unittest import skipUnless
 from unittest.mock import patch
 
 from django.test import Client, TestCase, override_settings
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 
-from X.models import Project, Script, Scene, SceneItem, Role
+from X.models import Location, Project, Role, Scene, SceneItem, Script, Time
+from report.models import FilterPreset, ReportShareLink
 from report.pdf_fonts import (
     bundled_font_paths,
     resolve_pdf_font_family,
     pdf_font_face_css,
 )
 from report.pdf_utils import PdfGenerationError, prepare_pdf_context
-
 
 def _pdf_text(content: bytes) -> str:
     from io import BytesIO
@@ -240,3 +241,159 @@ class ReportListAndMatrixTests(TestCase):
     def test_m_report_scene_role(self):
         response = self.client.get('/report/M/scene_role')
         self.assertEqual(response.status_code, 200)
+
+
+class ReportShareAndPresetTests(TestCase):
+    def setUp(self):
+        User = get_user_model()
+        self.owner = User.objects.create_user('owner', 'owner@example.com', 'ownerpass')
+        self.guest = User.objects.create_user('guest', 'guest@example.com', 'guestpass')
+        self.client = Client()
+        assert self.client.login(username='owner', password='ownerpass')
+
+        self.project = Project.objects.create(name='Collab Proj', owner=self.owner)
+        self.project.guests.add(self.guest)
+        self.script = Script.objects.create(name='Collab Script', project=self.project)
+        self.ext = Location.objects.create(name='Park', project=self.project, tag2=True)
+        self.inn = Location.objects.create(name='Studio', project=self.project, tag1=True)
+        self.day = Time.objects.create(name='Day 1 noon', project=self.project, day=1, hour=12)
+        self.role = Role.objects.create(name='Hero', project=self.project, tag4=True)
+        self.scene_ext = Scene.objects.create(
+            name='Park scene', project=self.project, script=self.script,
+            story_location=self.ext, story_time=self.day, order=1,
+        )
+        self.scene_inn = Scene.objects.create(
+            name='Studio scene', project=self.project, script=self.script,
+            story_location=self.inn, story_time=self.day, order=2,
+        )
+        SceneItem.objects.create(
+            scene=self.scene_ext, role=self.role, type='D', text='Hello', order=1,
+        )
+        session = self.client.session
+        session['ProjectID'] = self.project.id
+        session['ScriptID'] = self.script.id
+        session.save()
+
+    def _location_filter_post(self, **extra):
+        data = {
+            'tag0': 'on',
+            'tag1': 'on',
+            'tag2': 'on',
+            'tag3': 'on',
+            'tag4': 'on',
+            'tag5': 'on',
+            'show_notes': 'on',
+            'preset_name': '',
+            'preset_id': '',
+        }
+        data.update(extra)
+        return data
+
+    def test_create_share_link_and_anonymous_access(self):
+        response = self.client.post('/report/L/simple_location', {
+            'tag2': 'on',
+            'show_notes': 'on',
+            'preset_name': 'Exteriors',
+            'preset_id': '',
+            'create_share': 'Create share link',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Share link created')
+        self.assertContains(response, '/report/share/')
+        link = ReportShareLink.objects.get()
+        self.assertEqual(link.report_name, 'L_Location')
+        self.assertEqual(link.label, 'Exteriors')
+        self.assertTrue(link.filter_payload.get('tags', {}).get('2'))
+
+        anon = Client()
+        shared = anon.get(reverse('report:shared_report', kwargs={'token': link.token}))
+        self.assertEqual(shared.status_code, 200)
+        self.assertContains(shared, 'Park')
+        self.assertNotContains(shared, 'Studio')
+
+    def test_revoked_share_is_404(self):
+        link = ReportShareLink.objects.create(
+            project=self.project,
+            script=self.script,
+            report_name='L_Location',
+            title='Location List',
+            filter_payload={'tags': {'2': True}, 'show_notes': True},
+            created_by=self.owner,
+        )
+        link.revoked = True
+        link.save()
+        anon = Client()
+        response = anon.get(reverse('report:shared_report', kwargs={'token': link.token}))
+        self.assertEqual(response.status_code, 404)
+
+    def test_save_and_load_filter_preset(self):
+        response = self.client.post('/report/L/simple_location', {
+            'tag2': 'on',
+            'show_notes': 'on',
+            'preset_name': 'all day exteriors',
+            'preset_id': '',
+            'save_preset': 'Save preset',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Preset saved')
+        preset = FilterPreset.objects.get(user=self.owner, name='all day exteriors')
+        self.assertEqual(preset.tag_group, 'location')
+        self.assertTrue(preset.payload['tags']['2'])
+
+        response = self.client.post('/report/L/simple_location', {
+            'tag0': 'on',
+            'tag1': 'on',
+            'tag2': 'on',
+            'tag3': 'on',
+            'tag4': 'on',
+            'tag5': 'on',
+            'show_notes': 'on',
+            'preset_name': '',
+            'preset_id': str(preset.pk),
+            'load_preset': 'Load preset',
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'all day exteriors')
+        # Loaded form should reflect exterior-only tags (tag2 checked in HTML)
+        self.assertContains(response, 'name="tag2"')
+
+    def test_scene_preset_with_role_filter(self):
+        response = self.client.post('/report/L/simple_scene', {
+            'tag0': 'on',
+            'tag1': 'on',
+            'tag2': 'on',
+            'tag3': 'on',
+            'tag4': 'on',
+            'tag5': 'on',
+            'show_notes': 'on',
+            'exterior_only': 'on',
+            'role_id': str(self.role.pk),
+            'preset_name': 'scenes with Role Hero exteriors',
+            'preset_id': '',
+            'save_preset': 'Save preset',
+        })
+        self.assertEqual(response.status_code, 200)
+        preset = FilterPreset.objects.get(name='scenes with Role Hero exteriors')
+        self.assertTrue(preset.payload.get('exterior_only'))
+        self.assertEqual(preset.payload.get('role_id'), self.role.pk)
+
+        link = ReportShareLink.objects.create(
+            project=self.project,
+            script=self.script,
+            report_name='L_Scene',
+            title='Scene List',
+            filter_payload=preset.payload,
+            created_by=self.owner,
+        )
+        anon = Client()
+        shared = anon.get(reverse('report:shared_report', kwargs={'token': link.token}))
+        self.assertEqual(shared.status_code, 200)
+        self.assertContains(shared, 'Park scene')
+        self.assertNotContains(shared, 'Studio scene')
+
+    def test_filter_form_shows_share_controls(self):
+        response = self.client.get('/report/L/simple_location')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Create share link')
+        self.assertContains(response, 'Save preset')
+        self.assertContains(response, 'Share &amp; presets')

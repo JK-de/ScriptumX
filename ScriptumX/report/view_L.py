@@ -444,8 +444,36 @@ class L_BaseView(View):
     initial = {}
     template_name = "report/L_X_simple.html"
     title = '??? List'
+    report_url_name = None
+
+    def get_report_url_name(self):
+        if self.report_url_name:
+            return self.report_url_name
+        # Fall back to class-name mapping used by collab registry keys
+        name = self.__class__.__name__
+        mapping = {
+            'L_RoleView': 'L_Role',
+            'L_PersonView': 'L_Person',
+            'L_TimeView': 'L_Time',
+            'L_LocationView': 'L_Location',
+            'L_GadgetView': 'L_Gadget',
+            'L_SFXView': 'L_SFX',
+            'L_AudioView': 'L_Audio',
+            'L_SceneView': 'L_Scene',
+            'L_GroupedRoleView': 'L_g_Role',
+            'L_GroupedPersonView': 'L_g_Person',
+            'L_GroupedTimeView': 'L_g_Time',
+            'L_GroupedLocationView': 'L_g_Location',
+            'L_GroupedGadgetView': 'L_g_Gadget',
+            'L_GroupedSFXView': 'L_g_SFX',
+            'L_GroupedAudioView': 'L_g_Audio',
+        }
+        return mapping.get(name, name)
 
     def render_form(self, request, form):
+        from report.collab import attach_collab_fields
+        if 'preset_name' not in form.fields:
+            attach_collab_fields(form, request, self.x_group, self.get_report_url_name())
         return render(request, self.template_name, {
             'title': self.title,
             'form': form,
@@ -464,18 +492,24 @@ class L_BaseView(View):
         )
 
     def get(self, request, *args, **kwargs):
+        from report.collab import prepare_filter_form
         bind_scope_to_request(request, **kwargs)
         tag_list = getTagRequestList(request, self.x_group)
+        initial = dict(self.initial)
         for tag in tag_list:
-            self.initial['tag'+str(tag['idx'])] = tag['active']
-        form = self.form_class(initial=self.initial)
+            initial['tag'+str(tag['idx'])] = tag['active']
+        form = prepare_filter_form(self, request, initial=initial)
         return self.render_form(request, form)
 
     def post(self, request, *args, **kwargs):
+        from report.collab import handle_collab_post, prepare_filter_form
         bind_scope_to_request(request, **kwargs)
-        form = self.form_class(request.POST)
+        form = prepare_filter_form(self, request, data=request.POST)
+        tag_list = getTagRequestList(request, self.x_group)
+        handled = handle_collab_post(self, request, form, tag_list, self.get_report_url_name())
+        if handled is not None:
+            return handled
         if form.is_valid():
-            tag_list = getTagRequestList(request, self.x_group)
             for tag in tag_list:
                 tag['active'] = form.cleaned_data['tag'+str(tag['idx'])]
             return self.render_list(request, form, tag_list)
@@ -637,11 +671,16 @@ class L_SceneView(L_BaseView):
     initial = {'show_notes': True}
     title = 'Scene List'
     template_name = "report/L_X_simple_scene.html"   # special for tag overlay
+    report_url_name = 'L_Scene'
 
     def render_list(self, request, form, tag_list):
+        from report.collab import apply_advanced_scene_filters, filter_payload_from_request_form
+
         env = Env(request)
         query = getTagQuery(tag_list)
         list = Scene.objects.filter( project=env.project_id, script=env.script_id ).filter(query).order_by('order')
+        payload = filter_payload_from_request_form(request, form, self.x_group)
+        list = apply_advanced_scene_filters(list, payload)
 
         return self.finish(request, form, {
             'title': self.title,
@@ -649,6 +688,7 @@ class L_SceneView(L_BaseView):
             'tag_list': tag_list,
             'lists': [(None,list)],
             'show_notes': form.cleaned_data['show_notes'],
+            'shared_read_only': bool(getattr(request, '_share_context', None)),
         })
 
 ###############################################################################
