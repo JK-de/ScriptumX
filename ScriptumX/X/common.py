@@ -303,16 +303,23 @@ def reorderList(list):
 
 
 def getOrderNumber(list, ref_id, offset):
+    """Return an order value for inserting/moving relative to ref_id.
+
+    Empty lists get ORDER_STEP (first item). Missing ref returns None.
+    """
+    items = len(list)
+    if items == 0:
+        return ORDER_STEP
 
     ref_id = int(ref_id)
     refIndex = None
-    items = len(list)
     for i in range(items):
         if list[i].id == ref_id:
             refIndex = i
             break
 
-    if not refIndex:
+    # Must use `is None` — index 0 is a valid reference (first item).
+    if refIndex is None:
         return None
 
     offset = int(offset)

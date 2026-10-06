@@ -18,6 +18,24 @@ $(document).ready(function () {
         autosaveUrl: '{{ autosave_url|escapejs }}',
         delayMs: 1500
     });
+    {% if is_new_scene %}
+    var $panel = $('.x-script.x-item-form').closest('.full-height');
+    if ($panel.length) { $panel.scrollTop(0); }
+    var $name = $('#id_name');
+    if ($name.length) {
+        $name.focus();
+        try { $name[0].select(); } catch (e) {}
+    }
+    {% endif %}
+    {% if form and form.errors %}
+    var $err = $('#script-editor-form .errorlist, #script-editor-form .has-error').first();
+    if ($err.length) {
+        var $scroll = $err.closest('.full-height');
+        if ($scroll.length) {
+            $scroll.scrollTop(Math.max(0, $err.position().top - 24));
+        }
+    }
+    {% endif %}
 });
 function confirmScriptMove(offset) {
     if (!confirm('Move this scene? You can undo afterwards.')) {
@@ -50,9 +68,21 @@ function confirmScriptMove(offset) {
                         {% csrf_token %}
                         <input type="hidden" name="expected_updated_at" value="{{ expected_updated_at }}" />
 
+                        {% if is_new_scene %}
+                        <div class="alert alert-info" style="margin-bottom:8px;" role="status">
+                            <strong>{% trans "New scene" %}</strong> —
+                            {% trans "Edit the name if you like, then click Save." %}
+                        </div>
+                        {% endif %}
+
                         <div id="editor-conflict-warning" class="alert alert-danger" style="{% if conflict_message %}{% else %}display:none;{% endif %}margin-bottom:8px;">
                             {% if conflict_message %}{{ conflict_message }}{% endif %}
                         </div>
+                        {% if form.errors %}
+                        <div class="alert alert-danger" style="margin-bottom:8px;" role="alert">
+                            {% trans "Please fix the highlighted fields, then Save again." %}
+                        </div>
+                        {% endif %}
                         <p id="editor-save-status" class="text-muted" style="margin:0 0 8px 0;"><small>Ready</small></p>
 
                         {% if selected_scene.note %}
@@ -265,25 +295,17 @@ function confirmScriptMove(offset) {
 
     <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
 
-        <a href="/script/new/{{selected_scene.pk}}/-1" 
-            role="button" style="padding:4px" 
-            {% if not selected_scene %}
-            class="btn btn-default navbar-btn disabled" disabled
-            {% else %}
+        <a href="{% if selected_scene.pk %}/script/new/{{selected_scene.pk}}/-1{% else %}/script/0/65536{% endif %}"
+            role="button" style="padding:4px"
             class="btn btn-default navbar-btn"
-            {% endif %}
             >
         <img height="32" width="32" src="{% static 'img/s/ins_b.png' %}" />
         <br />
         <small>{% trans "New" %}</small></a>
 
-        <a href="/script/new/{{selected_scene.pk}}/1" 
-            role="button" style="padding:4px" 
-            {% if not selected_scene %}
-            class="btn btn-default navbar-btn disabled" disabled
-            {% else %}
+        <a href="{% if selected_scene.pk %}/script/new/{{selected_scene.pk}}/1{% else %}/script/0/65536{% endif %}"
+            role="button" style="padding:4px"
             class="btn btn-default navbar-btn"
-            {% endif %}
             >
         <img height="32" width="32" src="{% static 'img/s/ins_a.png' %}" alt="" />
         <br />
@@ -294,7 +316,7 @@ function confirmScriptMove(offset) {
     {#--button move--#}
     <form id="script-move-form" method="post" action="" style="display:none;">{% csrf_token %}</form>
     <div class="btn-group btn-group-xs" role="group" style="margin-left:8px">
-		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_scene %}disabled{% endif %}>
+		<button style="padding:4px;" type="button" class="btn btn-default navbar-btn dropdown-toggle" data-toggle="dropdown" {% if not selected_scene.pk %}disabled{% endif %}>
 			<img height="32" width="32" src="{% static 'img/s/move.png' %}" alt="" /><br />
 			<small>{% trans "Move" %}</small>
 			<span class="caret"></span>
@@ -452,7 +474,7 @@ function confirmScriptMove(offset) {
     
     <a style="padding:8px; margin:0px" class="navbar-text" href="/script"><img src="{% static 'img/tab/script-24.png' %}" /></a>
 
-    <a href="/script/0" role="button" class="btn btn-default navbar-btn btn-xs" style="margin:0; padding:4px;"><small>{% trans "New" %}</small></a>
+    <a href="/script/0/65536" role="button" class="btn btn-default navbar-btn btn-xs" style="margin:0; padding:4px;"><small>{% trans "New" %}</small></a>
 
 {% endblock %}
                 

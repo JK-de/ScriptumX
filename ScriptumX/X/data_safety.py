@@ -26,7 +26,7 @@ def perform_scene_move(request, scene_id, offset):
 
     orders = snapshot_orders(scenes)
     new_order = getOrderNumber(scenes, scene_id, offset)
-    if new_order:
+    if new_order is not None:
         push_undo(request, 'scene', scene_id, orders)
         selected.order = new_order
         selected.save()
@@ -48,7 +48,7 @@ def perform_sceneitem_move(request, sceneitem_id, offset):
 
     orders = snapshot_orders(items)
     new_order = getOrderNumber(items, sceneitem_id, offset)
-    if new_order:
+    if new_order is not None:
         push_undo(request, 'sceneitem', sceneitem_id, orders)
         selected.order = new_order
         selected.save()

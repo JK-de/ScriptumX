@@ -335,20 +335,20 @@
 
     {#--button new Script--#}
     <div class="btn-group btn-group-xs" role="group" style="margin-left:32px">
-        <a href="/project/{{selected_project.id}}/0" role="button" style="padding:4px" 
-             {% if not selected_project %}
+        <a href="{% if selected_project.pk %}/project/{{selected_project.pk}}/0{% else %}#{% endif %}" role="button" style="padding:4px"
+             {% if not selected_project.pk %}
                 disabled
-                class="btn btn-default navbar-btn disabled" 
+                class="btn btn-default navbar-btn disabled"
              {% else %}
-                class="btn btn-default navbar-btn" 
+                class="btn btn-default navbar-btn"
              {% endif %}>
             <img height="32" width="32" src="{% static 'img/new.png' %}" />
             <br />
             <small>New Script</small>
         </a>
    
-        <a href="/project/{{selected_project.id}}/export.json" role="button" style="padding:4px"
-             {% if not selected_project %}
+        <a href="{% if selected_project.pk %}/project/{{selected_project.pk}}/export.json{% else %}#{% endif %}" role="button" style="padding:4px"
+             {% if not selected_project.pk %}
                 disabled
                 class="btn btn-default navbar-btn disabled"
              {% else %}
@@ -359,8 +359,8 @@
             <small>Export JSON</small>
         </a>
 
-        <a href="/project/{{selected_project.id}}/export.zip" role="button" style="padding:4px"
-             {% if not selected_project %}
+        <a href="{% if selected_project.pk %}/project/{{selected_project.pk}}/export.zip{% else %}#{% endif %}" role="button" style="padding:4px"
+             {% if not selected_project.pk %}
                 disabled
                 class="btn btn-default navbar-btn disabled"
              {% else %}

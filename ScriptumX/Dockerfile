@@ -25,9 +25,12 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 
 COPY . /app
 
+# compilemessages loads Django settings; Dockerfile ENV has DJANGO_DEBUG=0,
+# which requires a non-default SECRET_KEY (runtime compose sets the real one).
 RUN mkdir -p /data /app/static \
     && chmod +x /app/docker/entrypoint.sh \
-    && python manage.py compilemessages \
+    && DJANGO_SECRET_KEY=docker-build-compilemessages \
+        python manage.py compilemessages \
     && chown -R app:app /app /data
 
 USER app

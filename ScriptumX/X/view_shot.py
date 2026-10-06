@@ -25,7 +25,7 @@ from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.utils import render_crispy_form
 
 from X.models import Role, Scene, SceneItem
-from X.common import Env, get_tab_list, getOrderNumber
+from X.common import ORDER_STEP, Env, get_tab_list, getOrderNumber
 
 from .tags import FormSymbol, sceneitem_tag_list, handleTagRequest, getTagRequestList
 
@@ -88,6 +88,10 @@ def shot(request, sceneitem_id=None, new_type='?', new_order=0, project_id=None,
     if sceneitem_id == '0':
         selected_sceneitem = SceneItem(scene=env.scene);
         selected_sceneitem.type = new_type
+        try:
+            new_order = int(new_order)
+        except (TypeError, ValueError):
+            new_order = ORDER_STEP
         selected_sceneitem.order = new_order
 
     ### handle buttons
@@ -103,7 +107,7 @@ def shot(request, sceneitem_id=None, new_type='?', new_order=0, project_id=None,
         # 'Delete'-Button
         if request.POST.get('btn_delete'):
             selected_sceneitem.delete()
-            return HttpResponseRedirect('/scene/')
+            return HttpResponseRedirect('/shot/')
 
         # 'Save'-Button
         if request.POST.get('btn_save'):
@@ -113,7 +117,7 @@ def shot(request, sceneitem_id=None, new_type='?', new_order=0, project_id=None,
                 #selected_sceneitem.save()
 
             if sceneitem_id == '0':   # previously new item
-                return HttpResponseRedirect('/scene/' + str(selected_sceneitem.id))
+                return HttpResponseRedirect('/shot/' + str(selected_sceneitem.id))
     else:
         formItem = ShotItemForm(instance=selected_sceneitem)
     
@@ -199,7 +203,7 @@ def shotMove(request, sceneitem_id, offset):
         if offset > 0:
             offset += 1
         newOrder = getOrderNumber(sceneitems, sceneitem_id, offset)
-        if newOrder:
+        if newOrder is not None:
             selected_sceneitem = SceneItem.objects.get( scene=env.scene, id=sceneitem_id )
             selected_sceneitem.order = newOrder
             selected_sceneitem.save()
@@ -218,12 +222,14 @@ def shotNew(request, sceneitem_id, sceneitem_type, offset):
     env = Env(request)
 
     try:
-        sceneitems = SceneItem.objects.filter( scene=env.scene )
-        
+        sceneitems = SceneItem.objects.filter(scene=env.scene).order_by('order')
         newOrder = getOrderNumber(sceneitems, sceneitem_id, offset)
-    except:
-        newOrder = 0
+    except Exception:
+        newOrder = None
 
-    url ='/shot/0/' + sceneitem_type + '/' + str(newOrder)
+    if newOrder is None:
+        newOrder = ORDER_STEP
+
+    url = '/shot/0/' + sceneitem_type + '/' + str(newOrder)
     return HttpResponseRedirect(url)
     #return scene(request, 0, sceneitem_type, newOrder)

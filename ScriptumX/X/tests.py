@@ -31,6 +31,88 @@ class SmokeTests(TestCase):
         # Seeded sample project is named "Movie"
         self.assertContains(response, 'Movie')
 
+    def test_new_project_form_loads(self):
+        """GET /project/0 must not 500 on unsaved Project related filters."""
+        assert self.client.login(username='smokeadmin', password='smokeadmin')
+        response = self.client.get('/project/0')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'btn_save')
+
+    def test_new_project_can_save(self):
+        assert self.client.login(username='smokeadmin', password='smokeadmin')
+        response = self.client.post('/project/0', {
+            'name': 'Fresh Project',
+            'owner': self.user.id,
+            'users': [],
+            'guests': [],
+            'btn_save': 'x',
+        })
+        self.assertEqual(response.status_code, 302)
+        from X.models import Project
+        project = Project.objects.get(name='Fresh Project')
+        self.assertEqual(project.owner_id, self.user.id)
+        self.assertEqual(response['Location'], '/project/%s' % project.id)
+
+    def test_empty_script_new_scene_form(self):
+        """GET /script/0/<order> must render the new-scene form (not 404 on /script/0/None)."""
+        from X.models import Project, Script
+        assert self.client.login(username='smokeadmin', password='smokeadmin')
+        project = Project.objects.create(name='Empty Script Proj', owner=self.user)
+        script = Script.objects.create(name='Empty Script', project=project)
+        session = self.client.session
+        session['ProjectID'] = project.id
+        session['ScriptID'] = script.id
+        session.save()
+
+        response = self.client.get('/script/0/65536')
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'btn_save')
+        # Prefill + banner so New is visibly actionable
+        self.assertContains(response, 'New Scene')
+        self.assertContains(response, 'New scene')
+        # Unsaved new-scene form must not emit /script/new/None/…
+        self.assertNotContains(response, '/script/new/None/')
+        self.assertContains(response, 'href="/script/0/65536"')
+
+        # Save creates the scene and redirects to its edit URL
+        response = self.client.post('/script/0/65536', {
+            'name': 'INT. SAVED FROM NEW - DAY',
+            'abstract': '',
+            'short': '',
+            'description': '',
+            'indentation': 0,
+            'color': '#FFFFFF',
+            'duration': 0,
+            'progress_script': 0,
+            'progress_pre': 0,
+            'progress_shot': 0,
+            'progress_post': 0,
+            'tag1': True,
+            'tag2': True,
+            'tag3': True,
+            'tag4': True,
+            'tag5': True,
+            'btn_save': 'x',
+        })
+        self.assertEqual(response.status_code, 302)
+        from X.models import Scene
+        scene = Scene.objects.get(script=script, name='INT. SAVED FROM NEW - DAY')
+        self.assertEqual(response['Location'], '/script/%s' % scene.id)
+
+        # New relative to first scene must not redirect to /script/0/None
+        from X.common import ORDER_STEP, getOrderNumber
+        self.assertIsNotNone(getOrderNumber([scene], scene.id, 1))
+        self.assertNotEqual(str(getOrderNumber([scene], scene.id, 1)), 'None')
+        response = self.client.get('/script/new/%s/1' % scene.id)
+        self.assertEqual(response.status_code, 302)
+        self.assertRegex(response['Location'], r'^/script/0/\d+$')
+        self.assertNotIn('None', response['Location'])
+
+        # Scoped new-scene URL must resolve
+        response = self.client.get('/p/%s/s/%s/script/0/65536' % (project.id, script.id))
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'btn_save')
+
 """
 Tests for writer import (F4), breakdown (F5), role bible (F6), revisions (F7).
 """

@@ -286,11 +286,16 @@ def project(request, project_id=None, script_id=None):
     
     projects = Project.objects.filter( Q(owner=env.user) | Q(users=env.user) | Q(guests=env.user) ).distinct()
 
-    if selected_project:
-        scripts = Script.objects.filter( project=selected_project )
+    if selected_project and selected_project.pk:
+        scripts = Script.objects.filter(project=selected_project)
         scenes_project_id = selected_project.id
+    elif selected_project:
+        # Unsaved "New project" (`/project/0`) — no related scripts yet.
+        # Passing an unsaved Project into related filters raises ValueError on Django 5+.
+        scripts = Script.objects.none()
+        scenes_project_id = 0
     else:
-        scripts = Script.objects.filter( project=env.project )
+        scripts = Script.objects.filter(project=env.project) if env.project_id else Script.objects.none()
         scenes_project_id = env.project_id
 
     revisions = []

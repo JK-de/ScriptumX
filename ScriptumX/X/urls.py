@@ -55,6 +55,8 @@ urlpatterns = [
     re_path(r'^scene/tag/(?P<tag_id>\w+)$', view_scene.sceneTag, name='sceneTag'),
     re_path(r'^scene/set/(?P<scene_id>\w+)$', view_scene.sceneSet, name='sceneSet'),
 
+    re_path(r'^shot/new/(?P<sceneitem_type>[NADTR])/(?P<sceneitem_id>\d+)/(?P<offset>[-]?\d+)$', view_shot.shotNew, name='shotNew'),
+    re_path(r'^shot/(?P<sceneitem_id>[0])/(?P<new_type>[NADTR])/(?P<new_order>\d+)$', view_shot.shot, name='shot'),
     re_path(r'^shot/(?P<sceneitem_id>\d+)?$', view_shot.shot, name='shot'),
     re_path(r'^shot/set/(?P<scene_id>\w+)$', view_shot.shotSet, name='shotSet'),
 
@@ -91,8 +93,11 @@ urlpatterns = [
     re_path(r'^planner/progress/?$', view_planner.planner_progress, name='plannerProgress'),
 
     # --- Scoped deep links: /p/<project_id>/s/<script_id>/… ---
+    re_path(_SCOPE + r'script/(?P<scene_id>[0])/(?P<new_order>\d+)$', view_script.script, name='script_scoped_new'),
     re_path(_SCOPE + r'script/(?P<scene_id>\d+)?$', view_script.script, name='script_scoped'),
+    re_path(_SCOPE + r'scene/(?P<sceneitem_id>[0])/(?P<new_type>[NADTR])/(?P<new_order>\d+)$', view_scene.scene, name='scene_scoped_new'),
     re_path(_SCOPE + r'scene/(?P<sceneitem_id>\d+)?$', view_scene.scene, name='scene_scoped'),
+    re_path(_SCOPE + r'shot/(?P<sceneitem_id>[0])/(?P<new_type>[NADTR])/(?P<new_order>\d+)$', view_shot.shot, name='shot_scoped_new'),
     re_path(_SCOPE + r'shot/(?P<sceneitem_id>\d+)?$', view_shot.shot, name='shot_scoped'),
     re_path(_SCOPE + r'role/(?P<role_id>\d+)?$', view_roles.role, name='role_scoped'),
     re_path(_SCOPE + r'person/(?P<person_id>\d+)?$', view_persons.person, name='person_scoped'),
