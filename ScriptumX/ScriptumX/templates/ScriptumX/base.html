@@ -13,7 +13,7 @@
     
     <title>{{ title }} - ScriptumX</title>
     {% load static %}
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{% static 'vendor/font-awesome/css/font-awesome.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static 'X/content/bootstrap.min.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static 'X/content/site.css' %}" />
     <link rel="shortcut icon" href="{%  static 'favicon.ico' %}">
@@ -60,8 +60,8 @@
         </footer>
     </div>
 
-    <script src="{% static 'X/scripts/jquery-1.10.2.js' %}"></script>
-    <script src="{% static 'X/scripts/bootstrap.js' %}"></script>
+    <script src="{% static 'vendor/jquery/jquery-2.2.4.min.js' %}"></script>
+    <script src="{% static 'X/scripts/bootstrap.min.js' %}"></script>
     <script src="{% static 'X/scripts/respond.js' %}"></script>
 {% block scripts %}{% endblock %}
 

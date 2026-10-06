@@ -27,16 +27,11 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.utils import render_crispy_form
 
-#from report.models import *
-from X.models import *
-from X.views import g_tab_list
-from X.views import Q
-from X.common import *
+from X.models import Role, Scene, SceneItem
+from X.common import Env, getTagQuery, bind_scope_to_request
 
-from X.tags import FormSymbol, sceneitem_tag_list, handleTagRequest, getTagRequestList
+from X.tags import FormSymbol, scene_tag_list, handleTagRequest, getTagRequestList
 
-# pip install xhtml2pdf==0.1a3
-# https://pypi.python.org/pypi/xhtml2pdf/0.1a3
 from django import http
 from django.template.loader import get_template
 from django.template import Context
@@ -47,7 +42,6 @@ try:
 except Exception:
     from io import StringIO
 
-#from django_xhtml2pdf.utils import render_to_pdf_response
 from .pdf_utils import render_to_pdf_response
 
 ###############################################################################
@@ -427,6 +421,7 @@ class ScriptView(View):
         return render(request, self.template_name, self.context)
 
     def get(self, request, *args, **kwargs):
+        bind_scope_to_request(request, **kwargs)
         self.selected_scene_id = kwargs.get('selected_scene_id')
         tag_list = getTagRequestList(request, self.x_group)
         for tag in tag_list:
@@ -435,6 +430,7 @@ class ScriptView(View):
         return self.render_form(request, form)
 
     def post(self, request, *args, **kwargs):
+        bind_scope_to_request(request, **kwargs)
         self.selected_scene_id = kwargs.get('selected_scene_id')
         form = self.form_class(request.POST)
         if form.is_valid():

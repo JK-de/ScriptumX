@@ -18,6 +18,9 @@ from X import view_scheduler
 
 app_name = 'X'
 
+# Explicit project/script deep-link prefix (H17). Legacy session-only routes remain below.
+_SCOPE = r'^p/(?P<project_id>\d+)/s/(?P<script_id>\d+)/'
+
 urlpatterns = [
     re_path(r'^project/import$', view_project.project_import, name='projectImport'),
     re_path(r'^project/(?P<project_id>\d+)/(?P<script_id>\d+)?$', view_project.project, name='project'),
@@ -62,4 +65,17 @@ urlpatterns = [
 
     re_path(r'^scheduler/(?P<appointment_id>\d+)?$', view_scheduler.scheduler, name='scheduler'),
     re_path(r'^scheduler/tag/(?P<tag_id>\w+)?$', view_scheduler.schedulerTag, name='schedulerTag'),
+
+    # --- Scoped deep links: /p/<project_id>/s/<script_id>/… ---
+    re_path(_SCOPE + r'script/(?P<scene_id>\d+)?$', view_script.script, name='script_scoped'),
+    re_path(_SCOPE + r'scene/(?P<sceneitem_id>\d+)?$', view_scene.scene, name='scene_scoped'),
+    re_path(_SCOPE + r'shot/(?P<sceneitem_id>\d+)?$', view_shot.shot, name='shot_scoped'),
+    re_path(_SCOPE + r'role/(?P<role_id>\d+)?$', view_roles.role, name='role_scoped'),
+    re_path(_SCOPE + r'person/(?P<person_id>\d+)?$', view_persons.person, name='person_scoped'),
+    re_path(_SCOPE + r'time/(?P<time_id>\d+)?$', view_times.time, name='time_scoped'),
+    re_path(_SCOPE + r'location/(?P<location_id>\d+)?$', view_locations.location, name='location_scoped'),
+    re_path(_SCOPE + r'gadget/(?P<gadget_id>\d+)?$', view_gadgets.gadget, name='gadget_scoped'),
+    re_path(_SCOPE + r'audio/(?P<audio_id>\d+)?$', view_audios.audio, name='audio_scoped'),
+    re_path(_SCOPE + r'sfx/(?P<sfx_id>\d+)?$', view_sfxs.sfx, name='sfx_scoped'),
+    re_path(_SCOPE + r'scheduler/(?P<appointment_id>\d+)?$', view_scheduler.scheduler, name='scheduler_scoped'),
 ]

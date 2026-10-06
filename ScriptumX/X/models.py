@@ -12,7 +12,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from datetime import datetime
 
-from .tags import *
+from .tags import all_tag_list
 
 ###############################################################################
 

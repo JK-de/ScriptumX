@@ -24,11 +24,9 @@ from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHo
 from crispy_forms.bootstrap import InlineCheckboxes
 from crispy_forms.utils import render_crispy_form
 
-from X.models import *
+from X.models import Gadget, Location, Note, Person
 from X.forms import NoteForm
-from X.views import g_tab_list
-from X.views import Q
-from X.common import *
+from X.common import Env, get_tab_list, g_tag_queries, g_tag_query_none
 
 from .tags import FormSymbol, location_tag_list, handleTagRequest, getTagRequestList
 
@@ -97,10 +95,10 @@ class LocationForm(forms.ModelForm):
 ###############################################################################
 
 @login_required
-def location(request, location_id=None):
+def location(request, location_id=None, project_id=None, script_id=None):
     """Handles page requests for Locations"""
 
-    env = Env(request)
+    env = Env(request, project_id=project_id, script_id=script_id)
 
 
     tag_list = getTagRequestList(request, 'location')
@@ -193,7 +191,7 @@ def location(request, location_id=None):
     return render(request, 'X/locations.html', {
         'title': 'Location',
         'env': env,
-        'tab_list': g_tab_list,
+        'tab_list': get_tab_list(env),
         'tab_active_id': 'L',
         'tag_list': tag_list,
         'locations': locations,

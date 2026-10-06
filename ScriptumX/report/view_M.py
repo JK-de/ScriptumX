@@ -18,14 +18,14 @@ from crispy_forms.layout import Layout, Fieldset, ButtonHolder, Submit, ButtonHo
 from crispy_forms.helper import FormHelper
 from crispy_forms.bootstrap import InlineCheckboxes
 
-#from easy_pdf.views import PDFTemplateView
-
-from report.models import *
-from X.models import *
-from X.common import *
+from X.models import Audio, Gadget, Location, Person, Role, SFX, Scene, SceneItem, Time
+from X.common import Env, getTagQuery, bind_scope_to_request
 from X.tags import FormSymbol, gadget_tag_list, handleTagRequest, getTagRequestList
-from .M import *
-from .view_L import *
+from .M import M
+from .view_L import (
+    AudioFilterForm, GadgetFilterForm, LocationFilterForm,
+    PersonFilterForm, RoleFilterForm, SFXFilterForm, TimeFilterForm,
+)
 
 ###############################################################################
 
@@ -53,6 +53,7 @@ class M_BaseView(View):
     #def render_list(self, request, form, tag_list):
 
     def get(self, request, *args, **kwargs):
+        bind_scope_to_request(request, **kwargs)
         tag_list = getTagRequestList(request, self.x_group)
         for tag in tag_list:
             self.initial['tag'+str(tag['idx'])] = tag['active']
@@ -60,6 +61,7 @@ class M_BaseView(View):
         return self.render_form(request, form)
 
     def post(self, request, *args, **kwargs):
+        bind_scope_to_request(request, **kwargs)
         form = self.form_class(request.POST)
         if form.is_valid():
             tag_list = getTagRequestList(request, self.x_group)

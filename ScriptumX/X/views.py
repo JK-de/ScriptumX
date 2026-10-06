@@ -2,7 +2,7 @@
 Definition of views.
 """
 
-from X.models import *
+from X.models import Audio, Gadget, Location, Note, Project, SFX, Scene, SceneItem, Script
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
@@ -23,12 +23,11 @@ from ScriptumX.settings import PROJECT_ROOT
 
 
 import json
-from X.views import Q
 
 #http://agiliq.com/blog/2009/06/generating-pseudo-random-text-with-markov-chains-u/
 
 
-from X.common import *
+from X.common import Env, get_tab_list
 
 from .importer import ImporterBase
 
@@ -322,7 +321,7 @@ def dummy(request, id):
     
     return render(request, 'X/gadget.html', {
         'title': 'DUMMY',
-        'tab_list': g_tab_list,
+        'tab_list': get_tab_list(),
         'tab_active_id': 'P',
         'datetime': datetime.now(),
     })

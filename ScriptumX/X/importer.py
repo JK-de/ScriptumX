@@ -5,8 +5,7 @@ from os import path
 from datetime import datetime
 import random
 
-from .models import *
-from X.common import *
+from .models import Location, Note, Project, Role, Scene, SceneItem, Script
 
 
 class ImporterBase():
