@@ -16,6 +16,8 @@ RUN apt-get update \
         libjpeg62-turbo-dev \
         zlib1g-dev \
         libfreetype6-dev \
+        msmtp \
+        msmtp-mta \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system --gid 1000 app \
     && useradd --system --uid 1000 --gid app --home /app --shell /usr/sbin/nologin app

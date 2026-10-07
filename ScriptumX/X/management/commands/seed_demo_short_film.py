@@ -175,6 +175,8 @@ class Command(BaseCommand):
 
         project = Project.objects.create(name=PROJECT_NAME, owner=owner)
         project.users.add(owner)
+        from X.access import ROLE_PRODUCER, ensure_membership
+        ensure_membership(project, owner, ROLE_PRODUCER)
 
         script = Script.objects.create(
             project=project,

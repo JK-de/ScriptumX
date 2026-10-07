@@ -32,6 +32,16 @@ from X.forms import NoteForm
 from X.common import Env, get_tab_list
 from X import backup as project_backup
 from X.importer import ImporterBase
+from X.access import (
+    ROLE_ACTOR,
+    ROLE_CREW,
+    ROLE_PRODUCER,
+    can_export_backup,
+    ensure_membership,
+    projects_for_user,
+    sync_legacy_m2m,
+    user_is_site_admin,
+)
 
 from .tags import FormSymbol, handleTagRequest, getTagRequestList
 
@@ -171,6 +181,9 @@ def project(request, project_id=None, script_id=None):
             selected_project = Project.objects.get(pk = project_id)
         except ObjectDoesNotExist:
             selected_project = None
+        if selected_project and not projects_for_user(env.user).filter(pk=selected_project.pk).exists():
+            from django.core.exceptions import PermissionDenied
+            raise PermissionDenied()
 
         if script_id == '0':
             ### create new project object on request '/project/0'
@@ -276,6 +289,15 @@ def project(request, project_id=None, script_id=None):
             if request.POST.get('btn_save'):
                 if formItemProject.is_valid():
                     formItemProject.save()
+                    # Ensure producer membership for owner; sync legacy M2M ↔ memberships
+                    ensure_membership(selected_project, selected_project.owner, ROLE_PRODUCER)
+                    for u in selected_project.users.exclude(pk=selected_project.owner_id):
+                        if not selected_project.memberships.filter(user=u).exists():
+                            ensure_membership(selected_project, u, ROLE_CREW)
+                    for g in selected_project.guests.all():
+                        if not selected_project.memberships.filter(user=g).exists():
+                            ensure_membership(selected_project, g, ROLE_ACTOR)
+                    sync_legacy_m2m(selected_project)
 
                 if project_id == '0':   # previously new item
                     return HttpResponseRedirect('/project/' + str(selected_project.id))
@@ -284,7 +306,7 @@ def project(request, project_id=None, script_id=None):
 
     ### conglomerate queries
     
-    projects = Project.objects.filter( Q(owner=env.user) | Q(users=env.user) | Q(guests=env.user) ).distinct()
+    projects = projects_for_user(env.user).order_by('name')
 
     if selected_project and selected_project.pk:
         scripts = Script.objects.filter(project=selected_project)
@@ -382,15 +404,7 @@ def project_import(request, project_id=None):
 def _user_can_access_project(env, project):
     if not project or not env.user:
         return False
-    if env.user.is_superuser or env.user.is_staff:
-        return True
-    if project.owner_id == env.user.id:
-        return True
-    if project.users.filter(pk=env.user.id).exists():
-        return True
-    if project.guests.filter(pk=env.user.id).exists():
-        return True
-    return False
+    return projects_for_user(env.user).filter(pk=project.pk).exists()
 
 
 @login_required
@@ -398,8 +412,8 @@ def project_export(request, project_id, fmt='json'):
     """Download a project backup as JSON or ZIP."""
     env = Env(request)
     project = get_object_or_404(Project, pk=project_id)
-    if not _user_can_access_project(env, project):
-        messages.error(request, 'You do not have access to this project.')
+    if not can_export_backup(env.user, project):
+        messages.error(request, 'Full project backup requires project edit rights.')
         return HttpResponseRedirect('/project/')
 
     safe_name = ''.join(c if c.isalnum() or c in '-_' else '_' for c in project.name) or 'project'

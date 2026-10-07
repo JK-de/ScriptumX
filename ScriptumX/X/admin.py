@@ -5,7 +5,8 @@ Customizations for the Django administration interface.
 from django.contrib import admin
 from X.models import (
     Appointment, Appointment2Scene, Audio, Gadget, Location, Note,
-    Person, Project, Role, SFX, Scene, SceneItem, Script, ScriptRevision, Time,
+    Person, Project, ProjectMembership, Role, SFX, Scene, SceneItem, Script,
+    ScriptRevision, Time,
 )
 
 
@@ -23,6 +24,15 @@ class ProjectAdmin(admin.ModelAdmin):
     #date_hierarchy = 'pub_date'
 
 admin.site.register(Project, ProjectAdmin)
+
+
+class ProjectMembershipAdmin(admin.ModelAdmin):
+    list_display = ('project', 'user', 'role', 'can_invite')
+    list_filter = ['role', 'can_invite', 'project']
+    search_fields = ['user__username', 'project__name']
+
+
+admin.site.register(ProjectMembership, ProjectMembershipAdmin)
 
 class NoteAdmin(admin.ModelAdmin):
     """Definition of the Note editor."""

@@ -1,0 +1,17 @@
+# Example msmtp config — copy to /etc/msmtprc on the host (mode 600, root-owned).
+# Do not commit real relay credentials.
+#
+# defaults
+# auth           on
+# tls            on
+# tls_trust_file /etc/ssl/certs/ca-certificates.crt
+# logfile        /var/log/msmtp.log
+#
+# account        scriptumx
+# host           smtp.example.com
+# port           587
+# from           scriptumx@example.com
+# user           YOUR_SMTP_USER
+# password       YOUR_SMTP_PASSWORD
+#
+# account default : scriptumx

@@ -1,0 +1,158 @@
+{% extends "X/layout_X.html" %}
+
+{% block content %}
+<div class="container-fluid" style="padding:16px; max-width:1100px">
+  <h2>User access</h2>
+  <p class="text-muted">
+    {% if is_site_admin %}
+      Site admin: manage users, projects, and memberships.
+    {% else %}
+      Producer: manage members on your projects (actor, writer, crew).
+    {% endif %}
+  </p>
+
+  {% if messages %}
+  <ul class="list-unstyled">
+    {% for message in messages %}
+    <li class="alert alert-{{ message.tags|default:'info' }}">{{ message }}</li>
+    {% endfor %}
+  </ul>
+  {% endif %}
+
+  {% if is_site_admin %}
+  <section style="margin-bottom:28px">
+    <h3>Create user</h3>
+    <form method="post" action="/access/user/create/" class="form-inline">
+      {% csrf_token %}
+      <input class="form-control" name="username" placeholder="Username" required>
+      <input class="form-control" name="email" type="email" placeholder="Email">
+      <input class="form-control" name="password" type="password" placeholder="Temp password" required>
+      <button class="btn btn-primary" type="submit">Create</button>
+    </form>
+  </section>
+
+  <section style="margin-bottom:28px">
+    <h3>Users</h3>
+    <table class="table table-condensed table-striped">
+      <thead><tr><th>User</th><th>Email</th><th>Active</th><th></th></tr></thead>
+      <tbody>
+      {% for u in users %}
+        <tr>
+          <td>{{ u.username }}{% if u.is_superuser %} <span class="label label-danger">admin</span>{% endif %}</td>
+          <td>
+            <form method="post" action="/access/user/{{ u.id }}/" class="form-inline">
+              {% csrf_token %}
+              <input class="form-control input-sm" name="email" value="{{ u.email }}">
+              <button class="btn btn-default btn-sm" type="submit">Save email</button>
+              {% if u.is_active %}
+              <button class="btn btn-warning btn-sm" name="deactivate" value="1" type="submit">Deactivate</button>
+              {% else %}
+              <button class="btn btn-success btn-sm" name="activate" value="1" type="submit">Activate</button>
+              {% endif %}
+            </form>
+          </td>
+          <td>{{ u.is_active|yesno:"yes,no" }}</td>
+          <td></td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  {% endif %}
+
+  <section style="margin-bottom:28px">
+    <h3>Assign to project</h3>
+    <form method="post" action="/access/assign/" class="form-horizontal">
+      {% csrf_token %}
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Project</label>
+        <div class="col-sm-6">
+          <select name="project_id" class="form-control" required>
+            {% for p in projects %}
+            <option value="{{ p.id }}">{{ p.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">User</label>
+        <div class="col-sm-6">
+          <select name="user_id" class="form-control" required>
+            {% for u in users %}
+            {% if u.is_active %}
+            <option value="{{ u.id }}">{{ u.username }}</option>
+            {% endif %}
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="col-sm-2 control-label">Role</label>
+        <div class="col-sm-6">
+          <select name="role" class="form-control" required>
+            {% if is_site_admin %}
+              {% for value, label in role_choices %}
+              <option value="{{ value }}">{{ label }}</option>
+              {% endfor %}
+            {% else %}
+              {% for value in producer_roles %}
+              <option value="{{ value }}">{{ value }}</option>
+              {% endfor %}
+            {% endif %}
+          </select>
+        </div>
+      </div>
+      <p class="help-block">Optional per-tab overrides (check “override” then set read/edit):</p>
+      <div class="row">
+        {% for tab in tab_keys %}
+        <div class="col-sm-3" style="margin-bottom:6px">
+          <label class="checkbox-inline">
+            <input type="checkbox" name="override_{{ tab }}"> {{ tab }}
+          </label>
+          <label class="checkbox-inline"><input type="checkbox" name="read_{{ tab }}"> read</label>
+          <label class="checkbox-inline"><input type="checkbox" name="edit_{{ tab }}"> edit</label>
+        </div>
+        {% endfor %}
+      </div>
+      <button class="btn btn-primary" type="submit">Assign</button>
+    </form>
+  </section>
+
+  <section>
+    <h3>Memberships</h3>
+    <table class="table table-condensed">
+      <thead><tr><th>Project</th><th>User</th><th>Role</th><th>Invite</th><th></th></tr></thead>
+      <tbody>
+      {% for m in memberships %}
+        <tr>
+          <td>{{ m.project.name }}</td>
+          <td>{{ m.user.username }}</td>
+          <td>{{ m.role }}</td>
+          <td>{{ m.can_invite|yesno:"yes,no" }}</td>
+          <td>
+            <form method="post" action="/access/membership/{{ m.id }}/" class="form-inline">
+              {% csrf_token %}
+              <select name="role" class="form-control input-sm">
+                {% if is_site_admin %}
+                  {% for value, label in role_choices %}
+                  <option value="{{ value }}" {% if m.role == value %}selected{% endif %}>{{ label }}</option>
+                  {% endfor %}
+                {% else %}
+                  {% for value in producer_roles %}
+                  <option value="{{ value }}" {% if m.role == value %}selected{% endif %}>{{ value }}</option>
+                  {% endfor %}
+                {% endif %}
+              </select>
+              <button class="btn btn-default btn-sm" type="submit">Update</button>
+              <button class="btn btn-danger btn-sm" name="remove" value="1" type="submit">Remove</button>
+            </form>
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="5">No memberships yet.</td></tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </section>
+</div>
+{% endblock %}

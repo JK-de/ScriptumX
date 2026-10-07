@@ -6,6 +6,7 @@
 
     {% if user.is_superuser %}
     <li><a href="/admin">[Admin-Page]</a></li>
+    <li><a href="/access/">[Users]</a></li>
     {% endif %}
 
     <li>
@@ -21,8 +22,9 @@
             <ul class="dropdown-menu">
                 <li><a href="javascript:document.getElementById('logoutForm').submit()"><i class="fa fa-sign-out fa-fw"></i> Log off</a></li>
                 <li><a href="/password_change"><i class="fa fa-key fa-fw"></i> Change Password</a></li>
+                <li><a href="/access/"><i class="fa fa-users fa-fw"></i> User access</a></li>
                 <li class="divider"></li>
-                <li><a href="/login"><i class="fa fa-trash-o fa-fw"></i> Delete</a></li>
+                <li class="disabled"><a href="#" title="Account deletion is handled by an administrator"><i class="fa fa-trash-o fa-fw"></i> Delete (admin only)</a></li>
             </ul>
         </div>
     </li>

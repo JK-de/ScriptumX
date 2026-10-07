@@ -18,6 +18,12 @@ THEME_COOKIE_MAX_AGE = 60 * 60 * 24 * 365
 def project_has_multi_users(project) -> bool:
     if not project:
         return False
+    # Prefer memberships (source of truth); fall back to legacy users M2M.
+    try:
+        if project.memberships.count() > 1:
+            return True
+    except Exception:
+        pass
     return project.users.count() > 1
 
 
