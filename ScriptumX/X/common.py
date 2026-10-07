@@ -1,6 +1,7 @@
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
+from X.access import TAB_ID_TO_KEY, can, projects_for_user, user_is_site_admin
 from X.models import Project, Script, Scene
 
 ###############################################################################
@@ -26,6 +27,10 @@ def get_tab_list(env=None):
     """Return navbar tabs; when env has project+script, editor tabs use /p/<pid>/s/<sid>/…"""
     tabs = []
     for tab in _TAB_DEFS:
+        tab_key = TAB_ID_TO_KEY.get(tab['id'])
+        if env and env.project and tab_key and not env.user_is_share:
+            if not can(env.user, env.project, tab_key, write=False):
+                continue
         item = {
             'id': tab['id'],
             'name': tab['name'],
@@ -117,12 +122,21 @@ class Env():
     scene_id = 0
     scene = None
     read_only = False
+    membership = None
+    user_is_share = False
+
+    def can(self, tab, write=False):
+        if self.user_is_share:
+            return not write
+        return can(self.user, self.project, tab, write=write)
 
     def __init__(self, request, project_id=None, script_id=None, scene_id=None, *args, **kwargs):
         super(Env, self).__init__(*args, **kwargs)
 
         self.request = request
         self.read_only = False
+        self.membership = None
+        self.user_is_share = False
 
         # Tokenized share links hydrate project/script without a login (F14).
         share = getattr(request, '_share_context', None)
@@ -136,6 +150,7 @@ class Env():
             self.scene_id = 0
             self.user_level = 5  # read-only share guest
             self.read_only = True
+            self.user_is_share = True
             return
 
         # get user
@@ -168,9 +183,7 @@ class Env():
 
         if not self.project:
             try:
-                self.project = Project.objects.filter(
-                    Q(owner=self.user) | Q(users=self.user) | Q(guests=self.user)
-                ).last()
+                self.project = projects_for_user(self.user).last()
                 self.setProject(self.project)
             except Exception:
                 self.project_id = 0
@@ -182,22 +195,78 @@ class Env():
             return
 
         if self.project:
+            from X.access import get_membership, ROLE_PRODUCER, ROLE_DIRECTOR, ROLE_CREW, ROLE_WRITER, ROLE_ACTOR
             if not self.user:
                 self.user_level = 0
                 self.project = None
-            elif self.user.is_superuser:
+            elif user_is_site_admin(self.user):
                 self.user_level = 42
-            elif self.user.is_staff:
-                self.user_level = 40
-            elif self.project.owner == self.user:
-                self.user_level = 30
-            elif self.project.users.filter(pk=self.user.id):
-                self.user_level = 20
-            elif self.project.guests.filter(pk=self.user.id):
-                self.user_level = 10
+                self.membership = get_membership(self.user, self.project)
             else:
-                self.user_level = 0
-                self.project = None
+                # is_staff alone does NOT grant every project (site admin = superuser).
+                self.membership = get_membership(self.user, self.project)
+                if self.membership:
+                    role_levels = {
+                        ROLE_PRODUCER: 30,
+                        ROLE_DIRECTOR: 28,
+                        ROLE_CREW: 20,
+                        ROLE_WRITER: 20,
+                        ROLE_ACTOR: 10,
+                    }
+                    self.user_level = role_levels.get(self.membership.role, 10)
+                    if not any(
+                        f.get('edit')
+                        for f in self.membership.effective_permissions().values()
+                    ):
+                        self.read_only = True
+                elif self.project.owner_id == self.user.id:
+                    # Lazy-create memberships from legacy owner/users/guests
+                    from X.access import (
+                        ROLE_ACTOR,
+                        ROLE_CREW,
+                        ROLE_PRODUCER,
+                        ensure_membership,
+                    )
+                    from django.contrib.auth import get_user_model
+                    UserModel = get_user_model()
+                    legacy_user_ids = list(
+                        self.project.users.values_list('id', flat=True)
+                    )
+                    legacy_guest_ids = list(
+                        self.project.guests.values_list('id', flat=True)
+                    )
+                    self.membership = ensure_membership(
+                        self.project, self.user, ROLE_PRODUCER
+                    )
+                    for uid in legacy_user_ids:
+                        if uid == self.user.id:
+                            continue
+                        ensure_membership(
+                            self.project, UserModel.objects.get(pk=uid), ROLE_CREW
+                        )
+                    for gid in legacy_guest_ids:
+                        if gid == self.user.id:
+                            continue
+                        ensure_membership(
+                            self.project, UserModel.objects.get(pk=gid), ROLE_ACTOR
+                        )
+                    self.user_level = 30
+                elif self.project.users.filter(pk=self.user.id).exists():
+                    from X.access import ROLE_CREW, ensure_membership
+                    self.membership = ensure_membership(
+                        self.project, self.user, ROLE_CREW
+                    )
+                    self.user_level = 20
+                elif self.project.guests.filter(pk=self.user.id).exists():
+                    from X.access import ROLE_ACTOR, ensure_membership
+                    self.membership = ensure_membership(
+                        self.project, self.user, ROLE_ACTOR
+                    )
+                    self.user_level = 10
+                    self.read_only = True
+                else:
+                    self.user_level = 0
+                    self.project = None
 
         if not self.project:
             self.script = None

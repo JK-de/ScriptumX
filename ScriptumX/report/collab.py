@@ -160,24 +160,42 @@ def filter_payload_from_request_form(request, form, tag_group):
     return {}
 
 
-def user_can_share_project(user, project):
+def _share_tab_for_report(report_name):
+    """Map report name to membership tab for share-create rights."""
+    name = (report_name or '').lower()
+    mapping = (
+        ('person', 'person'),
+        ('role', 'role'),
+        ('time', 'time'),
+        ('location', 'location'),
+        ('gadget', 'gadget'),
+        ('sfx', 'sfx'),
+        ('audio', 'audio'),
+        ('scene', 'scene'),
+        ('script', 'script'),
+        ('card', 'script'),
+    )
+    for needle, tab in mapping:
+        if needle in name:
+            return tab
+    return 'reports'
+
+
+def user_can_share_project(user, project, report_name=''):
     if not user or not user.is_authenticated or not project:
         return False
-    if user.is_superuser or user.is_staff:
+    from X.access import can_create_share, user_is_site_admin
+    if user_is_site_admin(user):
         return True
-    if project.owner_id == user.id:
-        return True
-    if project.users.filter(pk=user.id).exists():
-        return True
-    # Project guests may view; owners/users create share links for them.
-    return False
+    tab = _share_tab_for_report(report_name)
+    return can_create_share(user, project, tab)
 
 
 def create_share_link(request, report_name, title, tag_group, form):
     env = Env(request)
     if not env.project:
         return None, 'No project selected.'
-    if not user_can_share_project(request.user, env.project):
+    if not user_can_share_project(request.user, env.project, report_name=report_name):
         return None, 'You cannot create share links for this project.'
     payload = form_to_filter_payload(form, tag_group)
     label = (form.cleaned_data.get('preset_name') or '').strip()

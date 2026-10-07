@@ -18,6 +18,7 @@ from X import view_scheduler
 from X import data_safety
 from X import view_planner
 from X import view_ux
+from X import view_access
 
 app_name = 'X'
 
@@ -30,6 +31,12 @@ urlpatterns = [
     re_path(r'^ux/presence$', view_ux.presence, name='uxPresence'),
     re_path(r'^shot/checklist/(?P<scene_id>\d+)/progress$', view_ux.shot_checklist_progress, name='shotChecklistProgress'),
     re_path(r'^shot/checklist/?$', view_ux.shot_checklist, name='shotChecklist'),
+
+    re_path(r'^access/?$', view_access.access_dashboard, name='accessDashboard'),
+    re_path(r'^access/user/create/?$', view_access.access_create_user, name='accessCreateUser'),
+    re_path(r'^access/user/(?P<user_id>\d+)/?$', view_access.access_update_user, name='accessUpdateUser'),
+    re_path(r'^access/assign/?$', view_access.access_assign, name='accessAssign'),
+    re_path(r'^access/membership/(?P<membership_id>\d+)/?$', view_access.access_membership_update, name='accessMembership'),
 
     re_path(r'^project/(?P<project_id>\d+)/import$', view_project.project_import, name='projectImport'),
     re_path(r'^project/import$', view_project.project_import, name='projectImportLegacy'),

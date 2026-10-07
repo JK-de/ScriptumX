@@ -172,6 +172,8 @@ class WriterFeatureTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user('writer', password='pass')
         self.project = Project.objects.create(name='Test Project', owner=self.user)
+        from X.access import ROLE_PRODUCER, ensure_membership
+        ensure_membership(self.project, self.user, ROLE_PRODUCER)
         self.client = Client()
         self.client.login(username='writer', password='pass')
         session = self.client.session

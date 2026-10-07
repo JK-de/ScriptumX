@@ -34,6 +34,51 @@ class Project(models.Model):
 
 ###############################################################################
 
+
+class ProjectMembership(models.Model):
+    """One membership row per user per project (role preset + per-tab flags)."""
+
+    ROLE_ACTOR = 'actor'
+    ROLE_WRITER = 'writer'
+    ROLE_CREW = 'crew'
+    ROLE_DIRECTOR = 'director'
+    ROLE_PRODUCER = 'producer'
+    ROLE_CHOICES = (
+        (ROLE_ACTOR, 'Actor'),
+        (ROLE_WRITER, 'Writer'),
+        (ROLE_CREW, 'Crew'),
+        (ROLE_DIRECTOR, 'Director'),
+        (ROLE_PRODUCER, 'Producer'),
+    )
+
+    project = models.ForeignKey(
+        Project, related_name='memberships', on_delete=models.CASCADE
+    )
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        related_name='project_memberships',
+        on_delete=models.CASCADE,
+    )
+    role = models.CharField(max_length=20, choices=ROLE_CHOICES, default=ROLE_CREW)
+    can_invite = models.BooleanField(default=False)
+    # {tab: {"read": bool, "edit": bool}}
+    permissions = models.JSONField(default=dict, blank=True)
+
+    class Meta:
+        unique_together = (('project', 'user'),)
+        ordering = ['project_id', 'user_id']
+
+    def __str__(self):
+        return '%s @ %s (%s)' % (self.user, self.project, self.role)
+
+    def effective_permissions(self):
+        from X.access import normalize_permissions, permissions_for_role
+        if self.permissions:
+            return normalize_permissions(self.permissions)
+        return permissions_for_role(self.role)
+
+###############################################################################
+
 class Note(models.Model):
     #Props
     text = models.TextField(blank=True)

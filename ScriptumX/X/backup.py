@@ -299,6 +299,11 @@ def restore_project(data, owner, name_suffix=' (restored)'):
     base_name = (src.get('name') or 'Restored Project')[:50]
     project_name = (base_name + name_suffix)[:50]
     project = Project.objects.create(name=project_name, owner=owner)
+    try:
+        from X.access import ROLE_PRODUCER, ensure_membership
+        ensure_membership(project, owner, ROLE_PRODUCER)
+    except Exception:
+        pass
 
     note_map = {}
     for nd in data.get('notes') or []:
