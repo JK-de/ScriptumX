@@ -114,13 +114,16 @@ CSRF_TRUSTED_ORIGINS = [
     if o.strip()
 ]
 
-# Trust X-Forwarded-Proto from a reverse proxy terminating TLS.
+# Trust X-Forwarded-Proto / Host from a reverse proxy terminating TLS (Caddy/nginx).
 if os.environ.get('DJANGO_BEHIND_PROXY', '0') == '1' or not DEBUG:
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    USE_X_FORWARDED_HOST = os.environ.get('DJANGO_USE_X_FORWARDED_HOST', '1') == '1'
 
-if not DEBUG:
+if not DEBUG or os.environ.get('DJANGO_BEHIND_PROXY', '0') == '1':
     SESSION_COOKIE_SECURE = os.environ.get('DJANGO_SESSION_COOKIE_SECURE', '1') == '1'
     CSRF_COOKIE_SECURE = os.environ.get('DJANGO_CSRF_COOKIE_SECURE', '1') == '1'
+
+if not DEBUG:
     SECURE_SSL_REDIRECT = os.environ.get('DJANGO_SECURE_SSL_REDIRECT', '0') == '1'
 
 MIDDLEWARE = [
