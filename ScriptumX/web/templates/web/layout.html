@@ -64,7 +64,8 @@
                     {% endif %}
 
                     <li><a href="{% url 'web:about' %}">About</a></li>
-                    <li><a class="navbar-right" href="{% url 'web:impressum' %}">Impressum</a></li>
+                    <li><a href="{% url 'web:impressum' %}">Impressum</a></li>
+                    <li><a href="{% url 'web:datenschutz' %}">Datenschutzerklärung</a></li>
 
                     {% if user.is_superuser %}
                     <li><a href="/seed">[Seed]</a></li>

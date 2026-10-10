@@ -42,3 +42,11 @@ def impressum(request):
     return render(request, 'web/impressum.html', {
         'title': 'Impressum',
     })
+
+
+def datenschutz(request):
+    """Renders the German privacy policy page."""
+    assert isinstance(request, HttpRequest)
+    return render(request, 'web/datenschutz.html', {
+        'title': 'Datenschutzerklärung',
+    })

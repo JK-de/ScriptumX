@@ -76,6 +76,10 @@ db.sqlite3
 .venv/
 ScriptumX/.venv/
 
+# Server-only / local legal-text overlays (operator PII — never commit)
+ScriptumX/templates_local/
+**/templates_local/
+
 ScriptumX/.vs/
 ScriptumX/app/migrations/
 Test/

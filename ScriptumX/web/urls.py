@@ -12,4 +12,5 @@ urlpatterns = [
     re_path(r'^contact/?$', views.contact, name='contact'),
     re_path(r'^about/?$', views.about, name='about'),
     re_path(r'^impressum/?$', views.impressum, name='impressum'),
+    re_path(r'^datenschutz/?$', views.datenschutz, name='datenschutz'),
 ]
