@@ -31,14 +31,21 @@ DATABASES = {
     }
 }
 
+# Optional overlay (e.g. /data/templates) wins over packaged templates — use for
+# operator-specific Impressum/Datenschutz on a host without committing PII.
+_template_dirs = [
+    path.join(PROJECT_ROOT, 'X/templates'),
+    path.join(PROJECT_ROOT, 'web/templates'),
+]
+_overlay = os.environ.get('DJANGO_TEMPLATE_OVERLAY', '/data/templates').strip()
+if _overlay and path.isdir(_overlay):
+    _template_dirs.insert(0, _overlay)
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'APP_DIRS': True,
-        'DIRS': [
-            path.join(PROJECT_ROOT, 'X/templates'),
-            path.join(PROJECT_ROOT, 'web/templates'),
-        ],
+        'DIRS': _template_dirs,
         'OPTIONS': {
             'builtins': [
                 'X.templatetags.legacy',
